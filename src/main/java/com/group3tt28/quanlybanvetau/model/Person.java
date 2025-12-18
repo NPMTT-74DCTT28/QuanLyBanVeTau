@@ -10,7 +10,8 @@ import java.time.LocalDate;
  *
  * @author qphwn
  */
-abstract public class Person {
+public abstract class Person {
+
     protected String hoTen;
     protected LocalDate ngaySinh;
     protected String gioiTinh;

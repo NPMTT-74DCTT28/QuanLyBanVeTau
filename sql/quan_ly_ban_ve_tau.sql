@@ -19,7 +19,7 @@ CREATE TABLE nhan_vien(
     sdt VARCHAR(20) NOT NULL UNIQUE,
     email VARCHAR(100) UNIQUE, -- Dùng để reset pass hoặc liên hệ
     dia_chi VARCHAR(255) NOT NULL,
-    vai_tro VARCHAR(20) DEFAULT 'NHANVIEN' COMMENT 'ADMIN hoặc NHANVIEN' -- Bổ sung để phân quyền
+    vai_tro VARCHAR(20) NOT NULL -- Bổ sung để phân quyền
 );
 
 -- ==============================================================================
@@ -109,7 +109,7 @@ CREATE TABLE lich_trinh(
     id_tuyen_duong INT NOT NULL,
     ngay_di DATETIME NOT NULL,
     ngay_den DATETIME NOT NULL,
-    trang_thai VARCHAR(20) DEFAULT 'Sắp chạy',
+    trang_thai VARCHAR(20) NOT NULL,
     
     FOREIGN KEY (id_tau) REFERENCES tau(id),
     FOREIGN KEY (id_tuyen_duong) REFERENCES tuyen_duong(id),
@@ -147,7 +147,7 @@ CREATE TABLE ve_tau(
     
     ngay_dat DATETIME DEFAULT CURRENT_TIMESTAMP,
     gia_ve DECIMAL(10, 2) NOT NULL,
-    trang_thai VARCHAR(20) DEFAULT 'Đã thanh toán',
+    trang_thai VARCHAR(20) NOT NULL,
     
     FOREIGN KEY (id_khach_hang) REFERENCES khach_hang(id),
     FOREIGN KEY (id_lich_trinh) REFERENCES lich_trinh(id),
