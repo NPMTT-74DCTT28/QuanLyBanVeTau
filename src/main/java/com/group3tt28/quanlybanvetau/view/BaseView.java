@@ -32,4 +32,6 @@ public abstract class BaseView extends JFrame{
         int option = JOptionPane.showConfirmDialog(this, thongBao, "Xác nhận", JOptionPane.YES_NO_OPTION);
         return option == JOptionPane.YES_OPTION;
     }
+    
+    protected abstract void initComponents();
 }

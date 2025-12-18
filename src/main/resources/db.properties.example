@@ -1,0 +1,3 @@
+db.url=jdbc:mysql://localhost:3306/quan_ly_ban_ve_tau
+db.user=root
+db.password=MAT_KHAU_CUA_BAN (Để trống nếu không có mật khẩu (ví dụ khi dùng XAMPP mặc định sẽ là rỗng))
