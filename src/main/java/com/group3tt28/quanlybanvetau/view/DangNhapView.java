@@ -28,10 +28,8 @@ public final class DangNhapView extends BaseView{
 
     public DangNhapView() {
         super("Đăng nhập");
-        this.setVisible(true);
         this.setSize(400, 200);
         this.setResizable(false);
-        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null);
         
         initComponents();
@@ -86,5 +84,10 @@ public final class DangNhapView extends BaseView{
     
     public void addExitListener(ActionListener l) {
         btnThoat.addActionListener(l);
+    }
+    
+    public static void main(String[] args) {
+        DangNhapView view = new DangNhapView();
+        view.setVisible(true);
     }
 }

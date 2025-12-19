@@ -15,8 +15,6 @@ public abstract class BaseView extends JFrame{
     
     public BaseView(String tieuDe) {
         this.setTitle(tieuDe);
-        this.setSize(800, 600);
-        this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
     
