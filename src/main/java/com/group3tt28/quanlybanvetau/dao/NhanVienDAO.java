@@ -33,6 +33,10 @@ public class NhanVienDAO {
     private static final String COT_VAI_TRO = "vai_tro";
 
     public boolean checkTrung(String maNhanVien) {
+        if (maNhanVien == null || maNhanVien.trim().isEmpty()) {
+            return false;
+        }
+        
         String sql = "SELECT " + COT_MA_NV + " FROM " + TEN_BANG
                 + " WHERE " + COT_MA_NV + " = ?";
         try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -49,6 +53,10 @@ public class NhanVienDAO {
     }
 
     public boolean insert(NhanVien nhanVien) {
+        if (nhanVien == null) {
+            return false;
+        }
+        
         String sql = "INSERT INTO " + TEN_BANG + " ("
                 + COT_MA_NV + ", " + COT_MAT_KHAU + ", " + COT_HO_TEN + ", "
                 + COT_NGAY_SINH + ", " + COT_GIOI_TINH + ", " + COT_SDT + ", "
@@ -79,9 +87,39 @@ public class NhanVienDAO {
     }
 
     public boolean update(NhanVien nhanVien) {
-        //Viết code UPDATE (đặt trong try-cacth)
-        //return ps.executeUpdate() > 0 (PreparedStatement)
-        return true;
+        if (nhanVien == null) {
+            return false;
+        }
+        
+        String sql = "UPDATE " + TEN_BANG + " SET "
+                + COT_HO_TEN + " = ?, "
+                + COT_NGAY_SINH + " =  ?, "
+                + COT_GIOI_TINH + " =  ?, "
+                + COT_SDT + " =  ?, "
+                + COT_EMAIL + " =  ?, "
+                + COT_DIA_CHI + " =  ?, "
+                + COT_VAI_TRO + " =  ?"
+                + " WHERE " + COT_MA_NV + " = ?";
+
+        Date sqlNgaySinh = null;
+        if (nhanVien.getNgaySinh() != null) {
+            sqlNgaySinh = Date.valueOf(nhanVien.getNgaySinh());
+        }
+
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, nhanVien.getHoTen());
+            ps.setDate(2, sqlNgaySinh);
+            ps.setString(3, nhanVien.getGioiTinh());
+            ps.setString(4, nhanVien.getSdt());
+            ps.setString(5, nhanVien.getEmail());
+            ps.setString(6, nhanVien.getDiaChi());
+            ps.setString(7, nhanVien.getVaiTro());
+            ps.setString(8, nhanVien.getMaNhanVien());
+
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            throw new RuntimeException("Xay ra loi he thong khi cap nhat nhan vien: " + e.getMessage(), e);
+        }
     }
 
     public boolean delete(int id) {
