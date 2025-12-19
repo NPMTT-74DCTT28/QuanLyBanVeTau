@@ -32,49 +32,62 @@ public class NhanVienDAO {
     private static final String COT_DIA_CHI = "dia_chi";
     private static final String COT_VAI_TRO = "vai_tro";
 
-    public int insert(NhanVien nhanVien) {
-        String maNhanVien = nhanVien.getMaNhanVien();
-        String matKhau = nhanVien.getMatKhau();
-        String hoTen = nhanVien.getHoTen();
-        Date ngaySinh = Date.valueOf(nhanVien.getNgaySinh());
-        String gioiTinh = nhanVien.getGioiTinh();
-        String sdt = nhanVien.getSdt();
-        String email = nhanVien.getEmail();
-        String diaChi = nhanVien.getDiaChi();
-        String vaiTro = nhanVien.getVaiTro();
+    public boolean checkTrung(String maNhanVien) {
+        String sql = "SELECT " + COT_MA_NV + " FROM " + TEN_BANG
+                + " WHERE " + COT_MA_NV + " = ?";
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, maNhanVien);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return true;
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return false;
+    }
 
+    public boolean insert(NhanVien nhanVien) {
         String sql = "INSERT INTO " + TEN_BANG + " ("
                 + COT_MA_NV + ", " + COT_MAT_KHAU + ", " + COT_HO_TEN + ", "
                 + COT_NGAY_SINH + ", " + COT_GIOI_TINH + ", " + COT_SDT + ", "
                 + COT_EMAIL + ", " + COT_DIA_CHI + ", " + COT_VAI_TRO
                 + ") VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, maNhanVien);
-            ps.setString(2, matKhau);
-            ps.setString(3, hoTen);
-            ps.setDate(4, ngaySinh);
-            ps.setString(5, gioiTinh);
-            ps.setString(6, sdt);
-            ps.setString(7, email);
-            ps.setString(8, diaChi);
-            ps.setString(9, vaiTro);
 
-            return ps.executeUpdate();
+        Date sqlNgaySinh = null;
+        if (nhanVien.getNgaySinh() != null) {
+            sqlNgaySinh = Date.valueOf(nhanVien.getNgaySinh());
+        }
+
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, nhanVien.getMaNhanVien());
+            ps.setString(2, nhanVien.getMatKhau());
+            ps.setString(3, nhanVien.getHoTen());
+            ps.setDate(4, sqlNgaySinh);
+            ps.setString(5, nhanVien.getGioiTinh());
+            ps.setString(6, nhanVien.getSdt());
+            ps.setString(7, nhanVien.getEmail());
+            ps.setString(8, nhanVien.getDiaChi());
+            ps.setString(9, nhanVien.getVaiTro());
+
+            return ps.executeUpdate() > 0;
         } catch (SQLException e) {
-            throw new RuntimeException("Co loi he thong khi them nhan vien: ", e);
+            throw new RuntimeException("Xay ra loi he thong khi them nhan vien: " + e.getMessage(), e);
         }
     }
 
-    public int update(NhanVien nhanVien) {
+    public boolean update(NhanVien nhanVien) {
         //Viết code UPDATE (đặt trong try-cacth)
-        //return ps.executeUpdate() (PreparedStatement)
-        return 0;
+        //return ps.executeUpdate() > 0 (PreparedStatement)
+        return true;
     }
 
-    public int delete(int id) {
+    public boolean delete(int id) {
         //Viết code DELETE (đặt trong try-cacth)
         //return ps.executeUpdate() (PreparedStatement)
-        return 0;
+        return true;
     }
 
     public List<NhanVien> getAll() {

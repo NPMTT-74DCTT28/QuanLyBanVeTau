@@ -23,22 +23,22 @@ public class TuyenDuongDAO {
     private static final String COT_KHOANG_CACH = "khoang_cach_km";
     private static final String COT_GIA_CB = "gia_co_ban";
     
-    public int insert(TuyenDuong tuyenDuong) {
+    public boolean insert(TuyenDuong tuyenDuong) {
         //Viết code INSERT (đặt trong try-cacth)
-        //return ps.executeUpdate() (PreparedStatement)
-        return 0;
+        //return ps.executeUpdate() > 0 (PreparedStatement)
+        return true;
     }
     
-    public int update(TuyenDuong tuyenDuong) {
+    public boolean update(TuyenDuong tuyenDuong) {
         //Viết code UPDATE (đặt trong try-cacth)
-        //return ps.executeUpdate() (PreparedStatement)
-        return 0;
+        //return ps.executeUpdate() > 0 (PreparedStatement)
+        return true;
     }
     
-    public int delete(int id) {
+    public boolean delete(int id) {
         //Viết code DELETE (đặt trong try-cacth)
-        //return ps.executeUpdate() (PreparedStatement)
-        return 0;
+        //return ps.executeUpdate() > 0 (PreparedStatement)
+        return true;
     }
     
     public List<TuyenDuong> getAll() {

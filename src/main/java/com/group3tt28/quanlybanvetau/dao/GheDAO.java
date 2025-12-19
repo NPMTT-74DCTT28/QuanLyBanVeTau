@@ -19,22 +19,22 @@ public class GheDAO {
     private static final String COT_SO_GHE = "so_ghe";
     private static final String COT_ID_TOA_TAU = "id_toa_tau";
     
-    public int insert(Ghe ghe) {
+    public boolean insert(Ghe ghe) {
         //Viết code INSERT (đặt trong try-cacth)
-        //return ps.executeUpdate() (PreparedStatement)
-        return 0;
+        //return ps.executeUpdate() > 0 (PreparedStatement)
+        return true;
     }
     
-    public int update(Ghe ghe) {
+    public boolean update(Ghe ghe) {
         //Viết code UPDATE (đặt trong try-cacth)
-        //return ps.executeUpdate() (PreparedStatement)
-        return 0;
+        //return ps.executeUpdate() > 0 (PreparedStatement)
+        return true;
     }
     
-    public int delete(int id) {
+    public boolean delete(int id) {
         //Viết code DELETE (đặt trong try-cacth)
-        //return ps.executeUpdate() (PreparedStatement)
-        return 0;
+        //return ps.executeUpdate() > 0 (PreparedStatement)
+        return true;
     }
     
     public List<Ghe> getAll() {

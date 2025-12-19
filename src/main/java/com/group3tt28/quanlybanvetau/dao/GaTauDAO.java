@@ -21,22 +21,22 @@ public class GaTauDAO {
     private static final String COT_DIA_CHI = "dia_chi";
     private static final String COT_THANH_PHO = "thanh_pho";
     
-    public int insert(GaTau gaTau) {
+    public boolean insert(GaTau gaTau) {
         //Viết code INSERT (đặt trong try-cacth)
-        //return ps.executeUpdate() (PreparedStatement)
-        return 0;
+        //return ps.executeUpdate() > 0 (PreparedStatement)
+        return true;
     }
     
-    public int update(GaTau gaTau) {
+    public boolean update(GaTau gaTau) {
         //Viết code UPDATE (đặt trong try-cacth)
-        //return ps.executeUpdate() (PreparedStatement)
-        return 0;
+        //return ps.executeUpdate() > 0 (PreparedStatement)
+        return true;
     }
     
-    public int delete(int id) {
+    public boolean delete(int id) {
         //Viết code DELETE (đặt trong try-cacth)
-        //return ps.executeUpdate() (PreparedStatement)
-        return 0;
+        //return ps.executeUpdate() > 0 (PreparedStatement)
+        return true;
     }
     
     public List<GaTau> getAll() {
