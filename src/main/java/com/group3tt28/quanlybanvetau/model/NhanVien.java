@@ -25,6 +25,14 @@ public class NhanVien extends Person {
     }
 
     public NhanVien(String maNhanVien, String matKhau, String hoTen, LocalDate ngaySinh,
+            String gioiTinh, String sdt, String diaChi, String vaiTro) {
+        super(hoTen, ngaySinh, gioiTinh, sdt, diaChi);
+        this.maNhanVien = maNhanVien;
+        this.matKhau = matKhau;
+        this.vaiTro = vaiTro;
+    }
+
+    public NhanVien(String maNhanVien, String matKhau, String hoTen, LocalDate ngaySinh,
             String gioiTinh, String sdt, String email, String diaChi, String vaiTro) {
         super(hoTen, ngaySinh, gioiTinh, sdt, diaChi);
         this.maNhanVien = maNhanVien;
