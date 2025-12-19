@@ -20,22 +20,22 @@ public class ToaTauDAO {
     private static final String COT_ID_TAU = "id_tau";
     private static final String COT_ID_LOAI_TOA = "id_loai_toa";
     
-    public int insert(ToaTau toaTau) {
+    public boolean insert(ToaTau toaTau) {
         //Viết code INSERT (đặt trong try-cacth)
-        //return ps.executeUpdate() (PreparedStatement)
-        return 0;
+        //return ps.executeUpdate() > 0 (PreparedStatement)
+        return true;
     }
     
-    public int update(ToaTau toaTau) {
+    public boolean update(ToaTau toaTau) {
         //Viết code UPDATE (đặt trong try-cacth)
-        //return ps.executeUpdate() (PreparedStatement)
-        return 0;
+        //return ps.executeUpdate() > 0 (PreparedStatement)
+        return true;
     }
     
-    public int delete(int id) {
+    public boolean delete(int id) {
         //Viết code DELETE (đặt trong try-cacth)
-        //return ps.executeUpdate() (PreparedStatement)
-        return 0;
+        //return ps.executeUpdate() > 0 (PreparedStatement)
+        return true;
     }
     
     public List<ToaTau> getAll() {

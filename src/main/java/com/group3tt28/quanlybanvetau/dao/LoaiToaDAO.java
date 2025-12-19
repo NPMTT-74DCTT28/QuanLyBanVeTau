@@ -19,22 +19,22 @@ public class LoaiToaDAO {
     private static final String COT_TEN_LOAI = "ten_loai";
     private static final String COT_HE_SO_GIA = "he_so_gia";
     
-    public int insert(LoaiToa loaiToa) {
+    public boolean insert(LoaiToa loaiToa) {
         //Viết code INSERT (đặt trong try-cacth)
-        //return ps.executeUpdate() (PreparedStatement)
-        return 0;
+        //return ps.executeUpdate() > 0 (PreparedStatement)
+        return true;
     }
     
-    public int update(LoaiToa loaiToa) {
+    public boolean update(LoaiToa loaiToa) {
         //Viết code UPDATE (đặt trong try-cacth)
-        //return ps.executeUpdate() (PreparedStatement)
-        return 0;
+        //return ps.executeUpdate() > 0 (PreparedStatement)
+        return true;
     }
     
-    public int delete(int id) {
+    public boolean delete(int id) {
         //Viết code DELETE (đặt trong try-cacth)
-        //return ps.executeUpdate() (PreparedStatement)
-        return 0;
+        //return ps.executeUpdate() > 0 (PreparedStatement)
+        return true;
     }
     
     public List<LoaiToa> getAll() {

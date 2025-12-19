@@ -23,22 +23,22 @@ public class KhachHangDAO {
     private static final String COT_SDT = "sdt";
     private static final String COT_DIA_CHI = "dia_chi";
     
-    public int insert(KhachHang khachHang) {
+    public boolean insert(KhachHang khachHang) {
         //Viết code INSERT (đặt trong try-cacth)
-        //return ps.executeUpdate() (PreparedStatement)
-        return 0;
+        //return ps.executeUpdate() > 0 (PreparedStatement)
+        return true;
     }
     
-    public int update(KhachHang khachHang) {
+    public boolean update(KhachHang khachHang) {
         //Viết code UPDATE (đặt trong try-cacth)
-        //return ps.executeUpdate() (PreparedStatement)
-        return 0;
+        //return ps.executeUpdate() > 0 (PreparedStatement)
+        return true;
     }
     
-    public int delete(int id) {
+    public boolean delete(int id) {
         //Viết code DELETE (đặt trong try-cacth)
-        //return ps.executeUpdate() (PreparedStatement)
-        return 0;
+        //return ps.executeUpdate() > 0 (PreparedStatement)
+        return true;
     }
     
     public List<KhachHang> getAll() {

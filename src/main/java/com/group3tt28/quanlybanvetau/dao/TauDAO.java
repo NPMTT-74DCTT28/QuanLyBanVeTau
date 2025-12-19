@@ -19,22 +19,22 @@ public class TauDAO {
     private static final String COT_MA_TAU = "ma_tau";
     private static final String COT_TEN_TAU = "ten_tau";
     
-    public int insert(Tau tau) {
+    public boolean insert(Tau tau) {
         //Viết code INSERT (đặt trong try-cacth)
-        //return ps.executeUpdate() (PreparedStatement)
-        return 0;
+        //return ps.executeUpdate() > 0 (PreparedStatement)
+        return true;
     }
     
-    public int update(Tau tau) {
+    public boolean update(Tau tau) {
         //Viết code UPDATE (đặt trong try-cacth)
-        //return ps.executeUpdate() (PreparedStatement)
-        return 0;
+        //return ps.executeUpdate() > 0 (PreparedStatement)
+        return true;
     }
     
-    public int delete(int id) {
+    public boolean delete(int id) {
         //Viết code DELETE (đặt trong try-cacth)
-        //return ps.executeUpdate() (PreparedStatement)
-        return 0;
+        //return ps.executeUpdate() > 0 (PreparedStatement)
+        return true;
     }
     
     public List<Tau> getAll() {
