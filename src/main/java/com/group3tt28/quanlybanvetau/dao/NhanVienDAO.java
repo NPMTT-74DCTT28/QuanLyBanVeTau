@@ -5,6 +5,12 @@
 package com.group3tt28.quanlybanvetau.dao;
 
 import com.group3tt28.quanlybanvetau.model.NhanVien;
+import com.group3tt28.quanlybanvetau.util.DBConnection;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,25 +31,65 @@ public class NhanVienDAO {
     private static final String COT_EMAIL = "email";
     private static final String COT_DIA_CHI = "dia_chi";
     private static final String COT_VAI_TRO = "vai_tro";
-    
-    public int insert(NhanVien nhanVien) {
-        //Viết code INSERT (đặt trong try-cacth)
-        //return ps.executeUpdate() (PreparedStatement)
-        return 0;
+
+    public boolean checkTrung(String maNhanVien) {
+        String sql = "SELECT " + COT_MA_NV + " FROM " + TEN_BANG
+                + " WHERE " + COT_MA_NV + " = ?";
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, maNhanVien);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return true;
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return false;
     }
-    
-    public int update(NhanVien nhanVien) {
+
+    public boolean insert(NhanVien nhanVien) {
+        String sql = "INSERT INTO " + TEN_BANG + " ("
+                + COT_MA_NV + ", " + COT_MAT_KHAU + ", " + COT_HO_TEN + ", "
+                + COT_NGAY_SINH + ", " + COT_GIOI_TINH + ", " + COT_SDT + ", "
+                + COT_EMAIL + ", " + COT_DIA_CHI + ", " + COT_VAI_TRO
+                + ") VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        Date sqlNgaySinh = null;
+        if (nhanVien.getNgaySinh() != null) {
+            sqlNgaySinh = Date.valueOf(nhanVien.getNgaySinh());
+        }
+
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, nhanVien.getMaNhanVien());
+            ps.setString(2, nhanVien.getMatKhau());
+            ps.setString(3, nhanVien.getHoTen());
+            ps.setDate(4, sqlNgaySinh);
+            ps.setString(5, nhanVien.getGioiTinh());
+            ps.setString(6, nhanVien.getSdt());
+            ps.setString(7, nhanVien.getEmail());
+            ps.setString(8, nhanVien.getDiaChi());
+            ps.setString(9, nhanVien.getVaiTro());
+
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            throw new RuntimeException("Xay ra loi he thong khi them nhan vien: " + e.getMessage(), e);
+        }
+    }
+
+    public boolean update(NhanVien nhanVien) {
         //Viết code UPDATE (đặt trong try-cacth)
-        //return ps.executeUpdate() (PreparedStatement)
-        return 0;
+        //return ps.executeUpdate() > 0 (PreparedStatement)
+        return true;
     }
-    
-    public int delete(int id) {
+
+    public boolean delete(int id) {
         //Viết code DELETE (đặt trong try-cacth)
         //return ps.executeUpdate() (PreparedStatement)
-        return 0;
+        return true;
     }
-    
+
     public List<NhanVien> getAll() {
         List<NhanVien> list = new ArrayList<>();
         //Viết code SELECT *

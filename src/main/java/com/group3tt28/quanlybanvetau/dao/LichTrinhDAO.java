@@ -23,22 +23,22 @@ public class LichTrinhDAO {
     private static final String COT_NGAY_DEN = "ngay_den";
     private static final String COT_TRANG_THAI = "trang_thai";
     
-    public int insert(LichTrinh lichTrinh) {
+    public boolean insert(LichTrinh lichTrinh) {
         //Viết code INSERT (đặt trong try-cacth)
-        //return ps.executeUpdate() (PreparedStatement)
-        return 0;
+        //return ps.executeUpdate() > 0 (PreparedStatement)
+        return true;
     }
     
-    public int update(LichTrinh lichTrinh) {
+    public boolean update(LichTrinh lichTrinh) {
         //Viết code UPDATE (đặt trong try-cacth)
-        //return ps.executeUpdate() (PreparedStatement)
-        return 0;
+        //return ps.executeUpdate() > 0 (PreparedStatement)
+        return true;
     }
     
-    public int delete(int id) {
+    public boolean delete(int id) {
         //Viết code DELETE (đặt trong try-cacth)
-        //return ps.executeUpdate() (PreparedStatement)
-        return 0;
+        //return ps.executeUpdate() > 0 (PreparedStatement)
+        return true;
     }
     
     public List<LichTrinh> getAll() {

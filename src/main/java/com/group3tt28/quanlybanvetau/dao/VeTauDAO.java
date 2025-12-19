@@ -25,22 +25,22 @@ public class VeTauDAO {
     private static final String COT_GIA_VE = "gia_ve";
     private static final String COT_TRANG_THAI = "trang_thai";
     
-    public int insert(VeTau veTau) {
+    public boolean insert(VeTau veTau) {
         //Viết code INSERT (đặt trong try-cacth)
-        //return ps.executeUpdate() (PreparedStatement)
-        return 0;
+        //return ps.executeUpdate() > 0 (PreparedStatement)
+        return true;
     }
     
-    public int update(VeTau veTau) {
+    public boolean update(VeTau veTau) {
         //Viết code UPDATE (đặt trong try-cacth)
-        //return ps.executeUpdate() (PreparedStatement)
-        return 0;
+        //return ps.executeUpdate() > 0 (PreparedStatement)
+        return true;
     }
     
-    public int delete(int id) {
+    public boolean delete(int id) {
         //Viết code DELETE (đặt trong try-cacth)
-        //return ps.executeUpdate() (PreparedStatement)
-        return 0;
+        //return ps.executeUpdate() > 0 (PreparedStatement)
+        return true;
     }
     
     public List<VeTau> getAll() {
