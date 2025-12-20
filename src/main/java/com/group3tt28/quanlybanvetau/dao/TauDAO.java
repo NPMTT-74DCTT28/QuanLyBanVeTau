@@ -95,7 +95,7 @@ public class TauDAO {
                 list.add(tau);
             }
         } catch (Exception e) {
-            throw new RuntimeException("Xay ra loi khi load ghe: " + e.getMessage(), e);
+            throw new RuntimeException("Xay ra loi khi load tau: " + e.getMessage(), e);
         }
         return list;
     }
