@@ -73,21 +73,66 @@ public class TuyenDuongDAO {
     }
     
     public boolean update(TuyenDuong tuyenDuong) {
-        //Viết code UPDATE (đặt trong try-cacth)
-        //return ps.executeUpdate() > 0 (PreparedStatement)
-        return true;
+        if (tuyenDuong == null) {
+            return false;
+        }
+        String sql = "UPDATE "+TEN_BANG+" SET "
+                +COT_TEN_TUYEN+" = ?,"
+                +COT_ID_GA_DI+" = ?,"
+                +COT_ID_GA_DEN+" = ?,"
+                +COT_KHOANG_CACH+" = ?,"
+                +COT_GIA_CB+" = ? "
+                +" WHERE "+COT_MA_TUYEN+"=?";
+        try (Connection conn = DBConnection.getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql)){
+            
+            ps.setString(1, tuyenDuong.getTenTuyen());
+            ps.setInt(2, tuyenDuong.getIdGaDi());
+            ps.setInt(3, tuyenDuong.getIdGaDen());
+            ps.setDouble(4, tuyenDuong.getKhoangCachKm());
+            ps.setDouble(5, tuyenDuong.getGiaCoBan());
+            ps.setString(6, tuyenDuong.getMaTuyen());
+            return ps.executeUpdate()>0;
+        } catch (Exception e) {
+            throw new RuntimeException("Xay ra loi khi sua tuyen duong:"+e.getMessage(),e);
+        }
     }
     
     public boolean delete(int id) {
-        //Viết code DELETE (đặt trong try-cacth)
-        //return ps.executeUpdate() > 0 (PreparedStatement)
-        return true;
+        if (id<1) {
+            return false;
+        }
+        String sql = "DELETE FROM "+TEN_BANG+" WHERE "+COT_ID+" = ?";
+        try (Connection conn = DBConnection.getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql)){
+            ps.setInt(1, id);
+            return ps.executeUpdate()>0;
+        } catch (Exception e) {
+            throw new RuntimeException("Xay ra loi khi xoa:"+e.getMessage(),e);
+        }
     }
     
     public List<TuyenDuong> getAll() {
         List<TuyenDuong> list = new ArrayList<>();
-        //Viết code SELECT *
-        //dùng PreparedStatement + ResultSet
+        String sql = "SELECT * FROM "+TEN_BANG;
+        try (Connection conn=DBConnection.getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery()){
+            while (rs.next()) {
+                int id = rs.getInt(COT_ID);
+                String maTuyen = rs.getString(COT_MA_TUYEN);
+                String tenTuyen = rs.getString(COT_TEN_TUYEN);
+                int idGaDI = rs.getInt(COT_ID_GA_DI);
+                int idGaDen = rs.getInt(COT_ID_GA_DEN);
+                double khoangCachKm = rs.getDouble(COT_KHOANG_CACH);
+                double giaCoBan = rs.getDouble(COT_GIA_CB);
+                
+                TuyenDuong td = new TuyenDuong(id, maTuyen, tenTuyen, idGaDI, idGaDen, khoangCachKm, giaCoBan);
+                list.add(td);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Xay ra loi khi hien thi tuyen duong:"+e.getMessage(),e);
+        }
         return list;
     }
 }

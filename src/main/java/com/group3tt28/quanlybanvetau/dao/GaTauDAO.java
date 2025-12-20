@@ -72,10 +72,11 @@ public class GaTauDAO {
                 +" WHERE "+ COT_MA_GA + " =?";
         try(Connection conn = DBConnection.getConnection();
             PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, gaTau.getMaGa());
-            ps.setString(2, gaTau.getTenGa());
-            ps.setString(3, gaTau.getDiaChi());
-            ps.setString(4, gaTau.getThanhPho());
+            
+            ps.setString(1, gaTau.getTenGa());
+            ps.setString(2, gaTau.getDiaChi());
+            ps.setString(3, gaTau.getThanhPho());
+            ps.setString(4, gaTau.getMaGa());
             return ps.executeUpdate() >0;
         } catch (SQLException e) {
             throw new RuntimeException("Xay ra loi khi sua ga tau:"+e.getMessage(),e);
@@ -86,10 +87,10 @@ public class GaTauDAO {
         if(id<1){
             return false;
         }
-        String sql = "DELETE "+ TEN_BANG+ " WHERE " +COT_ID+ " = ?";
+        String sql = "DELETE FROM "+ TEN_BANG+ " WHERE " +COT_ID+ " = ?";
         try(Connection conn = DBConnection.getConnection();
                 PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(0, id);
+            ps.setInt(1, id);
             return ps.executeUpdate()>0;
         } catch (SQLException e) {
             throw new RuntimeException("Xay ra loi khi xoa:"+e.getMessage(),e);
