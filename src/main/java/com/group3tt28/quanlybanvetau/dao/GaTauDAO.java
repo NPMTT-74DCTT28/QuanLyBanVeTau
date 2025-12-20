@@ -25,7 +25,24 @@ public class GaTauDAO {
     private static final String COT_TEN_GA = "ten_ga";
     private static final String COT_DIA_CHI = "dia_chi";
     private static final String COT_THANH_PHO = "thanh_pho";
-    
+    public boolean checkTrung(String maGa){
+        if (maGa == null||maGa.trim().isEmpty()) {
+            return false;
+        }
+        String sql  = "SELECT "+COT_MA_GA+ " FROM "+TEN_BANG+" WHERE "+COT_MA_GA+ " = ?";
+        try (Connection conn = DBConnection.getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, maGa);
+            try (ResultSet rs = ps.executeQuery()){
+                if (rs.next()) {
+                    return true;
+                }
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return false;
+    }
     public boolean insert(GaTau gaTau) {
         if (gaTau == null) {
             return false;
