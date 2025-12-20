@@ -65,9 +65,20 @@ public class GheDAO {
     }
     
     public boolean delete(int id) {
-        //Viết code DELETE (đặt trong try-cacth)
-        //return ps.executeUpdate() > 0 (PreparedStatement)
-        return true;
+        if (id < 1){
+            return false;
+        }
+        
+        String sql = "DELETE FROM " + TEN_BANG 
+                + " WHERE " + COT_ID + " = ?";
+        
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            throw new RuntimeException("Xay ra loi he thong khi xoa ghe: " + e.getMessage(), e);
+        }
     }
     
     public List<Ghe> getAll() {
