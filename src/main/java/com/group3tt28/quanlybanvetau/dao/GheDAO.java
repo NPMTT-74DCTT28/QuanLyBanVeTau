@@ -61,7 +61,7 @@ public class GheDAO {
             
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
-            throw new RuntimeException("Xay ra loi he thong khi cap nhat nhan vien:" + e.getMessage(), e);
+            throw new RuntimeException("Xay ra loi he thong khi cap nhat ghe:" + e.getMessage(), e);
         }
     }
     
