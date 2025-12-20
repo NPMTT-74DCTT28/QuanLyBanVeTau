@@ -8,6 +8,7 @@ import com.group3tt28.quanlybanvetau.model.Ghe;
 import com.group3tt28.quanlybanvetau.util.DBConnection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -83,8 +84,20 @@ public class GheDAO {
     
     public List<Ghe> getAll() {
         List<Ghe> list = new ArrayList<>();
-        //Viết code SELECT *
-        //dùng PreparedStatement + ResultSet
+        String sql = "SELECT * FROM " + TEN_BANG;
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()){
+            while (rs.next()) {
+                
+                int id = rs.getInt(COT_ID);
+                String soGhe = rs.getString(COT_SO_GHE);
+                int idToaTau = rs.getInt(COT_ID_TOA_TAU);
+                
+                Ghe ghe = new Ghe(id, soGhe, idToaTau);
+                list.add(ghe);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Xay ra loi khi load ghe: " + e.getMessage(), e);
+        }
         return list;
     }
 }
