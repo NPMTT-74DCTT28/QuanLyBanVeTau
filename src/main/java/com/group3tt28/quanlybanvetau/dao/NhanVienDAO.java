@@ -36,7 +36,7 @@ public class NhanVienDAO {
         if (maNhanVien == null || maNhanVien.trim().isEmpty()) {
             return false;
         }
-        
+
         String sql = "SELECT " + COT_MA_NV + " FROM " + TEN_BANG
                 + " WHERE " + COT_MA_NV + " = ?";
         try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -56,7 +56,7 @@ public class NhanVienDAO {
         if (nhanVien == null) {
             return false;
         }
-        
+
         String sql = "INSERT INTO " + TEN_BANG + " ("
                 + COT_MA_NV + ", " + COT_MAT_KHAU + ", " + COT_HO_TEN + ", "
                 + COT_NGAY_SINH + ", " + COT_GIOI_TINH + ", " + COT_SDT + ", "
@@ -90,7 +90,7 @@ public class NhanVienDAO {
         if (nhanVien == null) {
             return false;
         }
-        
+
         String sql = "UPDATE " + TEN_BANG + " SET "
                 + COT_HO_TEN + " = ?, "
                 + COT_NGAY_SINH + " =  ?, "
@@ -123,9 +123,18 @@ public class NhanVienDAO {
     }
 
     public boolean delete(int id) {
-        //Viết code DELETE (đặt trong try-cacth)
-        //return ps.executeUpdate() (PreparedStatement)
-        return true;
+        if (id < 1) {
+            return false;
+        }
+
+        String sql = "DELETE FROM " + TEN_BANG + " WHERE " + COT_ID + " = ?";
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            throw new RuntimeException("Xay ra loi he thong khi xoa nhan vien: " + e.getMessage(), e);
+        }
     }
 
     public List<NhanVien> getAll() {
