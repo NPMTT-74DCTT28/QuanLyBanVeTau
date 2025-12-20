@@ -30,7 +30,8 @@ public class GheDAO {
         }
         
         String sql = "INSERT INTO " + TEN_BANG + " ("
-                + COT_SO_GHE + "," + COT_ID_TOA_TAU
+                + COT_SO_GHE + "," 
+                + COT_ID_TOA_TAU
                 + ") VALUES (?, ?)";
         
         try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {

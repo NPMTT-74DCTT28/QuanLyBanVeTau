@@ -34,7 +34,7 @@ public class ToaTauDAO {
         String sql = "INSERT INTO " + TEN_BANG + " ("
                 + COT_MA_TOA + "," 
                 + COT_ID_TAU + ","
-                + COT_ID_LOAI_TOA + ","
+                + COT_ID_LOAI_TOA 
                 + ") VALUES (?, ?, ?)";
         try(Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, toaTau.getMaToa());
@@ -55,7 +55,7 @@ public class ToaTauDAO {
         String sql = "UPDATE " + TEN_BANG + " SET "
                 + COT_MA_TOA + "," 
                 + COT_ID_TAU + ","
-                + COT_ID_LOAI_TOA + ","
+                + COT_ID_LOAI_TOA 
                 + ") VALUES (?, ?, ?)";
         
         try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)){

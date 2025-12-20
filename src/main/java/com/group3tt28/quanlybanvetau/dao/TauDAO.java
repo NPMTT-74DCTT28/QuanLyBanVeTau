@@ -31,7 +31,7 @@ public class TauDAO {
         
         String sql = "INSERT INTO " + TEN_BANG + " ("
                 + COT_MA_TAU + "," 
-                + COT_TEN_TAU + ","
+                + COT_TEN_TAU 
                 + ") VALUES (?, ?)";
         try(Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, tau.getMaTau());
@@ -50,8 +50,8 @@ public class TauDAO {
         
         String sql = "UPDATE " + TEN_BANG + " SET "
                 + COT_MA_TAU + " = ?, "
-                + COT_TEN_TAU + " = ?, "
-                + " WHERE " + COT_ID + " = ?, ";
+                + COT_TEN_TAU + " = ?"
+                + " WHERE " + COT_ID + " = ?";
         
         try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)){
             ps.setString(1, tau.getMaTau());

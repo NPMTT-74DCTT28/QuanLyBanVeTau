@@ -12,7 +12,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import javax.crypto.spec.PSource;
 
 /**
  *
@@ -32,7 +31,7 @@ public class LoaiToaDAO {
         
         String sql = "INSERT INTO " + TEN_BANG + " ("
                 + COT_TEN_LOAI + ", " 
-                + COT_HE_SO_GIA + ", "
+                + COT_HE_SO_GIA  
                 + ") VALUES(?, ?)";
         
         try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -52,8 +51,8 @@ public class LoaiToaDAO {
         
         String sql = "UPDATE " + TEN_BANG + " SET "
                 + COT_TEN_LOAI + " = ?, "
-                + COT_HE_SO_GIA + " = ?, "
-                + " WHERE " + COT_ID + " = ?, ";
+                + COT_HE_SO_GIA + " = ? "
+                + " WHERE " + COT_ID + " = ?";
         
         try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, loaiToa.getTenLoai());
@@ -72,7 +71,7 @@ public class LoaiToaDAO {
         }
         
         String sql = "DELETE FROM " + TEN_BANG
-                + " WHERE " + COT_ID + " = ?, ";
+                + " WHERE " + COT_ID + " = ?";
         
         try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, id);
