@@ -17,19 +17,19 @@ import java.util.List;
  * @author qphwn
  */
 public class GheDAO {
-
+    
     private static final String TEN_BANG = "ghe";
     private static final String COT_ID = "id";
     private static final String COT_SO_GHE = "so_ghe";
     private static final String COT_ID_TOA_TAU = "id_toa_tau";
     
     public boolean insert(Ghe ghe) {
-        if (ghe == null ){
+        if (ghe == null) {
             return false;
         }
         
         String sql = "INSERT INTO " + TEN_BANG + " ("
-                + COT_SO_GHE + "," + COT_ID_TOA_TAU 
+                + COT_SO_GHE + "," + COT_ID_TOA_TAU
                 + ") VALUES (?, ?)";
         
         try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -40,13 +40,28 @@ public class GheDAO {
         } catch (SQLException e) {
             throw new RuntimeException("Xay ra loi he thong khi them ghe: " + e.getMessage(), e);
         }
-       
+        
     }
     
     public boolean update(Ghe ghe) {
-        //Viết code UPDATE (đặt trong try-cacth)
-        //return ps.executeUpdate() > 0 (PreparedStatement)
-        return true;
+        if (ghe == null) {
+            return false;
+        }
+        
+        String sql = "UPDATE " + TEN_BANG + " SET "
+                + COT_SO_GHE + " = ?, "
+                + COT_ID_TOA_TAU + " = ?, "
+                + " WHERE " + COT_ID + " = ?";
+        
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, ghe.getSoGhe());
+            ps.setInt(2, ghe.getIdToaTau());
+            ps.setInt(3, ghe.getId());
+            
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            throw new RuntimeException("Xay ra loi he thong khi cap nhat nhan vien:" + e.getMessage(), e);
+        }
     }
     
     public boolean delete(int id) {
