@@ -49,7 +49,7 @@ public class GaTauDAO {
         }
         
         String sql = "INSERT INTO " + TEN_BANG + "("+COT_MA_GA+", "+COT_TEN_GA+","+COT_DIA_CHI+","+COT_THANH_PHO+")"
-                + "VALUES(?,?,?,?)";
+                + " VALUES(?,?,?,?)";
         try (Connection conn = DBConnection.getConnection();
             PreparedStatement ps = conn.prepareStatement(sql)){
             ps.setString(1, gaTau.getMaGa());

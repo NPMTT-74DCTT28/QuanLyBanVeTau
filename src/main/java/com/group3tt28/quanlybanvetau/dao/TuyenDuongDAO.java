@@ -30,9 +30,7 @@ public class TuyenDuongDAO {
         if (maTuyen == null|| maTuyen.trim().isEmpty()) {
             return false;
         }
-        if (idGaDi == idGaDen) {
-            return false;
-        }
+        
         String sql = "SELECT "+COT_MA_TUYEN+" FROM " +TEN_BANG+ " WHERE "+COT_MA_TUYEN+" = ?";
         try(Connection conn = DBConnection.getConnection();
                 PreparedStatement ps = conn.prepareStatement(sql)) {
