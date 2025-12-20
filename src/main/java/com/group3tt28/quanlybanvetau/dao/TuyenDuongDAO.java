@@ -26,7 +26,7 @@ public class TuyenDuongDAO {
     private static final String COT_ID_GA_DEN = "id_ga_den";
     private static final String COT_KHOANG_CACH = "khoang_cach_km";
     private static final String COT_GIA_CB = "gia_co_ban";
-    public boolean checkTrung(String maTuyen, int idGaDi, int idGaDen){
+    public boolean checkTrung(String maTuyen){
         if (maTuyen == null|| maTuyen.trim().isEmpty()) {
             return false;
         }
