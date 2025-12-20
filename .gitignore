@@ -30,3 +30,4 @@ target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputF
 target/classes/db.properties
 src/main/resources/db.properties
 target/classes/db.properties.example
+src/main/java/Test.java

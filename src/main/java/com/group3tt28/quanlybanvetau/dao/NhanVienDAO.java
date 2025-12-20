@@ -11,6 +11,8 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +38,7 @@ public class NhanVienDAO {
         if (maNhanVien == null || maNhanVien.trim().isEmpty()) {
             return false;
         }
-        
+
         String sql = "SELECT " + COT_MA_NV + " FROM " + TEN_BANG
                 + " WHERE " + COT_MA_NV + " = ?";
         try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -56,7 +58,7 @@ public class NhanVienDAO {
         if (nhanVien == null) {
             return false;
         }
-        
+
         String sql = "INSERT INTO " + TEN_BANG + " ("
                 + COT_MA_NV + ", " + COT_MAT_KHAU + ", " + COT_HO_TEN + ", "
                 + COT_NGAY_SINH + ", " + COT_GIOI_TINH + ", " + COT_SDT + ", "
@@ -90,7 +92,7 @@ public class NhanVienDAO {
         if (nhanVien == null) {
             return false;
         }
-        
+
         String sql = "UPDATE " + TEN_BANG + " SET "
                 + COT_HO_TEN + " = ?, "
                 + COT_NGAY_SINH + " =  ?, "
@@ -123,15 +125,44 @@ public class NhanVienDAO {
     }
 
     public boolean delete(int id) {
-        //Viết code DELETE (đặt trong try-cacth)
-        //return ps.executeUpdate() (PreparedStatement)
-        return true;
+        if (id < 1) {
+            return false;
+        }
+
+        String sql = "DELETE FROM " + TEN_BANG + " WHERE " + COT_ID + " = ?";
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, id);
+
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            throw new RuntimeException("Xay ra loi he thong khi xoa nhan vien: " + e.getMessage(), e);
+        }
     }
 
     public List<NhanVien> getAll() {
         List<NhanVien> list = new ArrayList<>();
-        //Viết code SELECT *
-        //dùng PreparedStatement + ResultSet
+        String sql = "SELECT * FROM " + TEN_BANG;
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                Date sqlDate = rs.getDate(COT_NGAY_SINH);
+                
+                int id = rs.getInt(COT_ID);
+                String maNhanVien = rs.getString(COT_MA_NV);
+                String matKhau = rs.getString(COT_MAT_KHAU);
+                String hoTen = rs.getString(COT_HO_TEN);
+                LocalDate ngaySinh = (sqlDate != null) ? sqlDate.toLocalDate() : null;
+                String gioiTinh = rs.getString(COT_GIOI_TINH);
+                String sdt = rs.getString(COT_SDT);
+                String email = rs.getString(COT_EMAIL);
+                String diaChi = rs.getString(COT_DIA_CHI);
+                String vaiTro = rs.getString(COT_VAI_TRO);
+
+                NhanVien nv = new NhanVien(id, maNhanVien, matKhau, hoTen, ngaySinh, gioiTinh, sdt, email, diaChi, vaiTro);
+                list.add(nv);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Co loi khi load du lieu nhan vien: " + e.getMessage(), e);
+        }
         return list;
     }
 }
