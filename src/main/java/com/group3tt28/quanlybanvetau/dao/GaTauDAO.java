@@ -5,6 +5,11 @@
 package com.group3tt28.quanlybanvetau.dao;
 
 import com.group3tt28.quanlybanvetau.model.GaTau;
+import com.group3tt28.quanlybanvetau.util.DBConnection;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,27 +27,78 @@ public class GaTauDAO {
     private static final String COT_THANH_PHO = "thanh_pho";
     
     public boolean insert(GaTau gaTau) {
-        //Viết code INSERT (đặt trong try-cacth)
-        //return ps.executeUpdate() > 0 (PreparedStatement)
-        return true;
+        if (gaTau == null) {
+            return false;
+        }
+        
+        String sql = "INSERT INTO " + TEN_BANG + "("+COT_MA_GA+", "+COT_TEN_GA+","+COT_DIA_CHI+","+COT_THANH_PHO+")"
+                + "VALUES(?,?,?,?)";
+        try (Connection conn = DBConnection.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql)){
+            ps.setString(1, gaTau.getMaGa());
+            ps.setString(2, gaTau.getTenGa());
+            ps.setString(3, gaTau.getDiaChi());
+            ps.setString(4, gaTau.getThanhPho());
+            return ps.executeUpdate() >0;
+        } catch (SQLException e) {
+            throw new RuntimeException("xay ra loi khi them ga tau:" + e.getMessage(), e);
+        }
     }
-    
     public boolean update(GaTau gaTau) {
-        //Viết code UPDATE (đặt trong try-cacth)
-        //return ps.executeUpdate() > 0 (PreparedStatement)
-        return true;
+        if (gaTau == null) {
+            return false;
+        }
+        String sql = "UPDATE " +TEN_BANG+ " SET "
+                +COT_TEN_GA + " = ?, "
+                +COT_DIA_CHI + " =?, "
+                +COT_THANH_PHO +" =?, "
+                +" WHERE "+ COT_MA_GA + " =?";
+        try(Connection conn = DBConnection.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, gaTau.getMaGa());
+            ps.setString(2, gaTau.getTenGa());
+            ps.setString(3, gaTau.getDiaChi());
+            ps.setString(4, gaTau.getThanhPho());
+            return ps.executeUpdate() >0;
+        } catch (SQLException e) {
+            throw new RuntimeException("Xay ra loi khi sua ga tau:"+e.getMessage(),e);
+        }
     }
     
     public boolean delete(int id) {
-        //Viết code DELETE (đặt trong try-cacth)
-        //return ps.executeUpdate() > 0 (PreparedStatement)
-        return true;
+        if(id<1){
+            return false;
+        }
+        String sql = "DELETE "+ TEN_BANG+ " WHERE " +COT_ID+ " = ?";
+        try(Connection conn = DBConnection.getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(0, id);
+            return ps.executeUpdate()>0;
+        } catch (SQLException e) {
+            throw new RuntimeException("Xay ra loi khi xoa:"+e.getMessage(),e);
+        }
     }
     
     public List<GaTau> getAll() {
         List<GaTau> list = new ArrayList<>();
-        //Viết code SELECT *
-        //dùng PreparedStatement + ResultSet
+        String sql = "SELECT * FROM "+TEN_BANG;
+        try (Connection conn = DBConnection.getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery()){
+            while (rs.next()) {
+                int id = rs.getInt(COT_ID);
+                String maGa = rs.getString(COT_MA_GA);
+                String tenGa = rs.getString(COT_TEN_GA);
+                String diaChi = rs.getString(COT_DIA_CHI);
+                String thanhPho = rs.getString(COT_THANH_PHO);
+                
+                GaTau gt = new GaTau(id, maGa, tenGa, diaChi, thanhPho);
+                list.add(gt);
+            }
+            
+        } catch (SQLException e) {
+            throw new RuntimeException("Xay ra loi khi hien thi ga tau:"+e.getMessage(),e);
+        }
         return list;
     }
 }
