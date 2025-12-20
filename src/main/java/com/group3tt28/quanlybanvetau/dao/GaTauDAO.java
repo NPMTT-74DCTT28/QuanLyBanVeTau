@@ -68,7 +68,7 @@ public class GaTauDAO {
         String sql = "UPDATE " +TEN_BANG+ " SET "
                 +COT_TEN_GA + " = ?, "
                 +COT_DIA_CHI + " =?, "
-                +COT_THANH_PHO +" =?, "
+                +COT_THANH_PHO +" =? "
                 +" WHERE "+ COT_MA_GA + " =?";
         try(Connection conn = DBConnection.getConnection();
             PreparedStatement ps = conn.prepareStatement(sql)) {
