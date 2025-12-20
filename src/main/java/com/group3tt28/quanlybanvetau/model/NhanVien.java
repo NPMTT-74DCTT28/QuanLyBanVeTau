@@ -23,9 +23,6 @@ public class NhanVien {
     private String diaChi;
     private String vaiTro;
 
-    public static final String ROLE_ADMIN = "Admin";
-    public static final String ROLE_NHAN_VIEN = "Nhân viên";
-
     public NhanVien() {
     }
 

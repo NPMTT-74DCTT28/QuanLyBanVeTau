@@ -21,10 +21,10 @@ import javax.swing.border.EmptyBorder;
  */
 public final class DangNhapView extends BaseView{
     
-    private JTextField txtMaNV;
-    private JPasswordField txtMatKhau;
-    private JButton btnDangNhap;
-    private JButton btnThoat;
+    private JTextField fieldMaNV;
+    private JPasswordField fieldMatKhau;
+    private JButton buttonDangNhap;
+    private JButton buttonThoat;
 
     public DangNhapView() {
         super("Đăng nhập");
@@ -41,21 +41,22 @@ public final class DangNhapView extends BaseView{
         mainPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
         
         JPanel formPanel = new JPanel(new GridLayout(2, 2, 10, 10));
-        formPanel.add(new JLabel("Mã nhân viên"));
-        txtMaNV = new JTextField();
-        formPanel.add(txtMaNV);
         
-        formPanel.add(new JLabel("Mật khẩu"));
-        txtMatKhau = new JPasswordField();
-        formPanel.add(txtMatKhau);
+        formPanel.add(new JLabel("Mã nhân viên: "));
+        fieldMaNV = new JTextField();
+        formPanel.add(fieldMaNV);
+        
+        formPanel.add(new JLabel("Mật khẩu: "));
+        fieldMatKhau = new JPasswordField();
+        formPanel.add(fieldMatKhau);
         
         mainPanel.add(formPanel, BorderLayout.CENTER);
         
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        btnDangNhap = new JButton("Đăng nhập");
-        btnThoat = new JButton("Thoát");
-        buttonPanel.add(btnDangNhap);
-        buttonPanel.add(btnThoat);
+        buttonDangNhap = new JButton("Đăng nhập");
+        buttonThoat = new JButton("Thoát");
+        buttonPanel.add(buttonDangNhap);
+        buttonPanel.add(buttonThoat);
         
         mainPanel.add(buttonPanel, BorderLayout.SOUTH);
         
@@ -63,27 +64,27 @@ public final class DangNhapView extends BaseView{
     }
     
     public String getMaNV() {
-        return txtMaNV.getText().trim();
+        return fieldMaNV.getText().trim();
     }
     
     public String getMatKhau() {
-        return new String(txtMatKhau.getPassword()).trim();
+        return new String(fieldMatKhau.getPassword()).trim();
     }
 
     public void setMaNV(String maNV) {
-        txtMaNV.setText(maNV);
+        fieldMaNV.setText(maNV);
     }
 
     public void setMatKhau(String matKhau) {
-        txtMatKhau.setText(matKhau);
+        fieldMatKhau.setText(matKhau);
     }
     
     public void addLoginListener(ActionListener l) {
-        btnDangNhap.addActionListener(l);
+        buttonDangNhap.addActionListener(l);
     }
     
     public void addExitListener(ActionListener l) {
-        btnThoat.addActionListener(l);
+        buttonThoat.addActionListener(l);
     }
     
     public static void main(String[] args) {
