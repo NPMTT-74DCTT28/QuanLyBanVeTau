@@ -28,5 +28,7 @@ public final class MainView extends BaseView {
         
         tabbedPane = new JTabbedPane();
         tabbedPane.setTabPlacement(JTabbedPane.LEFT);
+        
+        this.add(tabbedPane);
     }
 }
