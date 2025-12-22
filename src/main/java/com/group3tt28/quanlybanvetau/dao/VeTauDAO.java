@@ -96,7 +96,7 @@ public class VeTauDAO {
                 + COT_ID_GHE + " =  ?, "
                 + COT_ID_NHAN_VIEN + " =  ?, "
                 + COT_NGAY_DAT + " =  ?, "
-                + COT_GIA_VE + " =  ?"
+                + COT_GIA_VE + " =  ?, "
                 + COT_TRANG_THAI + " =  ?"
                 + " WHERE " + COT_MA_VE + " = ?";
 

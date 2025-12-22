@@ -5,7 +5,6 @@
 package com.group3tt28.quanlybanvetau.dao;
 
 import com.group3tt28.quanlybanvetau.model.KhachHang;
-import com.group3tt28.quanlybanvetau.model.NhanVien;
 import com.group3tt28.quanlybanvetau.util.DBConnection;
 import java.sql.Connection;
 import java.sql.Date;
@@ -90,7 +89,7 @@ public class KhachHangDAO {
                 + COT_NGAY_SINH + " =  ?, "
                 + COT_GIOI_TINH + " =  ?, "
                 + COT_SDT + " =  ?, "
-                + COT_DIA_CHI + " =  ?, "
+                + COT_DIA_CHI + " =  ? "
                 + " WHERE " + COT_CCCD + " = ?";
 
         Date sqlNgaySinh = null;
