@@ -151,6 +151,24 @@ public class NhanVienDAO {
         }
     }
 
+    public String getMatKhauById(int id) {
+        String sql = "SELECT " + COT_MAT_KHAU + " FROM " + TEN_BANG + " WHERE " + COT_ID + " = ?";
+
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, id);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString(COT_MAT_KHAU);
+                }
+            } catch (Exception e) {
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Loi khi lay mat khau: " + e.getMessage(), e);
+        }
+        return null;
+    }
+
     public List<NhanVien> getAll() {
         List<NhanVien> list = new ArrayList<>();
         String sql = "SELECT * FROM " + TEN_BANG;
