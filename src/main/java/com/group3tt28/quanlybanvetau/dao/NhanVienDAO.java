@@ -12,7 +12,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +34,7 @@ public class NhanVienDAO {
     private static final String COT_VAI_TRO = "vai_tro";
 
     public boolean checkTrung(String maNhanVien) {
-        if (maNhanVien == null || maNhanVien.trim().isEmpty()) {
+        if (maNhanVien == null) {
             return false;
         }
 
@@ -139,13 +138,26 @@ public class NhanVienDAO {
         }
     }
 
+    public boolean doiMatKhau(int id, String matKhauDaBam) {
+        String sql = "UPDATE " + TEN_BANG + " SET " + COT_MAT_KHAU + " = ? WHERE " + COT_ID + " = ?";
+
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, matKhauDaBam);
+            ps.setInt(2, id);
+
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            throw new RuntimeException("Co loi xay ra khi doi mat khau: " + e.getMessage(), e);
+        }
+    }
+
     public List<NhanVien> getAll() {
         List<NhanVien> list = new ArrayList<>();
         String sql = "SELECT * FROM " + TEN_BANG;
         try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 Date sqlDate = rs.getDate(COT_NGAY_SINH);
-                
+
                 int id = rs.getInt(COT_ID);
                 String maNhanVien = rs.getString(COT_MA_NV);
                 String matKhau = rs.getString(COT_MAT_KHAU);
