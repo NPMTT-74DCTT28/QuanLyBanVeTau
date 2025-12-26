@@ -1,11 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.group3tt28.quanlybanvetau.dao;
 
 import com.group3tt28.quanlybanvetau.model.GaTau;
 import com.group3tt28.quanlybanvetau.util.DBConnection;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,10 +10,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author qphwn
- */
 public class GaTauDAO {
 
     private static final String TEN_BANG = "ga_tau";
@@ -25,15 +18,16 @@ public class GaTauDAO {
     private static final String COT_TEN_GA = "ten_ga";
     private static final String COT_DIA_CHI = "dia_chi";
     private static final String COT_THANH_PHO = "thanh_pho";
-    public boolean checkTrung(String maGa){
-        if (maGa == null||maGa.trim().isEmpty()) {
+
+    public boolean checkTrung(String maGa) {
+        if (maGa == null || maGa.trim().isEmpty()) {
             return false;
         }
-        String sql  = "SELECT "+COT_MA_GA+ " FROM "+TEN_BANG+" WHERE "+COT_MA_GA+ " = ?";
+        String sql = "SELECT " + COT_MA_GA + " FROM " + TEN_BANG + " WHERE " + COT_MA_GA + " = ?";
         try (Connection conn = DBConnection.getConnection();
-                PreparedStatement ps = conn.prepareStatement(sql)) {
+             PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, maGa);
-            try (ResultSet rs = ps.executeQuery()){
+            try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     return true;
                 }
@@ -43,79 +37,81 @@ public class GaTauDAO {
         }
         return false;
     }
+
     public boolean insert(GaTau gaTau) {
         if (gaTau == null) {
             return false;
         }
-        
-        String sql = "INSERT INTO " + TEN_BANG + "("+COT_MA_GA+", "+COT_TEN_GA+","+COT_DIA_CHI+","+COT_THANH_PHO+")"
+
+        String sql = "INSERT INTO " + TEN_BANG + "(" + COT_MA_GA + ", " + COT_TEN_GA + "," + COT_DIA_CHI + "," + COT_THANH_PHO + ")"
                 + " VALUES(?,?,?,?)";
         try (Connection conn = DBConnection.getConnection();
-            PreparedStatement ps = conn.prepareStatement(sql)){
+             PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, gaTau.getMaGa());
             ps.setString(2, gaTau.getTenGa());
             ps.setString(3, gaTau.getDiaChi());
             ps.setString(4, gaTau.getThanhPho());
-            return ps.executeUpdate() >0;
+            return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new RuntimeException("xay ra loi khi them ga tau:" + e.getMessage(), e);
         }
     }
+
     public boolean update(GaTau gaTau) {
         if (gaTau == null) {
             return false;
         }
-        String sql = "UPDATE " +TEN_BANG+ " SET "
-                +COT_TEN_GA + " = ?, "
-                +COT_DIA_CHI + " =?, "
-                +COT_THANH_PHO +" =? "
-                +" WHERE "+ COT_MA_GA + " =?";
-        try(Connection conn = DBConnection.getConnection();
-            PreparedStatement ps = conn.prepareStatement(sql)) {
-            
+        String sql = "UPDATE " + TEN_BANG + " SET "
+                + COT_TEN_GA + " = ?, "
+                + COT_DIA_CHI + " =?, "
+                + COT_THANH_PHO + " =? "
+                + " WHERE " + COT_MA_GA + " =?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
             ps.setString(1, gaTau.getTenGa());
             ps.setString(2, gaTau.getDiaChi());
             ps.setString(3, gaTau.getThanhPho());
             ps.setString(4, gaTau.getMaGa());
-            return ps.executeUpdate() >0;
+            return ps.executeUpdate() > 0;
         } catch (SQLException e) {
-            throw new RuntimeException("Xay ra loi khi sua ga tau:"+e.getMessage(),e);
+            throw new RuntimeException("Xay ra loi khi sua ga tau:" + e.getMessage(), e);
         }
     }
-    
+
     public boolean delete(int id) {
-        if(id<1){
+        if (id < 1) {
             return false;
         }
-        String sql = "DELETE FROM "+ TEN_BANG+ " WHERE " +COT_ID+ " = ?";
-        try(Connection conn = DBConnection.getConnection();
-                PreparedStatement ps = conn.prepareStatement(sql)) {
+        String sql = "DELETE FROM " + TEN_BANG + " WHERE " + COT_ID + " = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, id);
-            return ps.executeUpdate()>0;
+            return ps.executeUpdate() > 0;
         } catch (SQLException e) {
-            throw new RuntimeException("Xay ra loi khi xoa:"+e.getMessage(),e);
+            throw new RuntimeException("Xay ra loi khi xoa:" + e.getMessage(), e);
         }
     }
-    
+
     public List<GaTau> getAll() {
         List<GaTau> list = new ArrayList<>();
-        String sql = "SELECT * FROM "+TEN_BANG;
+        String sql = "SELECT * FROM " + TEN_BANG;
         try (Connection conn = DBConnection.getConnection();
-                PreparedStatement ps = conn.prepareStatement(sql);
-                ResultSet rs = ps.executeQuery()){
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 int id = rs.getInt(COT_ID);
                 String maGa = rs.getString(COT_MA_GA);
                 String tenGa = rs.getString(COT_TEN_GA);
                 String diaChi = rs.getString(COT_DIA_CHI);
                 String thanhPho = rs.getString(COT_THANH_PHO);
-                
+
                 GaTau gt = new GaTau(id, maGa, tenGa, diaChi, thanhPho);
                 list.add(gt);
             }
-            
+
         } catch (SQLException e) {
-            throw new RuntimeException("Xay ra loi khi hien thi ga tau:"+e.getMessage(),e);
+            throw new RuntimeException("Xay ra loi khi hien thi ga tau:" + e.getMessage(), e);
         }
         return list;
     }

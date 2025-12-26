@@ -1,27 +1,13 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.group3tt28.quanlybanvetau.dao;
 
-import com.group3tt28.quanlybanvetau.model.NhanVien;
 import com.group3tt28.quanlybanvetau.model.VeTau;
 import com.group3tt28.quanlybanvetau.util.DBConnection;
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.time.LocalDate;
+
+import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author qphwn
- */
 public class VeTauDAO {
 
     private static final String TEN_BANG = "ve_tau";
@@ -34,9 +20,9 @@ public class VeTauDAO {
     private static final String COT_NGAY_DAT = "ngay_dat";
     private static final String COT_GIA_VE = "gia_ve";
     private static final String COT_TRANG_THAI = "trang_thai";
-    
-    public boolean checkTrung(String maVe){
-        if(maVe ==null || maVe.trim().isEmpty()){
+
+    public boolean checkTrung(String maVe) {
+        if (maVe == null || maVe.trim().isEmpty()) {
             return false;
         }
         String sql = "Select " + COT_MA_VE + " from " + TEN_BANG
@@ -53,44 +39,45 @@ public class VeTauDAO {
         }
         return false;
     }
+
     public boolean insert(VeTau veTau) {
-        if(veTau == null){
+        if (veTau == null) {
             return false;
         }
         String sql = "Insert into " + TEN_BANG + " ("
                 + COT_MA_VE + ", " + COT_ID_KH + ", " + COT_ID_LICH_TRINH + ", "
-                +COT_ID_GHE + ", " + COT_ID_NHAN_VIEN + ", " + COT_NGAY_DAT + ", " 
+                + COT_ID_GHE + ", " + COT_ID_NHAN_VIEN + ", " + COT_NGAY_DAT + ", "
                 + COT_GIA_VE + ", " + COT_TRANG_THAI
                 + ") Values (?,?,?,?,?,?,?,?)";
         Timestamp sqlNgayDat = null;
-        if(veTau.getNgayDat() !=null){
+        if (veTau.getNgayDat() != null) {
             sqlNgayDat = Timestamp.valueOf(veTau.getNgayDat());
         }
-        
-        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)){
-            ps.setString(1,veTau.getMaVe());
-            ps.setInt(2,veTau.getIdKhachHang());
-            ps.setInt(3,veTau.getIdLichTrinh());
-            ps.setInt(4,veTau.getIdGhe());
-            ps.setInt(5,veTau.getIdNhanVien());
-            ps.setTimestamp(6,sqlNgayDat);
-            ps.setDouble(7,veTau.getGiaVe());
-            ps.setString(8,veTau.getTrangThaiVe());
-            
-            return ps.executeUpdate()>0;
-        }catch(SQLException e){
+
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, veTau.getMaVe());
+            ps.setInt(2, veTau.getIdKhachHang());
+            ps.setInt(3, veTau.getIdLichTrinh());
+            ps.setInt(4, veTau.getIdGhe());
+            ps.setInt(5, veTau.getIdNhanVien());
+            ps.setTimestamp(6, sqlNgayDat);
+            ps.setDouble(7, veTau.getGiaVe());
+            ps.setString(8, veTau.getTrangThaiVe());
+
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
             throw new RuntimeException("Xay ra loi he thong khi them ve tau: " + e.getMessage(), e);
         }
-        
+
     }
-    
+
     public boolean update(VeTau veTau) {
         if (veTau == null) {
             return false;
         }
 
         String sql = "UPDATE " + TEN_BANG + " SET "
-                
+
                 + COT_ID_KH + " =  ?, "
                 + COT_ID_LICH_TRINH + " =  ?, "
                 + COT_ID_GHE + " =  ?, "
@@ -101,7 +88,7 @@ public class VeTauDAO {
                 + " WHERE " + COT_MA_VE + " = ?";
 
         Timestamp sqlNgayDat = null;
-        if (veTau.getNgayDat()!= null) {
+        if (veTau.getNgayDat() != null) {
             sqlNgayDat = Timestamp.valueOf(veTau.getNgayDat());
         }
 
@@ -120,7 +107,7 @@ public class VeTauDAO {
             throw new RuntimeException("Xay ra loi he thong khi cap nhat ve tau: " + e.getMessage(), e);
         }
     }
-    
+
     public boolean delete(int id) {
         if (id < 1) {
             return false;
@@ -135,14 +122,14 @@ public class VeTauDAO {
             throw new RuntimeException("Xay ra loi he thong khi xoa ve tau: " + e.getMessage(), e);
         }
     }
-    
+
     public List<VeTau> getAll() {
         List<VeTau> list = new ArrayList<>();
         String sql = "SELECT * FROM " + TEN_BANG;
         try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 Timestamp sqlNgayDat = rs.getTimestamp(COT_NGAY_DAT);
-                
+
                 int id = rs.getInt(COT_ID);
                 String maVe = rs.getString(COT_MA_VE);
                 int idKhachHang = rs.getInt(COT_ID_KH);

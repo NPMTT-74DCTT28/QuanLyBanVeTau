@@ -1,24 +1,13 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.group3tt28.quanlybanvetau.dao;
 
 import com.group3tt28.quanlybanvetau.model.KhachHang;
 import com.group3tt28.quanlybanvetau.util.DBConnection;
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+
+import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author qphwn
- */
 public class KhachHangDAO {
 
     private static final String TEN_BANG = "khach_hang";
@@ -29,7 +18,7 @@ public class KhachHangDAO {
     private static final String COT_GIOI_TINH = "gioi_tinh";
     private static final String COT_SDT = "sdt";
     private static final String COT_DIA_CHI = "dia_chi";
-    
+
     public boolean checkTrung(String cccd) {
         if (cccd == null || cccd.trim().isEmpty()) {
             return false;
@@ -48,14 +37,14 @@ public class KhachHangDAO {
         }
         return false;
     }
-    
+
     public boolean insert(KhachHang khachHang) {
-       if (khachHang == null) {
+        if (khachHang == null) {
             return false;
         }
 
         String sql = "INSERT INTO " + TEN_BANG + " ("
-                + COT_CCCD+ ", " + COT_HO_TEN + ", " + COT_NGAY_SINH + ", "
+                + COT_CCCD + ", " + COT_HO_TEN + ", " + COT_NGAY_SINH + ", "
                 + COT_GIOI_TINH + ", " + COT_SDT + ", " + COT_DIA_CHI
                 + ") VALUES(?, ?, ?, ?, ?, ?)";
 
@@ -78,7 +67,7 @@ public class KhachHangDAO {
             throw new RuntimeException("Xay ra loi he thong khi them khach hang: " + e.getMessage(), e);
         }
     }
-    
+
     public boolean update(KhachHang khachHang) {
         if (khachHang == null) {
             return false;
@@ -110,7 +99,7 @@ public class KhachHangDAO {
             throw new RuntimeException("Xay ra loi he thong khi cap nhat khach hang: " + e.getMessage(), e);
         }
     }
-    
+
     public boolean delete(int id) {
         if (id < 1) {
             return false;
@@ -125,14 +114,14 @@ public class KhachHangDAO {
             throw new RuntimeException("Xay ra loi he thong khi xoa khach hang: " + e.getMessage(), e);
         }
     }
-    
+
     public List<KhachHang> getAll() {
         List<KhachHang> list = new ArrayList<>();
         String sql = "SELECT * FROM " + TEN_BANG;
         try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 Date sqlDate = rs.getDate(COT_NGAY_SINH);
-                
+
                 int id = rs.getInt(COT_ID);
                 String cccd = rs.getString(COT_CCCD);
                 String hoTen = rs.getString(COT_HO_TEN);
