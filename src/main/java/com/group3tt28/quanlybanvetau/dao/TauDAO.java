@@ -17,6 +17,26 @@ public class TauDAO {
     private static final String COT_MA_TAU = "ma_tau";
     private static final String COT_TEN_TAU = "ten_tau";
 
+    public boolean checkTrung(String maTau){
+        if(maTau == null){
+            return false;
+        }
+
+        String sql = "SELECT" + COT_MA_TAU +"FROM" + TEN_BANG
+                + " WHERE " + COT_TEN_TAU + " = ?";
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, maTau);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return true;
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return false;
+    }
+
     public boolean insert(Tau tau) {
         if (tau == null) {
             return false;

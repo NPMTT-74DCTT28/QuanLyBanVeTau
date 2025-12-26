@@ -17,6 +17,26 @@ public class LoaiToaDAO {
     private static final String COT_TEN_LOAI = "ten_loai";
     private static final String COT_HE_SO_GIA = "he_so_gia";
 
+    public boolean checkTrung(String tenLoai){
+        if(tenLoai == null){
+            return false;
+        }
+
+        String sql = "SELECT" + COT_TEN_LOAI +"FROM" + TEN_BANG
+                + " WHERE " + COT_HE_SO_GIA + " = ?";
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, tenLoai);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return true;
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return false;
+    }
+
     public boolean insert(LoaiToa loaiToa) {
         if (loaiToa == null) {
             return false;

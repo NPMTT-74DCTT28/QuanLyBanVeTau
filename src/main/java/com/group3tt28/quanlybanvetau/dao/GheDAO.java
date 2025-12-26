@@ -17,6 +17,26 @@ public class GheDAO {
     private static final String COT_SO_GHE = "so_ghe";
     private static final String COT_ID_TOA_TAU = "id_toa_tau";
 
+    public boolean checkTrung(String soGhe){
+        if(soGhe == null){
+            return false;
+        }
+
+        String sql = "SELECT" + COT_SO_GHE +"FROM" + TEN_BANG
+                + " WHERE " + COT_ID_TOA_TAU + " = ?";
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, soGhe);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return true;
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return false;
+    }
+
     public boolean insert(Ghe ghe) {
         if (ghe == null) {
             return false;
