@@ -2,9 +2,9 @@ package com.group3tt28.quanlybanvetau.view;
 
 import javax.swing.*;
 
-public abstract class BaseView extends JFrame {
+public abstract class BaseFrame extends JFrame {
 
-    public BaseView(String tieuDe) {
+    public BaseFrame(String tieuDe) {
         this.setTitle(tieuDe);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
     }

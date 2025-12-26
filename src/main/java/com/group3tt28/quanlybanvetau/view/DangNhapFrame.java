@@ -5,14 +5,14 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
-public final class DangNhapView extends BaseView {
+public final class DangNhapFrame extends BaseFrame {
 
     private JTextField fieldMaNV;
     private JPasswordField fieldMatKhau;
     private JButton buttonDangNhap;
     private JButton buttonThoat;
 
-    public DangNhapView() {
+    public DangNhapFrame() {
         super("Đăng nhập");
         this.setSize(400, 200);
         this.setResizable(false);
