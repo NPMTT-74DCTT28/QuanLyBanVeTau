@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="DangNhapController" type="Application" factoryName="Application" nameIsGenerated="true">
+  <configuration default="false" name="QuanLyBanVeTau" type="Application" factoryName="Application">
     <option name="MAIN_CLASS_NAME" value="com.group3tt28.quanlybanvetau.controller.DangNhapController" />
     <module name="QuanLyBanVeTau" />
     <extension name="coverage">
