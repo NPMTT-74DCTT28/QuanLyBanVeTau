@@ -72,7 +72,7 @@ public class NhanVienDAO {
 
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
-            throw new RuntimeException("Xay ra loi he thong khi them nhan vien: " + e.getMessage(), e);
+            throw new RuntimeException("Lỗi thêm nhân viên: " + e.getMessage(), e);
         }
     }
 
@@ -108,7 +108,7 @@ public class NhanVienDAO {
 
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
-            throw new RuntimeException("Xay ra loi he thong khi cap nhat nhan vien: " + e.getMessage(), e);
+            throw new RuntimeException("Lỗi cập nhật nhân viên: " + e.getMessage(), e);
         }
     }
 
@@ -125,37 +125,6 @@ public class NhanVienDAO {
         } catch (SQLException e) {
             throw new RuntimeException("Xay ra loi he thong khi xoa nhan vien: " + e.getMessage(), e);
         }
-    }
-
-    public boolean doiMatKhau(int id, String matKhauDaBam) {
-        String sql = "UPDATE " + TEN_BANG + " SET " + COT_MAT_KHAU + " = ? WHERE " + COT_ID + " = ?";
-
-        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, matKhauDaBam);
-            ps.setInt(2, id);
-
-            return ps.executeUpdate() > 0;
-        } catch (SQLException e) {
-            throw new RuntimeException("Co loi xay ra khi doi mat khau: " + e.getMessage(), e);
-        }
-    }
-
-    public String getMatKhauById(int id) {
-        String sql = "SELECT " + COT_MAT_KHAU + " FROM " + TEN_BANG + " WHERE " + COT_ID + " = ?";
-
-        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, id);
-
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getString(COT_MAT_KHAU);
-                }
-            } catch (Exception e) {
-            }
-        } catch (Exception e) {
-            throw new RuntimeException("Loi khi lay mat khau: " + e.getMessage(), e);
-        }
-        return null;
     }
 
     public List<NhanVien> getAll() {
@@ -180,8 +149,49 @@ public class NhanVienDAO {
                 list.add(nv);
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Co loi khi load du lieu nhan vien: " + e.getMessage(), e);
+            throw new RuntimeException("Lỗi tải dữ liệu nhân viên: " + e.getMessage(), e);
         }
         return list;
+    }
+
+    public NhanVien getNhanVienByMaNV(String maNhanVien) {
+        String sql = "SELECT * FROM nhan_vien WHERE ma_nhan_vien = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, maNhanVien);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    int id = rs.getInt(COT_ID);
+                    String matKhau = rs.getString(COT_MAT_KHAU);
+                    String hoTen = rs.getString(COT_HO_TEN);
+                    LocalDate ngaySinh = rs.getDate(COT_NGAY_SINH).toLocalDate();
+                    String gioiTinh = rs.getString(COT_GIOI_TINH);
+                    String sdt = rs.getString(COT_SDT);
+                    String email = rs.getString(COT_EMAIL);
+                    String diaChi = rs.getString(COT_DIA_CHI);
+                    String vaiTro = rs.getString(COT_VAI_TRO);
+
+                    return new NhanVien(id, maNhanVien, matKhau, hoTen, ngaySinh,
+                            gioiTinh, sdt, email, diaChi, vaiTro);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Lỗi tìm nhân viên: " + e.getMessage(), e);
+        }
+        return null;
+    }
+
+    public boolean doiMatKhau(int id, String matKhauDaBam) {
+        String sql = "UPDATE " + TEN_BANG + " SET " + COT_MAT_KHAU + " = ? WHERE " + COT_ID + " = ?";
+
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, matKhauDaBam);
+            ps.setInt(2, id);
+
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            throw new RuntimeException("Lỗi đổi mật khẩu: " + e.getMessage(), e);
+        }
     }
 }

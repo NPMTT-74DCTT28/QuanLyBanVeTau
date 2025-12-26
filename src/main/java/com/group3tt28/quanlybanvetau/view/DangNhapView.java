@@ -21,11 +21,6 @@ public final class DangNhapView extends BaseView {
         initComponents();
     }
 
-    public static void main(String[] args) {
-        DangNhapView view = new DangNhapView();
-        view.setVisible(true);
-    }
-
     @Override
     protected void initComponents() {
         JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
