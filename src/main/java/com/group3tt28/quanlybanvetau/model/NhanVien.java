@@ -1,15 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.group3tt28.quanlybanvetau.model;
 
 import java.time.LocalDate;
 
-/**
- *
- * @author qphwn
- */
 public class NhanVien {
 
     private int id;
@@ -38,13 +30,13 @@ public class NhanVien {
     }
 
     public NhanVien(String maNhanVien, String matKhau, String hoTen, LocalDate ngaySinh,
-            String gioiTinh, String sdt, String email, String diaChi, String vaiTro) {
+                    String gioiTinh, String sdt, String email, String diaChi, String vaiTro) {
         this(maNhanVien, hoTen, ngaySinh, gioiTinh, sdt, email, diaChi, vaiTro);
         this.matKhau = matKhau;
     }
 
     public NhanVien(int id, String maNhanVien, String matKhau, String hoTen, LocalDate ngaySinh,
-            String gioiTinh, String sdt, String email, String diaChi, String vaiTro) {
+                    String gioiTinh, String sdt, String email, String diaChi, String vaiTro) {
         this(maNhanVien, matKhau, hoTen, ngaySinh, gioiTinh, sdt, email, diaChi, vaiTro);
         this.id = id;
     }
