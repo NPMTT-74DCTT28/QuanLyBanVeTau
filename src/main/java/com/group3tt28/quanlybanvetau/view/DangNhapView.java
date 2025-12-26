@@ -1,12 +1,26 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package com.group3tt28.quanlybanvetau.view;
 
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionListener;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
 
-public final class DangNhapView extends BaseView {
-
+/**
+ *
+ * @author qphwn
+ */
+public final class DangNhapView extends BaseView{
+    
     private JTextField fieldMaNV;
     private JPasswordField fieldMatKhau;
     private JButton buttonDangNhap;
@@ -17,64 +31,64 @@ public final class DangNhapView extends BaseView {
         this.setSize(400, 200);
         this.setResizable(false);
         this.setLocationRelativeTo(null);
-
+        
         initComponents();
     }
-
-    public static void main(String[] args) {
-        DangNhapView view = new DangNhapView();
-        view.setVisible(true);
-    }
-
+    
     @Override
     protected void initComponents() {
         JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
         mainPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
-
+        
         JPanel formPanel = new JPanel(new GridLayout(2, 2, 10, 10));
-
+        
         formPanel.add(new JLabel("Mã nhân viên: "));
         fieldMaNV = new JTextField();
         formPanel.add(fieldMaNV);
-
+        
         formPanel.add(new JLabel("Mật khẩu: "));
         fieldMatKhau = new JPasswordField();
         formPanel.add(fieldMatKhau);
-
+        
         mainPanel.add(formPanel, BorderLayout.CENTER);
-
+        
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         buttonDangNhap = new JButton("Đăng nhập");
         buttonThoat = new JButton("Thoát");
         buttonPanel.add(buttonDangNhap);
         buttonPanel.add(buttonThoat);
-
+        
         mainPanel.add(buttonPanel, BorderLayout.SOUTH);
-
+        
         this.add(mainPanel);
     }
-
+    
     public String getMaNV() {
         return fieldMaNV.getText().trim();
+    }
+    
+    public String getMatKhau() {
+        return new String(fieldMatKhau.getPassword()).trim();
     }
 
     public void setMaNV(String maNV) {
         fieldMaNV.setText(maNV);
     }
 
-    public String getMatKhau() {
-        return new String(fieldMatKhau.getPassword()).trim();
-    }
-
     public void setMatKhau(String matKhau) {
         fieldMatKhau.setText(matKhau);
     }
-
+    
     public void addLoginListener(ActionListener l) {
         buttonDangNhap.addActionListener(l);
     }
-
+    
     public void addExitListener(ActionListener l) {
         buttonThoat.addActionListener(l);
+    }
+    
+    public static void main(String[] args) {
+        DangNhapView view = new DangNhapView();
+        view.setVisible(true);
     }
 }

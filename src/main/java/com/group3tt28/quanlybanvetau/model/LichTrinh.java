@@ -1,7 +1,15 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package com.group3tt28.quanlybanvetau.model;
 
 import java.time.LocalDateTime;
 
+/**
+ *
+ * @author qphwn
+ */
 public class LichTrinh {
 
     private int id;
@@ -16,7 +24,7 @@ public class LichTrinh {
     }
 
     public LichTrinh(String maLichTrinh, int idTau, int idTuyenDuong,
-                     LocalDateTime ngayDi, LocalDateTime ngayDen, String trangThai) {
+            LocalDateTime ngayDi, LocalDateTime ngayDen, String trangThai) {
         this.maLichTrinh = maLichTrinh;
         this.idTau = idTau;
         this.idTuyenDuong = idTuyenDuong;
@@ -26,7 +34,7 @@ public class LichTrinh {
     }
 
     public LichTrinh(int id, String maLichTrinh, int idTau, int idTuyenDuong,
-                     LocalDateTime ngayDi, LocalDateTime ngayDen, String trangThai) {
+            LocalDateTime ngayDi, LocalDateTime ngayDen, String trangThai) {
         this(maLichTrinh, idTau, idTuyenDuong, ngayDi, ngayDen, trangThai);
         this.id = id;
     }

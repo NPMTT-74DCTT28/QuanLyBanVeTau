@@ -1,3 +1,7 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package com.group3tt28.quanlybanvetau.util;
 
 import java.io.IOException;
@@ -7,6 +11,10 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
+/**
+ *
+ * @author qphwn
+ */
 public class DBConnection {
 
     public static Connection getConnection() {

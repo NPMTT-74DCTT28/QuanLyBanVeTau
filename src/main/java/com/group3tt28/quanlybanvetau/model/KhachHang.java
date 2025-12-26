@@ -1,9 +1,17 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package com.group3tt28.quanlybanvetau.model;
 
 import java.time.LocalDate;
 
+/**
+ *
+ * @author qphwn
+ */
 public class KhachHang {
-
+    
     private int id;
     private String cccd;
     private String hoTen;
@@ -11,12 +19,12 @@ public class KhachHang {
     private String gioiTinh;
     private String sdt;
     private String diaChi;
-
+    
     public KhachHang() {
     }
-
+    
     public KhachHang(String cccd, String hoTen, LocalDate ngaySinh,
-                     String gioiTinh, String sdt, String diaChi) {
+            String gioiTinh, String sdt, String diaChi) {
         this.cccd = cccd;
         this.hoTen = hoTen;
         this.ngaySinh = ngaySinh;
@@ -24,9 +32,9 @@ public class KhachHang {
         this.sdt = sdt;
         this.diaChi = diaChi;
     }
-
+    
     public KhachHang(int id, String cccd, String hoTen, LocalDate ngaySinh,
-                     String gioiTinh, String sdt, String diaChi) {
+            String gioiTinh, String sdt, String diaChi) {
         this(cccd, hoTen, ngaySinh, gioiTinh, sdt, diaChi);
         this.id = id;
     }
