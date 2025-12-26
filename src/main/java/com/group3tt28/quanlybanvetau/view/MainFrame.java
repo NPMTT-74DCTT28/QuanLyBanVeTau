@@ -9,7 +9,6 @@ public final class MainFrame extends BaseFrame {
 
     public MainFrame() {
         super("Quản lý hệ thống bán vé tàu");
-        this.setSize(1280, 720);
         this.setLocationRelativeTo(null);
         initComponents();
     }

@@ -4,9 +4,6 @@ import javax.swing.*;
 
 public abstract class BasePanel extends JPanel {
 
-    public BasePanel() {
-    }
-
     public void showMessage(String thongBao) {
         JOptionPane.showMessageDialog(this, thongBao, "Thông báo", JOptionPane.INFORMATION_MESSAGE);
     }
