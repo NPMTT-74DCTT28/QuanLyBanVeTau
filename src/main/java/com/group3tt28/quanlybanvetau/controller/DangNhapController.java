@@ -4,17 +4,17 @@ import com.group3tt28.quanlybanvetau.dao.NhanVienDAO;
 import com.group3tt28.quanlybanvetau.model.NhanVien;
 import com.group3tt28.quanlybanvetau.util.BamMatKhau;
 import com.group3tt28.quanlybanvetau.util.SessionManager;
-import com.group3tt28.quanlybanvetau.view.DangNhapView;
+import com.group3tt28.quanlybanvetau.view.DangNhapFrame;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class DangNhapController {
 
-    private static DangNhapView view;
+    private static DangNhapFrame view;
 
     public DangNhapController() {
-        view = new DangNhapView();
+        view = new DangNhapFrame();
         view.addLoginListener(new LoginListener());
         view.addExitListener(new ExitListener());
 

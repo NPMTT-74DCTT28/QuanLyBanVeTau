@@ -3,13 +3,12 @@ package com.group3tt28.quanlybanvetau.view;
 import javax.swing.*;
 import java.awt.*;
 
-public final class MainView extends BaseView {
+public final class MainFrame extends BaseFrame {
 
     private JTabbedPane tabbedPane;
 
-    public MainView() {
+    public MainFrame() {
         super("Quản lý hệ thống bán vé tàu");
-        this.setSize(1280, 720);
         this.setLocationRelativeTo(null);
         initComponents();
     }
