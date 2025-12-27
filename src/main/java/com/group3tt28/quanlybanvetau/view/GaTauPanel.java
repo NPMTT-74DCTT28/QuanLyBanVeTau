@@ -2,15 +2,17 @@ package com.group3tt28.quanlybanvetau.view;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
 public class GaTauPanel extends BaseFrame{
     private JTextField fieldMaga, fieldTenga, fieldDiachi, fieldThanhpho;
     private JButton btnthem, btnsua, btnxoa;
+    private DefaultTableModel model;
     public GaTauPanel() {
         super("GaTau");
-        this.setSize(800, 500);
+        this.setSize(900, 500);
         this.setResizable(false);
         this.setLocationRelativeTo(null);
         initComponents();
@@ -48,10 +50,23 @@ public class GaTauPanel extends BaseFrame{
         buttonPanel.add(btnsua);
         buttonPanel.add(btnxoa);
 
-        mainPanel.add(buttonPanel, BorderLayout.SOUTH);
+        String[] columNames = {"Mã Ga", "Tên Ga", "Địa chỉ", "Thành phố"};
+        model = new  DefaultTableModel(columNames, 0);
+        JTable table = new JTable(model);
+        JScrollPane scrollPane = new JScrollPane(table);
+        scrollPane.setPreferredSize(new Dimension(400,200));
+
+        JPanel southPanel = new JPanel();
+        southPanel.setLayout(new BorderLayout(10, 10));
+
+        southPanel.add(buttonPanel, BorderLayout.NORTH);
+        southPanel.add(scrollPane, BorderLayout.CENTER);
+
+        mainPanel.add(southPanel, BorderLayout.SOUTH);
+
         this.add(mainPanel);
     }
-    public String getMaNV() {
+    public String getMaGa() {
         return fieldMaga.getText().trim();
     }
     public void setMaNV(String maNV) {
