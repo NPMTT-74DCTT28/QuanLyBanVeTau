@@ -15,13 +15,17 @@ public abstract class BasePanel extends JPanel {
         JOptionPane.showMessageDialog(this, thongBao, "Thông báo", JOptionPane.INFORMATION_MESSAGE);
     }
 
-    public void showError(String thongBao) {
-        JOptionPane.showMessageDialog(this, thongBao, "Lỗi", JOptionPane.ERROR_MESSAGE);
+    public void showWarning(String thongBao) {
+        JOptionPane.showMessageDialog(this, thongBao, "Cảnh báo", JOptionPane.WARNING_MESSAGE);
     }
 
     public boolean showConfirm(String thongBao) {
         int option = JOptionPane.showConfirmDialog(this, thongBao, "Xác nhận", JOptionPane.YES_NO_OPTION);
         return option == JOptionPane.YES_OPTION;
+    }
+
+    public void showError(String thongBao) {
+        JOptionPane.showMessageDialog(this, thongBao, "Lỗi", JOptionPane.ERROR_MESSAGE);
     }
 
     protected JComponent inputField(String labelText, JComponent component) {
