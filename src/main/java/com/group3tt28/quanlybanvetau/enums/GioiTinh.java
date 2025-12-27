@@ -3,7 +3,7 @@ package com.group3tt28.quanlybanvetau.enums;
 public enum GioiTinh {
     NAM("Nam"),
     NU("Nữ"),
-    KHAC("Khác"),;
+    KHAC("Khác");
 
     private String label;
 

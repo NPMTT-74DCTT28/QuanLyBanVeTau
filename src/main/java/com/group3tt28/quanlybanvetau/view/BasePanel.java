@@ -1,7 +1,6 @@
 package com.group3tt28.quanlybanvetau.view;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 public abstract class BasePanel extends JPanel {

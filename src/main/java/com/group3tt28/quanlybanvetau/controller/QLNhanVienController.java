@@ -32,10 +32,12 @@ public class QLNhanVienController {
 
         model = (DefaultTableModel) panel.getTable().getModel();
 
-        loadTableData();
+        refresh();
     }
 
-    private void loadTableData() {
+    private void refresh() {
+        panel.resetForm();
+
         List<NhanVien> list = dao.getAll();
         model.setRowCount(0);
 
@@ -53,6 +55,31 @@ public class QLNhanVienController {
         }
 
         model.fireTableDataChanged();
+    }
+
+    private String validateInput(NhanVien nhanVien) {
+        if (nhanVien.getMaNhanVien().isEmpty()) {
+            return "Vui lòng nhập mã nhân viên!";
+        }
+        if (nhanVien.getHoTen().isEmpty()) {
+            return "Vui lòng nhập họ tên";
+        }
+        if (nhanVien.getNgaySinh() == null) {
+            return "Vui lòng chọn ngày sinh";
+        }
+        if (nhanVien.getGioiTinh() == null || nhanVien.getGioiTinh().isEmpty()) {
+            return "Vui lòng chọn giới tính!";
+        }
+        if (nhanVien.getSdt().isEmpty()) {
+            return "Vui lòng nhập số điện thoại";
+        }
+        if (nhanVien.getDiaChi().isEmpty()) {
+            return "Vui lòng nhập địa chỉ";
+        }
+        if (nhanVien.getVaiTro() == null || nhanVien.getVaiTro().isEmpty()) {
+            return "Vui lòng chọn vai trò";
+        }
+        return null;
     }
 
     private class ThemNhanVienListener implements ActionListener {
@@ -88,7 +115,7 @@ public class QLNhanVienController {
                 if (dao.insert(nhanVien)) {
                     panel.showMessage("Thêm nhân viên thành công!");
                     panel.resetForm();
-                    loadTableData();
+                    refresh();
                 } else {
                     panel.showError("Thêm thất bại! Vui lòng kiểm tra lại!");
                 }
@@ -110,18 +137,17 @@ public class QLNhanVienController {
 
                 if (validateInput(nhanVien) != null) {
                     panel.showWarning(validateInput(nhanVien));
+                    return;
                 }
 
                 if (nhanVien.getEmail().isEmpty()) {
                     nhanVien.setEmail(null);
                 }
 
-                if (panel.showConfirm("Bạn muốn cập nhật thông tin nhân viên "
-                        + nhanVien.getMaNhanVien())) {
+                if (panel.showConfirm("Bạn muốn cập nhật thông tin nhân viên " + nhanVien.getMaNhanVien() + "?")) {
                     if (dao.update(nhanVien)) {
                         panel.showMessage("Cập nhật thành công!");
-                        panel.resetForm();
-                        loadTableData();
+                        refresh();
                     } else {
                         panel.showError("Cập nhật thất bại! Vui lòng kiểm tra lại!");
                     }
@@ -139,7 +165,29 @@ public class QLNhanVienController {
     private class XoaNhanVienListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
+            try {
+                String maNhanVien = model.getValueAt(selectedRow, 0).toString();
 
+                if (maNhanVien.isEmpty()) {
+                    panel.showWarning("Mã nhân viên không hợp lệ!");
+                    return;
+                }
+
+                if (panel.showConfirm("Bạn muốn xoá nhân viên " + maNhanVien + "?")) {
+                    if (dao.delete(maNhanVien)) {
+                        panel.showMessage("Xoá thành công!");
+                        refresh();
+                    } else {
+                        panel.showError("Thêm thất bại! Vui lòng kiểm tra lại!");
+                    }
+                }
+            } catch (RuntimeException ex) {
+                ex.printStackTrace();
+                panel.showError("Lỗi hệ thống: " + ex.getMessage());
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                panel.showError("Lỗi không xác định: " + ex.getMessage());
+            }
         }
     }
 
@@ -201,30 +249,5 @@ public class QLNhanVienController {
         @Override
         public void mouseExited(MouseEvent e) {
         }
-    }
-
-    private String validateInput(NhanVien nhanVien) {
-        if (nhanVien.getMaNhanVien().isEmpty()) {
-            return "Vui lòng nhập mã nhân viên!";
-        }
-        if (nhanVien.getHoTen().isEmpty()) {
-            return "Vui lòng nhập họ tên";
-        }
-        if (nhanVien.getNgaySinh() == null) {
-            return "Vui lòng chọn ngày sinh";
-        }
-        if (nhanVien.getGioiTinh() == null || nhanVien.getGioiTinh().isEmpty()) {
-            return "Vui lòng chọn giới tính!";
-        }
-        if (nhanVien.getSdt().isEmpty()) {
-            return "Vui lòng nhập số điện thoại";
-        }
-        if (nhanVien.getDiaChi().isEmpty()) {
-            return "Vui lòng nhập địa chỉ";
-        }
-        if (nhanVien.getVaiTro() == null || nhanVien.getVaiTro().isEmpty()) {
-            return "Vui lòng chọn vai trò";
-        }
-        return null;
     }
 }

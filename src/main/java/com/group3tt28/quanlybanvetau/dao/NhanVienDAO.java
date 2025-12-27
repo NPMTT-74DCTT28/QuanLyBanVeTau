@@ -112,14 +112,14 @@ public class NhanVienDAO {
         }
     }
 
-    public boolean delete(int id) {
-        if (id < 1) {
+    public boolean delete(String maNhanVien) {
+        if (maNhanVien == null) {
             return false;
         }
 
-        String sql = "DELETE FROM " + TEN_BANG + " WHERE " + COT_ID + " = ?";
+        String sql = "DELETE FROM " + TEN_BANG + " WHERE " + COT_MA_NV + " = ?";
         try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, id);
+            ps.setString(1, maNhanVien);
 
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
