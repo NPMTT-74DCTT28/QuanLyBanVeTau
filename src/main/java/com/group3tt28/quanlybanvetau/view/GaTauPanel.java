@@ -13,6 +13,7 @@ public class GaTauPanel extends BaseFrame{
     private JTextField fieldMaga, fieldTenga, fieldDiachi, fieldThanhpho;
     private JButton btnthem, btnsua, btnxoa;
     private DefaultTableModel model;
+    private JTable table;
     public GaTauPanel() {
         super("GaTau");
         this.setSize(900, 500);
@@ -55,7 +56,7 @@ public class GaTauPanel extends BaseFrame{
 
         String[] columNames = {"Mã Ga", "Tên Ga", "Địa chỉ", "Thành phố"};
         model = new  DefaultTableModel(columNames, 0);
-        JTable table = new JTable(model);
+        this.table = new JTable(model);
         JScrollPane scrollPane = new JScrollPane(table);
         scrollPane.setPreferredSize(new Dimension(400,200));
 
@@ -104,6 +105,14 @@ public class GaTauPanel extends BaseFrame{
     }
     public void addRow(Object[] row) {
         model.addRow(row);
+    }
+    public void editRow(int rowIndex, Object[] newData) {
+        for (int i = 0; i < newData.length; i++) {
+            model.setValueAt(newData[i], rowIndex, i);
+        }
+    }
+    public void removeRow(int rowIndex) {
+        model.removeRow(rowIndex);
     }
     public void loadGaTau(List<GaTau> list){
         for (int i = 0; i < list.size(); i++) {

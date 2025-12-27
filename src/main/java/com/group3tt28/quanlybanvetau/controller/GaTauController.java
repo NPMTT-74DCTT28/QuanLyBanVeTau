@@ -9,7 +9,6 @@ import java.awt.event.ActionListener;
 
 public class GaTauController {
     private static GaTauPanel view;
-
     public GaTauController() {
         GaTauDAO dao = new GaTauDAO();
 
@@ -66,7 +65,7 @@ public class GaTauController {
     }
 
     public static class remove_gatau implements ActionListener {
-
+        GaTauDAO dao = new GaTauDAO();
         @Override
         public void actionPerformed(ActionEvent e) {
 
