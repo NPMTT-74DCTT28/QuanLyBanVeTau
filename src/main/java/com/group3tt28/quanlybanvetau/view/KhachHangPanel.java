@@ -156,6 +156,7 @@ public class KhachHangPanel extends BasePanel {
 
     public void resetForm(){
         fieldCCCD.setEnabled(true);
+        fieldCCCD.setText("");
 
         fieldHoTen.setText("");
 
@@ -187,5 +188,5 @@ public class KhachHangPanel extends BasePanel {
 
     public void addResetFormListener(ActionListener l) {buttonReset.addActionListener(l);}
 
-    public void addTabMouseListener(MouseListener l) {table.addMouseListener(l);}
+    public void addTableMouseClickListener(MouseListener l) {table.addMouseListener(l);}
 }

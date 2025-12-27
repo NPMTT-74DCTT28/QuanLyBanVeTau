@@ -107,7 +107,7 @@ public class KhachHangDAO {
 
         String sql = "DELETE FROM " + TEN_BANG + " WHERE " + COT_CCCD + " = ?";
         try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, COT_CCCD);
+            ps.setString(1, CCCD);
 
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
