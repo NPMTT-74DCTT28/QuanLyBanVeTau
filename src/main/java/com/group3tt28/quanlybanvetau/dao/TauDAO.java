@@ -17,15 +17,16 @@ public class TauDAO {
     private static final String COT_MA_TAU = "ma_tau";
     private static final String COT_TEN_TAU = "ten_tau";
 
-    public boolean checkTrung(String maTau){
+    public boolean checkTrung(String maTau, int ID){
         if(maTau == null){
             return false;
         }
 
         String sql = " SELECT " + COT_MA_TAU +" FROM " + TEN_BANG
-                + " WHERE " + COT_MA_TAU + " = ?";
+                + " WHERE " + COT_MA_TAU + " = ? AND " + COT_ID + " != ?";
         try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, maTau);
+            ps.setInt(2, ID);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     return true;
@@ -77,16 +78,16 @@ public class TauDAO {
         }
     }
 
-    public boolean delete(int id) {
-        if (id < 1) {
+    public boolean delete(String MaTau) {
+        if (MaTau == null) {
             return false;
         }
 
         String sql = "DELETE FROM " + TEN_BANG
-                + " WHERE " + COT_ID + " = ?";
+                + " WHERE " + COT_MA_TAU + " = ?";
 
         try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, id);
+            ps.setString(1, MaTau);
 
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {

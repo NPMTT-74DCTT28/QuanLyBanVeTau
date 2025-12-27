@@ -133,7 +133,10 @@ public class LoaiToaPanel extends BasePanel{
         fieldTenLoai.setBackground(Color.white);
 
         fieldHeSoGia.setText("");
-
+        buttonThem.setEnabled(true);
+        buttonSua.setEnabled(false);
+        buttonXoa.setEnabled(false);
+        buttonReset.setEnabled(true);
         if(tblLoaiToa != null){
             tblLoaiToa.clearSelection();
         }
@@ -143,10 +146,4 @@ public class LoaiToaPanel extends BasePanel{
         tblLoaiToa.addMouseListener(l);
     }
 
-    public static void main(String[] args) {
-        JFrame F = new JFrame();
-        F.add(new LoaiToaPanel());
-        F.setSize(800, 500);
-        F.setVisible(true);
-    }
 }
