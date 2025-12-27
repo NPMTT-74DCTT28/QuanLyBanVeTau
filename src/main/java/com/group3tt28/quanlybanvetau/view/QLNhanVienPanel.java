@@ -147,11 +147,13 @@ public final class QLNhanVienPanel extends BasePanel {
         return String.valueOf(boxGioiTinh.getSelectedItem());
     }
 
-    public void setGioiTinh(String gioiTinh) {
-        try {
-            boxGioiTinh.setSelectedItem(GioiTinh.valueOf(gioiTinh));
-        } catch (IllegalArgumentException e) {
-            boxGioiTinh.setSelectedIndex(0);
+    public void setGioiTinh(String label) {
+        if (label == null) return;
+        for (int i = 0; i < boxGioiTinh.getItemCount(); i++) {
+            if (boxGioiTinh.getItemAt(i).toString().equals(label)) {
+                boxGioiTinh.setSelectedIndex(i);
+                return;
+            }
         }
     }
 
@@ -183,11 +185,13 @@ public final class QLNhanVienPanel extends BasePanel {
         return String.valueOf(boxVaiTro.getSelectedItem());
     }
 
-    public void setVaiTro(String vaiTro) {
-        try {
-            boxVaiTro.setSelectedItem(VaiTro.valueOf(vaiTro));
-        } catch (IllegalArgumentException e) {
-            boxVaiTro.setSelectedIndex(0);
+    public void setVaiTro(String label) {
+        if (label == null) return;
+        for (int i = 0; i < boxVaiTro.getItemCount(); i++) {
+            if (boxVaiTro.getItemAt(i).toString().equals(label)) {
+                boxVaiTro.setSelectedIndex(i);
+                return;
+            }
         }
     }
 
