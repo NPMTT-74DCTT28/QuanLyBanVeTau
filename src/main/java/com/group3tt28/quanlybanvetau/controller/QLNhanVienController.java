@@ -8,6 +8,8 @@ import com.group3tt28.quanlybanvetau.view.QLNhanVienPanel;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.List;
 
 public class QLNhanVienController {
@@ -16,10 +18,16 @@ public class QLNhanVienController {
     private final NhanVienDAO dao;
 
     public QLNhanVienController(QLNhanVienPanel panel) {
-        this.panel = panel;
         this.dao = new NhanVienDAO();
 
-        panel.addThemListener(new ThemNhanVienListener());
+        this.panel = panel;
+        panel.addThemNhanVienListener(new ThemNhanVienListener());
+        panel.addSuaNhanVienListener(new SuaNhanVienListener());
+        panel.addXoaNhanVienListener(new XoaNhanVienListener());
+        panel.addResetFormListener(new ResetFormListener());
+        panel.addTableMouseClickListener(new TableMouseClickListener());
+
+        loadTableData();
     }
 
     private void loadTableData() {
@@ -81,6 +89,55 @@ public class QLNhanVienController {
                 ex.printStackTrace();
                 panel.showError("Lỗi không xác định: " + ex.getMessage());
             }
+        }
+    }
+
+    private class SuaNhanVienListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+        }
+    }
+
+    private class XoaNhanVienListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+        }
+    }
+
+    private class ResetFormListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+        }
+    }
+
+    private class TableMouseClickListener implements MouseListener {
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+
         }
     }
 }

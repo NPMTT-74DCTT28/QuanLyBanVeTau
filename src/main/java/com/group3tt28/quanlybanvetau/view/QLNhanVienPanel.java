@@ -10,6 +10,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseListener;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
@@ -25,7 +26,7 @@ public final class QLNhanVienPanel extends BasePanel {
     private JTextField fieldEmail;
     private JTextField fieldDiaChi;
     private JComboBox<VaiTro> boxVaiTro;
-    private JButton buttonThem, buttonSua, buttonLuu, buttonXoa, buttonReset;
+    private JButton buttonThem, buttonSua, buttonXoa, buttonReset;
     private JTable table;
     private boolean isEditMode = false;
 
@@ -81,14 +82,12 @@ public final class QLNhanVienPanel extends BasePanel {
         buttonThem.setEnabled(true);
         buttonSua = new JButton("Sửa");
         buttonSua.setEnabled(false);
-        buttonLuu = new JButton("Lưu");
-        buttonLuu.setEnabled(false);
         buttonXoa = new JButton("Xoá");
         buttonXoa.setEnabled(false);
         buttonReset = new JButton("Reset");
         buttonReset.setEnabled(true);
 
-        JButton[] buttons = {buttonThem, buttonSua, buttonLuu, buttonXoa, buttonReset};
+        JButton[] buttons = {buttonThem, buttonSua, buttonXoa, buttonReset};
 
         panelTop.add(panelHome, BorderLayout.NORTH);
         panelTop.add(panelForm);
@@ -229,7 +228,6 @@ public final class QLNhanVienPanel extends BasePanel {
 
         buttonThem.setEnabled(false);
         buttonSua.setEnabled(true);
-        buttonLuu.setEnabled(true);
         buttonXoa.setEnabled(true);
         buttonReset.setEnabled(true);
     }
@@ -258,7 +256,6 @@ public final class QLNhanVienPanel extends BasePanel {
 
         buttonThem.setEnabled(true);
         buttonSua.setEnabled(false);
-        buttonLuu.setEnabled(false);
         buttonXoa.setEnabled(false);
         buttonReset.setEnabled(true);
 
@@ -267,23 +264,23 @@ public final class QLNhanVienPanel extends BasePanel {
         }
     }
 
-    public void addThemListener(ActionListener l) {
+    public void addThemNhanVienListener(ActionListener l) {
         buttonThem.addActionListener(l);
     }
 
-    public void addSuaListener(ActionListener l) {
+    public void addSuaNhanVienListener(ActionListener l) {
         buttonSua.addActionListener(l);
     }
 
-    public void addLuuListener(ActionListener l) {
-        buttonLuu.addActionListener(l);
-    }
-
-    public void addXoaListener(ActionListener l) {
+    public void addXoaNhanVienListener(ActionListener l) {
         buttonXoa.addActionListener(l);
     }
 
-    public void addResetListener(ActionListener l) {
+    public void addResetFormListener(ActionListener l) {
         buttonReset.addActionListener(l);
+    }
+
+    public void addTableMouseClickListener(MouseListener l) {
+        table.addMouseListener(l);
     }
 }
