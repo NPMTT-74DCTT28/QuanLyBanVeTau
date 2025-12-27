@@ -100,14 +100,14 @@ public class KhachHangDAO {
         }
     }
 
-    public boolean delete(int id) {
-        if (id < 1) {
+    public boolean delete(String CCCD) {
+        if (CCCD == null) {
             return false;
         }
 
-        String sql = "DELETE FROM " + TEN_BANG + " WHERE " + COT_ID + " = ?";
+        String sql = "DELETE FROM " + TEN_BANG + " WHERE " + COT_CCCD + " = ?";
         try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, id);
+            ps.setString(1, COT_CCCD);
 
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
