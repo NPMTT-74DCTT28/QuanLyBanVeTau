@@ -210,10 +210,6 @@ public final class QLNhanVienPanel extends BasePanel {
         String diaChi = getDiaChi();
         String vaiTro = getVaiTro();
 
-        if (ngaySinh == null) {
-            throw new IllegalArgumentException("Vui lòng chọn ngày sinh!");
-        }
-
         if (isEditMode) {
             return new NhanVien(maNhanVien, hoTen, ngaySinh, gioiTinh, sdt, email, diaChi, vaiTro);
         } else {
