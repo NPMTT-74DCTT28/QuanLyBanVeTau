@@ -225,10 +225,11 @@ public final class QLNhanVienPanel extends BasePanel {
         isEditMode = true;
 
         fieldMaNhanVien.setEnabled(false);
+        fieldMaNhanVien.setBackground(new Color(200, 200, 200));
 
         fieldMatKhau.setEnabled(false);
         fieldMatKhau.setText("");
-        fieldMatKhau.setBackground(new Color(240, 240, 240));
+        fieldMatKhau.setBackground(new Color(200, 200, 200));
 
         buttonThem.setEnabled(false);
         buttonSua.setEnabled(true);
@@ -241,19 +242,26 @@ public final class QLNhanVienPanel extends BasePanel {
 
         fieldMaNhanVien.setEnabled(true);
         fieldMaNhanVien.setText("");
+        fieldMaNhanVien.setBackground(Color.WHITE);
 
         fieldMatKhau.setEnabled(true);
         fieldMatKhau.setText("");
         fieldMatKhau.setBackground(Color.WHITE);
 
         fieldHoTen.setText("");
+
         chooserNgaySinh.setDate(null);
+
         if (boxGioiTinh.getItemCount() > 0) {
             boxGioiTinh.setSelectedIndex(0);
         }
+
         fieldSdt.setText("");
+
         fieldEmail.setText("");
+
         fieldDiaChi.setText("");
+
         if (boxVaiTro.getItemCount() > 0) {
             boxVaiTro.setSelectedIndex(0);
         }
