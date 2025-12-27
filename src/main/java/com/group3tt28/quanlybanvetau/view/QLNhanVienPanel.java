@@ -61,6 +61,7 @@ public final class QLNhanVienPanel extends BasePanel {
         panelForm.add(inputField("Họ tên: ", fieldHoTen));
 
         chooserNgaySinh = new JDateChooser();
+        chooserNgaySinh.setMaxSelectableDate(new Date(System.currentTimeMillis()));
         panelForm.add(inputField("Ngày sinh: ", chooserNgaySinh));
 
         boxGioiTinh = new JComboBox<>(GioiTinh.values());
@@ -221,11 +222,9 @@ public final class QLNhanVienPanel extends BasePanel {
         isEditMode = true;
 
         fieldMaNhanVien.setEnabled(false);
-        fieldMaNhanVien.setBackground(new Color(200, 200, 200));
 
         fieldMatKhau.setEnabled(false);
         fieldMatKhau.setText("");
-        fieldMatKhau.setBackground(new Color(200, 200, 200));
 
         buttonThem.setEnabled(false);
         buttonSua.setEnabled(true);
@@ -238,11 +237,9 @@ public final class QLNhanVienPanel extends BasePanel {
 
         fieldMaNhanVien.setEnabled(true);
         fieldMaNhanVien.setText("");
-        fieldMaNhanVien.setBackground(Color.WHITE);
 
         fieldMatKhau.setEnabled(true);
         fieldMatKhau.setText("");
-        fieldMatKhau.setBackground(Color.WHITE);
 
         fieldHoTen.setText("");
 
