@@ -76,7 +76,7 @@ public class GaTauController {
             try {
                 GaTau gaTau = panel.getGaTau();
                 if (gaTau.getMaGa().isEmpty()||gaTau.getTenGa().isEmpty()) {
-                    panel.showError("Vui lòng nhập đầy đủ Mã ga/ Tên ga!");
+                    panel.showError("Tên ga không được để trống!");
                     return;
                 }
                 if (panel.showConfirm("Bạn có muốn cập nhật thông tin của "+gaTau.getMaGa()+" không ?")){
@@ -101,7 +101,7 @@ public class GaTauController {
                 if (maGa.isEmpty()) {
                     return;
                 }
-                if (panel.showConfirm("Bạn có muốn xóa tin của "+maGa+" không ?")){
+                if (panel.showConfirm("Bạn có muốn xóa "+maGa+" không ?")){
                     if (dao.delete(maGa)) {
                         panel.showMessage("Xóa thành công!");
                         refresh();

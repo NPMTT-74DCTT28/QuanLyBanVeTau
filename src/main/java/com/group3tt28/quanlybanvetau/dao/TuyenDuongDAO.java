@@ -20,15 +20,18 @@ public class TuyenDuongDAO {
     private static final String COT_KHOANG_CACH = "khoang_cach_km";
     private static final String COT_GIA_CB = "gia_co_ban";
 
-    public boolean checkTrung(String maTuyen) {
+    public boolean checkTrung(String maTuyen, int idGadi, int idGaden) {
         if (maTuyen == null || maTuyen.trim().isEmpty()) {
             return false;
         }
 
-        String sql = "SELECT " + COT_MA_TUYEN + " FROM " + TEN_BANG + " WHERE " + COT_MA_TUYEN + " = ?";
+        String sql = "SELECT " + COT_MA_TUYEN + " FROM " + TEN_BANG + " WHERE " + COT_MA_TUYEN + " = ?" +
+                " OR (" + COT_ID_GA_DI + " = ? AND " + COT_ID_GA_DEN + " = ?)";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, maTuyen);
+            ps.setInt(2, idGadi);
+            ps.setInt(3, idGaden);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     return true;
@@ -91,14 +94,14 @@ public class TuyenDuongDAO {
         }
     }
 
-    public boolean delete(int id) {
-        if (id < 1) {
+    public boolean delete(String maTuyen) {
+        if (maTuyen == null) {
             return false;
         }
-        String sql = "DELETE FROM " + TEN_BANG + " WHERE " + COT_ID + " = ?";
+        String sql = "DELETE FROM " + TEN_BANG + " WHERE " + COT_MA_TUYEN + " = ?";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, id);
+            ps.setString(1, maTuyen);
             return ps.executeUpdate() > 0;
         } catch (Exception e) {
             throw new RuntimeException("Xay ra loi khi xoa:" + e.getMessage(), e);
