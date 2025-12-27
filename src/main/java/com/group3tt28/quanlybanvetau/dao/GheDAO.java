@@ -23,7 +23,7 @@ public class GheDAO {
         }
 
         String sql = "SELECT" + COT_SO_GHE +"FROM" + TEN_BANG
-                + " WHERE " + COT_ID_TOA_TAU + " = ?";
+                + " WHERE " + COT_SO_GHE + " = ? AND " + COT_ID_TOA_TAU + " = ?" ;
         try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, soGhe);
             try (ResultSet rs = ps.executeQuery()) {

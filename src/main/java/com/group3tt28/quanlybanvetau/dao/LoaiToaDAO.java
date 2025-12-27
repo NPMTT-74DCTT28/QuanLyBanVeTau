@@ -23,7 +23,7 @@ public class LoaiToaDAO {
         }
 
         String sql = "SELECT" + COT_TEN_LOAI +"FROM" + TEN_BANG
-                + " WHERE " + COT_HE_SO_GIA + " = ?";
+                + " WHERE " + COT_TEN_LOAI + " = ?";
         try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, tenLoai);
             try (ResultSet rs = ps.executeQuery()) {

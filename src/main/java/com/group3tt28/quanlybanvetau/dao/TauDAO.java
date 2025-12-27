@@ -22,8 +22,8 @@ public class TauDAO {
             return false;
         }
 
-        String sql = "SELECT" + COT_MA_TAU +"FROM" + TEN_BANG
-                + " WHERE " + COT_TEN_TAU + " = ?";
+        String sql = " SELECT " + COT_MA_TAU +" FROM " + TEN_BANG
+                + " WHERE " + COT_MA_TAU + " = ?";
         try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, maTau);
             try (ResultSet rs = ps.executeQuery()) {
