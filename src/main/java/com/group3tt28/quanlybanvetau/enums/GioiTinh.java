@@ -1,12 +1,13 @@
 package com.group3tt28.quanlybanvetau.enums;
 
-public enum VaiTro {
-    ADMIN("Quản trị viên"),
-    NHAN_VIEN("Nhân viên");
+public enum GioiTinh {
+    NAM("Nam"),
+    NU("Nữ"),
+    KHAC("Khác"),;
 
-    private final String label;
+    private String label;
 
-    VaiTro(String label) {
+    GioiTinh(String label) {
         this.label = label;
     }
 
