@@ -1,0 +1,149 @@
+package com.group3tt28.quanlybanvetau.view;
+
+import com.group3tt28.quanlybanvetau.model.GaTau;
+
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.List;
+
+public class GaTauPanel extends BasePanel {
+    private JTextField fieldMaga, fieldTenga, fieldDiachi, fieldThanhpho;
+    private JButton btnthem, btnsua, btnxoa, btnreset;
+    private DefaultTableModel model;
+    private JTable table;
+    private boolean isEditmode = false;
+    public GaTauPanel() {
+        initComponents();
+    }
+
+    @Override
+    protected void initComponents() {
+        setLayout(new BorderLayout());
+        JPanel titlePanel = new JPanel();
+        titlePanel.setBackground(new Color(255, 255, 255));
+        titlePanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+        JLabel lblTitle = new JLabel("GaTau");
+        lblTitle.setSize(200,80);
+        lblTitle.setFont(new Font("Segoe UI", Font.BOLD, 20));
+        titlePanel.add(lblTitle);
+
+        JPanel panelTop = new JPanel(new BorderLayout(0, 5));
+        JPanel panelForm = new JPanel(new GridLayout(2, 2, 5, 5));
+        panelForm.setBorder(new EmptyBorder(10, 5, 10, 5));
+
+        fieldMaga = new JTextField();
+        panelForm.add(inputField("Mã Ga: ", fieldMaga));
+
+        fieldTenga = new JTextField();
+        panelForm.add(inputField("Tên Ga: ", fieldTenga));
+
+        fieldDiachi = new JTextField();
+        panelForm.add(inputField("Địa chỉ: ", fieldDiachi));
+
+        fieldThanhpho = new JTextField();
+        panelForm.add(inputField("Thành phố: ", fieldThanhpho));
+
+        btnthem = new JButton("Thêm");
+        btnsua = new JButton("Sửa");
+        btnxoa = new JButton("Xóa");
+        btnreset = new JButton("Reset");
+        JButton[] btn = {btnthem, btnsua, btnxoa, btnreset};
+
+        panelTop.add(panelForm, BorderLayout.NORTH);
+        panelTop.add(panelForm);
+        panelTop.add(buttonField(btn), BorderLayout.SOUTH);
+
+        String[] columNames = {"Mã Ga", "Tên Ga", "Địa chỉ", "Thành phố"};
+        model = new  DefaultTableModel(columNames, 0);
+        table = new JTable(model);
+        JScrollPane scrollPane = new JScrollPane(table);
+        scrollPane.setFont(new Font("Segoe UI", Font.BOLD, 20));
+        scrollPane.setBorder(new EmptyBorder(10, 10, 10, 10));
+
+        add(panelTop, BorderLayout.NORTH);
+        add(scrollPane, BorderLayout.CENTER);
+    }
+    public String getMaGa() {
+        return fieldMaga.getText().trim();
+    }
+    public void setMaGa(String maNV) {
+        fieldMaga.setText(maNV);
+    }
+    public String getTenga() {
+        return fieldTenga.getText().trim();
+    }
+    public void setTenga(String tenga) {
+        fieldTenga.setText(tenga);
+    }
+    public String getDiachi() {
+        return fieldDiachi.getText().trim();
+    }
+    public void setDiachi(String diachi) {
+        fieldDiachi.setText(diachi);
+    }
+    public String getThanhpho() {
+        return fieldThanhpho.getText().trim();
+    }
+    public void setThanhpho(String thanhpho) {
+        fieldThanhpho.setText(thanhpho);
+    }
+    public JTable getTable() {
+        return table;
+    }
+    public GaTau getGaTau() {
+        String maGa = getMaGa();
+        String tenga = getTenga();
+        String diachi = getDiachi();
+        String thanhpho = getThanhpho();
+        return new GaTau(maGa, tenga, diachi, thanhpho);
+    }
+    public void startEditMode(){
+        isEditmode = true;
+        fieldMaga.setEnabled(false);
+        btnthem.setEnabled(false);
+        btnsua.setEnabled(true);
+        btnxoa.setEnabled(true);
+
+    }
+    public void resetForm(){
+        isEditmode = false;
+
+        fieldMaga.setEnabled(true);
+        fieldMaga.setText("");
+        fieldTenga.setEnabled(true);
+        fieldTenga.setText("");
+        fieldDiachi.setEnabled(true);
+        fieldDiachi.setText("");
+        fieldThanhpho.setEnabled(true);
+        fieldThanhpho.setText("");
+
+        btnthem.setEnabled(true);
+        btnsua.setEnabled(false);
+        btnxoa.setEnabled(false);
+        btnreset.setEnabled(true);
+        if (table != null) {
+            table.clearSelection();
+        }
+    }
+    public void AddGaTau(ActionListener l) {
+        btnthem.addActionListener(l);
+    }
+    public void EditGaTau(ActionListener l) {
+        btnsua.addActionListener(l);
+    }
+    public void RemoveGaTau(ActionListener l) {
+        btnxoa.addActionListener(l);
+    }
+    public void ResetGaTau(ActionListener l) {
+        btnreset.addActionListener(l);
+    }
+    public void TableMouseClickListener(MouseListener l) {
+        table.addMouseListener(l);
+    }
+
+}
