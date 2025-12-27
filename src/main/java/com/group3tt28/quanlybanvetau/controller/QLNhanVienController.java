@@ -178,7 +178,7 @@ public class QLNhanVienController {
                         panel.showMessage("Xoá thành công!");
                         refresh();
                     } else {
-                        panel.showError("Thêm thất bại! Vui lòng kiểm tra lại!");
+                        panel.showError("Xoá thất bại! Vui lòng kiểm tra lại!");
                     }
                 }
             } catch (RuntimeException ex) {
