@@ -1,19 +1,15 @@
 package com.group3tt28.quanlybanvetau.view;
 
-import com.group3tt28.quanlybanvetau.model.GaTau;
-
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionListener;
-import java.util.List;
 
 public class GaTauPanel extends BaseFrame{
     private JTextField fieldMaga, fieldTenga, fieldDiachi, fieldThanhpho;
     private JButton btnthem, btnsua, btnxoa;
     private DefaultTableModel model;
-    private JTable table;
     public GaTauPanel() {
         super("GaTau");
         this.setSize(900, 500);
@@ -56,7 +52,7 @@ public class GaTauPanel extends BaseFrame{
 
         String[] columNames = {"Mã Ga", "Tên Ga", "Địa chỉ", "Thành phố"};
         model = new  DefaultTableModel(columNames, 0);
-        this.table = new JTable(model);
+        JTable table = new JTable(model);
         JScrollPane scrollPane = new JScrollPane(table);
         scrollPane.setPreferredSize(new Dimension(400,200));
 
@@ -103,26 +99,4 @@ public class GaTauPanel extends BaseFrame{
     public void removeGaTau(ActionListener l) {
         btnxoa.addActionListener(l);
     }
-    public void addRow(Object[] row) {
-        model.addRow(row);
-    }
-    public void editRow(int rowIndex, Object[] newData) {
-        for (int i = 0; i < newData.length; i++) {
-            model.setValueAt(newData[i], rowIndex, i);
-        }
-    }
-    public void removeRow(int rowIndex) {
-        model.removeRow(rowIndex);
-    }
-    public void loadGaTau(List<GaTau> list){
-        for (int i = 0; i < list.size(); i++) {
-            model.addRow(new Object[]{
-                    list.get(i).getMaGa(),
-                    list.get(i).getTenGa(),
-                    list.get(i).getDiaChi(),
-                    list.get(i).getThanhPho()
-            });
-        }
-    }
-
 }
