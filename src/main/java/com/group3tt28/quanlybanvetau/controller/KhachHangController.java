@@ -2,7 +2,7 @@ package com.group3tt28.quanlybanvetau.controller;
 
 import com.group3tt28.quanlybanvetau.dao.KhachHangDAO;
 import com.group3tt28.quanlybanvetau.model.KhachHang;
-import com.group3tt28.quanlybanvetau.view.KhachHangPanel;
+import com.group3tt28.quanlybanvetau.view.panel.KhachHangPanel;
 
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;

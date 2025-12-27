@@ -1,9 +1,7 @@
-package com.group3tt28.quanlybanvetau.view;
+package com.group3tt28.quanlybanvetau.view.panel;
 
-import com.group3tt28.quanlybanvetau.model.LoaiToa;
 import com.group3tt28.quanlybanvetau.model.Tau;
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionListener;

@@ -6,7 +6,7 @@ import com.group3tt28.quanlybanvetau.dao.TuyenDuongDAO;
 import com.group3tt28.quanlybanvetau.model.LichTrinh;
 import com.group3tt28.quanlybanvetau.model.Tau;
 import com.group3tt28.quanlybanvetau.model.TuyenDuong;
-import com.group3tt28.quanlybanvetau.view.QLLichTrinhPanel;
+import com.group3tt28.quanlybanvetau.view.panel.QLLichTrinhPanel;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;

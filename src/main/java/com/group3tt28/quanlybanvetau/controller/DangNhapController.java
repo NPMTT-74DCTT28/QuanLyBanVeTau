@@ -4,8 +4,8 @@ import com.group3tt28.quanlybanvetau.dao.NhanVienDAO;
 import com.group3tt28.quanlybanvetau.model.NhanVien;
 import com.group3tt28.quanlybanvetau.util.BamMatKhau;
 import com.group3tt28.quanlybanvetau.util.SessionManager;
-import com.group3tt28.quanlybanvetau.view.DangNhapFrame;
-import com.group3tt28.quanlybanvetau.view.MainFrame;
+import com.group3tt28.quanlybanvetau.view.frame.DangNhapFrame;
+import com.group3tt28.quanlybanvetau.view.frame.MainFrame;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

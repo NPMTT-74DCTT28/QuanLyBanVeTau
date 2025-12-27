@@ -3,7 +3,7 @@ package com.group3tt28.quanlybanvetau.controller;
 import com.group3tt28.quanlybanvetau.dao.NhanVienDAO;
 import com.group3tt28.quanlybanvetau.model.NhanVien;
 import com.group3tt28.quanlybanvetau.util.BamMatKhau;
-import com.group3tt28.quanlybanvetau.view.QLNhanVienPanel;
+import com.group3tt28.quanlybanvetau.view.panel.QLNhanVienPanel;
 
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
