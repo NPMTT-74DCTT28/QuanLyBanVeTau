@@ -37,7 +37,7 @@ public class NhanVienDAO {
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Lỗi khi kiểm tra trùng mã nhân viên: " + e.getMessage(), e);
         }
         return false;
     }
@@ -72,7 +72,7 @@ public class NhanVienDAO {
 
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
-            throw new RuntimeException("Lỗi thêm nhân viên: " + e.getMessage(), e);
+            throw new RuntimeException("Lỗi khi thêm nhân viên: " + e.getMessage(), e);
         }
     }
 
@@ -108,7 +108,7 @@ public class NhanVienDAO {
 
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
-            throw new RuntimeException("Lỗi cập nhật nhân viên: " + e.getMessage(), e);
+            throw new RuntimeException("Lỗi khi cập nhật nhân viên: " + e.getMessage(), e);
         }
     }
 
@@ -123,7 +123,7 @@ public class NhanVienDAO {
 
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
-            throw new RuntimeException("Xay ra loi he thong khi xoa nhan vien: " + e.getMessage(), e);
+            throw new RuntimeException("Lỗi khi xoá nhân viên: " + e.getMessage(), e);
         }
     }
 
@@ -177,7 +177,7 @@ public class NhanVienDAO {
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Lỗi tìm nhân viên: " + e.getMessage(), e);
+            throw new RuntimeException("Lỗi khi lấy thông tin nhân viên: " + e.getMessage(), e);
         }
         return null;
     }
@@ -191,7 +191,50 @@ public class NhanVienDAO {
 
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
-            throw new RuntimeException("Lỗi đổi mật khẩu: " + e.getMessage(), e);
+            throw new RuntimeException("Lỗi khi đổi mật khẩu: " + e.getMessage(), e);
         }
+    }
+
+    public List<NhanVien> timKiemNhanVien(String keyword, String gioiTinhInput, String vaiTroInput) {
+
+        List<NhanVien> list = new ArrayList<>();
+        String searchKeyword = "%" + keyword + "%";
+        String sql = "SELECT * FROM " + TEN_BANG + " WHERE "
+                + COT_HO_TEN + " LIKE ? OR "
+                + COT_GIOI_TINH + " = ? OR "
+                + COT_SDT + " LIKE ? OR "
+                + COT_EMAIL + " LIKE ? OR "
+                + COT_DIA_CHI + " LIKE ? OR "
+                + COT_VAI_TRO + " = ?";
+
+        try (Connection connection = DBConnection.getConnection(); PreparedStatement ps = connection.prepareStatement(sql);) {
+            ps.setString(1, searchKeyword);
+            ps.setString(2, gioiTinhInput);
+            ps.setString(3, searchKeyword);
+            ps.setString(4, searchKeyword);
+            ps.setString(5, searchKeyword);
+            ps.setString(6, vaiTroInput);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    int id = rs.getInt(COT_ID);
+                    String maNhanVien = rs.getString(COT_MA_NV);
+                    String matKhau = rs.getString(COT_MAT_KHAU);
+                    String hoTen = rs.getString(COT_HO_TEN);
+                    LocalDate ngaySinh = rs.getDate(COT_NGAY_SINH).toLocalDate();
+                    String gioiTinh = rs.getString(COT_GIOI_TINH);
+                    String sdt = rs.getString(COT_SDT);
+                    String email = rs.getString(COT_EMAIL);
+                    String diaChi = rs.getString(COT_DIA_CHI);
+                    String vaiTro = rs.getString(COT_VAI_TRO);
+
+                    NhanVien nhanVien = new NhanVien(id, maNhanVien, matKhau, hoTen, ngaySinh, gioiTinh, sdt, email, diaChi, vaiTro);
+                    list.add(nhanVien);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Lỗi khi tìm kiếm nhân viên: " + e.getMessage(), e);
+        }
+        return list;
     }
 }

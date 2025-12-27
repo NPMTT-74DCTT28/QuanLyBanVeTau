@@ -8,6 +8,8 @@ import com.toedter.calendar.JDateChooser;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
@@ -105,7 +107,7 @@ public final class QLNhanVienPanel extends BasePanel {
         add(scrollPane, BorderLayout.CENTER);
     }
 
-    private String getMaNhanVien() {
+    public String getMaNhanVien() {
         return fieldMaNhanVien.getText().trim();
     }
 
@@ -113,7 +115,7 @@ public final class QLNhanVienPanel extends BasePanel {
         fieldMaNhanVien.setText(maNhanVien);
     }
 
-    private String getMatKhau() {
+    public String getMatKhau() {
         return new String(fieldMatKhau.getPassword());
     }
 
@@ -121,7 +123,7 @@ public final class QLNhanVienPanel extends BasePanel {
         fieldMatKhau.setText(matKhau);
     }
 
-    private String getHoTen() {
+    public String getHoTen() {
         return fieldHoTen.getText().trim();
     }
 
@@ -129,7 +131,7 @@ public final class QLNhanVienPanel extends BasePanel {
         fieldHoTen.setText(hoTen);
     }
 
-    private LocalDate getNgaySinh() {
+    public LocalDate getNgaySinh() {
         if (chooserNgaySinh.getDate() == null) {
             return null;
         }
@@ -144,7 +146,7 @@ public final class QLNhanVienPanel extends BasePanel {
         }
     }
 
-    private String getGioiTinh() {
+    public String getGioiTinh() {
         return String.valueOf(boxGioiTinh.getSelectedItem());
     }
 
@@ -158,7 +160,7 @@ public final class QLNhanVienPanel extends BasePanel {
         }
     }
 
-    private String getSdt() {
+    public String getSdt() {
         return fieldSdt.getText().trim();
     }
 
@@ -166,7 +168,7 @@ public final class QLNhanVienPanel extends BasePanel {
         fieldSdt.setText(sdt);
     }
 
-    private String getEmail() {
+    public String getEmail() {
         return fieldEmail.getText().trim();
     }
 
@@ -174,7 +176,7 @@ public final class QLNhanVienPanel extends BasePanel {
         fieldEmail.setText(email);
     }
 
-    private String getDiaChi() {
+    public String getDiaChi() {
         return fieldDiaChi.getText().trim();
     }
 
@@ -182,7 +184,7 @@ public final class QLNhanVienPanel extends BasePanel {
         fieldDiaChi.setText(diaChi);
     }
 
-    private String getVaiTro() {
+    public String getVaiTro() {
         return String.valueOf(boxVaiTro.getSelectedItem());
     }
 
