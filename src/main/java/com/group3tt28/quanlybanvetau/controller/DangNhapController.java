@@ -5,67 +5,66 @@ import com.group3tt28.quanlybanvetau.model.NhanVien;
 import com.group3tt28.quanlybanvetau.util.BamMatKhau;
 import com.group3tt28.quanlybanvetau.util.SessionManager;
 import com.group3tt28.quanlybanvetau.view.DangNhapFrame;
+import com.group3tt28.quanlybanvetau.view.MainFrame;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class DangNhapController {
 
-    private static DangNhapFrame view;
+    private final DangNhapFrame frame;
+
+    private final NhanVienDAO dao;
 
     public DangNhapController() {
-        view = new DangNhapFrame();
-        view.addLoginListener(new LoginListener());
-        view.addExitListener(new ExitListener());
+        dao = new NhanVienDAO();
 
-        view.setVisible(true);
+        frame = new DangNhapFrame();
+        frame.addLoginListener(new LoginListener());
+        frame.addExitListener(new ExitListener());
+
+        frame.setVisible(true);
     }
 
-    private static class LoginListener implements ActionListener {
-
-        NhanVienDAO dao = new NhanVienDAO();
+    private class LoginListener implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            String maNhanVien = view.getMaNV();
-            String matKhau = view.getMatKhau();
+            String maNhanVien = frame.getMaNV();
+            String matKhau = frame.getMatKhau();
 
             if (maNhanVien.isEmpty() || matKhau.isEmpty()) {
-                view.showError("Vui lòng nhập đủ mã nhân viên và mật khẩu!");
+                frame.showWarning("Vui lòng nhập đủ mã nhân viên và mật khẩu!");
                 return;
             }
 
             try {
                 NhanVien nhanVien = dao.getNhanVienByMaNV(maNhanVien);
 
-                if (nhanVien == null) {
-                    view.showError("Tài khoản không tồn tại");
-                    return;
-                }
-
-                if (!BamMatKhau.checkMatKhau(matKhau, nhanVien.getMatKhau())) {
-                    view.showError("Mật khẩu không chính xác!");
+                if (nhanVien == null || !BamMatKhau.checkMatKhau(matKhau, nhanVien.getMatKhau())) {
+                    frame.showWarning("Tài khoản hoặc mật khẩu không chính xác!");
                     return;
                 }
 
                 SessionManager.setCurrentUser(nhanVien);
-                view.showMessage("Đăng nhập thành công!");
+                new MainFrame().setVisible(true);
+                frame.dispose();
             } catch (RuntimeException ex) {
                 ex.printStackTrace();
-                view.showError("Lỗi hệ thống: " + ex.getMessage());
+                frame.showError("Lỗi hệ thống: " + ex.getMessage());
             } catch (Exception ex) {
                 ex.printStackTrace();
-                view.showError("Lỗi không xác định: " + ex.getMessage());
+                frame.showError("Lỗi không xác định: " + ex.getMessage());
             }
         }
     }
 
-    private static class ExitListener implements ActionListener {
+    private class ExitListener implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (view.showConfirm("Bạn muốn thoát ứng dụng?")) {
-                view.dispose();
+            if (frame.showConfirm("Bạn muốn thoát ứng dụng?")) {
+                frame.dispose();
                 System.exit(0);
             }
         }
