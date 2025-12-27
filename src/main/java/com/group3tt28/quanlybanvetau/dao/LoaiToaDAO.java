@@ -17,15 +17,16 @@ public class LoaiToaDAO {
     private static final String COT_TEN_LOAI = "ten_loai";
     private static final String COT_HE_SO_GIA = "he_so_gia";
 
-    public boolean checkTrung(String tenLoai){
+    public boolean checkTrung(String tenLoai, int ID){
         if(tenLoai == null){
             return false;
         }
 
-        String sql = "SELECT" + COT_TEN_LOAI +"FROM" + TEN_BANG
-                + " WHERE " + COT_TEN_LOAI + " = ?";
+        String sql = " SELECT " + COT_TEN_LOAI + " FROM " + TEN_BANG
+                + " WHERE " + COT_TEN_LOAI + " = ? AND " + COT_ID + " != ?";
         try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, tenLoai);
+            ps.setInt(2, ID);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     return true;
@@ -78,16 +79,16 @@ public class LoaiToaDAO {
         }
     }
 
-    public boolean delete(int id) {
-        if (id < 1) {
+    public boolean delete(String Tenloai) {
+        if (Tenloai == null) {
             return false;
         }
 
         String sql = "DELETE FROM " + TEN_BANG
-                + " WHERE " + COT_ID + " = ?";
+                + " WHERE " + COT_TEN_LOAI + " = ?";
 
         try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, id);
+            ps.setString(1, Tenloai);
 
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {

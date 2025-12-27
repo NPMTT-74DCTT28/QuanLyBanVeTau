@@ -1,8 +1,12 @@
 package com.group3tt28.quanlybanvetau.view;
 
+import com.group3tt28.quanlybanvetau.model.LoaiToa;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
@@ -16,7 +20,7 @@ public class LoaiToaPanel extends BasePanel{
     private JButton buttonXoa;
     private  JButton buttonReset;
     private JTable tblLoaiToa;
-    private boolean isEditMode = false;
+    private DefaultTableModel tableModel;
 
     public LoaiToaPanel() {
         initComponents();
@@ -61,9 +65,15 @@ public class LoaiToaPanel extends BasePanel{
         panelTop.add(panelForm);
         panelTop.add(buttonField(buttons), BorderLayout.SOUTH);
 
-        Object[] columns = new Object[]{"Tên loại toa", "Hệ số giá"};
-        DefaultTableModel tableModel = new DefaultTableModel(columns, 0);
+        Object[] columns = new Object[]{"ID", "Tên loại toa", "Hệ số giá"};
+        tableModel = new DefaultTableModel(columns, 0);
         tblLoaiToa = new JTable(tableModel);
+
+        TableColumnModel columnModel = tblLoaiToa.getColumnModel();
+        TableColumn columnID = columnModel.getColumn(0);
+        tblLoaiToa.removeColumn(columnID);
+
+
         JScrollPane scrollPane = new JScrollPane(tblLoaiToa);
         scrollPane.setFont(new Font("Segoe UI", Font.BOLD, 13));
         scrollPane.setBorder(new EmptyBorder(10, 10, 10, 10));
@@ -87,11 +97,14 @@ public class LoaiToaPanel extends BasePanel{
     public String getTenLoai(){
         return fieldTenLoai.getText().trim();
     }
-    public void setTenLoai(String maTau){
-        fieldHeSoGia.setText(maTau);
+    public void setTenLoai(String tenLoai){
+        fieldTenLoai.setText(tenLoai);
     }
-    public String getHeSoGia(){
-        return fieldHeSoGia.getText().trim();
+    public double getHeSoGia(){
+        if(fieldHeSoGia.getText().trim().isEmpty()){
+            return 0;
+        }else
+            return Double.parseDouble(fieldHeSoGia.getText().trim());
     }
     public void setHeSoGia(String maTau){
         fieldHeSoGia.setText(maTau);
@@ -100,12 +113,14 @@ public class LoaiToaPanel extends BasePanel{
         return tblLoaiToa;
     }
 
+    public LoaiToa getLoaiToaFromForm(){
+        String tenLoaiToa = getTenLoai();
+        double heSoGia = getHeSoGia();
+
+        return new LoaiToa(tenLoaiToa, heSoGia);
+    }
+
     public void startEditMode(){
-        isEditMode = true;
-
-        fieldTenLoai.setEnabled(false);
-        fieldTenLoai.setBackground(new Color(200, 200 ,200));
-
         buttonThem.setEnabled(false);
         buttonSua.setEnabled(true);
         buttonXoa.setEnabled(true);
@@ -113,8 +128,6 @@ public class LoaiToaPanel extends BasePanel{
     }
 
     public void resetForm(){
-        isEditMode = false;
-
         fieldTenLoai.setEnabled(true);
         fieldTenLoai.setText("");
         fieldTenLoai.setBackground(Color.white);
