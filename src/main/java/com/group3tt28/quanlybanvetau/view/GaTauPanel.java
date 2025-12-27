@@ -7,67 +7,66 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.List;
 
-public class GaTauPanel extends BaseFrame{
+public class GaTauPanel extends BasePanel {
     private JTextField fieldMaga, fieldTenga, fieldDiachi, fieldThanhpho;
-    private JButton btnthem, btnsua, btnxoa;
+    private JButton btnthem, btnsua, btnxoa, btnreset;
     private DefaultTableModel model;
+    private JTable table;
+    private boolean isEditmode = false;
     public GaTauPanel() {
-        super("GaTau");
-        this.setSize(900, 500);
-        this.setResizable(false);
-        this.setLocationRelativeTo(null);
         initComponents();
     }
 
     @Override
     protected void initComponents() {
-        JPanel mainPanel = new JPanel(new BorderLayout(10,10));
-        mainPanel.setBorder(new EmptyBorder(20,20,20,20));
-        JPanel formPanel = new JPanel(new GridLayout(4,2, 10, 10));
+        setLayout(new BorderLayout());
+        JPanel titlePanel = new JPanel();
+        titlePanel.setBackground(new Color(255, 255, 255));
+        titlePanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+        JLabel lblTitle = new JLabel("GaTau");
+        lblTitle.setSize(200,80);
+        lblTitle.setFont(new Font("Segoe UI", Font.BOLD, 20));
+        titlePanel.add(lblTitle);
 
-        formPanel.add(new JLabel("Mã Ga: "));
+        JPanel panelTop = new JPanel(new BorderLayout(0, 5));
+        JPanel panelForm = new JPanel(new GridLayout(4, 1, 5, 5));
+        panelForm.setBorder(new EmptyBorder(10, 5, 10, 5));
+
         fieldMaga = new JTextField();
-        formPanel.add(fieldMaga);
+        panelForm.add(inputField("Mã Ga: ", fieldMaga));
 
-        formPanel.add(new JLabel("Tên Ga: "));
         fieldTenga = new JTextField();
-        formPanel.add(fieldTenga);
+        panelForm.add(inputField("Tên Ga: ", fieldTenga));
 
-        formPanel.add(new JLabel("Diachi: "));
         fieldDiachi = new JTextField();
-        formPanel.add(fieldDiachi);
+        panelForm.add(inputField("Địa chỉ: ", fieldDiachi));
 
-        formPanel.add(new JLabel("Thanh Pho:"));
         fieldThanhpho = new JTextField();
-        formPanel.add(fieldThanhpho);
+        panelForm.add(inputField("Thành phố: ", fieldThanhpho));
 
-        mainPanel.add(formPanel, BorderLayout.CENTER);
-
-        JPanel buttonPanel = new JPanel( new FlowLayout(FlowLayout.CENTER) );
         btnthem = new JButton("Thêm");
         btnsua = new JButton("Sửa");
         btnxoa = new JButton("Xóa");
-        buttonPanel.add(btnthem);
-        buttonPanel.add(btnsua);
-        buttonPanel.add(btnxoa);
+        btnreset = new JButton("Reset");
+        JButton[] btn = {btnthem, btnsua, btnxoa};
+
+        panelTop.add(panelForm, BorderLayout.NORTH);
+        panelTop.add(panelForm);
+        panelTop.add(buttonField(btn), BorderLayout.SOUTH);
 
         String[] columNames = {"Mã Ga", "Tên Ga", "Địa chỉ", "Thành phố"};
         model = new  DefaultTableModel(columNames, 0);
-        JTable table = new JTable(model);
+        table = new JTable(model);
         JScrollPane scrollPane = new JScrollPane(table);
-        scrollPane.setPreferredSize(new Dimension(400,200));
+        scrollPane.setFont(new Font("Segoe UI", Font.BOLD, 20));
+        scrollPane.setBorder(new EmptyBorder(10, 10, 10, 10));
 
-        JPanel southPanel = new JPanel();
-        southPanel.setLayout(new BorderLayout(10, 10));
-
-        southPanel.add(buttonPanel, BorderLayout.NORTH);
-        southPanel.add(scrollPane, BorderLayout.CENTER);
-
-        mainPanel.add(southPanel, BorderLayout.SOUTH);
-
-        this.add(mainPanel);
+        add(panelTop, BorderLayout.NORTH);
+        add(scrollPane, BorderLayout.CENTER);
     }
     public String getMaGa() {
         return fieldMaga.getText().trim();
@@ -93,27 +92,58 @@ public class GaTauPanel extends BaseFrame{
     public void setThanhpho(String thanhpho) {
         fieldThanhpho.setText(thanhpho);
     }
-    public void addGaTau(ActionListener l) {
+    public JTable getTable() {
+        return table;
+    }
+    public GaTau getGaTau() {
+        String maGa = getMaGa();
+        String tenga = getTenga();
+        String diachi = getDiachi();
+        String thanhpho = getThanhpho();
+        return new GaTau(maGa, tenga, diachi, thanhpho);
+    }
+    public void startEditMode(){
+        isEditmode = true;
+        fieldMaga.setEnabled(false);
+        btnthem.setEnabled(false);
+        btnsua.setEnabled(true);
+        btnxoa.setEnabled(true);
+
+    }
+    public void resetForm(){
+        isEditmode = false;
+
+        fieldMaga.setEnabled(true);
+        fieldMaga.setText("");
+        fieldTenga.setEnabled(true);
+        fieldTenga.setText("");
+        fieldDiachi.setEnabled(true);
+        fieldDiachi.setText("");
+        fieldThanhpho.setEnabled(true);
+        fieldThanhpho.setText("");
+
+        btnthem.setEnabled(true);
+        btnsua.setEnabled(false);
+        btnxoa.setEnabled(false);
+        btnreset.setEnabled(true);
+        if (table != null) {
+            table.clearSelection();
+        }
+    }
+    public void AddGaTau(ActionListener l) {
         btnthem.addActionListener(l);
     }
-    public void editGaTau(ActionListener l) {
+    public void EditTenga(ActionListener l) {
         btnsua.addActionListener(l);
     }
-    public void removeGaTau(ActionListener l) {
-        btnxoa.addActionListener(l);
+    public void RemoveGaTau(ActionListener l) {
+        btnxoa.removeActionListener(l);
     }
-    public void addRow(Object[] row) {
-        model.addRow(row);
+    public void ResetGaTau(ActionListener l) {
+        btnreset.addActionListener(l);
     }
-    public void loadGaTau(List<GaTau> list){
-        for (int i = 0; i < list.size(); i++) {
-            model.addRow(new Object[]{
-                    list.get(i).getMaGa(),
-                    list.get(i).getTenGa(),
-                    list.get(i).getDiaChi(),
-                    list.get(i).getThanhPho()
-            });
-        }
+    public void TableMouseClickListener(MouseListener l) {
+        table.addMouseListener(l);
     }
 
 }
