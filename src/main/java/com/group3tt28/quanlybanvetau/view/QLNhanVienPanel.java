@@ -80,7 +80,7 @@ public final class QLNhanVienPanel extends BasePanel {
         buttonThem = new JButton("Thêm");
         buttonThem.setEnabled(true);
         buttonSua = new JButton("Sửa");
-        buttonThem.setEnabled(false);
+        buttonSua.setEnabled(false);
         buttonLuu = new JButton("Lưu");
         buttonLuu.setEnabled(false);
         buttonXoa = new JButton("Xoá");
