@@ -1,10 +1,13 @@
 package com.group3tt28.quanlybanvetau.view;
 
+import com.group3tt28.quanlybanvetau.model.GaTau;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 public class GaTauPanel extends BaseFrame{
     private JTextField fieldMaga, fieldTenga, fieldDiachi, fieldThanhpho;
@@ -102,4 +105,15 @@ public class GaTauPanel extends BaseFrame{
     public void addRow(Object[] row) {
         model.addRow(row);
     }
+    public void loadGaTau(List<GaTau> list){
+        for (int i = 0; i < list.size(); i++) {
+            model.addRow(new Object[]{
+                    list.get(i).getMaGa(),
+                    list.get(i).getTenGa(),
+                    list.get(i).getDiaChi(),
+                    list.get(i).getThanhPho()
+            });
+        }
+    }
+
 }
