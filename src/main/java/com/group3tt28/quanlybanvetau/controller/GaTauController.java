@@ -11,16 +11,21 @@ public class GaTauController {
     private static GaTauPanel view;
 
     public GaTauController() {
+        GaTauDAO dao = new GaTauDAO();
+
         view = new GaTauPanel();
+        view.loadGaTau(dao.getAll());
         view.addGaTau(new add_gatau());
         view.editGaTau(new edit_gatau());
         view.removeGaTau(new remove_gatau());
         view.setVisible(true);
+
     }
     public static class add_gatau implements ActionListener {
         GaTauDAO dao = new GaTauDAO();
         @Override
         public void actionPerformed(ActionEvent e) {
+
             String maGa = view.getMaGa();
             String tenGa = view.getTenga();
             String dc = view.getDiachi();
