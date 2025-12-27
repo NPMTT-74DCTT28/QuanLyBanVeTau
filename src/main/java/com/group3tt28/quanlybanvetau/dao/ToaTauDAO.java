@@ -18,10 +18,26 @@ public class ToaTauDAO {
     private static final String COT_ID_TAU = "id_tau";
     private static final String COT_ID_LOAI_TOA = "id_loai_toa";
 
-    public boolean insert(ToaTau toaTau) {
-        if (toaTau == null) {
-            return false;
+    // --- THÊM HÀM NÀY ĐỂ CHECK TRÙNG ---
+    public boolean checkTrung(String maToa, int idTau) {
+        String sql = "SELECT id FROM " + TEN_BANG + " WHERE " + COT_MA_TOA + " = ? AND " + COT_ID_TAU + " = ?";
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, maToa);
+            ps.setInt(2, idTau);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return true; // Đã tồn tại
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+        return false;
+    }
+    // -----------------------------------
+
+    public boolean insert(ToaTau toaTau) {
+        if (toaTau == null) return false;
 
         String sql = "INSERT INTO " + TEN_BANG + " ("
                 + COT_MA_TOA + ","
@@ -35,20 +51,19 @@ public class ToaTauDAO {
 
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
-            throw new RuntimeException("Xay ra loi he thong khi them toa tau: " + e.getMessage(), e);
+            // Sửa lại để ném lỗi rõ ràng hơn hoặc handle tại Controller
+            throw new RuntimeException("Lỗi thêm toa tàu: " + e.getMessage(), e);
         }
     }
 
     public boolean update(ToaTau toaTau) {
-        if (toaTau == null) {
-            return false;
-        }
+        if (toaTau == null) return false;
 
         String sql = "UPDATE " + TEN_BANG + " SET "
-                + COT_MA_TOA + ","
-                + COT_ID_TAU + ","
-                + COT_ID_LOAI_TOA
-                + ") VALUES (?, ?, ?)";
+                + COT_MA_TOA + " = ?, "
+                + COT_ID_TAU + " = ?, "
+                + COT_ID_LOAI_TOA + " = ? "
+                + " WHERE " + COT_ID + " = ?";
 
         try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, toaTau.getMaToa());
@@ -58,24 +73,20 @@ public class ToaTauDAO {
 
             return ps.executeUpdate() > 0;
         } catch (Exception e) {
-            throw new RuntimeException("Xay ra loi he thong khi cap nhat toa tau: " + e.getMessage(), e);
+            throw new RuntimeException("Lỗi cập nhật toa tàu: " + e.getMessage(), e);
         }
     }
 
     public boolean delete(int id) {
-        if (id < 1) {
-            return false;
-        }
+        if (id < 1) return false;
 
-        String sql = "DELETE FROM " + TEN_BANG
-                + " WHERE " + COT_ID + " = ?";
+        String sql = "DELETE FROM " + TEN_BANG + " WHERE " + COT_ID + " = ?";
 
         try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, id);
-
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
-            throw new RuntimeException("Xay ra loi he thong khi xoa toa tau: " + e.getMessage(), e);
+            throw new RuntimeException("Lỗi xóa toa tàu: " + e.getMessage(), e);
         }
     }
 
@@ -84,17 +95,14 @@ public class ToaTauDAO {
         String sql = "SELECT * FROM " + TEN_BANG;
         try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
-
                 int id = rs.getInt(COT_ID);
                 String maToa = rs.getString(COT_MA_TOA);
                 int idTau = rs.getInt(COT_ID_TAU);
                 int idLoaiToa = rs.getInt(COT_ID_LOAI_TOA);
-
-                ToaTau toaTau = new ToaTau(id, maToa, idTau, idLoaiToa);
-                list.add(toaTau);
+                list.add(new ToaTau(id, maToa, idTau, idLoaiToa));
             }
         } catch (Exception e) {
-            throw new RuntimeException("Xay ra loi khi load toa tau: " + e.getMessage(), e);
+            throw new RuntimeException("Lỗi load toa tàu: " + e.getMessage(), e);
         }
         return list;
     }

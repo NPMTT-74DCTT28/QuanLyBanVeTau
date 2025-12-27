@@ -69,38 +69,46 @@ public class LichTrinhDAO {
         }
     }
 
+    // Trong file LichTrinhDAO.java
+
     public boolean update(LichTrinh lichTrinh) {
-        if(lichTrinh==null){
+        if(lichTrinh == null){
             return false;
         }
+        // Câu lệnh SQL có 6 dấu ? (5 cái SET và 1 cái WHERE)
         String sql = "UPDATE " + TEN_BANG + " SET "
-                    + COT_ID_TAU + "=? ,"
-                    + COT_ID_TUYEN +"=? , "
-                    + COT_NGAY_DI + "=? ,"
-                    + COT_NGAY_DEN + "=? ,"
-                    + COT_TRANG_THAI + "=? "
-                + "WHERE " + COT_MA_LICH_TRINH + "=?";
+                + COT_ID_TAU + "=? ,"
+                + COT_ID_TUYEN +"=? , "
+                + COT_NGAY_DI + "=? ,"
+                + COT_NGAY_DEN + "=? ,"
+                + COT_TRANG_THAI + "=? "
+                + "WHERE " + COT_MA_LICH_TRINH + "=?"; // <-- Dấu hỏi chấm thứ 6 nằm ở đây
+
         Timestamp ngaydiSQL = null;
         if (lichTrinh.getNgayDi() != null){
-            ngaydiSQL =Timestamp.valueOf(lichTrinh.getNgayDi());
+            ngaydiSQL = Timestamp.valueOf(lichTrinh.getNgayDi());
         }
 
         Timestamp ngaydenSQL = null;
         if (lichTrinh.getNgayDen() != null){
-            ngaydenSQL =Timestamp.valueOf(lichTrinh.getNgayDen());
+            ngaydenSQL = Timestamp.valueOf(lichTrinh.getNgayDen());
         }
 
         try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql);){
-            ps.setInt(1,lichTrinh.getIdTau());
-            ps.setInt(2,lichTrinh.getIdTuyenDuong());
-            ps.setTimestamp(3,ngaydiSQL);
-            ps.setTimestamp(4,ngaydenSQL);
-            ps.setString(5,lichTrinh.getTrangThai());
+            ps.setInt(1, lichTrinh.getIdTau());
+            ps.setInt(2, lichTrinh.getIdTuyenDuong());
+            ps.setTimestamp(3, ngaydiSQL);
+            ps.setTimestamp(4, ngaydenSQL);
+            ps.setString(5, lichTrinh.getTrangThai());
 
-            return ps.executeUpdate()>0;
+            // --- THÊM DÒNG NÀY ---
+            ps.setString(6, lichTrinh.getMaLichTrinh());
+            // ---------------------
+
+            return ps.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            throw new RuntimeException("Lỗi khi sửa lịch trình: " + e.getMessage(),e);
+            throw new RuntimeException("Lỗi khi sửa lịch trình: " + e.getMessage(), e);
         }
     }
 
