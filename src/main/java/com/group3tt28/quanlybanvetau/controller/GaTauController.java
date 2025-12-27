@@ -4,76 +4,148 @@ import com.group3tt28.quanlybanvetau.dao.GaTauDAO;
 import com.group3tt28.quanlybanvetau.model.GaTau;
 import com.group3tt28.quanlybanvetau.view.GaTauPanel;
 
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.List;
 
 public class GaTauController {
-    private static GaTauPanel view;
+    private final GaTauPanel panel;
+    private final GaTauDAO dao;
+    private final DefaultTableModel model;
+    private int selectedRow;
 
-    public GaTauController() {
-        GaTauDAO dao = new GaTauDAO();
 
-        view = new GaTauPanel();
-        view.loadGaTau(dao.getAll());
-        view.addGaTau(new add_gatau());
-        view.editGaTau(new edit_gatau());
-        view.removeGaTau(new remove_gatau());
-        view.setVisible(true);
-
+    public GaTauController(GaTauPanel panel) {
+       this.dao = new GaTauDAO();
+       this.panel = panel;
+       panel.AddGaTau(new AddGaTau());
+       panel.EditGaTau(new EditGaTau());
+       panel.RemoveGaTau(new RemoveGaTau());
+       panel.ResetGaTau(new ResetGaTau());
+       panel.TableMouseClickListener(new TableMouseClickListener());
+       model = (DefaultTableModel) panel.getTable().getModel();
+       refresh();
     }
-    public static class add_gatau implements ActionListener {
-        GaTauDAO dao = new GaTauDAO();
-        @Override
-        public void actionPerformed(ActionEvent e) {
-
-            String maGa = view.getMaGa();
-            String tenGa = view.getTenga();
-            String dc = view.getDiachi();
-            String tp = view.getThanhpho();
-
-            if(maGa.isEmpty()||tenGa.isEmpty()||dc.isEmpty()||tp.isEmpty()){
-                view.showError("Cần điền đầy đủ thông tin!");
-                return;
-            }
-
-            if (dao.checkTrung(maGa)) {
-                view.showError("Mã ga đã tồn tại!");
-                return;
-            }
-
-            GaTau gaTau = new GaTau(maGa, tenGa, dc, tp);
-
-            boolean success = dao.insert(gaTau);
-            if (!success) {
-                view.showError("Thêm ga tàu thất bại!");
-                return;
-            }
-
-            view.addRow(new Object[]{
-                    maGa, tenGa, dc, tp
+    private void refresh() {
+        panel.resetForm();
+        List<GaTau> List = dao.getAll();
+        model.setRowCount(0);
+        for (GaTau gaTau : List) {
+            model.addRow(new Object[]{
+                    gaTau.getMaGa(),
+                    gaTau.getTenGa(),
+                    gaTau.getDiaChi(),
+                    gaTau.getThanhPho()
             });
-
-            view.showMessage("Thêm ga tàu thành công");
         }
+        model.fireTableDataChanged();
     }
-
-    public static class edit_gatau implements ActionListener {
-
+    private class AddGaTau implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-
+            try{
+                GaTau gaTau = panel.getGaTau();
+                if (gaTau.getMaGa().isEmpty()||gaTau.getTenGa().isEmpty()) {
+                    panel.showError("Vui lòng nhập đầy đủ Mã ga/ Tên ga!");
+                    return;
+                }
+                if (dao.checkTrung(gaTau.getMaGa())) {
+                    panel.showError("Mã ga đã tồn tại!");
+                    return;
+                }
+                if (dao.insert(gaTau)) {
+                    panel.showMessage("Thêm Ga tàu thành công!");
+                    panel.resetForm();
+                    refresh();
+                }else {
+                    panel.showError("Thêm thất bại!!!!");
+                }
+            }catch(Exception ex){
+                ex.printStackTrace();
+                panel.showError("Lỗi hệ thống: " + ex.getMessage());
+            }
         }
     }
-
-    public static class remove_gatau implements ActionListener {
-
+    private class EditGaTau implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-
+            try {
+                GaTau gaTau = panel.getGaTau();
+                if (gaTau.getMaGa().isEmpty()||gaTau.getTenGa().isEmpty()) {
+                    panel.showError("Vui lòng nhập đầy đủ Mã ga/ Tên ga!");
+                    return;
+                }
+                if (panel.showConfirm("Bạn có muốn cập nhật thông tin của "+gaTau.getMaGa()+" không ?")){
+                    if (dao.update(gaTau)) {
+                        panel.showMessage("Cập nhật thành công!");
+                        refresh();
+                    }else{
+                        panel.showError("Cập nhật thất bại!!!!");
+                    }
+                }
+            }catch(Exception ex){
+                ex.printStackTrace();
+                panel.showError("Lỗi hệ thống: " + ex.getMessage());
+            }
         }
     }
+    private class RemoveGaTau implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            try {
+                String maGa = model.getValueAt(selectedRow, 0).toString();
+                if (maGa.isEmpty()) {
+                    return;
+                }
+                if (panel.showConfirm("Bạn có muốn xóa tin của "+maGa+" không ?")){
+                    if (dao.delete(maGa)) {
+                        panel.showMessage("Xóa thành công!");
+                        refresh();
+                    }else{
+                        panel.showError("Xóa thất bại!!!!");
+                    }
+                }
+            }catch(Exception ex){
+                ex.printStackTrace();
+                panel.showError("Lỗi hệ thống: " + ex.getMessage());
+            }
+        }
+    }
+    private class ResetGaTau implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            panel.resetForm();
+        }
+    }
+    private class TableMouseClickListener implements MouseListener {
 
-    static void main() {
-        new GaTauController();
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            panel.startEditMode();
+            selectedRow = panel.getTable().getSelectedRow();
+            if (selectedRow == -1) {
+                return;
+            }
+            panel.setMaGa(model.getValueAt(selectedRow, 0).toString());
+            panel.setTenga(model.getValueAt(selectedRow, 1).toString());
+            panel.setDiachi(model.getValueAt(selectedRow, 2).toString());
+            panel.setThanhpho(model.getValueAt(selectedRow, 3).toString());
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {}
+
+        @Override
+        public void mouseReleased(MouseEvent e) {}
+
+        @Override
+        public void mouseEntered(MouseEvent e) {}
+
+        @Override
+        public void mouseExited(MouseEvent e) {}
     }
 }

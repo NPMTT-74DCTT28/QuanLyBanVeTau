@@ -33,7 +33,7 @@ public class GaTauPanel extends BasePanel {
         titlePanel.add(lblTitle);
 
         JPanel panelTop = new JPanel(new BorderLayout(0, 5));
-        JPanel panelForm = new JPanel(new GridLayout(4, 1, 5, 5));
+        JPanel panelForm = new JPanel(new GridLayout(2, 2, 5, 5));
         panelForm.setBorder(new EmptyBorder(10, 5, 10, 5));
 
         fieldMaga = new JTextField();
@@ -52,7 +52,7 @@ public class GaTauPanel extends BasePanel {
         btnsua = new JButton("Sửa");
         btnxoa = new JButton("Xóa");
         btnreset = new JButton("Reset");
-        JButton[] btn = {btnthem, btnsua, btnxoa};
+        JButton[] btn = {btnthem, btnsua, btnxoa, btnreset};
 
         panelTop.add(panelForm, BorderLayout.NORTH);
         panelTop.add(panelForm);
@@ -71,7 +71,7 @@ public class GaTauPanel extends BasePanel {
     public String getMaGa() {
         return fieldMaga.getText().trim();
     }
-    public void setMaNV(String maNV) {
+    public void setMaGa(String maNV) {
         fieldMaga.setText(maNV);
     }
     public String getTenga() {
@@ -133,11 +133,11 @@ public class GaTauPanel extends BasePanel {
     public void AddGaTau(ActionListener l) {
         btnthem.addActionListener(l);
     }
-    public void EditTenga(ActionListener l) {
+    public void EditGaTau(ActionListener l) {
         btnsua.addActionListener(l);
     }
     public void RemoveGaTau(ActionListener l) {
-        btnxoa.removeActionListener(l);
+        btnxoa.addActionListener(l);
     }
     public void ResetGaTau(ActionListener l) {
         btnreset.addActionListener(l);

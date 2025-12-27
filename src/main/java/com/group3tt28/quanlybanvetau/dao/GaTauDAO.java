@@ -79,14 +79,14 @@ public class GaTauDAO {
         }
     }
 
-    public boolean delete(int id) {
-        if (id < 1) {
+    public boolean delete(String maGa) {
+        if (maGa == null ) {
             return false;
         }
-        String sql = "DELETE FROM " + TEN_BANG + " WHERE " + COT_ID + " = ?";
+        String sql = "DELETE FROM " + TEN_BANG + " WHERE " + COT_MA_GA + " = ?";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, id);
+            ps.setString(1, maGa);
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new RuntimeException("Xay ra loi khi xoa:" + e.getMessage(), e);
