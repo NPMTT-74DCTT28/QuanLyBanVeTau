@@ -42,4 +42,9 @@ public class LoaiToa {
     public void setHeSoGia(double heSoGia) {
         this.heSoGia = heSoGia;
     }
+
+    @Override
+    public String toString() {
+        return tenLoai;
+    }
 }

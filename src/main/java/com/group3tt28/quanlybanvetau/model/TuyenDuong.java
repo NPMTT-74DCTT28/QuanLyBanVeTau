@@ -82,4 +82,11 @@ public class TuyenDuong {
     public void setGiaCoBan(double giaCoBan) {
         this.giaCoBan = giaCoBan;
     }
+
+    @Override
+    public String toString() {
+        return tenTuyen;
+        // Hoặc nếu bạn muốn hiện cả mã cho dễ nhìn thì dùng dòng dưới:
+        // return maTuyen + " - " + tenTuyen;
+    }
 }

@@ -42,4 +42,9 @@ public class Tau {
     public void setTenTau(String tenTau) {
         this.tenTau = tenTau;
     }
+
+    @Override
+    public String toString() {
+        return tenTau;
+    }
 }
