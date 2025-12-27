@@ -16,6 +16,7 @@ public class QLNhanVienController {
 
     private final QLNhanVienPanel panel;
     private final NhanVienDAO dao;
+    private int selectedRow;
 
     public QLNhanVienController(QLNhanVienPanel panel) {
         this.dao = new NhanVienDAO();
@@ -109,7 +110,7 @@ public class QLNhanVienController {
     private class ResetFormListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-
+            panel.resetForm();
         }
     }
 
