@@ -26,6 +26,10 @@ public class DangNhapController {
         frame.setVisible(true);
     }
 
+    public static void main(String[] args) {
+        DangNhapController dangNhapController = new DangNhapController();
+    }
+
     private class LoginListener implements ActionListener {
 
         @Override
@@ -68,9 +72,5 @@ public class DangNhapController {
                 System.exit(0);
             }
         }
-    }
-
-    public static void main(String[] args) {
-        DangNhapController dangNhapController = new DangNhapController();
     }
 }

@@ -10,6 +10,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseListener;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
@@ -25,7 +26,7 @@ public final class QLNhanVienPanel extends BasePanel {
     private JTextField fieldEmail;
     private JTextField fieldDiaChi;
     private JComboBox<VaiTro> boxVaiTro;
-    private JButton buttonThem, buttonSua, buttonLuu, buttonXoa, buttonReset;
+    private JButton buttonThem, buttonSua, buttonXoa, buttonReset;
     private JTable table;
     private boolean isEditMode = false;
 
@@ -81,14 +82,12 @@ public final class QLNhanVienPanel extends BasePanel {
         buttonThem.setEnabled(true);
         buttonSua = new JButton("Sửa");
         buttonSua.setEnabled(false);
-        buttonLuu = new JButton("Lưu");
-        buttonLuu.setEnabled(false);
         buttonXoa = new JButton("Xoá");
         buttonXoa.setEnabled(false);
         buttonReset = new JButton("Reset");
         buttonReset.setEnabled(true);
 
-        JButton[] buttons = {buttonThem, buttonSua, buttonLuu, buttonXoa, buttonReset};
+        JButton[] buttons = {buttonThem, buttonSua, buttonXoa, buttonReset};
 
         panelTop.add(panelHome, BorderLayout.NORTH);
         panelTop.add(panelForm);
@@ -148,11 +147,13 @@ public final class QLNhanVienPanel extends BasePanel {
         return String.valueOf(boxGioiTinh.getSelectedItem());
     }
 
-    public void setGioiTinh(String gioiTinh) {
-        try {
-            boxGioiTinh.setSelectedItem(GioiTinh.valueOf(gioiTinh));
-        } catch (IllegalArgumentException e) {
-            boxGioiTinh.setSelectedIndex(0);
+    public void setGioiTinh(String label) {
+        if (label == null) return;
+        for (int i = 0; i < boxGioiTinh.getItemCount(); i++) {
+            if (boxGioiTinh.getItemAt(i).toString().equals(label)) {
+                boxGioiTinh.setSelectedIndex(i);
+                return;
+            }
         }
     }
 
@@ -184,11 +185,13 @@ public final class QLNhanVienPanel extends BasePanel {
         return String.valueOf(boxVaiTro.getSelectedItem());
     }
 
-    public void setVaiTro(String vaiTro) {
-        try {
-            boxVaiTro.setSelectedItem(VaiTro.valueOf(vaiTro));
-        } catch (IllegalArgumentException e) {
-            boxVaiTro.setSelectedIndex(0);
+    public void setVaiTro(String label) {
+        if (label == null) return;
+        for (int i = 0; i < boxVaiTro.getItemCount(); i++) {
+            if (boxVaiTro.getItemAt(i).toString().equals(label)) {
+                boxVaiTro.setSelectedIndex(i);
+                return;
+            }
         }
     }
 
@@ -207,10 +210,6 @@ public final class QLNhanVienPanel extends BasePanel {
         String diaChi = getDiaChi();
         String vaiTro = getVaiTro();
 
-        if (ngaySinh == null) {
-            throw new IllegalArgumentException("Vui lòng chọn ngày sinh!");
-        }
-
         if (isEditMode) {
             return new NhanVien(maNhanVien, hoTen, ngaySinh, gioiTinh, sdt, email, diaChi, vaiTro);
         } else {
@@ -222,14 +221,14 @@ public final class QLNhanVienPanel extends BasePanel {
         isEditMode = true;
 
         fieldMaNhanVien.setEnabled(false);
+        fieldMaNhanVien.setBackground(new Color(200, 200, 200));
 
         fieldMatKhau.setEnabled(false);
         fieldMatKhau.setText("");
-        fieldMatKhau.setBackground(new Color(240, 240, 240));
+        fieldMatKhau.setBackground(new Color(200, 200, 200));
 
         buttonThem.setEnabled(false);
         buttonSua.setEnabled(true);
-        buttonLuu.setEnabled(true);
         buttonXoa.setEnabled(true);
         buttonReset.setEnabled(true);
     }
@@ -239,26 +238,32 @@ public final class QLNhanVienPanel extends BasePanel {
 
         fieldMaNhanVien.setEnabled(true);
         fieldMaNhanVien.setText("");
+        fieldMaNhanVien.setBackground(Color.WHITE);
 
         fieldMatKhau.setEnabled(true);
         fieldMatKhau.setText("");
         fieldMatKhau.setBackground(Color.WHITE);
 
         fieldHoTen.setText("");
+
         chooserNgaySinh.setDate(null);
+
         if (boxGioiTinh.getItemCount() > 0) {
             boxGioiTinh.setSelectedIndex(0);
         }
+
         fieldSdt.setText("");
+
         fieldEmail.setText("");
+
         fieldDiaChi.setText("");
+
         if (boxVaiTro.getItemCount() > 0) {
             boxVaiTro.setSelectedIndex(0);
         }
 
         buttonThem.setEnabled(true);
         buttonSua.setEnabled(false);
-        buttonLuu.setEnabled(false);
         buttonXoa.setEnabled(false);
         buttonReset.setEnabled(true);
 
@@ -267,23 +272,23 @@ public final class QLNhanVienPanel extends BasePanel {
         }
     }
 
-    public void addThemListener(ActionListener l) {
+    public void addThemNhanVienListener(ActionListener l) {
         buttonThem.addActionListener(l);
     }
 
-    public void addSuaListener(ActionListener l) {
+    public void addSuaNhanVienListener(ActionListener l) {
         buttonSua.addActionListener(l);
     }
 
-    public void addLuuListener(ActionListener l) {
-        buttonLuu.addActionListener(l);
-    }
-
-    public void addXoaListener(ActionListener l) {
+    public void addXoaNhanVienListener(ActionListener l) {
         buttonXoa.addActionListener(l);
     }
 
-    public void addResetListener(ActionListener l) {
+    public void addResetFormListener(ActionListener l) {
         buttonReset.addActionListener(l);
+    }
+
+    public void addTableMouseClickListener(MouseListener l) {
+        table.addMouseListener(l);
     }
 }
