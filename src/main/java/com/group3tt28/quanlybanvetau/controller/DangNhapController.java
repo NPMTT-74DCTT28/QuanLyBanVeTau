@@ -5,15 +5,20 @@ import com.group3tt28.quanlybanvetau.model.NhanVien;
 import com.group3tt28.quanlybanvetau.util.BamMatKhau;
 import com.group3tt28.quanlybanvetau.util.SessionManager;
 import com.group3tt28.quanlybanvetau.view.DangNhapFrame;
+import com.group3tt28.quanlybanvetau.view.MainFrame;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class DangNhapController {
 
-    private static DangNhapFrame view;
+    private final DangNhapFrame view;
+
+    private final NhanVienDAO dao;
 
     public DangNhapController() {
+        dao = new NhanVienDAO();
+
         view = new DangNhapFrame();
         view.addLoginListener(new LoginListener());
         view.addExitListener(new ExitListener());
@@ -21,9 +26,7 @@ public class DangNhapController {
         view.setVisible(true);
     }
 
-    private static class LoginListener implements ActionListener {
-
-        NhanVienDAO dao = new NhanVienDAO();
+    private class LoginListener implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -31,25 +34,20 @@ public class DangNhapController {
             String matKhau = view.getMatKhau();
 
             if (maNhanVien.isEmpty() || matKhau.isEmpty()) {
-                view.showError("Vui lòng nhập đủ mã nhân viên và mật khẩu!");
+                view.showWarning("Vui lòng nhập đủ mã nhân viên và mật khẩu!");
                 return;
             }
 
             try {
                 NhanVien nhanVien = dao.getNhanVienByMaNV(maNhanVien);
 
-                if (nhanVien == null) {
-                    view.showError("Tài khoản không tồn tại");
-                    return;
-                }
-
-                if (!BamMatKhau.checkMatKhau(matKhau, nhanVien.getMatKhau())) {
-                    view.showError("Mật khẩu không chính xác!");
+                if (nhanVien == null || !BamMatKhau.checkMatKhau(matKhau, nhanVien.getMatKhau())) {
+                    view.showWarning("Tài khoản hoặc mật khẩu không chính xác!");
                     return;
                 }
 
                 SessionManager.setCurrentUser(nhanVien);
-                view.showMessage("Đăng nhập thành công!");
+                new MainFrame().setVisible(true);
             } catch (RuntimeException ex) {
                 ex.printStackTrace();
                 view.showError("Lỗi hệ thống: " + ex.getMessage());
@@ -60,7 +58,7 @@ public class DangNhapController {
         }
     }
 
-    private static class ExitListener implements ActionListener {
+    private class ExitListener implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
