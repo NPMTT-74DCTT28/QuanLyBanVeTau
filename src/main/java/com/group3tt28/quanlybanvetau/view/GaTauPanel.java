@@ -99,4 +99,7 @@ public class GaTauPanel extends BaseFrame{
     public void removeGaTau(ActionListener l) {
         btnxoa.addActionListener(l);
     }
+    public void addRow(Object[] row) {
+        model.addRow(row);
+    }
 }
