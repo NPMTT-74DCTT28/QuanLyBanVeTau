@@ -12,29 +12,29 @@ import java.awt.event.ActionListener;
 
 public class DangNhapController {
 
-    private final DangNhapFrame view;
+    private final DangNhapFrame frame;
 
     private final NhanVienDAO dao;
 
     public DangNhapController() {
         dao = new NhanVienDAO();
 
-        view = new DangNhapFrame();
-        view.addLoginListener(new LoginListener());
-        view.addExitListener(new ExitListener());
+        frame = new DangNhapFrame();
+        frame.addLoginListener(new LoginListener());
+        frame.addExitListener(new ExitListener());
 
-        view.setVisible(true);
+        frame.setVisible(true);
     }
 
     private class LoginListener implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            String maNhanVien = view.getMaNV();
-            String matKhau = view.getMatKhau();
+            String maNhanVien = frame.getMaNV();
+            String matKhau = frame.getMatKhau();
 
             if (maNhanVien.isEmpty() || matKhau.isEmpty()) {
-                view.showWarning("Vui lòng nhập đủ mã nhân viên và mật khẩu!");
+                frame.showWarning("Vui lòng nhập đủ mã nhân viên và mật khẩu!");
                 return;
             }
 
@@ -42,18 +42,19 @@ public class DangNhapController {
                 NhanVien nhanVien = dao.getNhanVienByMaNV(maNhanVien);
 
                 if (nhanVien == null || !BamMatKhau.checkMatKhau(matKhau, nhanVien.getMatKhau())) {
-                    view.showWarning("Tài khoản hoặc mật khẩu không chính xác!");
+                    frame.showWarning("Tài khoản hoặc mật khẩu không chính xác!");
                     return;
                 }
 
                 SessionManager.setCurrentUser(nhanVien);
                 new MainFrame().setVisible(true);
+                frame.dispose();
             } catch (RuntimeException ex) {
                 ex.printStackTrace();
-                view.showError("Lỗi hệ thống: " + ex.getMessage());
+                frame.showError("Lỗi hệ thống: " + ex.getMessage());
             } catch (Exception ex) {
                 ex.printStackTrace();
-                view.showError("Lỗi không xác định: " + ex.getMessage());
+                frame.showError("Lỗi không xác định: " + ex.getMessage());
             }
         }
     }
@@ -62,8 +63,8 @@ public class DangNhapController {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (view.showConfirm("Bạn muốn thoát ứng dụng?")) {
-                view.dispose();
+            if (frame.showConfirm("Bạn muốn thoát ứng dụng?")) {
+                frame.dispose();
                 System.exit(0);
             }
         }
