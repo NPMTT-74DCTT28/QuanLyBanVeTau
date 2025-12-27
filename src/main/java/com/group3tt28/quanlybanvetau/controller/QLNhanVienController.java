@@ -107,10 +107,31 @@ public class QLNhanVienController {
         public void actionPerformed(ActionEvent e) {
             try {
                 NhanVien nhanVien = panel.getNhanVienFromForm();
+
+                if (validateInput(nhanVien) != null) {
+                    panel.showWarning(validateInput(nhanVien));
+                }
+
+                if (nhanVien.getEmail().isEmpty()) {
+                    nhanVien.setEmail(null);
+                }
+
+                if (panel.showConfirm("Bạn muốn cập nhật thông tin nhân viên "
+                        + nhanVien.getMaNhanVien())) {
+                    if (dao.update(nhanVien)) {
+                        panel.showMessage("Cập nhật thành công!");
+                        panel.resetForm();
+                        loadTableData();
+                    } else {
+                        panel.showError("Cập nhật thất bại! Vui lòng kiểm tra lại!");
+                    }
+                }
             } catch (RuntimeException ex) {
-
+                ex.printStackTrace();
+                panel.showError("Lỗi hệ thống: " + ex.getMessage());
             } catch (Exception ex) {
-
+                ex.printStackTrace();
+                panel.showError("Lỗi không xác định: " + ex.getMessage());
             }
         }
     }
