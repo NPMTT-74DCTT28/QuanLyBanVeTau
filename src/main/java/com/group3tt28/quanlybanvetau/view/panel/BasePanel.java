@@ -56,18 +56,18 @@ public abstract class BasePanel extends JPanel {
         panel.setBackground(background);
 
         for (JButton button : buttons) {
-            button.setPreferredSize(new Dimension(80, 40));
             panel.add(button);
         }
 
         return panel;
     }
 
-    protected JButton createStyledButton(String text, Color background, Color foreground) {
+    protected JButton createStyledButton(String text, Dimension buttonSize, Color background, Color foreground) {
         JButton button = new JButton(text);
         button.setFont(FONT_BOLD);
         button.setBackground(background);
         button.setForeground(foreground);
+        button.setPreferredSize(buttonSize);
         button.setFocusPainted(false);
         button.setCursor(new Cursor(Cursor.HAND_CURSOR));
         return button;
