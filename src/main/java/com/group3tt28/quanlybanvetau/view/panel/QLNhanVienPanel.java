@@ -6,6 +6,7 @@ import com.group3tt28.quanlybanvetau.model.NhanVien;
 import com.toedter.calendar.JDateChooser;
 
 import javax.swing.*;
+import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
@@ -116,8 +117,10 @@ public final class QLNhanVienPanel extends BasePanel {
         tableHeader.setFont(FONT_PLAIN);
 
         JScrollPane scrollPane = new JScrollPane(table);
-        scrollPane.setBorder(new TitledBorder(new LineBorder(Color.LIGHT_GRAY), "Danh sách nhân viên",
-                TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, FONT_BOLD, Color.BLACK));
+
+        TitledBorder tableBorder = new TitledBorder(new LineBorder(Color.LIGHT_GRAY), "Danh sách nhân viên",
+                TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, FONT_BOLD, Color.BLACK);
+        scrollPane.setBorder(new CompoundBorder(new EmptyBorder(5, 5, 5, 5), tableBorder));
         scrollPane.setForeground(Color.BLACK);
         scrollPane.setBackground(Color.WHITE);
         scrollPane.setFont(FONT_PLAIN);
