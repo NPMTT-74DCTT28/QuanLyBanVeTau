@@ -49,14 +49,13 @@ public class LoaiToaPanel extends BasePanel{
         fieldHeSoGia = new JTextField();
         panelForm.add(createInputField("Hệ số giá: ", fieldHeSoGia, Color.WHITE));
 
-
-        buttonThem = new JButton("Thêm");
+        buttonThem = createStyledButton("Thêm", new Dimension(80, 40), PRIMARY_COLOR, Color.WHITE);
         buttonThem.setEnabled(true);
-        buttonSua = new JButton("Sửa");
+        buttonSua = createStyledButton("Sửa", new Dimension(80, 40), new Color(20, 200, 40), Color.WHITE);
         buttonSua.setEnabled(false);
-        buttonXoa = new JButton("Xoá");
+        buttonXoa = createStyledButton("Xoá", new Dimension(80, 40), Color.RED , Color.WHITE);
         buttonXoa.setEnabled(false);
-        buttonReset = new JButton("Reset");
+        buttonReset = createStyledButton("Reset", new Dimension(110, 40), PRIMARY_COLOR, Color.WHITE);
         buttonReset.setEnabled(true);
 
         JButton[] buttons = {buttonThem, buttonSua, buttonXoa, buttonReset};

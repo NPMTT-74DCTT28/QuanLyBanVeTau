@@ -1,16 +1,22 @@
 package com.group3tt28.quanlybanvetau.view.panel;
 
+import com.group3tt28.quanlybanvetau.model.Ghe;
+import com.group3tt28.quanlybanvetau.model.ToaTau;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
+import java.util.List;
 
 public class GhePanel extends BasePanel {
     int k = 0;
     private JTextField fieldSoGhe;
-    private JComboBox<Integer> ComboBoxIDToaTau;
+    private JComboBox<ToaTau> ComboBoxIDToaTau;
     private JButton buttonThem;
     private JButton buttonSua;
     private JButton buttonXoa;
@@ -46,13 +52,13 @@ public class GhePanel extends BasePanel {
         panelForm.add(createInputField("ID toa tàu: ", ComboBoxIDToaTau, Color.WHITE));
 
 
-        buttonThem = new JButton("Thêm");
+        buttonThem = createStyledButton("Thêm", new Dimension(80, 40), PRIMARY_COLOR, Color.WHITE);
         buttonThem.setEnabled(true);
-        buttonSua = new JButton("Sửa");
+        buttonSua = createStyledButton("Sửa", new Dimension(80, 40), new Color(20, 200, 40), Color.WHITE);
         buttonSua.setEnabled(false);
-        buttonXoa = new JButton("Xoá");
+        buttonXoa = createStyledButton("Xoá", new Dimension(80, 40), Color.RED, Color.WHITE);
         buttonXoa.setEnabled(false);
-        buttonReset = new JButton("Reset");
+        buttonReset = createStyledButton("Reset", new Dimension(110, 40), PRIMARY_COLOR, Color.WHITE);
         buttonReset.setEnabled(true);
 
         JButton[] buttons = {buttonThem, buttonSua, buttonXoa, buttonReset};
@@ -61,9 +67,12 @@ public class GhePanel extends BasePanel {
         panelTop.add(panelForm);
         panelTop.add(createButtonField(buttons, Color.WHITE), BorderLayout.SOUTH);
 
-        Object[] columns = new Object[]{"Số ghế", "ID toa tàu"};
+        Object[] columns = new Object[]{"ID", "Số ghế", "Toa tàu"};
         DefaultTableModel tableModel = new DefaultTableModel(columns, 0);
         tblGhe = new JTable(tableModel);
+        TableColumnModel columnModel = tblGhe.getColumnModel();
+        TableColumn columnId = columnModel.getColumn(0);
+        tblGhe.removeColumn(columnId);
         JScrollPane scrollPane = new JScrollPane(tblGhe);
         scrollPane.setFont(new Font("Segoe UI", Font.BOLD, 13));
         scrollPane.setBorder(new EmptyBorder(10, 10, 10, 10));
@@ -71,54 +80,87 @@ public class GhePanel extends BasePanel {
         add(panelTop, BorderLayout.NORTH);
         add(scrollPane, BorderLayout.CENTER);
     }
-    public String getSoGhe(){return fieldSoGhe.getText().trim();}
-    public void setSoGhe (String soGhe){fieldSoGhe.setText(soGhe);}
-    public int getIDToaTau(){
-        if (ComboBoxIDToaTau.getSelectedItem() != null){
-            return Integer.parseInt(ComboBoxIDToaTau.getSelectedItem().toString());
-        }else
-            return 0;
+
+    public String getSoGhe() {
+        return fieldSoGhe.getText().trim();
     }
-    public void setIDToaTau (int idToaTau){ComboBoxIDToaTau.setSelectedItem(idToaTau);}
 
-    public void startEditMode(){
-        isEditMode = true;
+    public void setSoGhe(String soGhe) {
+        fieldSoGhe.setText(soGhe);
+    }
 
-        fieldSoGhe.setEnabled(false);
-        fieldSoGhe.setBackground(new Color(200, 200, 200));
+    public int getIDToaTau() {
+        ToaTau selected = (ToaTau) ComboBoxIDToaTau.getSelectedItem();
+        return (selected != null) ? selected.getId() : 0;
+    }
 
+    public void setIDToaTau(int idToaTau) {
+        for (int i = 0; i < ComboBoxIDToaTau.getItemCount(); i++) {
+            ToaTau item = ComboBoxIDToaTau.getItemAt(i);
+            if (item.getId() == idToaTau) {
+                ComboBoxIDToaTau.setSelectedItem(item);
+                break;
+            }
+        }
+    }
+
+    public JTable getTable() {
+        return tblGhe;
+    }
+
+    public void addButtonThemActionListener(ActionListener a) {
+        buttonThem.addActionListener(a);
+    }
+
+    public void addButtonSuaActionListener(ActionListener a) {
+        buttonSua.addActionListener(a);
+    }
+
+    public void addButtonXoaActionListener(ActionListener a) {
+        buttonXoa.addActionListener(a);
+    }
+
+    public void addButtonResetActionListener(ActionListener a) {
+        buttonReset.addActionListener(a);
+    }
+
+    public void addTableMouseClickListener(MouseListener l) {
+        tblGhe.addMouseListener(l);
+    }
+
+    public Ghe getGheFromForm() {
+        String soGhe = getSoGhe();
+        int idToaTau = getIDToaTau();
+
+        return new Ghe(soGhe, idToaTau);
+    }
+
+    public void startEditMode() {
         buttonThem.setEnabled(false);
         buttonSua.setEnabled(true);
         buttonXoa.setEnabled(true);
         buttonReset.setEnabled(true);
     }
 
-    public void reSetForm(){
-        isEditMode = false;
-
+    public void resetForm() {
         fieldSoGhe.setEnabled(true);
         fieldSoGhe.setText("");
-        fieldSoGhe.setBackground(Color.WHITE);
+        fieldSoGhe.setBackground(Color.white);
 
-        ComboBoxIDToaTau.setSelectedIndex(0);
-
-        if(tblGhe != null){
+        ComboBoxIDToaTau.setSelectedIndex(-1);
+        buttonThem.setEnabled(true);
+        buttonSua.setEnabled(false);
+        buttonXoa.setEnabled(false);
+        buttonReset.setEnabled(true);
+        if (tblGhe != null) {
             tblGhe.clearSelection();
         }
     }
 
-    public void addButtonThemActionListener(ActionListener a){buttonThem.addActionListener(a);}
-    public void addButtonSuaActionListener(ActionListener a){buttonSua.addActionListener(a);}
-    public void addButtonXoaActionListener(ActionListener a){buttonXoa.addActionListener(a);}
-    public void addButtonResetActionListener(ActionListener a ){buttonReset.addActionListener(a);}
-    public void addTableMouseClickListener(MouseListener l){
-        tblGhe.addMouseListener(l);
-    }
-
-    static void main() {
-        JFrame F = new JFrame();
-        F.add(new GhePanel());
-        F.setSize(800, 500);
-        F.setVisible(true);
+    public void setComboBoxToaTauData(java.util.List<ToaTau> list) {
+        ComboBoxIDToaTau.removeAllItems();
+        for (ToaTau toa : list) {
+            ComboBoxIDToaTau.addItem(toa);
+        }
     }
 }
