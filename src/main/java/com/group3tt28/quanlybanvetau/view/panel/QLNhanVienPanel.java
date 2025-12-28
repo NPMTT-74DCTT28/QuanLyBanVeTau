@@ -1,4 +1,4 @@
-package com.group3tt28.quanlybanvetau.view;
+package com.group3tt28.quanlybanvetau.view.panel;
 
 import com.group3tt28.quanlybanvetau.enums.GioiTinh;
 import com.group3tt28.quanlybanvetau.enums.VaiTro;
@@ -6,8 +6,14 @@ import com.group3tt28.quanlybanvetau.model.NhanVien;
 import com.toedter.calendar.JDateChooser;
 
 import javax.swing.*;
+import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
+import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
@@ -36,75 +42,99 @@ public final class QLNhanVienPanel extends BasePanel {
 
     @Override
     protected void initComponents() {
-        setLayout(new BorderLayout());
-
-        JPanel panelHome = new JPanel();
-        panelHome.setBackground(new Color(152, 251, 152));
-        panelHome.setBorder(new EmptyBorder(5, 5, 5, 5));
-        JLabel labelHome = new JLabel("Quản lý thông tin nhân viên");
-        labelHome.setSize(200, 80);
-        labelHome.setFont(new Font("Segoe UI", Font.BOLD, 20));
-        panelHome.add(labelHome);
+        setLayout(new BorderLayout(0, 0));
+        setBackground(Color.WHITE);
 
         JPanel panelTop = new JPanel(new BorderLayout(0, 5));
+        panelTop.setBackground(Color.WHITE);
+
+        JPanel panelTitle = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
+        panelTitle.setBackground(PRIMARY_COLOR);
+        JLabel labelTitle = new JLabel("QUẢN LÝ THÔNG TIN NHÂN VIÊN");
+        labelTitle.setFont(new Font("Segoe UI", Font.BOLD, 22));
+        labelTitle.setForeground(Color.WHITE);
+        panelTitle.add(labelTitle);
 
         JPanel panelForm = new JPanel(new GridLayout(3, 3, 5, 5));
-        panelForm.setBorder(new EmptyBorder(10, 5, 10, 5));
+        panelForm.setBorder(new EmptyBorder(10, 10, 10, 10));
+        panelForm.setBackground(Color.WHITE);
 
         fieldMaNhanVien = new JTextField();
-        panelForm.add(inputField("Mã nhân viên:  ", fieldMaNhanVien));
+        panelForm.add(createInputField("Mã nhân viên:  ", fieldMaNhanVien, Color.WHITE));
 
         fieldMatKhau = new JPasswordField();
-        panelForm.add(inputField("Mật khẩu: ", fieldMatKhau));
+        panelForm.add(createInputField("Mật khẩu: ", fieldMatKhau, Color.WHITE));
 
         fieldHoTen = new JTextField();
-        panelForm.add(inputField("Họ tên: ", fieldHoTen));
+        panelForm.add(createInputField("Họ tên: ", fieldHoTen, Color.WHITE));
 
         chooserNgaySinh = new JDateChooser();
-        panelForm.add(inputField("Ngày sinh: ", chooserNgaySinh));
+        chooserNgaySinh.setMaxSelectableDate(new Date(System.currentTimeMillis()));
+        panelForm.add(createInputField("Ngày sinh: ", chooserNgaySinh, Color.WHITE));
 
         boxGioiTinh = new JComboBox<>(GioiTinh.values());
-        panelForm.add(inputField("Giới tính: ", boxGioiTinh));
+        panelForm.add(createInputField("Giới tính: ", boxGioiTinh, Color.WHITE));
 
         fieldSdt = new JTextField();
-        panelForm.add(inputField("SĐT: ", fieldSdt));
+        panelForm.add(createInputField("SĐT: ", fieldSdt, Color.WHITE));
 
         fieldEmail = new JTextField();
-        panelForm.add(inputField("eMail: ", fieldEmail));
+        panelForm.add(createInputField("eMail: ", fieldEmail, Color.WHITE));
 
         fieldDiaChi = new JTextField();
-        panelForm.add(inputField("Địa chỉ: ", fieldDiaChi));
+        panelForm.add(createInputField("Địa chỉ: ", fieldDiaChi, Color.WHITE));
 
         boxVaiTro = new JComboBox<>(VaiTro.values());
-        panelForm.add(inputField("Vai trò: ", boxVaiTro));
+        panelForm.add(createInputField("Vai trò: ", boxVaiTro, Color.WHITE));
 
-        buttonThem = new JButton("Thêm");
+        buttonThem = createStyledButton("Thêm", PRIMARY_COLOR, Color.WHITE);
         buttonThem.setEnabled(true);
-        buttonSua = new JButton("Sửa");
+        buttonSua = createStyledButton("Sửa", new Color(200, 200, 40), Color.WHITE);
         buttonSua.setEnabled(false);
-        buttonXoa = new JButton("Xoá");
+        buttonXoa = createStyledButton("Xoá", Color.RED, Color.white);
         buttonXoa.setEnabled(false);
-        buttonReset = new JButton("Reset");
+        buttonReset = createStyledButton("Reset", PRIMARY_COLOR, Color.WHITE);
         buttonReset.setEnabled(true);
 
         JButton[] buttons = {buttonThem, buttonSua, buttonXoa, buttonReset};
 
-        panelTop.add(panelHome, BorderLayout.NORTH);
+        panelTop.add(panelTitle, BorderLayout.NORTH);
         panelTop.add(panelForm);
-        panelTop.add(buttonField(buttons), BorderLayout.SOUTH);
+        panelTop.add(createButtonField(buttons, Color.white), BorderLayout.SOUTH);
 
-        Object[] columns = new Object[]{"Mã nhân viên", "Họ tên", "Ngày sinh", "Giới tính", "SĐT", "eMail", "Địa chỉ", "Vai trò"};
+        Object[] columns = new Object[]{"Id", "Mã nhân viên", "Họ tên", "Ngày sinh", "Giới tính", "SĐT", "eMail", "Địa chỉ", "Vai trò"};
         DefaultTableModel tableModel = new DefaultTableModel(columns, 0);
+
         table = new JTable(tableModel);
+        TableColumnModel columnModel = table.getColumnModel();
+        TableColumn columnId = columnModel.getColumn(0);
+        table.removeColumn(columnId);
+
+        JTableHeader tableHeader = table.getTableHeader();
+        tableHeader.setBackground(SECONDARY_COLOR);
+        tableHeader.setForeground(Color.BLACK);
+        tableHeader.setOpaque(false);
+        tableHeader.setFont(FONT_PLAIN);
+
         JScrollPane scrollPane = new JScrollPane(table);
-        scrollPane.setFont(new Font("Segoe UI", Font.BOLD, 13));
-        scrollPane.setBorder(new EmptyBorder(10, 10, 10, 10));
+
+        TitledBorder tableBorder = new TitledBorder(new LineBorder(Color.LIGHT_GRAY), "Danh sách nhân viên",
+                TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, FONT_BOLD, Color.BLACK);
+        scrollPane.setBorder(new CompoundBorder(new EmptyBorder(5, 5, 5, 5), tableBorder));
+        scrollPane.setForeground(Color.BLACK);
+        scrollPane.setBackground(Color.WHITE);
+        scrollPane.setFont(FONT_PLAIN);
+
+        JPanel panelTable = new JPanel(new BorderLayout());
+        panelTable.setBorder(new EmptyBorder(10, 10, 10, 10));
+        panelTable.setBackground(Color.WHITE);
+        panelTable.add(scrollPane, BorderLayout.CENTER);
 
         add(panelTop, BorderLayout.NORTH);
-        add(scrollPane, BorderLayout.CENTER);
+        add(panelTable, BorderLayout.CENTER);
     }
 
-    private String getMaNhanVien() {
+    public String getMaNhanVien() {
         return fieldMaNhanVien.getText().trim();
     }
 
@@ -112,7 +142,7 @@ public final class QLNhanVienPanel extends BasePanel {
         fieldMaNhanVien.setText(maNhanVien);
     }
 
-    private String getMatKhau() {
+    public String getMatKhau() {
         return new String(fieldMatKhau.getPassword());
     }
 
@@ -120,7 +150,7 @@ public final class QLNhanVienPanel extends BasePanel {
         fieldMatKhau.setText(matKhau);
     }
 
-    private String getHoTen() {
+    public String getHoTen() {
         return fieldHoTen.getText().trim();
     }
 
@@ -128,7 +158,7 @@ public final class QLNhanVienPanel extends BasePanel {
         fieldHoTen.setText(hoTen);
     }
 
-    private LocalDate getNgaySinh() {
+    public LocalDate getNgaySinh() {
         if (chooserNgaySinh.getDate() == null) {
             return null;
         }
@@ -143,7 +173,7 @@ public final class QLNhanVienPanel extends BasePanel {
         }
     }
 
-    private String getGioiTinh() {
+    public String getGioiTinh() {
         return String.valueOf(boxGioiTinh.getSelectedItem());
     }
 
@@ -157,7 +187,7 @@ public final class QLNhanVienPanel extends BasePanel {
         }
     }
 
-    private String getSdt() {
+    public String getSdt() {
         return fieldSdt.getText().trim();
     }
 
@@ -165,7 +195,7 @@ public final class QLNhanVienPanel extends BasePanel {
         fieldSdt.setText(sdt);
     }
 
-    private String getEmail() {
+    public String getEmail() {
         return fieldEmail.getText().trim();
     }
 
@@ -173,7 +203,7 @@ public final class QLNhanVienPanel extends BasePanel {
         fieldEmail.setText(email);
     }
 
-    private String getDiaChi() {
+    public String getDiaChi() {
         return fieldDiaChi.getText().trim();
     }
 
@@ -181,7 +211,7 @@ public final class QLNhanVienPanel extends BasePanel {
         fieldDiaChi.setText(diaChi);
     }
 
-    private String getVaiTro() {
+    public String getVaiTro() {
         return String.valueOf(boxVaiTro.getSelectedItem());
     }
 
@@ -221,11 +251,9 @@ public final class QLNhanVienPanel extends BasePanel {
         isEditMode = true;
 
         fieldMaNhanVien.setEnabled(false);
-        fieldMaNhanVien.setBackground(new Color(200, 200, 200));
 
         fieldMatKhau.setEnabled(false);
         fieldMatKhau.setText("");
-        fieldMatKhau.setBackground(new Color(200, 200, 200));
 
         buttonThem.setEnabled(false);
         buttonSua.setEnabled(true);
@@ -238,11 +266,9 @@ public final class QLNhanVienPanel extends BasePanel {
 
         fieldMaNhanVien.setEnabled(true);
         fieldMaNhanVien.setText("");
-        fieldMaNhanVien.setBackground(Color.WHITE);
 
         fieldMatKhau.setEnabled(true);
         fieldMatKhau.setText("");
-        fieldMatKhau.setBackground(Color.WHITE);
 
         fieldHoTen.setText("");
 

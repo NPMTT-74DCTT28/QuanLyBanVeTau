@@ -1,9 +1,8 @@
 package com.group3tt28.quanlybanvetau.controller;
 
 import com.group3tt28.quanlybanvetau.dao.TauDAO;
-import com.group3tt28.quanlybanvetau.model.LoaiToa;
 import com.group3tt28.quanlybanvetau.model.Tau;
-import com.group3tt28.quanlybanvetau.view.TauPanel;
+import com.group3tt28.quanlybanvetau.view.panel.TauPanel;
 
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.*;

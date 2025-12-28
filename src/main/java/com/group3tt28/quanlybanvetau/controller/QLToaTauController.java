@@ -6,7 +6,7 @@ import com.group3tt28.quanlybanvetau.dao.ToaTauDAO;
 import com.group3tt28.quanlybanvetau.model.LoaiToa;
 import com.group3tt28.quanlybanvetau.model.Tau;
 import com.group3tt28.quanlybanvetau.model.ToaTau;
-import com.group3tt28.quanlybanvetau.view.QLToaTauPanel;
+import com.group3tt28.quanlybanvetau.view.panel.QLToaTauPanel;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;

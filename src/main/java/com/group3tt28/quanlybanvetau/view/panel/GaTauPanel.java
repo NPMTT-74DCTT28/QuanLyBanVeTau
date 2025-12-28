@@ -1,4 +1,4 @@
-package com.group3tt28.quanlybanvetau.view;
+package com.group3tt28.quanlybanvetau.view.panel;
 
 import com.group3tt28.quanlybanvetau.model.GaTau;
 
@@ -7,9 +7,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.List;
 
 public class GaTauPanel extends BasePanel {
     private JTextField fieldMaga, fieldTenga, fieldDiachi, fieldThanhpho;
@@ -37,16 +35,16 @@ public class GaTauPanel extends BasePanel {
         panelForm.setBorder(new EmptyBorder(10, 5, 10, 5));
 
         fieldMaga = new JTextField();
-        panelForm.add(inputField("Mã Ga: ", fieldMaga));
+        panelForm.add(createInputField("Mã Ga: ", fieldMaga, Color.WHITE));
 
         fieldTenga = new JTextField();
-        panelForm.add(inputField("Tên Ga: ", fieldTenga));
+        panelForm.add(createInputField("Tên Ga: ", fieldTenga, Color.WHITE));
 
         fieldDiachi = new JTextField();
-        panelForm.add(inputField("Địa chỉ: ", fieldDiachi));
+        panelForm.add(createInputField("Địa chỉ: ", fieldDiachi, Color.WHITE));
 
         fieldThanhpho = new JTextField();
-        panelForm.add(inputField("Thành phố: ", fieldThanhpho));
+        panelForm.add(createInputField("Thành phố: ", fieldThanhpho, Color.WHITE));
 
         btnthem = new JButton("Thêm");
         btnsua = new JButton("Sửa");
@@ -56,7 +54,7 @@ public class GaTauPanel extends BasePanel {
 
         panelTop.add(panelForm, BorderLayout.NORTH);
         panelTop.add(panelForm);
-        panelTop.add(buttonField(btn), BorderLayout.SOUTH);
+        panelTop.add(createButtonField(btn, Color.WHITE), BorderLayout.SOUTH);
 
         String[] columNames = {"Mã Ga", "Tên Ga", "Địa chỉ", "Thành phố"};
         model = new  DefaultTableModel(columNames, 0);

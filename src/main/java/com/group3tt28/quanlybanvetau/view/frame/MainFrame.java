@@ -1,4 +1,4 @@
-package com.group3tt28.quanlybanvetau.view;
+package com.group3tt28.quanlybanvetau.view.frame;
 
 import javax.swing.*;
 import java.awt.*;

@@ -1,4 +1,4 @@
-package com.group3tt28.quanlybanvetau.view;
+package com.group3tt28.quanlybanvetau.view.panel;
 
 import com.group3tt28.quanlybanvetau.enums.GioiTinh;
 import com.group3tt28.quanlybanvetau.model.KhachHang;
@@ -45,23 +45,23 @@ public class KhachHangPanel extends BasePanel {
         JPanel panelForm = new JPanel(new GridLayout(2,3));
 
         fieldCCCD = new JTextField();
-        panelForm.add(inputField("CCCD: ", fieldCCCD));
+        panelForm.add(createInputField("CCCD: ", fieldCCCD, Color.WHITE));
 
         fieldHoTen = new JTextField();
-        panelForm.add(inputField("Họ tên: ", fieldHoTen));
+        panelForm.add(createInputField("Họ tên: ", fieldHoTen, Color.WHITE));
 
         chooserNgaySinh = new JDateChooser();
         chooserNgaySinh.setMaxSelectableDate(new Date(System.currentTimeMillis()));
-        panelForm.add(inputField("Ngày sinh: ", chooserNgaySinh));
+        panelForm.add(createInputField("Ngày sinh: ", chooserNgaySinh, Color.WHITE));
 
         boxGioiTinh = new JComboBox<>(GioiTinh.values());
-        panelForm.add(inputField("Giới tính: ", boxGioiTinh));
+        panelForm.add(createInputField("Giới tính: ", boxGioiTinh, Color.WHITE));
 
         fieldSDT = new JTextField();
-        panelForm.add(inputField("SĐT: ", fieldSDT));
+        panelForm.add(createInputField("SĐT: ", fieldSDT, Color.WHITE));
 
         fieldDiaChi = new JTextField();
-        panelForm.add(inputField("Địa chỉ: ", fieldDiaChi));
+        panelForm.add(createInputField("Địa chỉ: ", fieldDiaChi, Color.WHITE));
 
         buttonThem = new JButton("Thêm");
         buttonThem.setEnabled(true);
@@ -76,7 +76,7 @@ public class KhachHangPanel extends BasePanel {
 
         panelTop.add(panelTitle, BorderLayout.NORTH);
         panelTop.add(panelForm);
-        panelTop.add(buttonField(buttons), BorderLayout.SOUTH);
+        panelTop.add(createButtonField(buttons, Color.WHITE), BorderLayout.SOUTH);
 
         Object[] columns = new Object[]{"CCCD", "Họ tên", "Ngày sinh", "Giới tinh", "SĐT", "Địa chỉ"};
         DefaultTableModel tableModel = new DefaultTableModel(columns, 0);

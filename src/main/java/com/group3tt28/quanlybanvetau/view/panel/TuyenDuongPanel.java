@@ -1,4 +1,4 @@
-package com.group3tt28.quanlybanvetau.view;
+package com.group3tt28.quanlybanvetau.view.panel;
 
 import com.group3tt28.quanlybanvetau.model.GaTau;
 import com.group3tt28.quanlybanvetau.model.TuyenDuong;
@@ -41,24 +41,24 @@ public final class TuyenDuongPanel extends BasePanel {
         panelFrom.setBorder(new EmptyBorder(5, 5, 5, 5));
 
         fieldMaTuyen = new JTextField();
-        panelFrom.add(inputField("Mã tuyến: ", fieldMaTuyen));
+        panelFrom.add(createInputField("Mã tuyến: ", fieldMaTuyen, Color.WHITE));
 
         fieldTenTuyen = new JTextField();
-        panelFrom.add(inputField("Tên tuyến: ", fieldTenTuyen));
+        panelFrom.add(createInputField("Tên tuyến: ", fieldTenTuyen, Color.WHITE));
 
         cboGadi = new JComboBox<>();
-        panelFrom.add(inputField("Ga đi: ", cboGadi));
+        panelFrom.add(createInputField("Ga đi: ", cboGadi, Color.WHITE));
 
         fieldKhoangcach = new JTextField();
         onlyNumber(fieldKhoangcach);
-        panelFrom.add(inputField("Khoảng cách (Km): ", fieldKhoangcach));
+        panelFrom.add(createInputField("Khoảng cách (Km): ", fieldKhoangcach, Color.WHITE));
 
         cboGaden = new JComboBox<>();
-        panelFrom.add(inputField("Ga đến: ", cboGaden));
+        panelFrom.add(createInputField("Ga đến: ", cboGaden, Color.WHITE));
 
         fieldGiaCB = new JTextField();
         onlyNumber(fieldGiaCB);
-        panelFrom.add(inputField("Giá cơ bản: ", fieldGiaCB));
+        panelFrom.add(createInputField("Giá cơ bản: ", fieldGiaCB, Color.WHITE));
 
         btnthem = new JButton("Thêm");
         btnsua = new JButton("Sửa");
@@ -68,7 +68,7 @@ public final class TuyenDuongPanel extends BasePanel {
 
         panelTop.add(titlePanel, BorderLayout.NORTH);
         panelTop.add(panelFrom);
-        panelTop.add(buttonField(btn), BorderLayout.SOUTH);
+        panelTop.add(createButtonField(btn, Color.WHITE), BorderLayout.SOUTH);
 
         String[] columNames = {"Mã Tuyến","Tên Tuyến","Ga Đi","Ga Đến","Khoảng Cách (km)","Giá Cơ Bản"};
         model = new DefaultTableModel(columNames, 0);

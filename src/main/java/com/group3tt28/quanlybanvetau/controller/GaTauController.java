@@ -2,9 +2,8 @@ package com.group3tt28.quanlybanvetau.controller;
 
 import com.group3tt28.quanlybanvetau.dao.GaTauDAO;
 import com.group3tt28.quanlybanvetau.model.GaTau;
-import com.group3tt28.quanlybanvetau.view.GaTauPanel;
+import com.group3tt28.quanlybanvetau.view.panel.GaTauPanel;
 
-import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

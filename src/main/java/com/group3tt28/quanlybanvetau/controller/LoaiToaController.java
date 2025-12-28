@@ -2,15 +2,13 @@ package com.group3tt28.quanlybanvetau.controller;
 
 import com.group3tt28.quanlybanvetau.dao.LoaiToaDAO;
 import com.group3tt28.quanlybanvetau.model.LoaiToa;
-import com.group3tt28.quanlybanvetau.model.NhanVien;
-import com.group3tt28.quanlybanvetau.view.LoaiToaPanel;
+import com.group3tt28.quanlybanvetau.view.panel.LoaiToaPanel;
 
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.time.LocalDate;
 import java.util.List;
 
 public class LoaiToaController {
