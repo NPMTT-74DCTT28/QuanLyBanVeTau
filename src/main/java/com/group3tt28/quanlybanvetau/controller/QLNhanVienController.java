@@ -99,8 +99,8 @@ public class QLNhanVienController {
                     return;
                 }
 
-                if (dao.checkTrung(nhanVien.getMaNhanVien())) {
-                    panel.showWarning("Mã nhân viên " + nhanVien.getMaNhanVien() + " đã tồn tại!");
+                if (dao.checkTrung(nhanVien.getMaNhanVien(), nhanVien.getSdt(), nhanVien.getId())) {
+                    panel.showWarning("Mã nhân viên hoặc SĐT đã tồn tại!");
                     return;
                 }
 
@@ -134,9 +134,15 @@ public class QLNhanVienController {
         public void actionPerformed(ActionEvent e) {
             try {
                 NhanVien nhanVien = panel.getNhanVienFromForm();
+                nhanVien.setId(Integer.parseInt(model.getValueAt(selectedRow, 0).toString()));
 
                 if (validateInput(nhanVien) != null) {
                     panel.showWarning(validateInput(nhanVien));
+                    return;
+                }
+
+                if (dao.checkTrung(nhanVien.getMaNhanVien(), nhanVien.getSdt(), nhanVien.getId())) {
+                    panel.showWarning("SĐT đã được sử dụng bởi nhân viên khác!");
                     return;
                 }
 

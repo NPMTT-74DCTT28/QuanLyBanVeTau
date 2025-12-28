@@ -39,17 +39,17 @@ public class TKNhanVienPanel extends BasePanel {
         panelForm.setBorder(new EmptyBorder(5, 5, 5, 5));
 
         fieldTimKiem = new JTextField();
-        panelForm.add(inputField("Tìm kiếm: ", fieldTimKiem));
+        panelForm.add(createInputField("Tìm kiếm: ", fieldTimKiem));
 
         chooserNgaySinh = new JDateChooser();
         chooserNgaySinh.setMaxSelectableDate(new Date(System.currentTimeMillis()));
-        panelForm.add(inputField("Ngày sinh: ", chooserNgaySinh));
+        panelForm.add(createInputField("Ngày sinh: ", chooserNgaySinh));
 
         boxGioiTinh = new JComboBox<>(GioiTinh.values());
-        panelForm.add(inputField("Giới tính: ", boxGioiTinh));
+        panelForm.add(createInputField("Giới tính: ", boxGioiTinh));
 
         boxVaiTro = new JComboBox<>(VaiTro.values());
-        panelForm.add(inputField("Vai trò: ", boxVaiTro));
+        panelForm.add(createInputField("Vai trò: ", boxVaiTro));
 
         buttonTimKiem = new JButton("Tìm kiếm");
         buttonReset = new JButton("Reset");
@@ -57,7 +57,7 @@ public class TKNhanVienPanel extends BasePanel {
 
         panelTop.add(panelTitle, BorderLayout.NORTH);
         panelTop.add(panelForm, BorderLayout.CENTER);
-        panelTop.add(buttonField(buttons), BorderLayout.SOUTH);
+        panelTop.add(createButtonField(buttons), BorderLayout.SOUTH);
 
         Object[] columns = new Object[]{
                 "Mã nhân viên", "Họ tên", "Ngày sinh", "Giới tính",

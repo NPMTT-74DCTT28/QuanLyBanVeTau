@@ -51,13 +51,13 @@ public final class QLLichTrinhPanel extends BasePanel {
         panelForm.setBorder(new EmptyBorder(10, 5, 10, 5));
 
         fieldMaLichTrinh = new JTextField();
-        panelForm.add(inputField("Mã lịch trình:", fieldMaLichTrinh));
+        panelForm.add(createInputField("Mã lịch trình:", fieldMaLichTrinh));
 
         boxTau = new JComboBox<>();
-        panelForm.add(inputField("Tàu:", boxTau));
+        panelForm.add(createInputField("Tàu:", boxTau));
 
         boxTuyenDuong = new JComboBox<>();
-        panelForm.add(inputField("Tuyến đường:", boxTuyenDuong));
+        panelForm.add(createInputField("Tuyến đường:", boxTuyenDuong));
 
         // Cấu hình Spinner NGÀY ĐI
         SpinnerDateModel modelDi = new SpinnerDateModel();
@@ -65,7 +65,7 @@ public final class QLLichTrinhPanel extends BasePanel {
         JSpinner.DateEditor editorDi = new JSpinner.DateEditor(spinnerNgayDi, "yyyy-MM-dd HH:mm:ss");
         spinnerNgayDi.setEditor(editorDi);
         spinnerNgayDi.setValue(new Date());
-        panelForm.add(inputField("Ngày đi:", spinnerNgayDi));
+        panelForm.add(createInputField("Ngày đi:", spinnerNgayDi));
 
         // Cấu hình Spinner NGÀY ĐẾN
         SpinnerDateModel modelDen = new SpinnerDateModel();
@@ -73,10 +73,10 @@ public final class QLLichTrinhPanel extends BasePanel {
         JSpinner.DateEditor editorDen = new JSpinner.DateEditor(spinnerNgayDen, "yyyy-MM-dd HH:mm:ss");
         spinnerNgayDen.setEditor(editorDen);
         spinnerNgayDen.setValue(new Date());
-        panelForm.add(inputField("Ngày đến:", spinnerNgayDen));
+        panelForm.add(createInputField("Ngày đến:", spinnerNgayDen));
 
         boxTrangThai = new JComboBox<>(TrangThaiLichTrinh.values());
-        panelForm.add(inputField("Trạng thái:", boxTrangThai));
+        panelForm.add(createInputField("Trạng thái:", boxTrangThai));
 
         // Khởi tạo các nút
         buttonThem = new JButton("Thêm");
@@ -93,7 +93,7 @@ public final class QLLichTrinhPanel extends BasePanel {
 
         panelTop.add(panelHome, BorderLayout.NORTH);
         panelTop.add(panelForm);
-        panelTop.add(buttonField(buttons), BorderLayout.SOUTH);
+        panelTop.add(createButtonField(buttons), BorderLayout.SOUTH);
 
         Object[] columns = new Object[]{"Mã LT", "Tàu", "Tuyến đường", "Ngày đi", "Ngày đến", "Trạng thái"};
         DefaultTableModel tableModel = new DefaultTableModel(columns, 0);

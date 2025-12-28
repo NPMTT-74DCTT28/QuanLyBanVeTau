@@ -22,15 +22,20 @@ public class NhanVienDAO {
     private static final String COT_DIA_CHI = "dia_chi";
     private static final String COT_VAI_TRO = "vai_tro";
 
-    public boolean checkTrung(String maNhanVien) {
+    public boolean checkTrung(String maNhanVien, String sdt, int id) {
         if (maNhanVien == null) {
             return false;
         }
 
-        String sql = "SELECT " + COT_MA_NV + " FROM " + TEN_BANG
-                + " WHERE " + COT_MA_NV + " = ?";
+        String sql = "SELECT " + COT_MA_NV + ", " + COT_SDT + " FROM " + TEN_BANG
+                + " WHERE " + COT_MA_NV + " = ? OR " + COT_SDT + " = ? AND " + COT_ID + " != ?";
+        System.out.println(sql);
+
         try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, maNhanVien);
+            ps.setString(2, sdt);
+            ps.setInt(3, id);
+
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     return true;

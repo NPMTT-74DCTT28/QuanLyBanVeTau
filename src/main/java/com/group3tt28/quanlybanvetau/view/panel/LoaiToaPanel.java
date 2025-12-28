@@ -44,10 +44,10 @@ public class LoaiToaPanel extends BasePanel{
         panelForm.setBorder(new EmptyBorder(10, 5, 10, 5));
 
         fieldTenLoai = new JTextField();
-        panelForm.add(inputField("Tên loại toa:  ", fieldTenLoai));
+        panelForm.add(createInputField("Tên loại toa:  ", fieldTenLoai));
 
         fieldHeSoGia = new JTextField();
-        panelForm.add(inputField("Hệ số giá: ", fieldHeSoGia));
+        panelForm.add(createInputField("Hệ số giá: ", fieldHeSoGia));
 
 
         buttonThem = new JButton("Thêm");
@@ -63,7 +63,7 @@ public class LoaiToaPanel extends BasePanel{
 
         panelTop.add(panelHome, BorderLayout.NORTH);
         panelTop.add(panelForm);
-        panelTop.add(buttonField(buttons), BorderLayout.SOUTH);
+        panelTop.add(createButtonField(buttons), BorderLayout.SOUTH);
 
         Object[] columns = new Object[]{"ID", "Tên loại toa", "Hệ số giá"};
         tableModel = new DefaultTableModel(columns, 0);

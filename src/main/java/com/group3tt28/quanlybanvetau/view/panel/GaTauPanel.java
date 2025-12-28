@@ -35,16 +35,16 @@ public class GaTauPanel extends BasePanel {
         panelForm.setBorder(new EmptyBorder(10, 5, 10, 5));
 
         fieldMaga = new JTextField();
-        panelForm.add(inputField("Mã Ga: ", fieldMaga));
+        panelForm.add(createInputField("Mã Ga: ", fieldMaga));
 
         fieldTenga = new JTextField();
-        panelForm.add(inputField("Tên Ga: ", fieldTenga));
+        panelForm.add(createInputField("Tên Ga: ", fieldTenga));
 
         fieldDiachi = new JTextField();
-        panelForm.add(inputField("Địa chỉ: ", fieldDiachi));
+        panelForm.add(createInputField("Địa chỉ: ", fieldDiachi));
 
         fieldThanhpho = new JTextField();
-        panelForm.add(inputField("Thành phố: ", fieldThanhpho));
+        panelForm.add(createInputField("Thành phố: ", fieldThanhpho));
 
         btnthem = new JButton("Thêm");
         btnsua = new JButton("Sửa");
@@ -54,7 +54,7 @@ public class GaTauPanel extends BasePanel {
 
         panelTop.add(panelForm, BorderLayout.NORTH);
         panelTop.add(panelForm);
-        panelTop.add(buttonField(btn), BorderLayout.SOUTH);
+        panelTop.add(createButtonField(btn), BorderLayout.SOUTH);
 
         String[] columNames = {"Mã Ga", "Tên Ga", "Địa chỉ", "Thành phố"};
         model = new  DefaultTableModel(columNames, 0);

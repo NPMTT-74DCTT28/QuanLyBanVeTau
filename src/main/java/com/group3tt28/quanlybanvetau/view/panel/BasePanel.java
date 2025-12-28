@@ -1,13 +1,19 @@
 package com.group3tt28.quanlybanvetau.view.panel;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 public abstract class BasePanel extends JPanel {
 
+    protected final Color PRIMARY_COLOR = new Color(60, 179, 113);
+    protected final Color SECONDARY_COLOR = new Color(153, 204, 255);
+    protected final Font FONT_BOLD = new Font("Segoe UI", Font.BOLD, 14);
+    protected final Font FONT_PLAIN = new Font("Segoe UI", Font.PLAIN, 14);
+
     public BasePanel() {
-        setFont(new Font("Segoe UI", Font.PLAIN, 13));
-        setBackground(Color.white);
+        setFont(FONT_PLAIN);
+        setBackground(Color.WHITE);
     }
 
     public void showMessage(String thongBao) {
@@ -27,30 +33,44 @@ public abstract class BasePanel extends JPanel {
         return option == JOptionPane.YES_OPTION;
     }
 
-    protected JComponent inputField(String labelText, JComponent component) {
-        JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 5));
+    protected JComponent createInputField(String labelText, JComponent component) {
+        JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        panel.setBackground(SECONDARY_COLOR);
 
         JLabel label = new JLabel(labelText);
-        label.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        label.setFont(FONT_PLAIN);
+        label.setForeground(Color.BLACK);
         label.setPreferredSize(new Dimension(100, 30));
         panel.add(label);
 
-        component.setPreferredSize(new Dimension(250, 40));
-        component.setBackground(Color.white);
+        component.setForeground(Color.BLACK);
+        component.setPreferredSize(new Dimension(200, 30));
         panel.add(component);
 
         return panel;
     }
 
-    protected JComponent buttonField(JButton[] buttons) {
+    protected JComponent createButtonField(JButton[] buttons) {
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        panel.setBackground(Color.WHITE);
+        panel.setBorder(new EmptyBorder(5, 5, 5, 5));
+
         for (JButton button : buttons) {
-            button.setFont(new Font("Segoe UI", Font.PLAIN, 13));
-            button.setPreferredSize(new Dimension(100, 40));
+            button.setPreferredSize(new Dimension(80, 40));
             panel.add(button);
         }
 
         return panel;
+    }
+
+    protected JButton createStyledButton(String text, Color background, Color foreground) {
+        JButton button = new JButton(text);
+        button.setFont(FONT_BOLD);
+        button.setBackground(background);
+        button.setForeground(foreground);
+        button.setFocusPainted(false);
+        button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        return button;
     }
 
     protected abstract void initComponents();

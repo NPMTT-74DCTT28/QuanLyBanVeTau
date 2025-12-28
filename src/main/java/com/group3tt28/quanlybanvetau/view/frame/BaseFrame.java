@@ -1,12 +1,19 @@
 package com.group3tt28.quanlybanvetau.view.frame;
 
 import javax.swing.*;
+import java.awt.*;
 
 public abstract class BaseFrame extends JFrame {
 
+    protected final Color PRIMARY_COLOR = new Color(60, 179, 113);
+    protected final Color SECONDARY_COLOR = new Color(153, 204, 255);
+    protected final Font FONT_BOLD = new Font("Segoe UI", Font.BOLD, 14);
+    protected final Font FONT_PLAIN = new Font("Segoe UI", Font.PLAIN, 14);
+    
     public BaseFrame(String tieuDe) {
         setTitle(tieuDe);
         setSize(1280, 720);
+        setBackground(Color.WHITE);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
 
