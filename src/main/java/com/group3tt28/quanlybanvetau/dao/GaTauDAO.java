@@ -115,4 +115,29 @@ public class GaTauDAO {
         }
         return list;
     }
+    public List<GaTau> timkiem(String keyword) {
+        List<GaTau> list = new ArrayList<>();
+        String sql = "SELECT * FROM " + TEN_BANG + " WHERE "
+                + COT_MA_GA + " LIKE ? OR "
+                + COT_TEN_GA + " LIKE ? ";
+        try(Connection conn = DBConnection.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql)){
+            ps.setString(1, "%" + keyword + "%");
+            ps.setString(2, "%" + keyword + "%");
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    int id = rs.getInt(COT_ID);
+                    String maGa = rs.getString(COT_MA_GA);
+                    String tenGa = rs.getString(COT_TEN_GA);
+                    String diaChi = rs.getString(COT_DIA_CHI);
+                    String thanhPho = rs.getString(COT_THANH_PHO);
+                    GaTau gaTau = new GaTau(id, maGa, tenGa, diaChi, thanhPho);
+                    list.add(gaTau);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Lỗi khi tìm kiếm ga tàu: "+e.getMessage(),e);
+        }
+        return list;
+    }
 }
