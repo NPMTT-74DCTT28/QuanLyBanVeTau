@@ -87,13 +87,13 @@ public final class QLNhanVienPanel extends BasePanel {
         boxVaiTro = new JComboBox<>(VaiTro.values());
         panelForm.add(createInputField("Vai trò: ", boxVaiTro, Color.WHITE));
 
-        buttonThem = createStyledButton("Thêm", PRIMARY_COLOR, Color.WHITE);
+        buttonThem = createStyledButton("Thêm", new Dimension(80, 40), PRIMARY_COLOR, Color.WHITE);
         buttonThem.setEnabled(true);
-        buttonSua = createStyledButton("Sửa", new Color(200, 200, 40), Color.WHITE);
+        buttonSua = createStyledButton("Sửa", new Dimension(80, 40), new Color(200, 200, 40), Color.WHITE);
         buttonSua.setEnabled(false);
-        buttonXoa = createStyledButton("Xoá", Color.RED, Color.white);
+        buttonXoa = createStyledButton("Xoá", new Dimension(80, 40), Color.RED, Color.white);
         buttonXoa.setEnabled(false);
-        buttonReset = createStyledButton("Reset", PRIMARY_COLOR, Color.WHITE);
+        buttonReset = createStyledButton("Reset form", new Dimension(110, 40), PRIMARY_COLOR, Color.WHITE);
         buttonReset.setEnabled(true);
 
         JButton[] buttons = {buttonThem, buttonSua, buttonXoa, buttonReset};
@@ -102,7 +102,7 @@ public final class QLNhanVienPanel extends BasePanel {
         panelTop.add(panelForm);
         panelTop.add(createButtonField(buttons, Color.white), BorderLayout.SOUTH);
 
-        Object[] columns = new Object[]{"Id", "Mã nhân viên", "Họ tên", "Ngày sinh", "Giới tính", "SĐT", "eMail", "Địa chỉ", "Vai trò"};
+        Object[] columns = new Object[]{"ID", "Mã nhân viên", "Họ tên", "Ngày sinh", "Giới tính", "SĐT", "eMail", "Địa chỉ", "Vai trò"};
         DefaultTableModel tableModel = new DefaultTableModel(columns, 0);
 
         table = new JTable(tableModel);
