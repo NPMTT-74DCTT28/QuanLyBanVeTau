@@ -79,13 +79,13 @@ public final class QLLichTrinhPanel extends BasePanel {
         panelForm.add(createInputField("Trạng thái:", boxTrangThai, Color.WHITE));
 
         // Khởi tạo các nút
-        buttonThem = new JButton("Thêm");
+        buttonThem = createStyledButton("Thêm", new Dimension(80,40),PRIMARY_COLOR, Color.WHITE);
         buttonThem.setEnabled(true);
-        buttonSua = new JButton("Sửa");
+        buttonSua = createStyledButton("Sửa", new Dimension(80,40), new Color(200,200,40), Color.WHITE);
         buttonSua.setEnabled(false);
-        buttonXoa = new JButton("Xoá");
+        buttonXoa = createStyledButton("Xoá", new Dimension(80, 40), Color.RED, Color.white);
         buttonXoa.setEnabled(false);
-        buttonReset = new JButton("Reset");
+        buttonReset = createStyledButton("Reset form", new Dimension(110, 40), PRIMARY_COLOR, Color.WHITE);
         buttonReset.setEnabled(true);
 
         // Mảng nút đã xóa buttonLuu
@@ -164,7 +164,7 @@ public final class QLLichTrinhPanel extends BasePanel {
 
     public String getTrangThai() {
         TrangThaiLichTrinh trangThai = (TrangThaiLichTrinh) boxTrangThai.getSelectedItem();
-        return trangThai != null ? trangThai.name() : TrangThaiLichTrinh.CHO.name();
+        return trangThai != null ? trangThai.toString() : TrangThaiLichTrinh.CHO.toString();
     }
 
     public void setTrangThai(String trangThaiStr) {
@@ -215,7 +215,6 @@ public final class QLLichTrinhPanel extends BasePanel {
 
         buttonThem.setEnabled(false);
         buttonSua.setEnabled(true);
-        // Bỏ buttonLuu
         buttonXoa.setEnabled(true);
         buttonReset.setEnabled(true);
     }
