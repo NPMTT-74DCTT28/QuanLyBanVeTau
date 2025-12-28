@@ -3,8 +3,12 @@ package com.group3tt28.quanlybanvetau.view.panel;
 import com.group3tt28.quanlybanvetau.model.GaTau;
 
 import javax.swing.*;
+import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
+import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
@@ -23,9 +27,9 @@ public class GaTauPanel extends BasePanel {
     protected void initComponents() {
         setLayout(new BorderLayout());
         JPanel titlePanel = new JPanel();
-        titlePanel.setBackground(new Color(255, 255, 255));
+        titlePanel.setBackground(new Color(0, 123, 255));
         titlePanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-        JLabel lblTitle = new JLabel("GaTau");
+        JLabel lblTitle = new JLabel("QL Ga Tàu");
         lblTitle.setSize(200,80);
         lblTitle.setFont(new Font("Segoe UI", Font.BOLD, 20));
         titlePanel.add(lblTitle);
@@ -46,25 +50,39 @@ public class GaTauPanel extends BasePanel {
         fieldThanhpho = new JTextField();
         panelForm.add(createInputField("Thành phố: ", fieldThanhpho, Color.WHITE));
 
-        btnthem = new JButton("Thêm");
-        btnsua = new JButton("Sửa");
-        btnxoa = new JButton("Xóa");
-        btnreset = new JButton("Reset");
+        btnthem = createStyledButton("Thêm", new Dimension(80,40),new Color(40, 85, 243), Color.black);
+        btnsua = createStyledButton("Sửa" , new Dimension(80,40),new Color(255, 193, 7), Color.black);
+        btnxoa = createStyledButton("Xóa", new  Dimension(80,40),new Color(220, 53, 69), Color.black);
+        btnreset = createStyledButton("Reset", new Dimension(80,40),new Color(108, 117, 125), Color.white);
         JButton[] btn = {btnthem, btnsua, btnxoa, btnreset};
 
-        panelTop.add(panelForm, BorderLayout.NORTH);
+        panelTop.add(titlePanel, BorderLayout.NORTH);
         panelTop.add(panelForm);
         panelTop.add(createButtonField(btn, Color.WHITE), BorderLayout.SOUTH);
+
 
         String[] columNames = {"Mã Ga", "Tên Ga", "Địa chỉ", "Thành phố"};
         model = new  DefaultTableModel(columNames, 0);
         table = new JTable(model);
+        JTableHeader tableHeader = table.getTableHeader();
+        tableHeader.setBackground(SECONDARY_COLOR);
+        tableHeader.setForeground(Color.BLACK);
+        tableHeader.setOpaque(false);
+        tableHeader.setFont(FONT_PLAIN);
+
+        TitledBorder tableBorder = new TitledBorder(new LineBorder(Color.LIGHT_GRAY), "Danh sách Ga Tàu",
+                TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, FONT_BOLD, Color.BLACK);
         JScrollPane scrollPane = new JScrollPane(table);
+        scrollPane.setBorder(new CompoundBorder(new EmptyBorder(5, 5, 5, 5), tableBorder));
         scrollPane.setFont(new Font("Segoe UI", Font.BOLD, 20));
-        scrollPane.setBorder(new EmptyBorder(10, 10, 10, 10));
+
+        JPanel panelTable = new JPanel(new BorderLayout());
+        panelTable.setBorder(new EmptyBorder(10, 10, 10, 10));
+        panelTable.setBackground(Color.WHITE);
+        panelTable.add(scrollPane, BorderLayout.CENTER);
 
         add(panelTop, BorderLayout.NORTH);
-        add(scrollPane, BorderLayout.CENTER);
+        add(panelTable, BorderLayout.CENTER);
     }
     public String getMaGa() {
         return fieldMaga.getText().trim();

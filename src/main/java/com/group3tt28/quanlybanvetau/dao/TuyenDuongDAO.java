@@ -6,6 +6,7 @@ import com.group3tt28.quanlybanvetau.util.DBConnection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -118,16 +119,43 @@ public class TuyenDuongDAO {
                 int id = rs.getInt(COT_ID);
                 String maTuyen = rs.getString(COT_MA_TUYEN);
                 String tenTuyen = rs.getString(COT_TEN_TUYEN);
-                int idGaDI = rs.getInt(COT_ID_GA_DI);
+                int idGaDi = rs.getInt(COT_ID_GA_DI);
                 int idGaDen = rs.getInt(COT_ID_GA_DEN);
                 double khoangCachKm = rs.getDouble(COT_KHOANG_CACH);
                 double giaCoBan = rs.getDouble(COT_GIA_CB);
 
-                TuyenDuong td = new TuyenDuong(id, maTuyen, tenTuyen, idGaDI, idGaDen, khoangCachKm, giaCoBan);
+                TuyenDuong td = new TuyenDuong(id, maTuyen, tenTuyen, idGaDi, idGaDen, khoangCachKm, giaCoBan);
                 list.add(td);
             }
         } catch (Exception e) {
             throw new RuntimeException("Xay ra loi khi hien thi tuyen duong:" + e.getMessage(), e);
+        }
+        return list;
+    }
+    public List<TuyenDuong> timkiem(String keyword){
+        List<TuyenDuong> list = new ArrayList<>();
+        String sql = "SELECT * FROM " + TEN_BANG + " WHERE "
+                + COT_MA_TUYEN + " LIKE ? OR "
+                + COT_TEN_TUYEN + " LIKE ? ";
+        try(Connection conn = DBConnection.getConnection();
+        PreparedStatement ps = conn.prepareStatement(sql)){
+            ps.setString(1, "%"+keyword+"%");
+            ps.setString(2, "%"+keyword+"%");
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    int id = rs.getInt(COT_ID);
+                    String maTuyen = rs.getString(COT_MA_TUYEN);
+                    String tenTuyen = rs.getString(COT_TEN_TUYEN);
+                    int idGaDi = rs.getInt(COT_ID_GA_DI);
+                    int idGaDen = rs.getInt(COT_ID_GA_DEN);
+                    double khoangCachKm = rs.getDouble(COT_KHOANG_CACH);
+                    double giaCoBan = rs.getDouble(COT_GIA_CB);
+                    TuyenDuong tuyenDuong = new TuyenDuong(id,maTuyen,tenTuyen,idGaDi,idGaDen,khoangCachKm,giaCoBan);
+                    list.add(tuyenDuong);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Lỗi khi tìm kiếm tuyến đường: "+e.getMessage(),e);
         }
         return list;
     }
