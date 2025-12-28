@@ -52,4 +52,9 @@ public class ToaTau {
     public void setIdLoaiToa(int idLoaiToa) {
         this.idLoaiToa = idLoaiToa;
     }
+
+    @Override
+    public String toString() {
+        return id + " - " + maToa;
+    }
 }
