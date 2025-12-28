@@ -4,8 +4,12 @@ import com.group3tt28.quanlybanvetau.model.GaTau;
 import com.group3tt28.quanlybanvetau.model.TuyenDuong;
 
 import javax.swing.*;
+import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
+import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
@@ -29,9 +33,9 @@ public final class TuyenDuongPanel extends BasePanel {
     protected void initComponents() {
         setLayout(new BorderLayout());
         JPanel titlePanel = new JPanel();
-        titlePanel.setBackground(new Color(152, 251, 152));
+        titlePanel.setBackground(new Color(0, 123, 255));
         titlePanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-        JLabel title = new JLabel("Tuyen Duong");
+        JLabel title = new JLabel("QL Tuyến Đường");
         title.setSize(new Dimension(200, 80));
         title.setFont(new Font("Segoe UI", Font.BOLD, 20));
         titlePanel.add(title);
@@ -41,29 +45,29 @@ public final class TuyenDuongPanel extends BasePanel {
         panelFrom.setBorder(new EmptyBorder(5, 5, 5, 5));
 
         fieldMaTuyen = new JTextField();
-        panelFrom.add(createInputField("Mã tuyến: ", fieldMaTuyen, Color.WHITE));
+        panelFrom.add(createInputField("Mã tuyến ", fieldMaTuyen, Color.WHITE));
 
         fieldTenTuyen = new JTextField();
-        panelFrom.add(createInputField("Tên tuyến: ", fieldTenTuyen, Color.WHITE));
+        panelFrom.add(createInputField("Tên tuyến ", fieldTenTuyen, Color.WHITE));
 
         cboGadi = new JComboBox<>();
-        panelFrom.add(createInputField("Ga đi: ", cboGadi, Color.WHITE));
+        panelFrom.add(createInputField("Ga đi ", cboGadi, Color.WHITE));
 
         fieldKhoangcach = new JTextField();
         onlyNumber(fieldKhoangcach);
-        panelFrom.add(createInputField("Khoảng cách (Km): ", fieldKhoangcach, Color.WHITE));
+        panelFrom.add(createInputField("Khoảng cách ", fieldKhoangcach, Color.WHITE));
 
         cboGaden = new JComboBox<>();
-        panelFrom.add(createInputField("Ga đến: ", cboGaden, Color.WHITE));
+        panelFrom.add(createInputField("Ga đến ", cboGaden, Color.WHITE));
 
         fieldGiaCB = new JTextField();
         onlyNumber(fieldGiaCB);
-        panelFrom.add(createInputField("Giá cơ bản: ", fieldGiaCB, Color.WHITE));
+        panelFrom.add(createInputField("Giá cơ bản ", fieldGiaCB, Color.WHITE));
 
-        btnthem = new JButton("Thêm");
-        btnsua = new JButton("Sửa");
-        btnxoa = new JButton("Xóa");
-        btnreset = new JButton("Reset");
+        btnthem = createStyledButton("Thêm", new Dimension(80, 40), new Color(40, 85, 243), Color.black);
+        btnsua = createStyledButton("Sửa",new Dimension(80, 40), new Color(255, 193, 7), Color.black);
+        btnxoa = createStyledButton("Xóa",new Dimension(80, 40), new Color(220, 53, 69), Color.black);
+        btnreset = createStyledButton("Reset",new Dimension(80, 40), new Color(108, 117, 125), Color.black);
         JButton[] btn =  {btnthem, btnsua, btnxoa, btnreset};
 
         panelTop.add(titlePanel, BorderLayout.NORTH);
@@ -72,13 +76,27 @@ public final class TuyenDuongPanel extends BasePanel {
 
         String[] columNames = {"Mã Tuyến","Tên Tuyến","Ga Đi","Ga Đến","Khoảng Cách (km)","Giá Cơ Bản"};
         model = new DefaultTableModel(columNames, 0);
+
         table = new JTable(model);
+        JTableHeader tableHeader = table.getTableHeader();
+        tableHeader.setBackground(SECONDARY_COLOR);
+        tableHeader.setForeground(Color.BLACK);
+        tableHeader.setOpaque(false);
+        tableHeader.setFont(FONT_PLAIN);
+
+        TitledBorder tableBorder = new TitledBorder(new LineBorder(Color.LIGHT_GRAY), "Danh sách Tuyến Đường",
+                TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, FONT_BOLD, Color.BLACK);
         JScrollPane scrollPane = new JScrollPane(table);
+        scrollPane.setBorder(new CompoundBorder(new EmptyBorder(5, 5, 5, 5), tableBorder));
         scrollPane.setFont(new Font("Segoe UI", Font.BOLD, 20));
-        scrollPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+
+        JPanel panelTable = new JPanel(new BorderLayout());
+        panelTable.setBorder(new EmptyBorder(10, 10, 10, 10));
+        panelTable.setBackground(Color.WHITE);
+        panelTable.add(scrollPane, BorderLayout.CENTER);
 
         add(panelTop, BorderLayout.NORTH);
-        add(scrollPane, BorderLayout.CENTER);
+        add(panelTable, BorderLayout.CENTER);
 
     }
     public String getMaTuyen() {
@@ -193,6 +211,8 @@ public final class TuyenDuongPanel extends BasePanel {
         fieldGiaCB.setEnabled(true);
         fieldGiaCB.setText("");
         btnthem.setEnabled(true);
+        btnsua.setEnabled(false);
+        btnxoa.setEnabled(false);
     }
     public void AddTuyen(ActionListener l) {
         btnthem.addActionListener(l);
