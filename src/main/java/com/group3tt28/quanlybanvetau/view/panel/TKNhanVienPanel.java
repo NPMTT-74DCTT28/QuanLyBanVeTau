@@ -18,8 +18,8 @@ import java.awt.event.ActionListener;
 public class TKNhanVienPanel extends BasePanel {
 
     private JTextField fieldTuKhoa;
-    private JComboBox<GioiTinh> boxGioiTinh;
-    private JComboBox<VaiTro> boxVaiTro;
+    private JComboBox<Object> boxGioiTinh;
+    private JComboBox<Object> boxVaiTro;
     private JButton buttonTimKiem, buttonReset, buttonLamMoi;
     private JTable table;
 
@@ -47,13 +47,13 @@ public class TKNhanVienPanel extends BasePanel {
         panelForm.setBackground(Color.WHITE);
 
         fieldTuKhoa = new JTextField();
-        panelForm.add(createInputField("Từ khoá: ", fieldTuKhoa, Color.WHITE));
+        panelForm.add(createInputField("<html>Tên/SĐT/<br>Email/Địa chỉ</html>", fieldTuKhoa, Color.WHITE));
 
-        boxGioiTinh = new JComboBox<>(GioiTinh.values());
-        panelForm.add(createInputField("Giới tính: ", boxGioiTinh, Color.WHITE));
+        boxGioiTinh = new JComboBox<>(createComboBoxModel(GioiTinh.values()));
+        panelForm.add(createInputField("Giới tính", boxGioiTinh, Color.WHITE));
 
-        boxVaiTro = new JComboBox<>(VaiTro.values());
-        panelForm.add(createInputField("Vai trò: ", boxVaiTro, Color.WHITE));
+        boxVaiTro = new JComboBox<>(createComboBoxModel(VaiTro.values()));
+        panelForm.add(createInputField("Vai trò", boxVaiTro, Color.WHITE));
 
         buttonTimKiem = createStyledButton("Tìm kiếm", new Dimension(100, 40), PRIMARY_COLOR, Color.WHITE);
         buttonReset = createStyledButton("Reset form", new Dimension(110, 40), PRIMARY_COLOR, Color.WHITE);
@@ -105,11 +105,19 @@ public class TKNhanVienPanel extends BasePanel {
     }
 
     public String getGioiTinh() {
-        return String.valueOf(boxGioiTinh.getSelectedItem());
+        Object selectedItem = boxGioiTinh.getSelectedItem();
+        if (selectedItem == null || selectedItem.toString().equalsIgnoreCase("Tất cả")) {
+            return null;
+        }
+        return selectedItem.toString();
     }
 
     public String getVaiTro() {
-        return String.valueOf(boxVaiTro.getSelectedItem());
+        Object selectedItem = boxVaiTro.getSelectedItem();
+        if (selectedItem == null || selectedItem.toString().equalsIgnoreCase("Tất cả")) {
+            return null;
+        }
+        return selectedItem.toString();
     }
 
     public JTable getTable() {

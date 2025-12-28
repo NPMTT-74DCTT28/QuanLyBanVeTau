@@ -59,7 +59,35 @@ public class TKNhanVienController {
     private class TimKiemListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
+            try {
+                tableModel.setRowCount(0);
+                String tuKhoa = panel.getTuKhoa();
+                String gioiTinh = panel.getGioiTinh();
+                String vaiTro = panel.getVaiTro();
+                List<NhanVien> list = dao.timKiemNhanVien(tuKhoa, gioiTinh, vaiTro);
 
+                for (NhanVien nhanVien : list) {
+                    tableModel.addRow(new Object[]{
+                            nhanVien.getId(),
+                            nhanVien.getMaNhanVien(),
+                            nhanVien.getHoTen(),
+                            nhanVien.getNgaySinh(),
+                            nhanVien.getGioiTinh(),
+                            nhanVien.getSdt(),
+                            nhanVien.getEmail(),
+                            nhanVien.getDiaChi(),
+                            nhanVien.getVaiTro()
+                    });
+                }
+
+                tableModel.fireTableDataChanged();
+            } catch (RuntimeException ex) {
+                ex.printStackTrace();
+                panel.showError("Lỗi hệ thống: " + ex.getMessage());
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                panel.showError("Lỗi không xác định: " + ex.getMessage());
+            }
         }
     }
 

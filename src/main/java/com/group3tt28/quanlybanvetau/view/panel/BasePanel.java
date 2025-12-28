@@ -40,11 +40,11 @@ public abstract class BasePanel extends JPanel {
         JLabel label = new JLabel(labelText);
         label.setFont(FONT_PLAIN);
         label.setForeground(Color.BLACK);
-        label.setPreferredSize(new Dimension(100, 30));
+        label.setPreferredSize(new Dimension(100, 50));
         panel.add(label);
 
         component.setForeground(Color.BLACK);
-        component.setPreferredSize(new Dimension(200, 30));
+        component.setPreferredSize(new Dimension(200, 50));
         panel.add(component);
 
         return panel;
@@ -71,6 +71,18 @@ public abstract class BasePanel extends JPanel {
         button.setFocusPainted(false);
         button.setCursor(new Cursor(Cursor.HAND_CURSOR));
         return button;
+    }
+
+    protected DefaultComboBoxModel<Object> createComboBoxModel(Object[] values) {
+        DefaultComboBoxModel<Object> model = new DefaultComboBoxModel<>();
+
+        model.addElement("Tất cả");
+
+        for (Object value : values) {
+            model.addElement(value);
+        }
+
+        return model;
     }
 
     protected abstract void initComponents();
