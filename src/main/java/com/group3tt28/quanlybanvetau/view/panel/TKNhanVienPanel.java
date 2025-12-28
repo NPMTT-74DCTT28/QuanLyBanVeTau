@@ -116,6 +116,16 @@ public class TKNhanVienPanel extends BasePanel {
         return table;
     }
 
+    public void resetForm() {
+        fieldTuKhoa.setText("");
+        if (boxGioiTinh.getItemCount() > 0) {
+            boxGioiTinh.setSelectedIndex(0);
+        }
+        if (boxVaiTro.getItemCount() > 0) {
+            boxVaiTro.setSelectedIndex(0);
+        }
+    }
+
     public void addTimKiemListener(ActionListener l) {
         buttonTimKiem.addActionListener(l);
     }
