@@ -38,24 +38,32 @@ public class QLNhanVienController {
     private void refresh() {
         panel.resetForm();
 
-        List<NhanVien> list = dao.getAll();
-        tableModel.setRowCount(0);
+        try {
+            List<NhanVien> list = dao.getAll();
+            tableModel.setRowCount(0);
 
-        for (NhanVien nhanVien : list) {
-            tableModel.addRow(new Object[]{
-                    nhanVien.getId(),
-                    nhanVien.getMaNhanVien(),
-                    nhanVien.getHoTen(),
-                    nhanVien.getNgaySinh(),
-                    nhanVien.getGioiTinh(),
-                    nhanVien.getSdt(),
-                    nhanVien.getEmail(),
-                    nhanVien.getDiaChi(),
-                    nhanVien.getVaiTro()
-            });
+            for (NhanVien nhanVien : list) {
+                tableModel.addRow(new Object[]{
+                        nhanVien.getId(),
+                        nhanVien.getMaNhanVien(),
+                        nhanVien.getHoTen(),
+                        nhanVien.getNgaySinh(),
+                        nhanVien.getGioiTinh(),
+                        nhanVien.getSdt(),
+                        nhanVien.getEmail(),
+                        nhanVien.getDiaChi(),
+                        nhanVien.getVaiTro()
+                });
+            }
+
+            tableModel.fireTableDataChanged();
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            panel.showError("Lỗi hệ thống: " + e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            panel.showError("Lỗi không xác định: " + e.getMessage());
         }
-
-        tableModel.fireTableDataChanged();
     }
 
     private String validateInput(NhanVien nhanVien) {
