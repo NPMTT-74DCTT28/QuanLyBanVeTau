@@ -120,4 +120,9 @@ public class NhanVien {
     public void setVaiTro(String vaiTro) {
         this.vaiTro = vaiTro;
     }
+
+    @Override
+    public String toString() {
+        return maNhanVien + "-" + hoTen;
+    }
 }
