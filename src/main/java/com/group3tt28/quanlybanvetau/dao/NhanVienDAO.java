@@ -22,19 +22,19 @@ public class NhanVienDAO {
     private static final String COT_DIA_CHI = "dia_chi";
     private static final String COT_VAI_TRO = "vai_tro";
 
-    public boolean checkTrung(String maNhanVien, String sdt, int id) {
+    public boolean checkTrung(String maNhanVien, String sdt, int idLoaiTru) {
         if (maNhanVien == null) {
             return false;
         }
 
-        String sql = "SELECT " + COT_MA_NV + ", " + COT_SDT + " FROM " + TEN_BANG
-                + " WHERE " + COT_MA_NV + " = ? OR " + COT_SDT + " = ? AND " + COT_ID + " != ?";
-        System.out.println(sql);
+        String sql = "SELECT " + COT_MA_NV + " FROM " + TEN_BANG
+                + " WHERE (" + COT_MA_NV + " = ? OR " + COT_SDT + " = ?)" +
+                " AND " + COT_ID + " != ? LIMIT 1";
 
         try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, maNhanVien);
             ps.setString(2, sdt);
-            ps.setInt(3, id);
+            ps.setInt(3, idLoaiTru);
 
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
@@ -117,14 +117,14 @@ public class NhanVienDAO {
         }
     }
 
-    public boolean delete(String maNhanVien) {
-        if (maNhanVien == null) {
+    public boolean delete(int id) {
+        if (id < 1) {
             return false;
         }
 
-        String sql = "DELETE FROM " + TEN_BANG + " WHERE " + COT_MA_NV + " = ?";
+        String sql = "DELETE FROM " + TEN_BANG + " WHERE " + COT_ID + " = ?";
         try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, maNhanVien);
+            ps.setInt(1, id);
 
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
@@ -160,7 +160,7 @@ public class NhanVienDAO {
     }
 
     public NhanVien getNhanVienByMaNV(String maNhanVien) {
-        String sql = "SELECT * FROM nhan_vien WHERE ma_nhan_vien = ?";
+        String sql = "SELECT * FROM nhan_vien WHERE ma_nhan_vien = ? LIMIT 1";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 

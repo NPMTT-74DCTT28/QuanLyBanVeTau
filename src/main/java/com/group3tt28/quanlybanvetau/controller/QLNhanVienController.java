@@ -43,6 +43,7 @@ public class QLNhanVienController {
 
         for (NhanVien nhanVien : list) {
             model.addRow(new Object[]{
+                    nhanVien.getId(),
                     nhanVien.getMaNhanVien(),
                     nhanVien.getHoTen(),
                     nhanVien.getNgaySinh(),
@@ -88,6 +89,7 @@ public class QLNhanVienController {
         public void actionPerformed(ActionEvent e) {
             try {
                 NhanVien nhanVien = panel.getNhanVienFromForm();
+                nhanVien.setId(0);
 
                 if (validateInput(nhanVien) != null) {
                     panel.showWarning(validateInput(nhanVien));
@@ -142,7 +144,7 @@ public class QLNhanVienController {
                 }
 
                 if (dao.checkTrung(nhanVien.getMaNhanVien(), nhanVien.getSdt(), nhanVien.getId())) {
-                    panel.showWarning("SĐT đã được sử dụng bởi nhân viên khác!");
+                    panel.showWarning("SĐT đã được sử dụng!");
                     return;
                 }
 
@@ -172,15 +174,16 @@ public class QLNhanVienController {
         @Override
         public void actionPerformed(ActionEvent e) {
             try {
-                String maNhanVien = model.getValueAt(selectedRow, 0).toString();
+                int id = Integer.parseInt(model.getValueAt(selectedRow, 0).toString());
+                String maNhanVien = model.getValueAt(selectedRow, 1).toString();
 
-                if (maNhanVien.isEmpty()) {
+                if (model.getValueAt(selectedRow, 0).toString().trim().isEmpty()) {
                     panel.showWarning("Mã nhân viên không hợp lệ!");
                     return;
                 }
 
                 if (panel.showConfirm("Bạn muốn xoá nhân viên " + maNhanVien + "?")) {
-                    if (dao.delete(maNhanVien)) {
+                    if (dao.delete(id)) {
                         panel.showMessage("Xoá thành công!");
                         refresh();
                     } else {
@@ -212,10 +215,10 @@ public class QLNhanVienController {
             selectedRow = panel.getTable().getSelectedRow();
             if (selectedRow == -1) return;
 
-            panel.setMaNhanVien(model.getValueAt(selectedRow, 0).toString());
-            panel.setHoTen(model.getValueAt(selectedRow, 1).toString());
+            panel.setMaNhanVien(model.getValueAt(selectedRow, 1).toString());
+            panel.setHoTen(model.getValueAt(selectedRow, 2).toString());
 
-            Object ngaySinhObj = model.getValueAt(selectedRow, 2);
+            Object ngaySinhObj = model.getValueAt(selectedRow, 3);
             if (ngaySinhObj instanceof LocalDate) {
                 panel.setNgaySinh((LocalDate) ngaySinhObj);
             } else {
@@ -227,17 +230,17 @@ public class QLNhanVienController {
                 }
             }
 
-            panel.setGioiTinh(model.getValueAt(selectedRow, 3).toString());
+            panel.setGioiTinh(model.getValueAt(selectedRow, 4).toString());
 
-            panel.setSdt(model.getValueAt(selectedRow, 4).toString());
+            panel.setSdt(model.getValueAt(selectedRow, 5).toString());
 
-            Object emailObj = model.getValueAt(selectedRow, 5);
+            Object emailObj = model.getValueAt(selectedRow, 6);
             panel.setEmail(emailObj != null ? emailObj.toString() : "");
 
-            Object diaChiObj = model.getValueAt(selectedRow, 6);
+            Object diaChiObj = model.getValueAt(selectedRow, 7);
             panel.setDiaChi(diaChiObj != null ? diaChiObj.toString() : "");
 
-            panel.setVaiTro(model.getValueAt(selectedRow, 7).toString());
+            panel.setVaiTro(model.getValueAt(selectedRow, 8).toString());
         }
 
         @Override
