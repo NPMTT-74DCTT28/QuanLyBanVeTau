@@ -87,13 +87,13 @@ public final class QLNhanVienPanel extends BasePanel {
         boxVaiTro = new JComboBox<>(VaiTro.values());
         panelForm.add(createInputField("Vai trò: ", boxVaiTro, Color.WHITE));
 
-        buttonThem = createStyledButton("Thêm", PRIMARY_COLOR, Color.WHITE);
+        buttonThem = createStyledButton("Thêm", new Dimension(80, 40), PRIMARY_COLOR, Color.WHITE);
         buttonThem.setEnabled(true);
-        buttonSua = createStyledButton("Sửa", new Color(200, 200, 40), Color.WHITE);
+        buttonSua = createStyledButton("Sửa", new Dimension(80, 40), new Color(200, 200, 40), Color.WHITE);
         buttonSua.setEnabled(false);
-        buttonXoa = createStyledButton("Xoá", Color.RED, Color.white);
+        buttonXoa = createStyledButton("Xoá", new Dimension(80, 40), Color.RED, Color.white);
         buttonXoa.setEnabled(false);
-        buttonReset = createStyledButton("Reset", PRIMARY_COLOR, Color.WHITE);
+        buttonReset = createStyledButton("Reset form", new Dimension(110, 40), PRIMARY_COLOR, Color.WHITE);
         buttonReset.setEnabled(true);
 
         JButton[] buttons = {buttonThem, buttonSua, buttonXoa, buttonReset};
