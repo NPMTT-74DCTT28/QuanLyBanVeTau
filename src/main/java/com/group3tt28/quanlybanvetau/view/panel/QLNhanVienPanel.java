@@ -102,7 +102,7 @@ public final class QLNhanVienPanel extends BasePanel {
         panelTop.add(panelForm);
         panelTop.add(createButtonField(buttons, Color.white), BorderLayout.SOUTH);
 
-        Object[] columns = new Object[]{"Id", "Mã nhân viên", "Họ tên", "Ngày sinh", "Giới tính", "SĐT", "eMail", "Địa chỉ", "Vai trò"};
+        Object[] columns = new Object[]{"ID", "Mã nhân viên", "Họ tên", "Ngày sinh", "Giới tính", "SĐT", "eMail", "Địa chỉ", "Vai trò"};
         DefaultTableModel tableModel = new DefaultTableModel(columns, 0);
 
         table = new JTable(tableModel);
