@@ -112,6 +112,10 @@ public class TKNhanVienPanel extends BasePanel {
         return String.valueOf(boxVaiTro.getSelectedItem());
     }
 
+    public JTable getTable() {
+        return table;
+    }
+
     public void addTimKiemListener(ActionListener l) {
         buttonTimKiem.addActionListener(l);
     }

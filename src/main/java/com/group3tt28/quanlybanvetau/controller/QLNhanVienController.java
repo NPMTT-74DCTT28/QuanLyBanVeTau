@@ -17,7 +17,7 @@ public class QLNhanVienController {
 
     private final QLNhanVienPanel panel;
     private final NhanVienDAO dao;
-    private final DefaultTableModel model;
+    private final DefaultTableModel tableModel;
     private int selectedRow;
 
     public QLNhanVienController(QLNhanVienPanel panel) {
@@ -30,7 +30,7 @@ public class QLNhanVienController {
         panel.addResetFormListener(new ResetFormListener());
         panel.addTableMouseClickListener(new TableMouseClickListener());
 
-        model = (DefaultTableModel) panel.getTable().getModel();
+        this.tableModel = (DefaultTableModel) panel.getTable().getModel();
 
         refresh();
     }
@@ -39,10 +39,10 @@ public class QLNhanVienController {
         panel.resetForm();
 
         List<NhanVien> list = dao.getAll();
-        model.setRowCount(0);
+        tableModel.setRowCount(0);
 
         for (NhanVien nhanVien : list) {
-            model.addRow(new Object[]{
+            tableModel.addRow(new Object[]{
                     nhanVien.getId(),
                     nhanVien.getMaNhanVien(),
                     nhanVien.getHoTen(),
@@ -55,7 +55,7 @@ public class QLNhanVienController {
             });
         }
 
-        model.fireTableDataChanged();
+        tableModel.fireTableDataChanged();
     }
 
     private String validateInput(NhanVien nhanVien) {
@@ -136,7 +136,7 @@ public class QLNhanVienController {
         public void actionPerformed(ActionEvent e) {
             try {
                 NhanVien nhanVien = panel.getNhanVienFromForm();
-                nhanVien.setId(Integer.parseInt(model.getValueAt(selectedRow, 0).toString()));
+                nhanVien.setId(Integer.parseInt(tableModel.getValueAt(selectedRow, 0).toString()));
 
                 if (validateInput(nhanVien) != null) {
                     panel.showWarning(validateInput(nhanVien));
@@ -174,10 +174,10 @@ public class QLNhanVienController {
         @Override
         public void actionPerformed(ActionEvent e) {
             try {
-                int id = Integer.parseInt(model.getValueAt(selectedRow, 0).toString());
-                String maNhanVien = model.getValueAt(selectedRow, 1).toString();
+                int id = Integer.parseInt(tableModel.getValueAt(selectedRow, 0).toString());
+                String maNhanVien = tableModel.getValueAt(selectedRow, 1).toString();
 
-                if (model.getValueAt(selectedRow, 0).toString().trim().isEmpty()) {
+                if (tableModel.getValueAt(selectedRow, 0).toString().trim().isEmpty()) {
                     panel.showWarning("Mã nhân viên không hợp lệ!");
                     return;
                 }
@@ -215,10 +215,10 @@ public class QLNhanVienController {
             selectedRow = panel.getTable().getSelectedRow();
             if (selectedRow == -1) return;
 
-            panel.setMaNhanVien(model.getValueAt(selectedRow, 1).toString());
-            panel.setHoTen(model.getValueAt(selectedRow, 2).toString());
+            panel.setMaNhanVien(tableModel.getValueAt(selectedRow, 1).toString());
+            panel.setHoTen(tableModel.getValueAt(selectedRow, 2).toString());
 
-            Object ngaySinhObj = model.getValueAt(selectedRow, 3);
+            Object ngaySinhObj = tableModel.getValueAt(selectedRow, 3);
             if (ngaySinhObj instanceof LocalDate) {
                 panel.setNgaySinh((LocalDate) ngaySinhObj);
             } else {
@@ -230,17 +230,17 @@ public class QLNhanVienController {
                 }
             }
 
-            panel.setGioiTinh(model.getValueAt(selectedRow, 4).toString());
+            panel.setGioiTinh(tableModel.getValueAt(selectedRow, 4).toString());
 
-            panel.setSdt(model.getValueAt(selectedRow, 5).toString());
+            panel.setSdt(tableModel.getValueAt(selectedRow, 5).toString());
 
-            Object emailObj = model.getValueAt(selectedRow, 6);
+            Object emailObj = tableModel.getValueAt(selectedRow, 6);
             panel.setEmail(emailObj != null ? emailObj.toString() : "");
 
-            Object diaChiObj = model.getValueAt(selectedRow, 7);
+            Object diaChiObj = tableModel.getValueAt(selectedRow, 7);
             panel.setDiaChi(diaChiObj != null ? diaChiObj.toString() : "");
 
-            panel.setVaiTro(model.getValueAt(selectedRow, 8).toString());
+            panel.setVaiTro(tableModel.getValueAt(selectedRow, 8).toString());
         }
 
         @Override
