@@ -42,13 +42,13 @@ public final class QLToaTauPanel extends BasePanel {
         panelForm.setBorder(new EmptyBorder(10, 5, 10, 5));
 
         fieldMaToa = new JTextField();
-        panelForm.add(createInputField("Mã toa:", fieldMaToa));
+        panelForm.add(createInputField("Mã toa:", fieldMaToa, Color.WHITE));
 
         boxTau = new JComboBox<>();
-        panelForm.add(createInputField("Thuộc tàu:", boxTau));
+        panelForm.add(createInputField("Thuộc tàu:", boxTau, Color.WHITE));
 
         boxLoaiToa = new JComboBox<>();
-        panelForm.add(createInputField("Loại toa:", boxLoaiToa));
+        panelForm.add(createInputField("Loại toa:", boxLoaiToa, Color.WHITE));
 
         buttonThem = new JButton("Thêm");
         buttonThem.setEnabled(true);
@@ -64,7 +64,7 @@ public final class QLToaTauPanel extends BasePanel {
 
         panelTop.add(panelHome, BorderLayout.NORTH);
         panelTop.add(panelForm, BorderLayout.CENTER);
-        panelTop.add(createButtonField(buttons), BorderLayout.SOUTH);
+        panelTop.add(createButtonField(buttons, Color.WHITE), BorderLayout.SOUTH);
 
         Object[] columns = new Object[]{"ID", "Mã Toa", "Tàu", "Loại Toa"};
         DefaultTableModel tableModel = new DefaultTableModel(columns, 0);

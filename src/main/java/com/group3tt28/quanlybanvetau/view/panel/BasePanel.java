@@ -33,9 +33,9 @@ public abstract class BasePanel extends JPanel {
         return option == JOptionPane.YES_OPTION;
     }
 
-    protected JComponent createInputField(String labelText, JComponent component) {
+    protected JComponent createInputField(String labelText, JComponent component, Color background) {
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        panel.setBackground(SECONDARY_COLOR);
+        panel.setBackground(background);
 
         JLabel label = new JLabel(labelText);
         label.setFont(FONT_PLAIN);
@@ -50,10 +50,10 @@ public abstract class BasePanel extends JPanel {
         return panel;
     }
 
-    protected JComponent createButtonField(JButton[] buttons) {
+    protected JComponent createButtonField(JButton[] buttons, Color background) {
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        panel.setBackground(Color.WHITE);
         panel.setBorder(new EmptyBorder(5, 5, 5, 5));
+        panel.setBackground(background);
 
         for (JButton button : buttons) {
             button.setPreferredSize(new Dimension(80, 40));

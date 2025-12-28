@@ -31,8 +31,8 @@ public class TauPanel extends BasePanel {
         JPanel panelForm = new JPanel(new GridLayout(1, 2, 5, 5));
         fieldMaTau = new JTextField();
         fieldTenTau = new JTextField();
-        panelForm.add(createInputField("Mã tàu: ", fieldMaTau));
-        panelForm.add(createInputField("Tên tàu: ", fieldTenTau));
+        panelForm.add(createInputField("Mã tàu: ", fieldMaTau, Color.WHITE));
+        panelForm.add(createInputField("Tên tàu: ", fieldTenTau, Color.WHITE));
 
         buttonThem = new JButton("Thêm");
         buttonSua = new JButton("Sửa");
@@ -45,7 +45,7 @@ public class TauPanel extends BasePanel {
         JPanel panelTop = new JPanel(new BorderLayout());
         panelTop.add(panelHome, BorderLayout.NORTH);
         panelTop.add(panelForm, BorderLayout.CENTER);
-        panelTop.add(createButtonField(buttons), BorderLayout.SOUTH);
+        panelTop.add(createButtonField(buttons, Color.WHITE), BorderLayout.SOUTH);
 
         model = new DefaultTableModel(new Object[]{"ID", "Mã tàu", "Tên tàu"}, 0);
         tblTau = new JTable(model);

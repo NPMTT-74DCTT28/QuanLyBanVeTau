@@ -40,10 +40,10 @@ public class GhePanel extends BasePanel {
         panelForm.setBorder(new EmptyBorder(10, 5, 10, 5));
 
         fieldSoGhe = new JTextField();
-        panelForm.add(createInputField("Số ghế:  ", fieldSoGhe));
+        panelForm.add(createInputField("Số ghế:  ", fieldSoGhe, Color.WHITE));
 
         ComboBoxIDToaTau = new JComboBox<>();
-        panelForm.add(createInputField("ID toa tàu: ", ComboBoxIDToaTau));
+        panelForm.add(createInputField("ID toa tàu: ", ComboBoxIDToaTau, Color.WHITE));
 
 
         buttonThem = new JButton("Thêm");
@@ -59,7 +59,7 @@ public class GhePanel extends BasePanel {
 
         panelTop.add(panelHome, BorderLayout.NORTH);
         panelTop.add(panelForm);
-        panelTop.add(createButtonField(buttons), BorderLayout.SOUTH);
+        panelTop.add(createButtonField(buttons, Color.WHITE), BorderLayout.SOUTH);
 
         Object[] columns = new Object[]{"Số ghế", "ID toa tàu"};
         DefaultTableModel tableModel = new DefaultTableModel(columns, 0);

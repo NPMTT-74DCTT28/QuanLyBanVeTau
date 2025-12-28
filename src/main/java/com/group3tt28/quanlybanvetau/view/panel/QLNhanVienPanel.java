@@ -56,36 +56,36 @@ public final class QLNhanVienPanel extends BasePanel {
         panelTitle.add(labelTitle);
 
         JPanel panelForm = new JPanel(new GridLayout(3, 3, 5, 5));
-        panelForm.setBackground(SECONDARY_COLOR);
         panelForm.setBorder(new EmptyBorder(10, 10, 10, 10));
+        panelForm.setBackground(Color.WHITE);
 
         fieldMaNhanVien = new JTextField();
-        panelForm.add(createInputField("Mã nhân viên:  ", fieldMaNhanVien));
+        panelForm.add(createInputField("Mã nhân viên:  ", fieldMaNhanVien, Color.WHITE));
 
         fieldMatKhau = new JPasswordField();
-        panelForm.add(createInputField("Mật khẩu: ", fieldMatKhau));
+        panelForm.add(createInputField("Mật khẩu: ", fieldMatKhau, Color.WHITE));
 
         fieldHoTen = new JTextField();
-        panelForm.add(createInputField("Họ tên: ", fieldHoTen));
+        panelForm.add(createInputField("Họ tên: ", fieldHoTen, Color.WHITE));
 
         chooserNgaySinh = new JDateChooser();
         chooserNgaySinh.setMaxSelectableDate(new Date(System.currentTimeMillis()));
-        panelForm.add(createInputField("Ngày sinh: ", chooserNgaySinh));
+        panelForm.add(createInputField("Ngày sinh: ", chooserNgaySinh, Color.WHITE));
 
         boxGioiTinh = new JComboBox<>(GioiTinh.values());
-        panelForm.add(createInputField("Giới tính: ", boxGioiTinh));
+        panelForm.add(createInputField("Giới tính: ", boxGioiTinh, Color.WHITE));
 
         fieldSdt = new JTextField();
-        panelForm.add(createInputField("SĐT: ", fieldSdt));
+        panelForm.add(createInputField("SĐT: ", fieldSdt, Color.WHITE));
 
         fieldEmail = new JTextField();
-        panelForm.add(createInputField("eMail: ", fieldEmail));
+        panelForm.add(createInputField("eMail: ", fieldEmail, Color.WHITE));
 
         fieldDiaChi = new JTextField();
-        panelForm.add(createInputField("Địa chỉ: ", fieldDiaChi));
+        panelForm.add(createInputField("Địa chỉ: ", fieldDiaChi, Color.WHITE));
 
         boxVaiTro = new JComboBox<>(VaiTro.values());
-        panelForm.add(createInputField("Vai trò: ", boxVaiTro));
+        panelForm.add(createInputField("Vai trò: ", boxVaiTro, Color.WHITE));
 
         buttonThem = createStyledButton("Thêm", PRIMARY_COLOR, Color.WHITE);
         buttonThem.setEnabled(true);
@@ -100,7 +100,7 @@ public final class QLNhanVienPanel extends BasePanel {
 
         panelTop.add(panelTitle, BorderLayout.NORTH);
         panelTop.add(panelForm);
-        panelTop.add(createButtonField(buttons), BorderLayout.SOUTH);
+        panelTop.add(createButtonField(buttons, Color.white), BorderLayout.SOUTH);
 
         Object[] columns = new Object[]{"Id", "Mã nhân viên", "Họ tên", "Ngày sinh", "Giới tính", "SĐT", "eMail", "Địa chỉ", "Vai trò"};
         DefaultTableModel tableModel = new DefaultTableModel(columns, 0);
@@ -127,6 +127,7 @@ public final class QLNhanVienPanel extends BasePanel {
 
         JPanel panelTable = new JPanel(new BorderLayout());
         panelTable.setBorder(new EmptyBorder(10, 10, 10, 10));
+        panelTable.setBackground(Color.WHITE);
         panelTable.add(scrollPane, BorderLayout.CENTER);
 
         add(panelTop, BorderLayout.NORTH);
