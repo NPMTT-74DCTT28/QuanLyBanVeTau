@@ -35,7 +35,7 @@ public class GaTauPanel extends BasePanel {
         panelForm.setBorder(new EmptyBorder(10, 5, 10, 5));
 
         fieldMaga = new JTextField();
-        panelForm.add(createInputField("Mã Ga: ", fieldMaga, Color.WHITE));
+        panelForm.add(createInputField("Mã Ga: ", fieldMaga, new Color(255, 0, 0)));
 
         fieldTenga = new JTextField();
         panelForm.add(createInputField("Tên Ga: ", fieldTenga, Color.WHITE));
@@ -46,10 +46,10 @@ public class GaTauPanel extends BasePanel {
         fieldThanhpho = new JTextField();
         panelForm.add(createInputField("Thành phố: ", fieldThanhpho, Color.WHITE));
 
-        btnthem = new JButton("Thêm");
-        btnsua = new JButton("Sửa");
-        btnxoa = new JButton("Xóa");
-        btnreset = new JButton("Reset");
+        btnthem = createStyledButton("Thêm", new Dimension(80,40),new Color(0,255,255), Color.white);
+        btnsua = createStyledButton("Sửa" , new Dimension(80,40),new Color(173, 252, 0), Color.white);
+        btnxoa = createStyledButton("Xóa", new  Dimension(80,40),new Color(252, 20, 20), Color.white);
+        btnreset = createStyledButton("Reset", new Dimension(80,40),new Color(238, 0, 255), Color.white);
         JButton[] btn = {btnthem, btnsua, btnxoa, btnreset};
 
         panelTop.add(panelForm, BorderLayout.NORTH);
