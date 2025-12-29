@@ -25,6 +25,7 @@ public class QLToaTauController {
     private final LoaiToaDAO loaiToaDAO;
     private final DefaultTableModel model;
 
+    // List này lưu dữ liệu từ DB
     private List<ToaTau> listToaTau;
     private int selectedRow = -1;
 
@@ -35,16 +36,13 @@ public class QLToaTauController {
         this.loaiToaDAO = new LoaiToaDAO();
         this.listToaTau = new ArrayList<>();
 
+        // Đăng ký sự kiện CRUD
         panel.addThemListener(new ThemListener());
         panel.addSuaListener(new SuaListener());
         panel.addXoaListener(new XoaListener());
         panel.addResetListener(new ResetListener());
 
-        // Listener tìm kiếm
-        panel.addTimKiemListener(new TimKiemListener());
-
         panel.getTable().addMouseListener(new TableMouseClickListener());
-
         model = (DefaultTableModel) panel.getTable().getModel();
 
         loadComboBoxData();
@@ -69,11 +67,15 @@ public class QLToaTauController {
     private void refresh() {
         panel.resetForm();
         selectedRow = -1;
-        listToaTau = dao.getAll();
-        updateTable(listToaTau); // Dùng hàm dùng chung
+        try {
+            listToaTau = dao.getAll();
+            updateTable(listToaTau);
+        } catch (Exception e) {
+            e.printStackTrace();
+            panel.showError("Lỗi tải dữ liệu toa tàu: " + e.getMessage());
+        }
     }
 
-    // Hàm cập nhật bảng chung cho refresh và tìm kiếm
     private void updateTable(List<ToaTau> listHienThi) {
         model.setRowCount(0);
         for (ToaTau tt : listHienThi) {
@@ -84,13 +86,14 @@ public class QLToaTauController {
         model.fireTableDataChanged();
     }
 
+    // Helper: Lấy tên hiển thị từ ComboBox (tránh query DB lắt nhắt)
     private String getTenTauById(int id) {
         JComboBox<Tau> box = panel.getBoxTau();
         for (int i = 0; i < box.getItemCount(); i++) {
             Tau t = box.getItemAt(i);
             if (t.getId() == id) return t.toString();
         }
-        return "ID: " + id;
+        return String.valueOf(id);
     }
 
     private String getTenLoaiToaById(int id) {
@@ -99,52 +102,23 @@ public class QLToaTauController {
             LoaiToa lt = box.getItemAt(i);
             if (lt.getId() == id) return lt.toString();
         }
-        return "ID: " + id;
+        return String.valueOf(id);
     }
 
-    // --- LISTENER TÌM KIẾM ---
-    private class TimKiemListener implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            String tuKhoa = panel.getTuKhoaTimKiem().toLowerCase();
-
-            if (tuKhoa.isEmpty()) {
-                refresh();
-                return;
-            }
-
-            List<ToaTau> ketQua = new ArrayList<>();
-            for (ToaTau tt : listToaTau) {
-                // Lấy thông tin hiển thị để tìm kiếm (Mã toa, Tên tàu, Tên loại toa)
-                String maToa = tt.getMaToa().toLowerCase();
-                String tenTau = getTenTauById(tt.getIdTau()).toLowerCase();
-                String tenLoai = getTenLoaiToaById(tt.getIdLoaiToa()).toLowerCase();
-
-                if (maToa.contains(tuKhoa) || tenTau.contains(tuKhoa) || tenLoai.contains(tuKhoa)) {
-                    ketQua.add(tt);
-                }
-            }
-            updateTable(ketQua);
-
-            if (ketQua.isEmpty()) {
-                panel.showWarning("Không tìm thấy toa tàu nào khớp với từ khóa: " + tuKhoa);
-            }
-        }
-    }
+    // --- CÁC CLASS LISTENER ---
 
     private class ThemListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             try {
                 ToaTau tt = panel.getToaTauFromForm();
-
-                if (dao.checkTrung(tt.getMaToa(), tt.getIdTau())) {
+                // Check trùng (truyền 0 làm id loại trừ vì đang thêm mới)
+                if (dao.checkTrung(tt.getMaToa(), tt.getIdTau(), 0)) {
                     panel.showWarning("Mã toa '" + tt.getMaToa() + "' đã tồn tại trên tàu này!");
                     return;
                 }
-
                 if (dao.insert(tt)) {
-                    panel.showMessage("Thêm toa tàu thành công!");
+                    panel.showMessage("Thêm thành công!");
                     refresh();
                 } else {
                     panel.showError("Thêm thất bại!");
@@ -162,26 +136,21 @@ public class QLToaTauController {
         @Override
         public void actionPerformed(ActionEvent e) {
             try {
+                selectedRow = panel.getTable().getSelectedRow();
                 if (selectedRow == -1) {
                     panel.showWarning("Vui lòng chọn toa tàu để sửa!");
                     return;
                 }
 
-                // Lấy ID từ bảng (cột 0) để tìm đúng đối tượng gốc
-                int idToa = (int) panel.getTable().getValueAt(selectedRow, 0);
-
-                ToaTau ttCu = null;
-                for (ToaTau item : listToaTau) {
-                    if (item.getId() == idToa) {
-                        ttCu = item;
-                        break;
-                    }
-                }
-
-                if (ttCu == null) return;
-
+                int idToa = Integer.parseInt(panel.getTable().getValueAt(selectedRow, 0).toString());
                 ToaTau ttMoi = panel.getToaTauFromForm();
-                ttMoi.setId(ttCu.getId());
+                ttMoi.setId(idToa);
+
+                // Check trùng (loại trừ chính id của toa đang sửa)
+                if (dao.checkTrung(ttMoi.getMaToa(), ttMoi.getIdTau(), idToa)) {
+                    panel.showWarning("Mã toa '" + ttMoi.getMaToa() + "' đã tồn tại trên tàu này!");
+                    return;
+                }
 
                 if (panel.showConfirm("Cập nhật toa " + ttMoi.getMaToa() + "?")) {
                     if (dao.update(ttMoi)) {
@@ -204,25 +173,17 @@ public class QLToaTauController {
         @Override
         public void actionPerformed(ActionEvent e) {
             try {
+                selectedRow = panel.getTable().getSelectedRow();
                 if (selectedRow == -1) {
                     panel.showWarning("Vui lòng chọn toa tàu để xoá!");
                     return;
                 }
 
-                // Lấy ID từ bảng (cột 0)
-                int idToa = (int) panel.getTable().getValueAt(selectedRow, 0);
+                int idToa = Integer.parseInt(panel.getTable().getValueAt(selectedRow, 0).toString());
+                String maToa = panel.getTable().getValueAt(selectedRow, 1).toString();
 
-                // Tìm object trong list gốc để lấy thông tin hiển thị (VD: Mã toa)
-                ToaTau tt = null;
-                for (ToaTau item : listToaTau) {
-                    if (item.getId() == idToa) {
-                        tt = item;
-                        break;
-                    }
-                }
-
-                if (tt != null && panel.showConfirm("Xoá toa " + tt.getMaToa() + "?")) {
-                    if (dao.delete(tt.getId())) {
+                if (panel.showConfirm("Xoá toa " + maToa + "?")) {
+                    if (dao.delete(idToa)) {
                         panel.showMessage("Xoá thành công!");
                         refresh();
                     } else {
@@ -251,10 +212,10 @@ public class QLToaTauController {
 
             panel.startEditMode();
 
-            // Lấy ID từ cột 0 của bảng
-            int idToa = (int) panel.getTable().getValueAt(selectedRow, 0);
+            // Lấy ID từ cột ẩn (cột 0)
+            int idToa = Integer.parseInt(panel.getTable().getValueAt(selectedRow, 0).toString());
 
-            // Tìm đối tượng trong list gốc
+            // Tìm object trong list gốc
             ToaTau tt = null;
             for (ToaTau item : listToaTau) {
                 if (item.getId() == idToa) {
@@ -262,11 +223,11 @@ public class QLToaTauController {
                     break;
                 }
             }
-
             if (tt == null) return;
 
             panel.setMaToa(tt.getMaToa());
 
+            // Set ComboBox Tàu
             JComboBox<Tau> boxTau = panel.getBoxTau();
             for (int i = 0; i < boxTau.getItemCount(); i++) {
                 if (boxTau.getItemAt(i).getId() == tt.getIdTau()) {
@@ -275,6 +236,7 @@ public class QLToaTauController {
                 }
             }
 
+            // Set ComboBox Loại Toa
             JComboBox<LoaiToa> boxLoai = panel.getBoxLoaiToa();
             for (int i = 0; i < boxLoai.getItemCount(); i++) {
                 if (boxLoai.getItemAt(i).getId() == tt.getIdLoaiToa()) {

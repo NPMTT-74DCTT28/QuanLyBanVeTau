@@ -19,7 +19,6 @@ public class LichTrinhDAO {
     private static final String COT_NGAY_DEN = "ngay_den";
     private static final String COT_TRANG_THAI = "trang_thai";
 
-
     public boolean checktrung(String malichtrinh) {
         if (malichtrinh == null) {
             return false;
@@ -68,20 +67,17 @@ public class LichTrinhDAO {
         }
     }
 
-    // Trong file LichTrinhDAO.java
-
     public boolean update(LichTrinh lichTrinh) {
         if (lichTrinh == null) {
             return false;
         }
-        // Câu lệnh SQL có 6 dấu ? (5 cái SET và 1 cái WHERE)
         String sql = "UPDATE " + TEN_BANG + " SET "
                 + COT_ID_TAU + "=? ,"
                 + COT_ID_TUYEN + "=? , "
                 + COT_NGAY_DI + "=? ,"
                 + COT_NGAY_DEN + "=? ,"
                 + COT_TRANG_THAI + "=? "
-                + "WHERE " + COT_MA_LICH_TRINH + "=?"; // <-- Dấu hỏi chấm thứ 6 nằm ở đây
+                + "WHERE " + COT_MA_LICH_TRINH + "=?";
 
         Timestamp ngaydiSQL = null;
         if (lichTrinh.getNgayDi() != null) {
@@ -99,13 +95,9 @@ public class LichTrinhDAO {
             ps.setTimestamp(3, ngaydiSQL);
             ps.setTimestamp(4, ngaydenSQL);
             ps.setString(5, lichTrinh.getTrangThai());
-
-            // --- THÊM DÒNG NÀY ---
             ps.setString(6, lichTrinh.getMaLichTrinh());
-            // ---------------------
 
             return ps.executeUpdate() > 0;
-
         } catch (SQLException e) {
             throw new RuntimeException("Lỗi khi sửa lịch trình: " + e.getMessage(), e);
         }
@@ -135,8 +127,8 @@ public class LichTrinhDAO {
                 String malichtrinh = rs.getString(COT_MA_LICH_TRINH);
                 int idTau = rs.getInt(COT_ID_TAU);
                 int idTuyen = rs.getInt(COT_ID_TUYEN);
-                LocalDateTime ngaydi = ngaydiSQL.toLocalDateTime();
-                LocalDateTime ngayden = ngaydenSQL.toLocalDateTime();
+                LocalDateTime ngaydi = ngaydiSQL != null ? ngaydiSQL.toLocalDateTime() : null;
+                LocalDateTime ngayden = ngaydenSQL != null ? ngaydenSQL.toLocalDateTime() : null;
                 String trangthai = rs.getString(COT_TRANG_THAI);
 
                 LichTrinh lichTrinh = new LichTrinh(id, malichtrinh, idTau, idTuyen, ngaydi, ngayden, trangthai);
@@ -144,6 +136,66 @@ public class LichTrinhDAO {
             }
         } catch (SQLException e) {
             throw new RuntimeException("Lỗi khi tải dữ liệu lịch trình: " + e.getMessage(), e);
+        }
+        return list;
+    }
+
+    // --- PHƯƠNG THỨC MỚI: TÌM KIẾM ---
+    public List<LichTrinh> timKiemLichTrinh(String tuKhoa, int idTau, int idTuyen, String trangThai) {
+        List<LichTrinh> list = new ArrayList<>();
+        List<Object> params = new ArrayList<>();
+
+        StringBuilder sql = new StringBuilder("SELECT * FROM " + TEN_BANG + " WHERE 1=1 ");
+
+        // 1. Tìm theo từ khóa (Mã lịch trình)
+        if (tuKhoa != null && !tuKhoa.trim().isEmpty()) {
+            sql.append(" AND ").append(COT_MA_LICH_TRINH).append(" LIKE ? ");
+            params.add("%" + tuKhoa.trim() + "%");
+        }
+
+        // 2. Tìm theo Tàu
+        if (idTau > 0) {
+            sql.append(" AND ").append(COT_ID_TAU).append(" = ? ");
+            params.add(idTau);
+        }
+
+        // 3. Tìm theo Tuyến đường
+        if (idTuyen > 0) {
+            sql.append(" AND ").append(COT_ID_TUYEN).append(" = ? ");
+            params.add(idTuyen);
+        }
+
+        // 4. Tìm theo Trạng thái
+        if (trangThai != null && !trangThai.trim().isEmpty() && !trangThai.equalsIgnoreCase("Tất cả")) {
+            sql.append(" AND ").append(COT_TRANG_THAI).append(" = ? ");
+            params.add(trangThai);
+        }
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql.toString())) {
+
+            for (int i = 0; i < params.size(); i++) {
+                ps.setObject(i + 1, params.get(i));
+            }
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Timestamp ngaydiSQL = rs.getTimestamp(COT_NGAY_DI);
+                    Timestamp ngaydenSQL = rs.getTimestamp(COT_NGAY_DEN);
+                    int id = rs.getInt(COT_ID);
+                    String maLichTrinh = rs.getString(COT_MA_LICH_TRINH);
+                    int idTauDb = rs.getInt(COT_ID_TAU);
+                    int idTuyenDb = rs.getInt(COT_ID_TUYEN);
+                    LocalDateTime ngayDi = ngaydiSQL != null ? ngaydiSQL.toLocalDateTime() : null;
+                    LocalDateTime ngayDen = ngaydenSQL != null ? ngaydenSQL.toLocalDateTime() : null;
+                    String status = rs.getString(COT_TRANG_THAI);
+
+                    LichTrinh lt = new LichTrinh(id, maLichTrinh, idTauDb, idTuyenDb, ngayDi, ngayDen, status);
+                    list.add(lt);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Lỗi khi tìm kiếm lịch trình: " + e.getMessage(), e);
         }
         return list;
     }

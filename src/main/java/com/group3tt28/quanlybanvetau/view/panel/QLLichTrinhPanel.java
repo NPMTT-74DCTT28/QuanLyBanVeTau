@@ -6,15 +6,22 @@ import com.group3tt28.quanlybanvetau.model.Tau;
 import com.group3tt28.quanlybanvetau.model.TuyenDuong;
 
 import javax.swing.*;
+import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
+import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseListener;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 
-public final class QLLichTrinhPanel extends BasePanel {
+public class QLLichTrinhPanel extends BasePanel {
 
     private JTextField fieldMaLichTrinh;
     private JComboBox<Tau> boxTau;
@@ -23,13 +30,8 @@ public final class QLLichTrinhPanel extends BasePanel {
     private JSpinner spinnerNgayDen;
     private JComboBox<TrangThaiLichTrinh> boxTrangThai;
 
-    // Các thành phần Tìm kiếm (Mới thêm)
-    private JTextField fieldTimKiem;
-    private JButton buttonTimKiem;
-
     private JButton buttonThem, buttonSua, buttonXoa, buttonReset;
     private JTable table;
-
     private boolean isEditMode = false;
 
     public QLLichTrinhPanel() {
@@ -38,106 +40,98 @@ public final class QLLichTrinhPanel extends BasePanel {
 
     @Override
     protected void initComponents() {
-        setLayout(new BorderLayout());
+        setLayout(new BorderLayout(0, 0));
+        setBackground(Color.WHITE);
 
-        JPanel panelHome = new JPanel();
-        panelHome.setBackground(new Color(152, 251, 152));
-        panelHome.setBorder(new EmptyBorder(5, 5, 5, 5));
-        JLabel labelHome = new JLabel("Quản lý lịch trình tàu");
-        labelHome.setSize(200, 80);
-        labelHome.setFont(new Font("Segoe UI", Font.BOLD, 20));
-        panelHome.add(labelHome);
-
-        // Panel chứa form nhập liệu
+        // --- TOP PANEL: Tiêu đề + Form + Button ---
         JPanel panelTop = new JPanel(new BorderLayout(0, 5));
+        panelTop.setBackground(Color.WHITE);
 
-        JPanel panelForm = new JPanel(new GridLayout(3, 3, 5, 5));
-        panelForm.setBorder(new EmptyBorder(10, 5, 10, 5));
+        // 1. Tiêu đề
+        JPanel panelTitle = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
+        panelTitle.setBackground(PRIMARY_COLOR);
+        JLabel labelTitle = new JLabel("QUẢN LÝ LỊCH TRÌNH CHẠY TÀU");
+        labelTitle.setFont(new Font("Segoe UI", Font.BOLD, 22));
+        labelTitle.setForeground(Color.WHITE);
+        panelTitle.add(labelTitle);
+
+        // 2. Form nhập liệu
+        JPanel panelForm = new JPanel(new GridLayout(3, 2, 10, 10)); // 3 hàng, 2 cột input
+        panelForm.setBorder(new EmptyBorder(10, 10, 10, 10));
+        panelForm.setBackground(Color.WHITE);
 
         fieldMaLichTrinh = new JTextField();
-        panelForm.add(createInputField("Mã lịch trình:", fieldMaLichTrinh, Color.WHITE));
+        panelForm.add(createInputField("Mã lịch trình", fieldMaLichTrinh, Color.WHITE));
 
         boxTau = new JComboBox<>();
-        panelForm.add(createInputField("Tàu:", boxTau, Color.WHITE));
+        panelForm.add(createInputField("Tàu", boxTau, Color.WHITE));
 
         boxTuyenDuong = new JComboBox<>();
-        panelForm.add(createInputField("Tuyến đường:", boxTuyenDuong, Color.WHITE));
-
-        // Cấu hình Spinner NGÀY ĐI
-        SpinnerDateModel modelDi = new SpinnerDateModel();
-        spinnerNgayDi = new JSpinner(modelDi);
-        JSpinner.DateEditor editorDi = new JSpinner.DateEditor(spinnerNgayDi, "yyyy-MM-dd HH:mm:ss");
-        spinnerNgayDi.setEditor(editorDi);
-        spinnerNgayDi.setValue(new Date());
-        panelForm.add(createInputField("Ngày đi:", spinnerNgayDi, Color.WHITE));
-
-        // Cấu hình Spinner NGÀY ĐẾN
-        SpinnerDateModel modelDen = new SpinnerDateModel();
-        spinnerNgayDen = new JSpinner(modelDen);
-        JSpinner.DateEditor editorDen = new JSpinner.DateEditor(spinnerNgayDen, "yyyy-MM-dd HH:mm:ss");
-        spinnerNgayDen.setEditor(editorDen);
-        spinnerNgayDen.setValue(new Date());
-        panelForm.add(createInputField("Ngày đến:", spinnerNgayDen, Color.WHITE));
+        panelForm.add(createInputField("Tuyến đường", boxTuyenDuong, Color.WHITE));
 
         boxTrangThai = new JComboBox<>(TrangThaiLichTrinh.values());
-        panelForm.add(createInputField("Trạng thái:", boxTrangThai, Color.WHITE));
+        panelForm.add(createInputField("Trạng thái", boxTrangThai, Color.WHITE));
 
-        // --- KHU VỰC CHỨC NĂNG (BUTTONS + TÌM KIẾM) ---
-        JPanel panelActions = new JPanel(new BorderLayout(5, 5));
-        panelActions.setBorder(new EmptyBorder(0, 5, 5, 5));
+        // Cấu hình Spinner cho Ngày Đi (Ngày + Giờ)
+        spinnerNgayDi = new JSpinner(new SpinnerDateModel());
+        JSpinner.DateEditor editorDi = new JSpinner.DateEditor(spinnerNgayDi, "yyyy-MM-dd HH:mm:ss");
+        spinnerNgayDi.setEditor(editorDi);
+        panelForm.add(createInputField("Thời gian đi", spinnerNgayDi, Color.WHITE));
 
-        // 1. Panel Tìm kiếm (Mới)
-        JPanel panelTimKiemContainer = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        panelTimKiemContainer.setBackground(Color.WHITE);
+        // Cấu hình Spinner cho Ngày Đến
+        spinnerNgayDen = new JSpinner(new SpinnerDateModel());
+        JSpinner.DateEditor editorDen = new JSpinner.DateEditor(spinnerNgayDen, "yyyy-MM-dd HH:mm:ss");
+        spinnerNgayDen.setEditor(editorDen);
+        panelForm.add(createInputField("Thời gian đến", spinnerNgayDen, Color.WHITE));
 
-        JLabel labelTim = new JLabel("Tìm kiếm (Mã/Tàu/Tuyến): ");
-        labelTim.setFont(new Font("Segoe UI", Font.BOLD, 12));
-
-        fieldTimKiem = new JTextField(20);
-        fieldTimKiem.setFont(new Font("Segoe UI", Font.PLAIN, 13));
-
-        buttonTimKiem = createStyledButton("Tìm", new Dimension(80, 30), new Color(70, 130, 180), Color.WHITE); // Màu xanh dương
-
-        panelTimKiemContainer.add(labelTim);
-        panelTimKiemContainer.add(fieldTimKiem);
-        panelTimKiemContainer.add(buttonTimKiem);
-
-        // 2. Panel Button CRUD cũ
+        // 3. Buttons
         buttonThem = createStyledButton("Thêm", new Dimension(80, 40), PRIMARY_COLOR, Color.WHITE);
-        buttonThem.setEnabled(true);
         buttonSua = createStyledButton("Sửa", new Dimension(80, 40), new Color(200, 200, 40), Color.WHITE);
         buttonSua.setEnabled(false);
         buttonXoa = createStyledButton("Xoá", new Dimension(80, 40), Color.RED, Color.white);
         buttonXoa.setEnabled(false);
         buttonReset = createStyledButton("Reset form", new Dimension(110, 40), PRIMARY_COLOR, Color.WHITE);
-        buttonReset.setEnabled(true);
 
         JButton[] buttons = {buttonThem, buttonSua, buttonXoa, buttonReset};
 
-        // --- SỬA LỖI TẠI ĐÂY: Đổi JPanel thành JComponent ---
-        JComponent panelButtons = createButtonField(buttons, Color.WHITE);
-
-        // Ghép Tìm kiếm và Nút bấm vào panelActions
-        panelActions.add(panelTimKiemContainer, BorderLayout.NORTH);
-        panelActions.add(panelButtons, BorderLayout.CENTER);
-
-        // Ghép tất cả vào PanelTop
-        panelTop.add(panelHome, BorderLayout.NORTH);
+        panelTop.add(panelTitle, BorderLayout.NORTH);
         panelTop.add(panelForm, BorderLayout.CENTER);
-        panelTop.add(panelActions, BorderLayout.SOUTH);
+        panelTop.add(createButtonField(buttons, Color.WHITE), BorderLayout.SOUTH);
 
-        // Table
-        Object[] columns = new Object[]{"Mã LT", "Tàu", "Tuyến đường", "Ngày đi", "Ngày đến", "Trạng thái"};
+        // --- CENTER PANEL: Table ---
+        Object[] columns = new Object[]{"ID", "Mã LT", "Tàu", "Tuyến đường", "Ngày đi", "Ngày đến", "Trạng thái"};
         DefaultTableModel tableModel = new DefaultTableModel(columns, 0);
+
         table = new JTable(tableModel);
         table.setRowHeight(25);
 
+        // Ẩn cột ID
+        TableColumnModel columnModel = table.getColumnModel();
+        TableColumn columnId = columnModel.getColumn(0);
+        table.removeColumn(columnId);
+
+        JTableHeader tableHeader = table.getTableHeader();
+        tableHeader.setBackground(SECONDARY_COLOR);
+        tableHeader.setForeground(Color.BLACK);
+        tableHeader.setOpaque(false);
+        tableHeader.setFont(FONT_PLAIN);
+
         JScrollPane scrollPane = new JScrollPane(table);
-        scrollPane.setFont(new Font("Segoe UI", Font.BOLD, 13));
-        scrollPane.setBorder(new EmptyBorder(10, 10, 10, 10));
+
+        TitledBorder tableBorder = new TitledBorder(new LineBorder(Color.LIGHT_GRAY), "Danh sách lịch trình",
+                TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, FONT_BOLD, Color.BLACK);
+        scrollPane.setBorder(new CompoundBorder(new EmptyBorder(5, 5, 5, 5), tableBorder));
+        scrollPane.setForeground(Color.BLACK);
+        scrollPane.setBackground(Color.WHITE);
+        scrollPane.setFont(FONT_PLAIN);
+
+        JPanel panelTable = new JPanel(new BorderLayout());
+        panelTable.setBorder(new EmptyBorder(10, 10, 10, 10));
+        panelTable.setBackground(Color.WHITE);
+        panelTable.add(scrollPane, BorderLayout.CENTER);
 
         add(panelTop, BorderLayout.NORTH);
-        add(scrollPane, BorderLayout.CENTER);
+        add(panelTable, BorderLayout.CENTER);
     }
 
     // --- GETTERS & SETTERS ---
@@ -146,24 +140,36 @@ public final class QLLichTrinhPanel extends BasePanel {
         return fieldMaLichTrinh.getText().trim();
     }
 
-    public void setMaLichTrinh(String maLichTrinh) {
-        fieldMaLichTrinh.setText(maLichTrinh);
+    public void setMaLichTrinh(String text) {
+        fieldMaLichTrinh.setText(text);
     }
 
     public JComboBox<Tau> getBoxTau() {
         return boxTau;
     }
 
-    public Tau getTau() {
-        return (Tau) boxTau.getSelectedItem();
+    public void setTau(int idTau) {
+        for (int i = 0; i < boxTau.getItemCount(); i++) {
+            Tau t = boxTau.getItemAt(i);
+            if (t.getId() == idTau) {
+                boxTau.setSelectedIndex(i);
+                return;
+            }
+        }
     }
 
     public JComboBox<TuyenDuong> getBoxTuyenDuong() {
         return boxTuyenDuong;
     }
 
-    public TuyenDuong getTuyenDuong() {
-        return (TuyenDuong) boxTuyenDuong.getSelectedItem();
+    public void setTuyenDuong(int idTuyen) {
+        for (int i = 0; i < boxTuyenDuong.getItemCount(); i++) {
+            TuyenDuong t = boxTuyenDuong.getItemAt(i);
+            if (t.getId() == idTuyen) {
+                boxTuyenDuong.setSelectedIndex(i);
+                return;
+            }
+        }
     }
 
     public LocalDateTime getNgayDi() {
@@ -171,13 +177,9 @@ public final class QLLichTrinhPanel extends BasePanel {
         return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
     }
 
-    public void setNgayDi(LocalDateTime localDateTime) {
-        if (localDateTime == null) {
-            spinnerNgayDi.setValue(new Date());
-        } else {
-            Date date = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
-            spinnerNgayDi.setValue(date);
-        }
+    public void setNgayDi(LocalDateTime ldt) {
+        if (ldt == null) spinnerNgayDi.setValue(new Date());
+        else spinnerNgayDi.setValue(Date.from(ldt.atZone(ZoneId.systemDefault()).toInstant()));
     }
 
     public LocalDateTime getNgayDen() {
@@ -185,65 +187,45 @@ public final class QLLichTrinhPanel extends BasePanel {
         return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
     }
 
-    public void setNgayDen(LocalDateTime localDateTime) {
-        if (localDateTime == null) {
-            spinnerNgayDen.setValue(new Date());
-        } else {
-            Date date = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
-            spinnerNgayDen.setValue(date);
-        }
+    public void setNgayDen(LocalDateTime ldt) {
+        if (ldt == null) spinnerNgayDen.setValue(new Date());
+        else spinnerNgayDen.setValue(Date.from(ldt.atZone(ZoneId.systemDefault()).toInstant()));
     }
 
     public String getTrangThai() {
-        TrangThaiLichTrinh trangThai = (TrangThaiLichTrinh) boxTrangThai.getSelectedItem();
-        return trangThai != null ? trangThai.toString() : TrangThaiLichTrinh.CHO.toString();
+        return boxTrangThai.getSelectedItem().toString();
     }
 
-    public void setTrangThai(String trangThaiStr) {
+    public void setTrangThai(String status) {
         try {
-            boxTrangThai.setSelectedItem(TrangThaiLichTrinh.valueOf(trangThaiStr));
-        } catch (IllegalArgumentException | NullPointerException e) {
+            boxTrangThai.setSelectedItem(TrangThaiLichTrinh.valueOf(status));
+        } catch (Exception e) {
             boxTrangThai.setSelectedIndex(0);
         }
-    }
-
-    // --- Getter cho chức năng Tìm kiếm ---
-    public String getTuKhoaTimKiem() {
-        return fieldTimKiem.getText().trim();
-    }
-
-    public LichTrinh getLichTrinhFromForm() {
-        String maLT = getMaLichTrinh();
-        Tau tau = getTau();
-        TuyenDuong tuyen = getTuyenDuong();
-        LocalDateTime ngayDi = getNgayDi();
-        LocalDateTime ngayDen = getNgayDen();
-        String trangThai = getTrangThai();
-
-        if (maLT.isEmpty()) throw new IllegalArgumentException("Mã lịch trình không được để trống!");
-        if (tau == null) throw new IllegalArgumentException("Vui lòng chọn Tàu!");
-        if (tuyen == null) throw new IllegalArgumentException("Vui lòng chọn Tuyến đường!");
-
-        // Validate logic thời gian
-        if (ngayDen.isBefore(ngayDi)) {
-            throw new IllegalArgumentException("Ngày đến không thể trước ngày đi!");
-        }
-
-        return new LichTrinh(maLT, tau.getId(), tuyen.getId(), ngayDi, ngayDen, trangThai);
     }
 
     public JTable getTable() {
         return table;
     }
 
-    // --- LOGIC TRẠNG THÁI BUTTON ---
+    // --- LOGIC FORM ---
+
+    public LichTrinh getLichTrinhFromForm() {
+        String ma = getMaLichTrinh();
+        Tau tau = (Tau) boxTau.getSelectedItem();
+        TuyenDuong tuyen = (TuyenDuong) boxTuyenDuong.getSelectedItem();
+        LocalDateTime di = getNgayDi();
+        LocalDateTime den = getNgayDen();
+        String status = getTrangThai();
+
+        if (tau == null || tuyen == null) return null;
+
+        return new LichTrinh(ma, tau.getId(), tuyen.getId(), di, den, status);
+    }
 
     public void startEditMode() {
         isEditMode = true;
-
-        fieldMaLichTrinh.setEnabled(false);
-        fieldMaLichTrinh.setBackground(new Color(240, 240, 240));
-
+        fieldMaLichTrinh.setEnabled(false); // Không cho sửa mã khi đang edit
         buttonThem.setEnabled(false);
         buttonSua.setEnabled(true);
         buttonXoa.setEnabled(true);
@@ -252,52 +234,25 @@ public final class QLLichTrinhPanel extends BasePanel {
 
     public void resetForm() {
         isEditMode = false;
-
         fieldMaLichTrinh.setEnabled(true);
         fieldMaLichTrinh.setText("");
-        fieldMaLichTrinh.setBackground(Color.WHITE);
-
         if (boxTau.getItemCount() > 0) boxTau.setSelectedIndex(0);
         if (boxTuyenDuong.getItemCount() > 0) boxTuyenDuong.setSelectedIndex(0);
-
         spinnerNgayDi.setValue(new Date());
         spinnerNgayDen.setValue(new Date());
-
         if (boxTrangThai.getItemCount() > 0) boxTrangThai.setSelectedIndex(0);
-
-        // Reset luôn ô tìm kiếm
-        fieldTimKiem.setText("");
 
         buttonThem.setEnabled(true);
         buttonSua.setEnabled(false);
         buttonXoa.setEnabled(false);
         buttonReset.setEnabled(true);
-
-        if (table != null) {
-            table.clearSelection();
-        }
+        table.clearSelection();
     }
 
     // --- LISTENERS ---
-
-    public void addThemListener(ActionListener l) {
-        buttonThem.addActionListener(l);
-    }
-
-    public void addSuaListener(ActionListener l) {
-        buttonSua.addActionListener(l);
-    }
-
-    public void addXoaListener(ActionListener l) {
-        buttonXoa.addActionListener(l);
-    }
-
-    public void addResetListener(ActionListener l) {
-        buttonReset.addActionListener(l);
-    }
-
-    // Listener cho nút tìm kiếm
-    public void addTimKiemListener(ActionListener l) {
-        buttonTimKiem.addActionListener(l);
-    }
+    public void addThemListener(ActionListener l) { buttonThem.addActionListener(l); }
+    public void addSuaListener(ActionListener l) { buttonSua.addActionListener(l); }
+    public void addXoaListener(ActionListener l) { buttonXoa.addActionListener(l); }
+    public void addResetListener(ActionListener l) { buttonReset.addActionListener(l); }
+    public void addTableMouseListener(MouseListener l) { table.addMouseListener(l); }
 }
