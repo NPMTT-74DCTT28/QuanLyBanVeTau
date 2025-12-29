@@ -9,7 +9,7 @@ public abstract class BaseFrame extends JFrame {
     protected final Color SECONDARY_COLOR = new Color(153, 204, 255);
     protected final Font FONT_BOLD = new Font("Segoe UI", Font.BOLD, 14);
     protected final Font FONT_PLAIN = new Font("Segoe UI", Font.PLAIN, 14);
-    
+
     public BaseFrame(String tieuDe) {
         setTitle(tieuDe);
         setSize(1280, 720);

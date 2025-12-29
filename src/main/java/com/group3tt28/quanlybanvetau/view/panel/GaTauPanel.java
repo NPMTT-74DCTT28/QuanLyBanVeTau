@@ -19,6 +19,7 @@ public class GaTauPanel extends BasePanel {
     private DefaultTableModel model;
     private JTable table;
     private boolean isEditmode = false;
+
     public GaTauPanel() {
         initComponents();
     }
@@ -30,7 +31,7 @@ public class GaTauPanel extends BasePanel {
         titlePanel.setBackground(new Color(0, 123, 255));
         titlePanel.setBorder(new EmptyBorder(5, 5, 5, 5));
         JLabel lblTitle = new JLabel("QL Ga Tàu");
-        lblTitle.setSize(200,80);
+        lblTitle.setSize(200, 80);
         lblTitle.setFont(new Font("Segoe UI", Font.BOLD, 20));
         titlePanel.add(lblTitle);
 
@@ -50,10 +51,10 @@ public class GaTauPanel extends BasePanel {
         fieldThanhpho = new JTextField();
         panelForm.add(createInputField("Thành phố: ", fieldThanhpho, Color.WHITE));
 
-        btnthem = createStyledButton("Thêm", new Dimension(80,40),new Color(40, 85, 243), Color.black);
-        btnsua = createStyledButton("Sửa" , new Dimension(80,40),new Color(255, 193, 7), Color.black);
-        btnxoa = createStyledButton("Xóa", new  Dimension(80,40),new Color(220, 53, 69), Color.black);
-        btnreset = createStyledButton("Reset", new Dimension(80,40),new Color(108, 117, 125), Color.white);
+        btnthem = createStyledButton("Thêm", new Dimension(80, 40), new Color(40, 85, 243), Color.black);
+        btnsua = createStyledButton("Sửa", new Dimension(80, 40), new Color(255, 193, 7), Color.black);
+        btnxoa = createStyledButton("Xóa", new Dimension(80, 40), new Color(220, 53, 69), Color.black);
+        btnreset = createStyledButton("Reset", new Dimension(80, 40), new Color(108, 117, 125), Color.white);
         JButton[] btn = {btnthem, btnsua, btnxoa, btnreset};
 
         panelTop.add(titlePanel, BorderLayout.NORTH);
@@ -62,7 +63,7 @@ public class GaTauPanel extends BasePanel {
 
 
         String[] columNames = {"Mã Ga", "Tên Ga", "Địa chỉ", "Thành phố"};
-        model = new  DefaultTableModel(columNames, 0);
+        model = new DefaultTableModel(columNames, 0);
         table = new JTable(model);
         JTableHeader tableHeader = table.getTableHeader();
         tableHeader.setBackground(SECONDARY_COLOR);
@@ -84,33 +85,43 @@ public class GaTauPanel extends BasePanel {
         add(panelTop, BorderLayout.NORTH);
         add(panelTable, BorderLayout.CENTER);
     }
+
     public String getMaGa() {
         return fieldMaga.getText().trim();
     }
+
     public void setMaGa(String maNV) {
         fieldMaga.setText(maNV);
     }
+
     public String getTenga() {
         return fieldTenga.getText().trim();
     }
+
     public void setTenga(String tenga) {
         fieldTenga.setText(tenga);
     }
+
     public String getDiachi() {
         return fieldDiachi.getText().trim();
     }
+
     public void setDiachi(String diachi) {
         fieldDiachi.setText(diachi);
     }
+
     public String getThanhpho() {
         return fieldThanhpho.getText().trim();
     }
+
     public void setThanhpho(String thanhpho) {
         fieldThanhpho.setText(thanhpho);
     }
+
     public JTable getTable() {
         return table;
     }
+
     public GaTau getGaTau() {
         String maGa = getMaGa();
         String tenga = getTenga();
@@ -118,7 +129,8 @@ public class GaTauPanel extends BasePanel {
         String thanhpho = getThanhpho();
         return new GaTau(maGa, tenga, diachi, thanhpho);
     }
-    public void startEditMode(){
+
+    public void startEditMode() {
         isEditmode = true;
         fieldMaga.setEnabled(false);
         btnthem.setEnabled(false);
@@ -126,7 +138,8 @@ public class GaTauPanel extends BasePanel {
         btnxoa.setEnabled(true);
 
     }
-    public void resetForm(){
+
+    public void resetForm() {
         isEditmode = false;
 
         fieldMaga.setEnabled(true);
@@ -146,20 +159,24 @@ public class GaTauPanel extends BasePanel {
             table.clearSelection();
         }
     }
+
     public void AddGaTau(ActionListener l) {
         btnthem.addActionListener(l);
     }
+
     public void EditGaTau(ActionListener l) {
         btnsua.addActionListener(l);
     }
+
     public void RemoveGaTau(ActionListener l) {
         btnxoa.addActionListener(l);
     }
+
     public void ResetGaTau(ActionListener l) {
         btnreset.addActionListener(l);
     }
+
     public void TableMouseClickListener(MouseListener l) {
         table.addMouseListener(l);
     }
-
 }

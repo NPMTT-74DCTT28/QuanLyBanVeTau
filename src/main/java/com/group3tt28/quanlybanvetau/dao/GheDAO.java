@@ -17,17 +17,17 @@ public class GheDAO {
     private static final String COT_SO_GHE = "so_ghe";
     private static final String COT_ID_TOA_TAU = "id_toa_tau";
 
-    public boolean checkTrung(String soGhe, int idToaTau, int idGhe){
-        if(soGhe == null){
+    public boolean checkTrung(String soGhe, int idToaTau, int idGhe) {
+        if (soGhe == null) {
             return false;
         }
 
-        String sql = " SELECT " + COT_SO_GHE +" FROM " + TEN_BANG
-                + " WHERE ( " + COT_SO_GHE + " = ? AND " + COT_ID_TOA_TAU + " = ?) AND id != ?"  ;
+        String sql = " SELECT " + COT_SO_GHE + " FROM " + TEN_BANG
+                + " WHERE ( " + COT_SO_GHE + " = ? AND " + COT_ID_TOA_TAU + " = ?) AND id != ?";
         try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, soGhe);
             ps.setInt(2, idToaTau);
-            ps.setInt(3,idGhe);
+            ps.setInt(3, idGhe);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     return true;

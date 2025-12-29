@@ -73,17 +73,5 @@ public abstract class BasePanel extends JPanel {
         return button;
     }
 
-    protected DefaultComboBoxModel<Object> createComboBoxModel(Object[] values) {
-        DefaultComboBoxModel<Object> model = new DefaultComboBoxModel<>();
-
-        model.addElement("Tất cả");
-
-        for (Object value : values) {
-            model.addElement(value);
-        }
-
-        return model;
-    }
-
     protected abstract void initComponents();
 }

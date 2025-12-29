@@ -132,15 +132,16 @@ public class TuyenDuongDAO {
         }
         return list;
     }
-    public List<TuyenDuong> timkiem(String keyword){
+
+    public List<TuyenDuong> timkiem(String keyword) {
         List<TuyenDuong> list = new ArrayList<>();
         String sql = "SELECT * FROM " + TEN_BANG + " WHERE "
                 + COT_MA_TUYEN + " LIKE ? OR "
                 + COT_TEN_TUYEN + " LIKE ? ";
-        try(Connection conn = DBConnection.getConnection();
-        PreparedStatement ps = conn.prepareStatement(sql)){
-            ps.setString(1, "%"+keyword+"%");
-            ps.setString(2, "%"+keyword+"%");
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, "%" + keyword + "%");
+            ps.setString(2, "%" + keyword + "%");
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     int id = rs.getInt(COT_ID);
@@ -150,12 +151,12 @@ public class TuyenDuongDAO {
                     int idGaDen = rs.getInt(COT_ID_GA_DEN);
                     double khoangCachKm = rs.getDouble(COT_KHOANG_CACH);
                     double giaCoBan = rs.getDouble(COT_GIA_CB);
-                    TuyenDuong tuyenDuong = new TuyenDuong(id,maTuyen,tenTuyen,idGaDi,idGaDen,khoangCachKm,giaCoBan);
+                    TuyenDuong tuyenDuong = new TuyenDuong(id, maTuyen, tenTuyen, idGaDi, idGaDen, khoangCachKm, giaCoBan);
                     list.add(tuyenDuong);
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Lỗi khi tìm kiếm tuyến đường: "+e.getMessage(),e);
+            throw new RuntimeException("Lỗi khi tìm kiếm tuyến đường: " + e.getMessage(), e);
         }
         return list;
     }

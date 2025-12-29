@@ -46,7 +46,7 @@ public class TauPanel extends BasePanel {
         buttonThem.setEnabled(true);
         buttonSua = createStyledButton("Sửa", new Dimension(80, 40), new Color(20, 200, 40), Color.WHITE);
         buttonSua.setEnabled(false);
-        buttonXoa = createStyledButton("Xoá", new Dimension(80, 40), Color.RED , Color.WHITE);
+        buttonXoa = createStyledButton("Xoá", new Dimension(80, 40), Color.RED, Color.WHITE);
         buttonXoa.setEnabled(false);
         buttonReset = createStyledButton("Reset", new Dimension(110, 40), PRIMARY_COLOR, Color.WHITE);
         buttonReset.setEnabled(true);
@@ -65,19 +65,47 @@ public class TauPanel extends BasePanel {
         add(new JScrollPane(tblTau), BorderLayout.CENTER);
     }
 
-    public void addButtonThemActionListener(ActionListener a) { buttonThem.addActionListener(a); }
-    public void addButtonSuaActionListener(ActionListener a) { buttonSua.addActionListener(a); }
-    public void addButtonXoaActionListener(ActionListener a) { buttonXoa.addActionListener(a); }
-    public void addButtonResetActionListener(ActionListener a) { buttonReset.addActionListener(a); }
-    public void addTableMouseClickListener(MouseListener l) { tblTau.addMouseListener(l); }
+    public void addButtonThemActionListener(ActionListener a) {
+        buttonThem.addActionListener(a);
+    }
 
-    public String getMaTau() { return fieldMaTau.getText().trim(); }
-    public void setMaTau(String ma) { fieldMaTau.setText(ma); }
-    public String getTenTau() { return fieldTenTau.getText().trim(); }
-    public void setTenTau(String ten) { fieldTenTau.setText(ten); }
-    public JTable getTable() { return tblTau; }
+    public void addButtonSuaActionListener(ActionListener a) {
+        buttonSua.addActionListener(a);
+    }
 
-    public Tau getTauFromForm(){
+    public void addButtonXoaActionListener(ActionListener a) {
+        buttonXoa.addActionListener(a);
+    }
+
+    public void addButtonResetActionListener(ActionListener a) {
+        buttonReset.addActionListener(a);
+    }
+
+    public void addTableMouseClickListener(MouseListener l) {
+        tblTau.addMouseListener(l);
+    }
+
+    public String getMaTau() {
+        return fieldMaTau.getText().trim();
+    }
+
+    public void setMaTau(String ma) {
+        fieldMaTau.setText(ma);
+    }
+
+    public String getTenTau() {
+        return fieldTenTau.getText().trim();
+    }
+
+    public void setTenTau(String ten) {
+        fieldTenTau.setText(ten);
+    }
+
+    public JTable getTable() {
+        return tblTau;
+    }
+
+    public Tau getTauFromForm() {
         String maTau = getMaTau();
         String tenTau = getTenTau();
 
@@ -101,7 +129,7 @@ public class TauPanel extends BasePanel {
         buttonSua.setEnabled(false);
         buttonXoa.setEnabled(false);
         buttonReset.setEnabled(true);
-        if(tblTau != null){
+        if (tblTau != null) {
             tblTau.clearSelection();
         }
     }

@@ -17,12 +17,12 @@ public class TauDAO {
     private static final String COT_MA_TAU = "ma_tau";
     private static final String COT_TEN_TAU = "ten_tau";
 
-    public boolean checkTrung(String maTau, int ID){
-        if(maTau == null){
+    public boolean checkTrung(String maTau, int ID) {
+        if (maTau == null) {
             return false;
         }
 
-        String sql = " SELECT " + COT_MA_TAU +" FROM " + TEN_BANG
+        String sql = " SELECT " + COT_MA_TAU + " FROM " + TEN_BANG
                 + " WHERE " + COT_MA_TAU + " = ? AND " + COT_ID + " != ?";
         try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, maTau);
