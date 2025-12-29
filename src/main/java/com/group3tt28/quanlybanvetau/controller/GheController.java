@@ -1,6 +1,7 @@
 package com.group3tt28.quanlybanvetau.controller;
 
 import com.group3tt28.quanlybanvetau.dao.GheDAO;
+import com.group3tt28.quanlybanvetau.dao.NhanVienDAO;
 import com.group3tt28.quanlybanvetau.dao.ToaTauDAO;
 import com.group3tt28.quanlybanvetau.model.Ghe;
 import com.group3tt28.quanlybanvetau.model.ToaTau;
@@ -12,7 +13,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.List;
-import java.util.ArrayList;
 
 public class GheController {
     private final GhePanel panel;
@@ -25,6 +25,7 @@ public class GheController {
         this.panel = panel;
         this.dao =  new GheDAO();
         ToaTauDAO toaTauDAO = new ToaTauDAO();
+        NhanVienDAO nvDAO = new NhanVienDAO();
 
         this.panel.addButtonThemActionListener(new GheController.ThemGheListener());
         this.panel.addButtonSuaActionListener(new GheController.SuaGheListener());
@@ -32,8 +33,9 @@ public class GheController {
         this.panel.addButtonResetActionListener(new GheController.ResetFormListener());
         this.panel.addTableMouseClickListener(new GheController.TableMouseClickListener());
 
-        List<ToaTau> dsToa = ToaTauDAO.getAll();
+        List<ToaTau> dsToa = toaTauDAO.getAll();
         this.panel.setComboBoxToaTauData(dsToa);
+
 
         model = (DefaultTableModel)  panel.getTable().getModel();
 

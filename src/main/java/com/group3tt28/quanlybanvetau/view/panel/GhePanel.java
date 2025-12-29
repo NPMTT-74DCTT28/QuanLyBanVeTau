@@ -157,7 +157,7 @@ public class GhePanel extends BasePanel {
         }
     }
 
-    public void setComboBoxToaTauData(java.util.List<ToaTau> list) {
+    public void setComboBoxToaTauData(List<ToaTau> list) {
         ComboBoxIDToaTau.removeAllItems();
         for (ToaTau toa : list) {
             ComboBoxIDToaTau.addItem(toa);
