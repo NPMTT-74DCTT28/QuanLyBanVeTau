@@ -275,14 +275,21 @@ public class MainController {
     private class DangXuatListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-
+            if (mainFrame.showConfirm("Bạn chắc chắn muốn đăng xuất?")) {
+                mainFrame.dispose();
+                SessionManager.clearSession();
+                new DangNhapController();
+            }
         }
     }
 
     private class ThoatListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-
+            if (mainFrame.showConfirm("Bạn chắc chắn muốn thoát ứng dụng?")) {
+                mainFrame.dispose();
+                System.exit(0);
+            }
         }
     }
 }
