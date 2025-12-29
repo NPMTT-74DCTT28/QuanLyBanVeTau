@@ -37,7 +37,7 @@ public class MainController {
             mainFrame.setXinChao(null);
         }
         mainFrame.addThongTinCaNhanListener(new ThongTinCaNhanListener());
-        mainFrame.addDoiMatKhauListener(new ThongTinCaNhanListener());
+        mainFrame.addDoiMatKhauListener(new DoiMatKhauListener());
         mainFrame.addDangXuatListener(new DangXuatListener());
         mainFrame.addThoatListener(new ThoatListener());
 
