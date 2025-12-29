@@ -7,6 +7,8 @@ import java.awt.event.ActionListener;
 
 public final class MainFrame extends BaseFrame {
 
+    private JMenu menuCaNhan;
+    private JMenuItem thongTinCaNhan, doiMatKhau, dangXuat, thoat;
     private JMenuItem qlNhanVien, tkNhanVien;
     private JMenuItem qlTau, tkTau;
     private JMenuItem qlLoaiToa, tkLoaiToa;
@@ -36,36 +38,7 @@ public final class MainFrame extends BaseFrame {
         JScrollPane scrollPane = new JScrollPane(container);
         add(scrollPane, BorderLayout.CENTER);
 
-        qlNhanVien = new JMenuItem("Quản lý thông tin");
-        tkNhanVien = new JMenuItem("Tra cứu");
-
-        qlTau = new JMenuItem("Quản lý thông tin");
-        tkTau = new JMenuItem("Tra cứu");
-
-        qlLoaiToa = new JMenuItem("Quản lý thông tin");
-        tkLoaiToa = new JMenuItem("Tra cứu");
-
-        qlToaTau = new JMenuItem("Quản lý thông tin");
-        tkToaTau = new JMenuItem("Tra cứu");
-
-        qlGhe = new JMenuItem("Quản lý thông tin");
-        tkGhe = new JMenuItem("Tra cứu");
-
-        qlGaTau = new JMenuItem("Quản lý thông tin");
-        tkGaTau = new JMenuItem("Tra cứu");
-
-        qlTuyenDuong = new JMenuItem("Quản lý thông tin");
-        tkTuyenDuong = new JMenuItem("Tra cứu");
-
-        qlLichTrinh = new JMenuItem("Quản lý thông tin");
-        tkLichTrinh = new JMenuItem("Tra cứu");
-
-        qlKhachHang = new JMenuItem("Quản lý thông tin");
-        tkKhachHang = new JMenuItem("Tra cứu");
-
-        qlVeTau = new JMenuItem("Quản lý thông tin");
-        tkVeTau = new JMenuItem("Tra cứu");
-
+        menuCaNhan = new JMenu("Xin chào");
         JMenu nhanVien = new JMenu("Nhân viên");
         JMenu tau = new JMenu("Tàu");
         JMenu loaiToa = new JMenu("Loại toa");
@@ -77,33 +50,62 @@ public final class MainFrame extends BaseFrame {
         JMenu khachHang = new JMenu("Khách hàng");
         JMenu veTau = new JMenu("Vé tàu");
 
+        thongTinCaNhan = new JMenuItem("Thông tin cá nhân");
+        doiMatKhau = new JMenuItem("Đổi mật khẩu");
+        dangXuat = new JMenuItem("Đăng xuất");
+        thoat = new JMenuItem("Thoát ứng dụng");
+        menuCaNhan.add(thongTinCaNhan);
+        menuCaNhan.add(doiMatKhau);
+        menuCaNhan.add(dangXuat);
+        menuCaNhan.add(thoat);
+
+        qlNhanVien = new JMenuItem("Quản lý thông tin");
+        tkNhanVien = new JMenuItem("Tra cứu");
         nhanVien.add(qlNhanVien);
         nhanVien.add(tkNhanVien);
 
+        qlTau = new JMenuItem("Quản lý thông tin");
+        tkTau = new JMenuItem("Tra cứu");
         tau.add(qlTau);
         tau.add(tkTau);
 
+        qlLoaiToa = new JMenuItem("Quản lý thông tin");
+        tkLoaiToa = new JMenuItem("Tra cứu");
         loaiToa.add(qlLoaiToa);
         loaiToa.add(tkLoaiToa);
 
+        qlToaTau = new JMenuItem("Quản lý thông tin");
+        tkToaTau = new JMenuItem("Tra cứu");
         toaTau.add(qlToaTau);
         toaTau.add(tkToaTau);
 
+        qlGhe = new JMenuItem("Quản lý thông tin");
+        tkGhe = new JMenuItem("Tra cứu");
         ghe.add(qlGhe);
         ghe.add(tkGhe);
 
+        qlGaTau = new JMenuItem("Quản lý thông tin");
+        tkGaTau = new JMenuItem("Tra cứu");
         gaTau.add(qlGaTau);
         gaTau.add(tkGaTau);
 
+        qlTuyenDuong = new JMenuItem("Quản lý thông tin");
+        tkTuyenDuong = new JMenuItem("Tra cứu");
         tuyenDuong.add(qlTuyenDuong);
         tuyenDuong.add(tkTuyenDuong);
 
+        qlLichTrinh = new JMenuItem("Quản lý thông tin");
+        tkLichTrinh = new JMenuItem("Tra cứu");
         lichTrinh.add(qlLichTrinh);
         lichTrinh.add(tkLichTrinh);
 
+        qlKhachHang = new JMenuItem("Quản lý thông tin");
+        tkKhachHang = new JMenuItem("Tra cứu");
         khachHang.add(qlKhachHang);
         khachHang.add(tkKhachHang);
 
+        qlVeTau = new JMenuItem("Quản lý thông tin");
+        tkVeTau = new JMenuItem("Tra cứu");
         veTau.add(qlVeTau);
         veTau.add(tkVeTau);
 
@@ -118,13 +120,18 @@ public final class MainFrame extends BaseFrame {
         menuBar.add(lichTrinh);
         menuBar.add(khachHang);
         menuBar.add(veTau);
+        menuBar.add(Box.createHorizontalGlue());
+        menuBar.add(menuCaNhan);
 
         setJMenuBar(menuBar);
     }
 
+    public void setXinChao(String tenNhanVien) {
+        menuCaNhan.setText("Xin chào, " + tenNhanVien);
+    }
+
     public void showPanel(JPanel panel) {
         container.removeAll();
-        panel.setPreferredSize(new Dimension(1200, 700));
         container.add(panel);
         container.revalidate();
         container.repaint();
@@ -178,5 +185,21 @@ public final class MainFrame extends BaseFrame {
     public void addVeTauListener(ActionListener qlListener, ActionListener tkListener) {
         qlVeTau.addActionListener(qlListener);
         tkVeTau.addActionListener(tkListener);
+    }
+
+    public void addThongTinCaNhanListener(ActionListener l) {
+        thongTinCaNhan.addActionListener(l);
+    }
+
+    public void addDoiMatKhauListener(ActionListener l) {
+        doiMatKhau.addActionListener(l);
+    }
+
+    public void addDangXuatListener(ActionListener l) {
+        dangXuat.addActionListener(l);
+    }
+
+    public void addThoatListener(ActionListener l) {
+        thoat.addActionListener(l);
     }
 }

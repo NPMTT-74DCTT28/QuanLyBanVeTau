@@ -15,8 +15,19 @@ public class SessionManager {
         currentUser = nhanVien;
     }
 
-    /*public static boolean hasAnyRole(String... roles) {
-        if (currentUser == null) {
+    public static void clearSession() {
+        currentUser = null;
+    }
+
+    public static boolean isAdmin() {
+        if (currentUser != null && currentUser.getVaiTro() != null) {
+            return currentUser.getVaiTro().equalsIgnoreCase(VaiTro.ADMIN.toString());
+        }
+        return false;
+    }
+
+    public static boolean hasAnyRole(String... roles) {
+        if (currentUser == null || currentUser.getVaiTro() == null) {
             return false;
         }
 
@@ -26,13 +37,5 @@ public class SessionManager {
             }
         }
         return false;
-    }*/
-
-    public boolean isAdmin() {
-        return currentUser.getVaiTro().equalsIgnoreCase(VaiTro.ADMIN.toString());
-    }
-
-    public static void clearSession() {
-        currentUser = null;
     }
 }
