@@ -37,9 +37,12 @@ public class QLToaTauController {
 
         panel.addThemListener(new ThemListener());
         panel.addSuaListener(new SuaListener());
-        // Đã bỏ addLuuListener
         panel.addXoaListener(new XoaListener());
         panel.addResetListener(new ResetListener());
+
+        // Listener tìm kiếm
+        panel.addTimKiemListener(new TimKiemListener());
+
         panel.getTable().addMouseListener(new TableMouseClickListener());
 
         model = (DefaultTableModel) panel.getTable().getModel();
@@ -67,9 +70,13 @@ public class QLToaTauController {
         panel.resetForm();
         selectedRow = -1;
         listToaTau = dao.getAll();
-        model.setRowCount(0);
+        updateTable(listToaTau); // Dùng hàm dùng chung
+    }
 
-        for (ToaTau tt : listToaTau) {
+    // Hàm cập nhật bảng chung cho refresh và tìm kiếm
+    private void updateTable(List<ToaTau> listHienThi) {
+        model.setRowCount(0);
+        for (ToaTau tt : listHienThi) {
             String tenTau = getTenTauById(tt.getIdTau());
             String tenLoai = getTenLoaiToaById(tt.getIdLoaiToa());
             model.addRow(new Object[]{ tt.getId(), tt.getMaToa(), tenTau, tenLoai });
@@ -95,6 +102,36 @@ public class QLToaTauController {
         return "ID: " + id;
     }
 
+    // --- LISTENER TÌM KIẾM ---
+    private class TimKiemListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String tuKhoa = panel.getTuKhoaTimKiem().toLowerCase();
+
+            if (tuKhoa.isEmpty()) {
+                refresh();
+                return;
+            }
+
+            List<ToaTau> ketQua = new ArrayList<>();
+            for (ToaTau tt : listToaTau) {
+                // Lấy thông tin hiển thị để tìm kiếm (Mã toa, Tên tàu, Tên loại toa)
+                String maToa = tt.getMaToa().toLowerCase();
+                String tenTau = getTenTauById(tt.getIdTau()).toLowerCase();
+                String tenLoai = getTenLoaiToaById(tt.getIdLoaiToa()).toLowerCase();
+
+                if (maToa.contains(tuKhoa) || tenTau.contains(tuKhoa) || tenLoai.contains(tuKhoa)) {
+                    ketQua.add(tt);
+                }
+            }
+            updateTable(ketQua);
+
+            if (ketQua.isEmpty()) {
+                panel.showWarning("Không tìm thấy toa tàu nào khớp với từ khóa: " + tuKhoa);
+            }
+        }
+    }
+
     private class ThemListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -105,7 +142,6 @@ public class QLToaTauController {
                     panel.showWarning("Mã toa '" + tt.getMaToa() + "' đã tồn tại trên tàu này!");
                     return;
                 }
-                // ---------------------------------
 
                 if (dao.insert(tt)) {
                     panel.showMessage("Thêm toa tàu thành công!");
@@ -117,8 +153,7 @@ public class QLToaTauController {
                 panel.showWarning(ex.getMessage());
             } catch (Exception ex) {
                 ex.printStackTrace();
-                // Hiển thị thông báo lỗi thân thiện hơn thay vì crash
-                panel.showError("Lỗi hệ thống (có thể do trùng dữ liệu): " + ex.getMessage());
+                panel.showError("Lỗi hệ thống: " + ex.getMessage());
             }
         }
     }
@@ -127,12 +162,25 @@ public class QLToaTauController {
         @Override
         public void actionPerformed(ActionEvent e) {
             try {
-                if (selectedRow == -1 || selectedRow >= listToaTau.size()) {
+                if (selectedRow == -1) {
                     panel.showWarning("Vui lòng chọn toa tàu để sửa!");
                     return;
                 }
+
+                // Lấy ID từ bảng (cột 0) để tìm đúng đối tượng gốc
+                int idToa = (int) panel.getTable().getValueAt(selectedRow, 0);
+
+                ToaTau ttCu = null;
+                for(ToaTau item : listToaTau) {
+                    if (item.getId() == idToa) {
+                        ttCu = item;
+                        break;
+                    }
+                }
+
+                if (ttCu == null) return;
+
                 ToaTau ttMoi = panel.getToaTauFromForm();
-                ToaTau ttCu = listToaTau.get(selectedRow);
                 ttMoi.setId(ttCu.getId());
 
                 if (panel.showConfirm("Cập nhật toa " + ttMoi.getMaToa() + "?")) {
@@ -152,18 +200,28 @@ public class QLToaTauController {
         }
     }
 
-    // Đã xóa class LuuListener
-
     private class XoaListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             try {
-                if (selectedRow == -1 || selectedRow >= listToaTau.size()) {
+                if (selectedRow == -1) {
                     panel.showWarning("Vui lòng chọn toa tàu để xoá!");
                     return;
                 }
-                ToaTau tt = listToaTau.get(selectedRow);
-                if (panel.showConfirm("Xoá toa " + tt.getMaToa() + "?")) {
+
+                // Lấy ID từ bảng (cột 0)
+                int idToa = (int) panel.getTable().getValueAt(selectedRow, 0);
+
+                // Tìm object trong list gốc để lấy thông tin hiển thị (VD: Mã toa)
+                ToaTau tt = null;
+                for(ToaTau item : listToaTau) {
+                    if (item.getId() == idToa) {
+                        tt = item;
+                        break;
+                    }
+                }
+
+                if (tt != null && panel.showConfirm("Xoá toa " + tt.getMaToa() + "?")) {
                     if (dao.delete(tt.getId())) {
                         panel.showMessage("Xoá thành công!");
                         refresh();
@@ -181,8 +239,7 @@ public class QLToaTauController {
     private class ResetListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            panel.resetForm();
-            selectedRow = -1;
+            refresh();
         }
     }
 
@@ -190,10 +247,24 @@ public class QLToaTauController {
         @Override
         public void mouseClicked(MouseEvent e) {
             selectedRow = panel.getTable().getSelectedRow();
-            if (selectedRow == -1 || selectedRow >= listToaTau.size()) return;
+            if (selectedRow == -1) return;
 
             panel.startEditMode();
-            ToaTau tt = listToaTau.get(selectedRow);
+
+            // Lấy ID từ cột 0 của bảng
+            int idToa = (int) panel.getTable().getValueAt(selectedRow, 0);
+
+            // Tìm đối tượng trong list gốc
+            ToaTau tt = null;
+            for(ToaTau item : listToaTau) {
+                if (item.getId() == idToa) {
+                    tt = item;
+                    break;
+                }
+            }
+
+            if (tt == null) return;
+
             panel.setMaToa(tt.getMaToa());
 
             JComboBox<Tau> boxTau = panel.getBoxTau();

@@ -23,7 +23,10 @@ public final class QLLichTrinhPanel extends BasePanel {
     private JSpinner spinnerNgayDen;
     private JComboBox<TrangThaiLichTrinh> boxTrangThai;
 
-    // Đã bỏ buttonLuu
+    // Các thành phần Tìm kiếm (Mới thêm)
+    private JTextField fieldTimKiem;
+    private JButton buttonTimKiem;
+
     private JButton buttonThem, buttonSua, buttonXoa, buttonReset;
     private JTable table;
 
@@ -45,6 +48,7 @@ public final class QLLichTrinhPanel extends BasePanel {
         labelHome.setFont(new Font("Segoe UI", Font.BOLD, 20));
         panelHome.add(labelHome);
 
+        // Panel chứa form nhập liệu
         JPanel panelTop = new JPanel(new BorderLayout(0, 5));
 
         JPanel panelForm = new JPanel(new GridLayout(3, 3, 5, 5));
@@ -78,7 +82,27 @@ public final class QLLichTrinhPanel extends BasePanel {
         boxTrangThai = new JComboBox<>(TrangThaiLichTrinh.values());
         panelForm.add(createInputField("Trạng thái:", boxTrangThai, Color.WHITE));
 
-        // Khởi tạo các nút
+        // --- KHU VỰC CHỨC NĂNG (BUTTONS + TÌM KIẾM) ---
+        JPanel panelActions = new JPanel(new BorderLayout(5, 5));
+        panelActions.setBorder(new EmptyBorder(0, 5, 5, 5));
+
+        // 1. Panel Tìm kiếm (Mới)
+        JPanel panelTimKiemContainer = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        panelTimKiemContainer.setBackground(Color.WHITE);
+
+        JLabel labelTim = new JLabel("Tìm kiếm (Mã/Tàu/Tuyến): ");
+        labelTim.setFont(new Font("Segoe UI", Font.BOLD, 12));
+
+        fieldTimKiem = new JTextField(20);
+        fieldTimKiem.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+
+        buttonTimKiem = createStyledButton("Tìm", new Dimension(80, 30), new Color(70, 130, 180), Color.WHITE); // Màu xanh dương
+
+        panelTimKiemContainer.add(labelTim);
+        panelTimKiemContainer.add(fieldTimKiem);
+        panelTimKiemContainer.add(buttonTimKiem);
+
+        // 2. Panel Button CRUD cũ
         buttonThem = createStyledButton("Thêm", new Dimension(80,40),PRIMARY_COLOR, Color.WHITE);
         buttonThem.setEnabled(true);
         buttonSua = createStyledButton("Sửa", new Dimension(80,40), new Color(200,200,40), Color.WHITE);
@@ -88,13 +112,21 @@ public final class QLLichTrinhPanel extends BasePanel {
         buttonReset = createStyledButton("Reset form", new Dimension(110, 40), PRIMARY_COLOR, Color.WHITE);
         buttonReset.setEnabled(true);
 
-        // Mảng nút đã xóa buttonLuu
         JButton[] buttons = {buttonThem, buttonSua, buttonXoa, buttonReset};
 
-        panelTop.add(panelHome, BorderLayout.NORTH);
-        panelTop.add(panelForm);
-        panelTop.add(createButtonField(buttons, Color.WHITE), BorderLayout.SOUTH);
+        // --- SỬA LỖI TẠI ĐÂY: Đổi JPanel thành JComponent ---
+        JComponent panelButtons = createButtonField(buttons, Color.WHITE);
 
+        // Ghép Tìm kiếm và Nút bấm vào panelActions
+        panelActions.add(panelTimKiemContainer, BorderLayout.NORTH);
+        panelActions.add(panelButtons, BorderLayout.CENTER);
+
+        // Ghép tất cả vào PanelTop
+        panelTop.add(panelHome, BorderLayout.NORTH);
+        panelTop.add(panelForm, BorderLayout.CENTER);
+        panelTop.add(panelActions, BorderLayout.SOUTH);
+
+        // Table
         Object[] columns = new Object[]{"Mã LT", "Tàu", "Tuyến đường", "Ngày đi", "Ngày đến", "Trạng thái"};
         DefaultTableModel tableModel = new DefaultTableModel(columns, 0);
         table = new JTable(tableModel);
@@ -175,6 +207,11 @@ public final class QLLichTrinhPanel extends BasePanel {
         }
     }
 
+    // --- Getter cho chức năng Tìm kiếm ---
+    public String getTuKhoaTimKiem() {
+        return fieldTimKiem.getText().trim();
+    }
+
     public LichTrinh getLichTrinhFromForm() {
         String maLT = getMaLichTrinh();
         Tau tau = getTau();
@@ -188,12 +225,6 @@ public final class QLLichTrinhPanel extends BasePanel {
         if (tuyen == null) throw new IllegalArgumentException("Vui lòng chọn Tuyến đường!");
 
         // Validate logic thời gian
-        LocalDateTime hienTai = LocalDateTime.now();
-        if (ngayDi.isBefore(hienTai)) {
-            // Uncomment dòng dưới nếu muốn chặn ngày quá khứ
-            // throw new IllegalArgumentException("Ngày đi không thể là ngày trong quá khứ!");
-        }
-
         if (ngayDen.isBefore(ngayDi)) {
             throw new IllegalArgumentException("Ngày đến không thể trước ngày đi!");
         }
@@ -234,9 +265,11 @@ public final class QLLichTrinhPanel extends BasePanel {
 
         if (boxTrangThai.getItemCount() > 0) boxTrangThai.setSelectedIndex(0);
 
+        // Reset luôn ô tìm kiếm
+        fieldTimKiem.setText("");
+
         buttonThem.setEnabled(true);
         buttonSua.setEnabled(false);
-        // Bỏ buttonLuu
         buttonXoa.setEnabled(false);
         buttonReset.setEnabled(true);
 
@@ -245,10 +278,12 @@ public final class QLLichTrinhPanel extends BasePanel {
         }
     }
 
-    // --- LISTENERS (Đã bỏ addLuuListener) ---
+    // --- LISTENERS ---
 
     public void addThemListener(ActionListener l) { buttonThem.addActionListener(l); }
     public void addSuaListener(ActionListener l) { buttonSua.addActionListener(l); }
     public void addXoaListener(ActionListener l) { buttonXoa.addActionListener(l); }
     public void addResetListener(ActionListener l) { buttonReset.addActionListener(l); }
+    // Listener cho nút tìm kiếm
+    public void addTimKiemListener(ActionListener l) { buttonTimKiem.addActionListener(l); }
 }

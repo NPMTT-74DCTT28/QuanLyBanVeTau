@@ -16,7 +16,10 @@ public final class QLToaTauPanel extends BasePanel {
     private JComboBox<Tau> boxTau;
     private JComboBox<LoaiToa> boxLoaiToa;
 
-    // Đã bỏ buttonLuu
+    // --- KHAI BÁO THÊM UI TÌM KIẾM ---
+    private JTextField fieldTimKiem;
+    private JButton buttonTimKiem;
+
     private JButton buttonThem, buttonSua, buttonXoa, buttonReset;
     private JTable table;
     private boolean isEditMode = false;
@@ -50,6 +53,27 @@ public final class QLToaTauPanel extends BasePanel {
         boxLoaiToa = new JComboBox<>();
         panelForm.add(createInputField("Loại toa:", boxLoaiToa, Color.WHITE));
 
+        // --- KHU VỰC CHỨC NĂNG (BUTTONS + TÌM KIẾM) ---
+        JPanel panelActions = new JPanel(new BorderLayout(5, 5));
+        panelActions.setBorder(new EmptyBorder(0, 5, 5, 5));
+
+        // 1. Panel Tìm kiếm (Mới)
+        JPanel panelTimKiemContainer = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        panelTimKiemContainer.setBackground(Color.WHITE);
+
+        JLabel labelTim = new JLabel("Tìm kiếm (Mã toa/Tên tàu): ");
+        labelTim.setFont(new Font("Segoe UI", Font.BOLD, 12));
+
+        fieldTimKiem = new JTextField(20);
+        fieldTimKiem.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+
+        buttonTimKiem = createStyledButton("Tìm", new Dimension(80, 30), new Color(70, 130, 180), Color.WHITE); // Màu xanh dương
+
+        panelTimKiemContainer.add(labelTim);
+        panelTimKiemContainer.add(fieldTimKiem);
+        panelTimKiemContainer.add(buttonTimKiem);
+
+        // 2. Panel Button CRUD
         buttonThem = createStyledButton("Thêm", new Dimension(80,40),PRIMARY_COLOR, Color.WHITE);
         buttonThem.setEnabled(true);
         buttonSua = createStyledButton("Sửa", new Dimension(80,40), new Color(200,200,40), Color.WHITE);
@@ -59,17 +83,28 @@ public final class QLToaTauPanel extends BasePanel {
         buttonReset = createStyledButton("Reset form", new Dimension(110, 40), PRIMARY_COLOR, Color.WHITE);
         buttonReset.setEnabled(true);
 
-        // Mảng nút đã xóa buttonLuu
         JButton[] buttons = {buttonThem, buttonSua, buttonXoa, buttonReset};
 
+        // Dùng JComponent để hứng kết quả trả về từ createButtonField (tránh lỗi ép kiểu)
+        JComponent panelButtons = createButtonField(buttons, Color.WHITE);
+
+        // Ghép vào panelActions
+        panelActions.add(panelTimKiemContainer, BorderLayout.NORTH);
+        panelActions.add(panelButtons, BorderLayout.CENTER);
+
+        // Ghép tất cả vào panelTop
         panelTop.add(panelHome, BorderLayout.NORTH);
         panelTop.add(panelForm, BorderLayout.CENTER);
-        panelTop.add(createButtonField(buttons, Color.WHITE), BorderLayout.SOUTH);
+        panelTop.add(panelActions, BorderLayout.SOUTH);
 
+        // Table
         Object[] columns = new Object[]{"ID", "Mã Toa", "Tàu", "Loại Toa"};
         DefaultTableModel tableModel = new DefaultTableModel(columns, 0);
         table = new JTable(tableModel);
         table.setRowHeight(25);
+
+        // Ẩn cột ID đi nếu muốn (nhưng ở đây cứ để hiển thị để dễ debug)
+        table.getColumnModel().getColumn(0).setPreferredWidth(50);
 
         JScrollPane scrollPane = new JScrollPane(table);
         scrollPane.setFont(new Font("Segoe UI", Font.BOLD, 13));
@@ -103,6 +138,11 @@ public final class QLToaTauPanel extends BasePanel {
         return (LoaiToa) boxLoaiToa.getSelectedItem();
     }
 
+    // --- GETTER UI TÌM KIẾM ---
+    public String getTuKhoaTimKiem() {
+        return fieldTimKiem.getText().trim();
+    }
+
     public ToaTau getToaTauFromForm() {
         String maToa = getMaToa();
         Tau tau = getSelectedTau();
@@ -126,7 +166,6 @@ public final class QLToaTauPanel extends BasePanel {
 
         buttonThem.setEnabled(false);
         buttonSua.setEnabled(true);
-        // Bỏ buttonLuu
         buttonXoa.setEnabled(true);
         buttonReset.setEnabled(true);
     }
@@ -140,9 +179,11 @@ public final class QLToaTauPanel extends BasePanel {
         if (boxTau.getItemCount() > 0) boxTau.setSelectedIndex(0);
         if (boxLoaiToa.getItemCount() > 0) boxLoaiToa.setSelectedIndex(0);
 
+        // Reset cả ô tìm kiếm
+        fieldTimKiem.setText("");
+
         buttonThem.setEnabled(true);
         buttonSua.setEnabled(false);
-        // Bỏ buttonLuu
         buttonXoa.setEnabled(false);
         buttonReset.setEnabled(true);
 
@@ -153,4 +194,7 @@ public final class QLToaTauPanel extends BasePanel {
     public void addSuaListener(ActionListener l) { buttonSua.addActionListener(l); }
     public void addXoaListener(ActionListener l) { buttonXoa.addActionListener(l); }
     public void addResetListener(ActionListener l) { buttonReset.addActionListener(l); }
+
+    // Listener tìm kiếm
+    public void addTimKiemListener(ActionListener l) { buttonTimKiem.addActionListener(l); }
 }

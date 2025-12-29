@@ -26,6 +26,7 @@ public class QLLichTrinhController {
     private final TuyenDuongDAO tuyenDuongDAO;
     private final DefaultTableModel model;
 
+    // Danh sách gốc chứa toàn bộ dữ liệu từ DB
     private List<LichTrinh> listLichTrinh;
     private int selectedRow = -1;
 
@@ -36,11 +37,14 @@ public class QLLichTrinhController {
         this.tuyenDuongDAO = new TuyenDuongDAO();
         this.listLichTrinh = new ArrayList<>();
 
+        // Đăng ký các sự kiện
         panel.addThemListener(new ThemListener());
         panel.addSuaListener(new SuaListener());
-        // Đã bỏ addLuuListener
         panel.addXoaListener(new XoaListener());
         panel.addResetListener(new ResetListener());
+        // Sự kiện MỚI: Tìm kiếm
+        panel.addTimKiemListener(new TimKiemListener());
+
         panel.getTable().addMouseListener(new TableMouseClickListener());
 
         model = (DefaultTableModel) panel.getTable().getModel();
@@ -64,19 +68,29 @@ public class QLLichTrinhController {
         }
     }
 
+    // Hàm refresh tải lại toàn bộ dữ liệu
     private void refresh() {
         panel.resetForm();
         selectedRow = -1;
+        // Tải lại toàn bộ từ DB
         listLichTrinh = dao.getAll();
+        // Hiển thị toàn bộ lên bảng
+        updateTable(listLichTrinh);
+    }
+
+    // Hàm cập nhật bảng dựa trên 1 danh sách (dùng chung cho refresh và tìm kiếm)
+    private void updateTable(List<LichTrinh> listHienThi) {
         model.setRowCount(0);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-        for (LichTrinh lt : listLichTrinh) {
+        for (LichTrinh lt : listHienThi) {
             String tenTau = getTenTauById(lt.getIdTau());
             String tenTuyen = getTenTuyenById(lt.getIdTuyenDuong());
 
             model.addRow(new Object[]{
-                    lt.getMaLichTrinh(), tenTau, tenTuyen,
+                    lt.getMaLichTrinh(),
+                    tenTau,
+                    tenTuyen,
                     lt.getNgayDi().format(formatter),
                     lt.getNgayDen().format(formatter),
                     lt.getTrangThai()
@@ -100,6 +114,43 @@ public class QLLichTrinhController {
         }
         return String.valueOf(id);
     }
+
+    // --- CLASS XỬ LÝ SỰ KIỆN TÌM KIẾM ---
+    private class TimKiemListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String tuKhoa = panel.getTuKhoaTimKiem().toLowerCase();
+
+            // Nếu ô tìm kiếm trống, hiển thị lại toàn bộ
+            if (tuKhoa.isEmpty()) {
+                refresh();
+                return;
+            }
+
+            List<LichTrinh> ketQua = new ArrayList<>();
+            for (LichTrinh lt : listLichTrinh) {
+                // Lấy các chuỗi hiển thị để so sánh
+                String maLT = lt.getMaLichTrinh().toLowerCase();
+                String tenTau = getTenTauById(lt.getIdTau()).toLowerCase();
+                String tenTuyen = getTenTuyenById(lt.getIdTuyenDuong()).toLowerCase();
+                String trangThai = lt.getTrangThai().toLowerCase();
+
+                // Kiểm tra xem từ khóa có nằm trong bất kỳ trường nào không
+                if (maLT.contains(tuKhoa) || tenTau.contains(tuKhoa) || tenTuyen.contains(tuKhoa) || trangThai.contains(tuKhoa)) {
+                    ketQua.add(lt);
+                }
+            }
+
+            // Chỉ cập nhật bảng với kết quả tìm thấy, KHÔNG tải lại DB
+            updateTable(ketQua);
+
+            if (ketQua.isEmpty()) {
+                panel.showWarning("Không tìm thấy lịch trình nào khớp với từ khóa: " + tuKhoa);
+            }
+        }
+    }
+
+    // --- CÁC LISTENER CŨ ---
 
     private class ThemListener implements ActionListener {
         @Override
@@ -134,8 +185,24 @@ public class QLLichTrinhController {
                     return;
                 }
 
+                // Lưu ý: listLichTrinh có thể đang là danh sách tìm kiếm hoặc danh sách gốc
+                // Nên cần lấy ID từ table model để chính xác nhất nếu đang ở chế độ tìm kiếm
+                // Tuy nhiên, logic đơn giản là lấy từ list gốc theo index table (nếu chưa sort)
+                // Để an toàn, ở đây ta dùng selectedRow map vào list hiển thị.
+
+                // Cách an toàn nhất: Lấy mã từ bảng dòng được chọn, rồi tìm trong list gốc
+                String maLichTrinhTable = (String) panel.getTable().getValueAt(selectedRow, 0);
+                LichTrinh ltCu = null;
+                for(LichTrinh lt : listLichTrinh) {
+                    if(lt.getMaLichTrinh().equals(maLichTrinhTable)) {
+                        ltCu = lt;
+                        break;
+                    }
+                }
+
+                if (ltCu == null) return; // Không tìm thấy
+
                 LichTrinh ltMoi = panel.getLichTrinhFromForm();
-                LichTrinh ltCu = listLichTrinh.get(selectedRow);
                 ltMoi.setId(ltCu.getId());
 
                 if (panel.showConfirm("Cập nhật lịch trình " + ltMoi.getMaLichTrinh() + "?")) {
@@ -155,18 +222,26 @@ public class QLLichTrinhController {
         }
     }
 
-    // Đã xóa class LuuListener
-
     private class XoaListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             try {
-                if (selectedRow == -1 || selectedRow >= listLichTrinh.size()) {
+                if (selectedRow == -1) {
                     panel.showWarning("Vui lòng chọn lịch trình để xoá!");
                     return;
                 }
-                LichTrinh lt = listLichTrinh.get(selectedRow);
-                if (panel.showConfirm("Xoá lịch trình " + lt.getMaLichTrinh() + "?")) {
+
+                // Logic lấy object tương tự phần Sửa để đảm bảo đúng ID khi đang tìm kiếm
+                String maLichTrinhTable = (String) panel.getTable().getValueAt(selectedRow, 0);
+                LichTrinh lt = null;
+                for(LichTrinh item : listLichTrinh) {
+                    if(item.getMaLichTrinh().equals(maLichTrinhTable)) {
+                        lt = item;
+                        break;
+                    }
+                }
+
+                if (lt != null && panel.showConfirm("Xoá lịch trình " + lt.getMaLichTrinh() + "?")) {
                     if (dao.delete(lt.getId())) {
                         panel.showMessage("Xoá thành công!");
                         refresh();
@@ -184,8 +259,7 @@ public class QLLichTrinhController {
     private class ResetListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            panel.resetForm();
-            selectedRow = -1;
+            refresh(); // Reset form và tải lại bảng full
         }
     }
 
@@ -193,10 +267,23 @@ public class QLLichTrinhController {
         @Override
         public void mouseClicked(MouseEvent e) {
             selectedRow = panel.getTable().getSelectedRow();
-            if (selectedRow == -1 || selectedRow >= listLichTrinh.size()) return;
+            if (selectedRow == -1) return;
+
+            // Lấy dữ liệu từ bảng hiển thị (Visual)
+            String maLT = (String) panel.getTable().getValueAt(selectedRow, 0);
+
+            // Tìm đối tượng gốc trong listLichTrinh
+            LichTrinh lt = null;
+            for (LichTrinh item : listLichTrinh) {
+                if (item.getMaLichTrinh().equals(maLT)) {
+                    lt = item;
+                    break;
+                }
+            }
+
+            if (lt == null) return;
 
             panel.startEditMode();
-            LichTrinh lt = listLichTrinh.get(selectedRow);
 
             panel.setMaLichTrinh(lt.getMaLichTrinh());
             panel.setNgayDi(lt.getNgayDi());
