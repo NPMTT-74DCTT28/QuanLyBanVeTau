@@ -134,6 +134,18 @@ public final class QLNhanVienPanel extends BasePanel {
         add(panelTable, BorderLayout.CENTER);
     }
 
+    private DefaultComboBoxModel<Object> createComboBoxModel(Object[] values) {
+        DefaultComboBoxModel<Object> model = new DefaultComboBoxModel<>();
+
+        model.addElement("Tất cả");
+
+        for (Object value : values) {
+            model.addElement(value);
+        }
+
+        return model;
+    }
+
     public String getMaNhanVien() {
         return fieldMaNhanVien.getText().trim();
     }
