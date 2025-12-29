@@ -1,5 +1,6 @@
 package com.group3tt28.quanlybanvetau.dao;
 
+import com.group3tt28.quanlybanvetau.model.NhanVien;
 import com.group3tt28.quanlybanvetau.model.Tau;
 import com.group3tt28.quanlybanvetau.util.DBConnection;
 
@@ -7,6 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -110,6 +112,43 @@ public class TauDAO {
             }
         } catch (Exception e) {
             throw new RuntimeException("Xay ra loi khi load tau: " + e.getMessage(), e);
+        }
+        return list;
+    }
+    public List<Tau> timKiemTau(String tuKhoa){
+        List<Tau> list = new ArrayList<>();
+        List<Object> params = new ArrayList<>();
+        StringBuilder sql = new StringBuilder("SELECT * FROM " + TEN_BANG + " WHERE 1 = 1 ");
+        if (tuKhoa != null && !tuKhoa.trim().isEmpty()) {
+            sql.append(" AND (")
+                    .append(COT_MA_TAU).append(" LIKE ? OR ")
+                    .append(COT_TEN_TAU).append(" LIKE ? ")
+                    .append(") ");
+
+            String searchKeyword = "%" + tuKhoa + "%";
+            for (int i = 1; i <= 2; i++) {
+                params.add(searchKeyword);
+            }
+        }
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql.toString());) {
+
+            for (int i = 0; i < params.size(); i++) {
+                ps.setObject(i + 1, params.get(i));
+            }
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    int id = rs.getInt(COT_ID);
+                    String maTau = rs.getString(COT_MA_TAU);
+                    String tenTau = rs.getString(COT_TEN_TAU);
+
+                    Tau tau = new Tau(id, maTau, tenTau);
+                    list.add(tau);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Lỗi khi tìm kiếm nhân viên: " + e.getMessage(), e);
         }
         return list;
     }

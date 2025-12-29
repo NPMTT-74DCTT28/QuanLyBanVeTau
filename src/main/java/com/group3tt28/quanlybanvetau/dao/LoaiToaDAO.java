@@ -1,6 +1,7 @@
 package com.group3tt28.quanlybanvetau.dao;
 
 import com.group3tt28.quanlybanvetau.model.LoaiToa;
+import com.group3tt28.quanlybanvetau.model.Tau;
 import com.group3tt28.quanlybanvetau.util.DBConnection;
 
 import java.sql.Connection;
@@ -111,6 +112,43 @@ public class LoaiToaDAO {
             }
         } catch (Exception e) {
             throw new RuntimeException("Co loi khi load du lieu loai toa " + e.getMessage(), e);
+        }
+        return list;
+    }
+    public List<LoaiToa> timKiemLoaiToa(String tuKhoa){
+        List<LoaiToa> list = new ArrayList<>();
+        List<Object> params = new ArrayList<>();
+        StringBuilder sql = new StringBuilder("SELECT * FROM " + TEN_BANG + " WHERE 1 = 1 ");
+        if (tuKhoa != null && !tuKhoa.trim().isEmpty()) {
+            sql.append(" AND (")
+                    .append(COT_TEN_LOAI).append(" LIKE ? OR ")
+                    .append(COT_HE_SO_GIA).append(" LIKE ? ")
+                    .append(") ");
+
+            String searchKeyword = "%" + tuKhoa + "%";
+            for (int i = 1; i <= 2; i++) {
+                params.add(searchKeyword);
+            }
+        }
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql.toString());) {
+
+            for (int i = 0; i < params.size(); i++) {
+                ps.setObject(i + 1, params.get(i));
+            }
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    int id = rs.getInt(COT_ID);
+                    String tenLoai = rs.getString(COT_TEN_LOAI);
+                    double heSoGia = rs.getDouble(COT_HE_SO_GIA);
+
+                    LoaiToa loaiToa = new LoaiToa(id, tenLoai, heSoGia);
+                    list.add(loaiToa);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Lỗi khi tìm kiếm nhân viên: " + e.getMessage(), e);
         }
         return list;
     }
