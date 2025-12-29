@@ -116,4 +116,41 @@ public class GheDAO {
         }
         return list;
     }
+    public List<Ghe> timKiemGhe(String tuKhoa){
+        List<Ghe> list = new ArrayList<>();
+        List<Object> params = new ArrayList<>();
+        StringBuilder sql = new StringBuilder("SELECT * FROM " + TEN_BANG + " WHERE 1 = 1 ");
+        if (tuKhoa != null && !tuKhoa.trim().isEmpty()) {
+            sql.append(" AND (")
+                    .append(COT_SO_GHE).append(" LIKE ? OR ")
+                    .append(COT_ID_TOA_TAU).append(" LIKE ? ")
+                    .append(") ");
+
+            String searchKeyword = "%" + tuKhoa + "%";
+            for (int i = 1; i <= 2; i++) {
+                params.add(searchKeyword);
+            }
+        }
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql.toString());) {
+
+            for (int i = 0; i < params.size(); i++) {
+                ps.setObject(i + 1, params.get(i));
+            }
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    int id = rs.getInt(COT_ID);
+                    String soGhe = rs.getString(COT_SO_GHE);
+                    int idToaTau = rs.getInt(COT_ID_TOA_TAU);
+
+                    Ghe ghe = new Ghe(id, soGhe, idToaTau);
+                    list.add(ghe);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Lỗi khi tìm kiếm nhân viên: " + e.getMessage(), e);
+        }
+        return list;
+    }
 }
