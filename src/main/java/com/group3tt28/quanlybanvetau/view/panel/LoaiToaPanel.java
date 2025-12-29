@@ -11,14 +11,14 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
 
-public class LoaiToaPanel extends BasePanel{
+public class LoaiToaPanel extends BasePanel {
     int k = 0;
     private JTextField fieldTenLoai;
     private JTextField fieldHeSoGia;
     private JButton buttonThem;
     private JButton buttonSua;
     private JButton buttonXoa;
-    private  JButton buttonReset;
+    private JButton buttonReset;
     private JTable tblLoaiToa;
     private DefaultTableModel tableModel;
 
@@ -53,7 +53,7 @@ public class LoaiToaPanel extends BasePanel{
         buttonThem.setEnabled(true);
         buttonSua = createStyledButton("Sửa", new Dimension(80, 40), new Color(20, 200, 40), Color.WHITE);
         buttonSua.setEnabled(false);
-        buttonXoa = createStyledButton("Xoá", new Dimension(80, 40), Color.RED , Color.WHITE);
+        buttonXoa = createStyledButton("Xoá", new Dimension(80, 40), Color.RED, Color.WHITE);
         buttonXoa.setEnabled(false);
         buttonReset = createStyledButton("Reset", new Dimension(110, 40), PRIMARY_COLOR, Color.WHITE);
         buttonReset.setEnabled(true);
@@ -80,53 +80,61 @@ public class LoaiToaPanel extends BasePanel{
         add(panelTop, BorderLayout.NORTH);
         add(scrollPane, BorderLayout.CENTER);
     }
-    public  void setButtonThemActionListener(ActionListener a){
+
+    public void setButtonThemActionListener(ActionListener a) {
         buttonThem.addActionListener(a);
     }
-    public  void setButtonSuaActionListener(ActionListener a){
+
+    public void setButtonSuaActionListener(ActionListener a) {
         buttonSua.addActionListener(a);
     }
-    public  void setButtonXoaActionListener(ActionListener a){
+
+    public void setButtonXoaActionListener(ActionListener a) {
         buttonXoa.addActionListener(a);
     }
-    public  void setButtonResetActionListener(ActionListener a){
+
+    public void setButtonResetActionListener(ActionListener a) {
         buttonReset.addActionListener(a);
     }
 
-    public String getTenLoai(){
+    public String getTenLoai() {
         return fieldTenLoai.getText().trim();
     }
-    public void setTenLoai(String tenLoai){
+
+    public void setTenLoai(String tenLoai) {
         fieldTenLoai.setText(tenLoai);
     }
-    public double getHeSoGia(){
-        if(fieldHeSoGia.getText().trim().isEmpty()){
+
+    public double getHeSoGia() {
+        if (fieldHeSoGia.getText().trim().isEmpty()) {
             return 0;
-        }else
+        } else
             return Double.parseDouble(fieldHeSoGia.getText().trim());
     }
-    public void setHeSoGia(String maTau){
+
+    public void setHeSoGia(String maTau) {
         fieldHeSoGia.setText(maTau);
     }
+
     public JTable getTable() {
         return tblLoaiToa;
     }
 
-    public LoaiToa getLoaiToaFromForm(){
+    public LoaiToa getLoaiToaFromForm() {
         String tenLoaiToa = getTenLoai();
         double heSoGia = getHeSoGia();
 
         return new LoaiToa(tenLoaiToa, heSoGia);
     }
 
-    public void startEditMode(){
+    public void startEditMode() {
         buttonThem.setEnabled(false);
         buttonSua.setEnabled(true);
         buttonXoa.setEnabled(true);
         buttonReset.setEnabled(true);
     }
 
-    public void resetForm(){
+    public void resetForm() {
         fieldTenLoai.setEnabled(true);
         fieldTenLoai.setText("");
         fieldTenLoai.setBackground(Color.white);
@@ -136,12 +144,12 @@ public class LoaiToaPanel extends BasePanel{
         buttonSua.setEnabled(false);
         buttonXoa.setEnabled(false);
         buttonReset.setEnabled(true);
-        if(tblLoaiToa != null){
+        if (tblLoaiToa != null) {
             tblLoaiToa.clearSelection();
         }
     }
 
-    public void addTableMouseClickListener(MouseListener l){
+    public void addTableMouseClickListener(MouseListener l) {
         tblLoaiToa.addMouseListener(l);
     }
 

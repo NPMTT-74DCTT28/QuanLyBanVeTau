@@ -1,7 +1,5 @@
 package com.group3tt28.quanlybanvetau.view.panel;
 
-import com.group3tt28.quanlybanvetau.view.frame.BaseFrame;
-
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
@@ -16,6 +14,7 @@ public class TKGaTauPanel extends BasePanel {
     private DefaultTableModel model;
     private JButton btnTimkiem, btnReset;
     private JTable table;
+
     public TKGaTauPanel() {
         initComponents();
     }
@@ -31,23 +30,23 @@ public class TKGaTauPanel extends BasePanel {
         title.setFont(new Font("Segoe UI", Font.BOLD, 20));
         titlePanel.add(title);
 
-        JPanel panelTop = new JPanel(new BorderLayout(0,5));
-        JPanel panelFrom = new JPanel(new GridLayout(1,2, 5,5));
+        JPanel panelTop = new JPanel(new BorderLayout(0, 5));
+        JPanel panelFrom = new JPanel(new GridLayout(1, 2, 5, 5));
         panelFrom.setBorder(new EmptyBorder(5, 5, 5, 5));
 
         fieldTimkiem = new JTextField();
         panelFrom.add(createInputField("Mã / Tên Ga", fieldTimkiem, Color.WHITE));
 
         btnTimkiem = createStyledButton("Tìm Kiếm", new Dimension(100, 40), new Color(0, 123, 255), Color.BLACK);
-        btnReset= createStyledButton("Reset", new Dimension(100, 40), new Color(108, 117, 125), Color.BLACK);
-        JButton[] btn =  {btnTimkiem, btnReset};
+        btnReset = createStyledButton("Reset", new Dimension(100, 40), new Color(108, 117, 125), Color.BLACK);
+        JButton[] btn = {btnTimkiem, btnReset};
 
         panelTop.add(titlePanel, BorderLayout.NORTH);
         panelTop.add(panelFrom);
         panelTop.add(createButtonField(btn, Color.WHITE), BorderLayout.SOUTH);
 
         String[] columNames = {"Mã Ga", "Tên Ga", "Địa chỉ", "Thành phố"};
-        model = new  DefaultTableModel(columNames, 0);
+        model = new DefaultTableModel(columNames, 0);
         table = new JTable(model);
         JTableHeader tableHeader = table.getTableHeader();
         tableHeader.setBackground(SECONDARY_COLOR);

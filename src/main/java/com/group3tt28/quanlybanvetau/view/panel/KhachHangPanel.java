@@ -25,24 +25,25 @@ public class KhachHangPanel extends BasePanel {
     private JButton buttonThem, buttonSua, buttonXoa, buttonReset;
     private JTable table;
 
-    public KhachHangPanel(){
+    public KhachHangPanel() {
         initComponents();
     }
+
     @Override
     protected void initComponents() {
         setLayout(new BorderLayout());
 
         JPanel panelTitle = new JPanel();
-        panelTitle.setBackground(new Color(173,255,47));
-        panelTitle.setBorder(new EmptyBorder(5,5,5,5));
+        panelTitle.setBackground(new Color(173, 255, 47));
+        panelTitle.setBorder(new EmptyBorder(5, 5, 5, 5));
         JLabel lableTitle = new JLabel("Quản lý thông tin khách hàng");
-        lableTitle.setSize(200,80);
+        lableTitle.setSize(200, 80);
         lableTitle.setFont(new Font("Times New Roman", Font.BOLD, 20));
         panelTitle.add(lableTitle);
 
-        JPanel panelTop = new JPanel(new BorderLayout(5, 5 ));
+        JPanel panelTop = new JPanel(new BorderLayout(5, 5));
 
-        JPanel panelForm = new JPanel(new GridLayout(2,3));
+        JPanel panelForm = new JPanel(new GridLayout(2, 3));
 
         fieldCCCD = new JTextField();
         panelForm.add(createInputField("CCCD: ", fieldCCCD, Color.WHITE));
@@ -82,20 +83,28 @@ public class KhachHangPanel extends BasePanel {
         DefaultTableModel tableModel = new DefaultTableModel(columns, 0);
         table = new JTable(tableModel);
         JScrollPane scrollPane = new JScrollPane(table);
-        scrollPane.setFont(new Font("Times New Roman", Font.BOLD,13));
-        scrollPane.setBorder(new EmptyBorder(10,10,10,10));
+        scrollPane.setFont(new Font("Times New Roman", Font.BOLD, 13));
+        scrollPane.setBorder(new EmptyBorder(10, 10, 10, 10));
 
         add(panelTop, BorderLayout.NORTH);
         add(scrollPane, BorderLayout.CENTER);
     }
 
-    public String getCCCD() {return fieldCCCD.getText().trim();}
+    public String getCCCD() {
+        return fieldCCCD.getText().trim();
+    }
 
-    public void setCCCD(String CCCD) {fieldCCCD.setText(CCCD);}
+    public void setCCCD(String CCCD) {
+        fieldCCCD.setText(CCCD);
+    }
 
-    public   String getHoTen() {return fieldHoTen.getText().trim();}
+    public String getHoTen() {
+        return fieldHoTen.getText().trim();
+    }
 
-    public void setHoTen(String hoTen) {fieldHoTen.setText(hoTen);}
+    public void setHoTen(String hoTen) {
+        fieldHoTen.setText(hoTen);
+    }
 
     public LocalDate getNgaySinh() {
         if (chooserNgaySinh.getDate() == null) {
@@ -105,34 +114,46 @@ public class KhachHangPanel extends BasePanel {
     }
 
     public void setNgaySinh(LocalDate localDate) {
-        if (localDate == null){
+        if (localDate == null) {
             chooserNgaySinh.setDate(null);
-        }else {
+        } else {
             chooserNgaySinh.setDate(Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
         }
     }
 
-    public String getGioiTinh() {return String.valueOf(boxGioiTinh.getSelectedItem());}
+    public String getGioiTinh() {
+        return String.valueOf(boxGioiTinh.getSelectedItem());
+    }
 
-    public void setGioiTinh(String label){
+    public void setGioiTinh(String label) {
         if (label == null) return;
-        for (int i = 0; i<boxGioiTinh.getItemCount(); i++){
-            if (boxGioiTinh.getItemAt(i).toString().equals(label)){
+        for (int i = 0; i < boxGioiTinh.getItemCount(); i++) {
+            if (boxGioiTinh.getItemAt(i).toString().equals(label)) {
                 boxGioiTinh.setSelectedIndex(i);
                 return;
             }
         }
     }
 
-    public String getSdt() {return fieldSDT.getText().trim();}
+    public String getSdt() {
+        return fieldSDT.getText().trim();
+    }
 
-    public void setSdt(String sdt) {fieldSDT.setText(sdt);}
+    public void setSdt(String sdt) {
+        fieldSDT.setText(sdt);
+    }
 
-    public String getDiachi() {return fieldDiaChi.getText().trim();}
+    public String getDiachi() {
+        return fieldDiaChi.getText().trim();
+    }
 
-    public void setDiaChi(String diaChi) {fieldDiaChi.setText(diaChi);}
+    public void setDiaChi(String diaChi) {
+        fieldDiaChi.setText(diaChi);
+    }
 
-    public JTable getTable() {return table;}
+    public JTable getTable() {
+        return table;
+    }
 
     public KhachHang getKhachHangFromForm() {
         String cccd = getCCCD();
@@ -145,7 +166,7 @@ public class KhachHangPanel extends BasePanel {
         return new KhachHang(cccd, hoTen, ngaySinh, gioiTinh, sdt, diaChi);
     }
 
-    public  void startEditMode(){
+    public void startEditMode() {
         fieldCCCD.setEnabled(false);
 
         buttonThem.setEnabled(false);
@@ -154,7 +175,7 @@ public class KhachHangPanel extends BasePanel {
         buttonReset.setEnabled(true);
     }
 
-    public void resetForm(){
+    public void resetForm() {
         fieldCCCD.setEnabled(true);
         fieldCCCD.setText("");
 
@@ -162,7 +183,7 @@ public class KhachHangPanel extends BasePanel {
 
         chooserNgaySinh.setDate(null);
 
-        if (boxGioiTinh.getItemCount() > 0){
+        if (boxGioiTinh.getItemCount() > 0) {
             boxGioiTinh.setSelectedIndex(0);
         }
 
@@ -180,13 +201,23 @@ public class KhachHangPanel extends BasePanel {
         }
     }
 
-    public void addThemKhachHangListener(ActionListener l) {buttonThem.addActionListener(l);}
+    public void addThemKhachHangListener(ActionListener l) {
+        buttonThem.addActionListener(l);
+    }
 
-    public void addSuaKhachHangListener(ActionListener l) {buttonSua.addActionListener(l);}
+    public void addSuaKhachHangListener(ActionListener l) {
+        buttonSua.addActionListener(l);
+    }
 
-    public void addXoaKhachHangListener(ActionListener l) {buttonXoa.addActionListener(l);}
+    public void addXoaKhachHangListener(ActionListener l) {
+        buttonXoa.addActionListener(l);
+    }
 
-    public void addResetFormListener(ActionListener l) {buttonReset.addActionListener(l);}
+    public void addResetFormListener(ActionListener l) {
+        buttonReset.addActionListener(l);
+    }
 
-    public void addTableMouseClickListener(MouseListener l) {table.addMouseListener(l);}
+    public void addTableMouseClickListener(MouseListener l) {
+        table.addMouseListener(l);
+    }
 }

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Dec 29, 2025 at 06:19 AM
+-- Generation Time: Dec 29, 2025 at 01:11 PM
 -- Server version: 8.4.7
 -- PHP Version: 8.5.0
 
@@ -114,9 +114,9 @@ CREATE TABLE IF NOT EXISTS `khach_hang` (
 --
 
 INSERT INTO `khach_hang` (`id`, `cccd`, `ho_ten`, `ngay_sinh`, `gioi_tinh`, `sdt`, `dia_chi`) VALUES
-(1, '001234567890', 'Nguyễn Văn Khách', '1990-05-15', 'Nam', '0988123123', 'Cầu Giấy, Hà Nội'),
-(2, '001234567891', 'Trần Thị Mua', '1995-10-20', 'Nữ', '0977456456', 'Quận 1, TP.HCM'),
-(3, '001234567892', 'Lê Văn Đi', '1988-01-01', 'Nam', '0912789789', 'Hải Châu, Đà Nẵng');
+(1, '001090000001', 'Phạm Khách Nam', '1985-02-10', 'Nam', '0912345678', '100 Cầu Giấy, Hà Nội'),
+(2, '001090000002', 'Nguyễn Khách Nữ', '1992-11-20', 'Nữ', '0987654321', '200 Điện Biên Phủ, TP.HCM'),
+(3, '001090000003', 'Lê Khách Khác', '2000-01-01', 'Khác', '0999888777', '300 Nguyễn Văn Linh, Đà Nẵng');
 
 -- --------------------------------------------------------
 
@@ -137,16 +137,17 @@ CREATE TABLE IF NOT EXISTS `lich_trinh` (
   UNIQUE KEY `unique_tau_schedule` (`id_tau`,`ngay_di`),
   UNIQUE KEY `ma_lich_trinh` (`ma_lich_trinh`),
   KEY `id_tuyen_duong` (`id_tuyen_duong`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `lich_trinh`
 --
 
 INSERT INTO `lich_trinh` (`id`, `ma_lich_trinh`, `id_tau`, `id_tuyen_duong`, `ngay_di`, `ngay_den`, `trang_thai`) VALUES
-(1, 'LT-SE1-001', 1, 1, '2025-02-01 06:00:00', '2025-02-02 12:00:00', 'Sắp chạy'),
-(2, 'LT-SE1-002', 1, 1, '2025-02-02 06:00:00', '2025-02-03 12:00:00', 'Sắp chạy'),
-(3, 'LT-SE2-001', 2, 2, '2025-02-01 19:00:00', '2025-02-02 08:00:00', 'Sắp chạy');
+(1, 'LT-SE1-001', 1, 1, '2025-05-01 06:00:00', '2025-05-02 12:00:00', 'Chờ'),
+(2, 'LT-SE2-001', 2, 2, '2025-04-29 19:00:00', '2025-04-30 08:00:00', 'Đang chạy'),
+(3, 'LT-TN1-OLD', 3, 2, '2024-12-01 08:00:00', '2024-12-01 20:00:00', 'Hoàn thành'),
+(4, 'LT-QB1-HUY', 4, 4, '2025-05-05 07:00:00', '2025-05-05 14:00:00', 'Hủy');
 
 -- --------------------------------------------------------
 
@@ -202,9 +203,9 @@ CREATE TABLE IF NOT EXISTS `nhan_vien` (
 --
 
 INSERT INTO `nhan_vien` (`id`, `ma_nhan_vien`, `mat_khau`, `ho_ten`, `ngay_sinh`, `gioi_tinh`, `sdt`, `email`, `dia_chi`, `vai_tro`) VALUES
-(1, 'ADMIN', '$2a$12$gmkjs/CePmv8B6L684vWD.ytns6H4aoo4EXuFcVMAfWD1iV586QzW', 'Nguyễn Văn A', '2000-01-01', 'Nam', '0321456987', NULL, 'TP. Hồ Chí Minh', 'Quản trị viên'),
-(2, 'NV001', '$2a$12$XUDz5TLpGqBa8LeDQfFIUurqjNF2S6GBE4Y/rS3uXhHT8NGALzcxu', 'Lê Thị B', '2000-12-31', 'Nữ', '0123456789', NULL, 'Hà Nội', 'Nhân viên'),
-(3, 'NV003', '$2a$12$XUDz5TLpGqBa8LeDQfFIUurqjNF2S6GBE4Y/rS3uXhHT8NGALzcxu', 'Phạm Thị C', '1998-06-15', 'Nữ', '0966111222', NULL, 'Huế', 'Nhân viên');
+(1, 'ADMIN', '$2a$12$gmkjs/CePmv8B6L684vWD.ytns6H4aoo4EXuFcVMAfWD1iV586QzW', 'Nguyễn Quản Trị', '1990-01-01', 'Nam', '0909000111', 'admin@tauhoa.vn', 'Hà Nội', 'Quản trị viên'),
+(2, 'NV001', '$2a$12$XUDz5TLpGqBa8LeDQfFIUurqjNF2S6GBE4Y/rS3uXhHT8NGALzcxu', 'Trần Thu Ngân', '2000-05-15', 'Nữ', '0909000222', 'ngan.tt@tauhoa.vn', 'Đà Nẵng', 'Nhân viên'),
+(3, 'NV002', '$2a$12$XUDz5TLpGqBa8LeDQfFIUurqjNF2S6GBE4Y/rS3uXhHT8NGALzcxu', 'Lê Văn Soát Vé', '1995-08-20', 'Nam', '0909000333', 'soat.lv@tauhoa.vn', 'TP.HCM', 'Nhân viên');
 
 -- --------------------------------------------------------
 
@@ -320,8 +321,8 @@ CREATE TABLE IF NOT EXISTS `ve_tau` (
 --
 
 INSERT INTO `ve_tau` (`id`, `ma_ve`, `id_khach_hang`, `id_lich_trinh`, `id_ghe`, `id_nhan_vien`, `ngay_dat`, `gia_ve`, `trang_thai`) VALUES
-(1, 'VE-250201-001', 1, 1, 1, 2, '2025-12-29 13:16:51', 1200000.00, 'Đã thanh toán'),
-(2, 'VE-250201-002', 2, 1, 7, 2, '2025-12-29 13:16:51', 1800000.00, 'Đã thanh toán');
+(1, 'VE-250501-001', 1, 1, 1, 2, '2025-12-29 20:08:42', 1200000.00, 'Đã thanh toán'),
+(2, 'VE-250501-002', 2, 1, 2, 2, '2025-12-29 20:08:42', 1200000.00, 'Đã thanh toán');
 
 --
 -- Constraints for dumped tables

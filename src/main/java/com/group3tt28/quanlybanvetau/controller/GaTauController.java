@@ -19,16 +19,17 @@ public class GaTauController {
 
 
     public GaTauController(GaTauPanel panel) {
-       this.dao = new GaTauDAO();
-       this.panel = panel;
-       panel.AddGaTau(new AddGaTau());
-       panel.EditGaTau(new EditGaTau());
-       panel.RemoveGaTau(new RemoveGaTau());
-       panel.ResetGaTau(new ResetGaTau());
-       panel.TableMouseClickListener(new TableMouseClickListener());
-       model = (DefaultTableModel) panel.getTable().getModel();
-       refresh();
+        this.dao = new GaTauDAO();
+        this.panel = panel;
+        panel.AddGaTau(new AddGaTau());
+        panel.EditGaTau(new EditGaTau());
+        panel.RemoveGaTau(new RemoveGaTau());
+        panel.ResetGaTau(new ResetGaTau());
+        panel.TableMouseClickListener(new TableMouseClickListener());
+        model = (DefaultTableModel) panel.getTable().getModel();
+        refresh();
     }
+
     private void refresh() {
         panel.resetForm();
         List<GaTau> List = dao.getAll();
@@ -43,12 +44,13 @@ public class GaTauController {
         }
         model.fireTableDataChanged();
     }
+
     private class AddGaTau implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            try{
+            try {
                 GaTau gaTau = panel.getGaTau();
-                if (gaTau.getMaGa().isEmpty()||gaTau.getTenGa().isEmpty()) {
+                if (gaTau.getMaGa().isEmpty() || gaTau.getTenGa().isEmpty()) {
                     panel.showError("Vui lòng nhập đầy đủ Mã ga/ Tên ga!");
                     return;
                 }
@@ -60,38 +62,40 @@ public class GaTauController {
                     panel.showMessage("Thêm Ga tàu thành công!");
                     panel.resetForm();
                     refresh();
-                }else {
+                } else {
                     panel.showError("Thêm thất bại!!!!");
                 }
-            }catch(Exception ex){
+            } catch (Exception ex) {
                 ex.printStackTrace();
                 panel.showError("Lỗi hệ thống: " + ex.getMessage());
             }
         }
     }
+
     private class EditGaTau implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             try {
                 GaTau gaTau = panel.getGaTau();
-                if (gaTau.getMaGa().isEmpty()||gaTau.getTenGa().isEmpty()) {
+                if (gaTau.getMaGa().isEmpty() || gaTau.getTenGa().isEmpty()) {
                     panel.showError("Tên ga không được để trống!");
                     return;
                 }
-                if (panel.showConfirm("Bạn có muốn cập nhật thông tin của "+gaTau.getMaGa()+" không ?")){
+                if (panel.showConfirm("Bạn có muốn cập nhật thông tin của " + gaTau.getMaGa() + " không ?")) {
                     if (dao.update(gaTau)) {
                         panel.showMessage("Cập nhật thành công!");
                         refresh();
-                    }else{
+                    } else {
                         panel.showError("Cập nhật thất bại!!!!");
                     }
                 }
-            }catch(Exception ex){
+            } catch (Exception ex) {
                 ex.printStackTrace();
                 panel.showError("Lỗi hệ thống: " + ex.getMessage());
             }
         }
     }
+
     private class RemoveGaTau implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -100,26 +104,28 @@ public class GaTauController {
                 if (maGa.isEmpty()) {
                     return;
                 }
-                if (panel.showConfirm("Bạn có muốn xóa "+maGa+" không ?")){
+                if (panel.showConfirm("Bạn có muốn xóa " + maGa + " không ?")) {
                     if (dao.delete(maGa)) {
                         panel.showMessage("Xóa thành công!");
                         refresh();
-                    }else{
+                    } else {
                         panel.showError("Xóa thất bại!!!!");
                     }
                 }
-            }catch(Exception ex){
+            } catch (Exception ex) {
                 ex.printStackTrace();
                 panel.showError("Lỗi hệ thống: " + ex.getMessage());
             }
         }
     }
+
     private class ResetGaTau implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             panel.resetForm();
         }
     }
+
     private class TableMouseClickListener implements MouseListener {
 
         @Override
@@ -136,15 +142,19 @@ public class GaTauController {
         }
 
         @Override
-        public void mousePressed(MouseEvent e) {}
+        public void mousePressed(MouseEvent e) {
+        }
 
         @Override
-        public void mouseReleased(MouseEvent e) {}
+        public void mouseReleased(MouseEvent e) {
+        }
 
         @Override
-        public void mouseEntered(MouseEvent e) {}
+        public void mouseEntered(MouseEvent e) {
+        }
 
         @Override
-        public void mouseExited(MouseEvent e) {}
+        public void mouseExited(MouseEvent e) {
+        }
     }
 }

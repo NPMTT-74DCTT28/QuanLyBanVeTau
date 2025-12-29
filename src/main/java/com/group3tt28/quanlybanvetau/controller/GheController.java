@@ -23,7 +23,7 @@ public class GheController {
 
     public GheController(GhePanel panel) {
         this.panel = panel;
-        this.dao =  new GheDAO();
+        this.dao = new GheDAO();
         ToaTauDAO toaTauDAO = new ToaTauDAO();
         NhanVienDAO nvDAO = new NhanVienDAO();
 
@@ -37,7 +37,7 @@ public class GheController {
         this.panel.setComboBoxToaTauData(dsToa);
 
 
-        model = (DefaultTableModel)  panel.getTable().getModel();
+        model = (DefaultTableModel) panel.getTable().getModel();
 
         refresh();
     }
@@ -105,19 +105,19 @@ public class GheController {
         public void actionPerformed(ActionEvent e) {
             try {
                 Ghe ghe = panel.getGheFromForm();
-                if(model.getValueAt(selectedRow,0).toString().isEmpty()){
+                if (model.getValueAt(selectedRow, 0).toString().isEmpty()) {
                     panel.showWarning("ID ghế không hợp lệ");
                     return;
                 }
-                ghe.setId(Integer.parseInt(model.getValueAt(selectedRow, 0 ).toString()));
+                ghe.setId(Integer.parseInt(model.getValueAt(selectedRow, 0).toString()));
 
                 if (validateInput(ghe) != null) {
                     panel.showWarning(validateInput(ghe));
                     return;
                 }
 
-                if(dao.checkTrung(ghe.getSoGhe(), ghe.getIdToaTau(), ghe.getId())){
-                    panel.showWarning("Số ghế " + ghe.getSoGhe()+  " đã tồn tại trong toa!");
+                if (dao.checkTrung(ghe.getSoGhe(), ghe.getIdToaTau(), ghe.getId())) {
+                    panel.showWarning("Số ghế " + ghe.getSoGhe() + " đã tồn tại trong toa!");
                     return;
                 }
 

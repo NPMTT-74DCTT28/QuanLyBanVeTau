@@ -17,8 +17,8 @@ public class LoaiToaDAO {
     private static final String COT_TEN_LOAI = "ten_loai";
     private static final String COT_HE_SO_GIA = "he_so_gia";
 
-    public boolean checkTrung(String tenLoai, int ID){
-        if(tenLoai == null){
+    public boolean checkTrung(String tenLoai, int ID) {
+        if (tenLoai == null) {
             return false;
         }
 

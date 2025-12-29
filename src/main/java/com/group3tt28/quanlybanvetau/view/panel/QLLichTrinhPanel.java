@@ -103,9 +103,9 @@ public final class QLLichTrinhPanel extends BasePanel {
         panelTimKiemContainer.add(buttonTimKiem);
 
         // 2. Panel Button CRUD cũ
-        buttonThem = createStyledButton("Thêm", new Dimension(80,40),PRIMARY_COLOR, Color.WHITE);
+        buttonThem = createStyledButton("Thêm", new Dimension(80, 40), PRIMARY_COLOR, Color.WHITE);
         buttonThem.setEnabled(true);
-        buttonSua = createStyledButton("Sửa", new Dimension(80,40), new Color(200,200,40), Color.WHITE);
+        buttonSua = createStyledButton("Sửa", new Dimension(80, 40), new Color(200, 200, 40), Color.WHITE);
         buttonSua.setEnabled(false);
         buttonXoa = createStyledButton("Xoá", new Dimension(80, 40), Color.RED, Color.white);
         buttonXoa.setEnabled(false);
@@ -280,10 +280,24 @@ public final class QLLichTrinhPanel extends BasePanel {
 
     // --- LISTENERS ---
 
-    public void addThemListener(ActionListener l) { buttonThem.addActionListener(l); }
-    public void addSuaListener(ActionListener l) { buttonSua.addActionListener(l); }
-    public void addXoaListener(ActionListener l) { buttonXoa.addActionListener(l); }
-    public void addResetListener(ActionListener l) { buttonReset.addActionListener(l); }
+    public void addThemListener(ActionListener l) {
+        buttonThem.addActionListener(l);
+    }
+
+    public void addSuaListener(ActionListener l) {
+        buttonSua.addActionListener(l);
+    }
+
+    public void addXoaListener(ActionListener l) {
+        buttonXoa.addActionListener(l);
+    }
+
+    public void addResetListener(ActionListener l) {
+        buttonReset.addActionListener(l);
+    }
+
     // Listener cho nút tìm kiếm
-    public void addTimKiemListener(ActionListener l) { buttonTimKiem.addActionListener(l); }
+    public void addTimKiemListener(ActionListener l) {
+        buttonTimKiem.addActionListener(l);
+    }
 }

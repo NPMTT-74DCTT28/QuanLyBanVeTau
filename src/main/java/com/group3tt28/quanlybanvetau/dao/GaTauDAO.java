@@ -80,7 +80,7 @@ public class GaTauDAO {
     }
 
     public boolean delete(String maGa) {
-        if (maGa == null ) {
+        if (maGa == null) {
             return false;
         }
         String sql = "DELETE FROM " + TEN_BANG + " WHERE " + COT_MA_GA + " = ?";
@@ -115,13 +115,14 @@ public class GaTauDAO {
         }
         return list;
     }
+
     public List<GaTau> timkiem(String keyword) {
         List<GaTau> list = new ArrayList<>();
         String sql = "SELECT * FROM " + TEN_BANG + " WHERE "
                 + COT_MA_GA + " LIKE ? OR "
                 + COT_TEN_GA + " LIKE ? ";
-        try(Connection conn = DBConnection.getConnection();
-            PreparedStatement ps = conn.prepareStatement(sql)){
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, "%" + keyword + "%");
             ps.setString(2, "%" + keyword + "%");
             try (ResultSet rs = ps.executeQuery()) {
@@ -136,7 +137,7 @@ public class GaTauDAO {
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Lỗi khi tìm kiếm ga tàu: "+e.getMessage(),e);
+            throw new RuntimeException("Lỗi khi tìm kiếm ga tàu: " + e.getMessage(), e);
         }
         return list;
     }

@@ -193,8 +193,8 @@ public class QLLichTrinhController {
                 // Cách an toàn nhất: Lấy mã từ bảng dòng được chọn, rồi tìm trong list gốc
                 String maLichTrinhTable = (String) panel.getTable().getValueAt(selectedRow, 0);
                 LichTrinh ltCu = null;
-                for(LichTrinh lt : listLichTrinh) {
-                    if(lt.getMaLichTrinh().equals(maLichTrinhTable)) {
+                for (LichTrinh lt : listLichTrinh) {
+                    if (lt.getMaLichTrinh().equals(maLichTrinhTable)) {
                         ltCu = lt;
                         break;
                     }
@@ -234,8 +234,8 @@ public class QLLichTrinhController {
                 // Logic lấy object tương tự phần Sửa để đảm bảo đúng ID khi đang tìm kiếm
                 String maLichTrinhTable = (String) panel.getTable().getValueAt(selectedRow, 0);
                 LichTrinh lt = null;
-                for(LichTrinh item : listLichTrinh) {
-                    if(item.getMaLichTrinh().equals(maLichTrinhTable)) {
+                for (LichTrinh item : listLichTrinh) {
+                    if (item.getMaLichTrinh().equals(maLichTrinhTable)) {
                         lt = item;
                         break;
                     }
@@ -306,9 +306,21 @@ public class QLLichTrinhController {
                 }
             }
         }
-        @Override public void mousePressed(MouseEvent e) {}
-        @Override public void mouseReleased(MouseEvent e) {}
-        @Override public void mouseEntered(MouseEvent e) {}
-        @Override public void mouseExited(MouseEvent e) {}
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+        }
     }
 }

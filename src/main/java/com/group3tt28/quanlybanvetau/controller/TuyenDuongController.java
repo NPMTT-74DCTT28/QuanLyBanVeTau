@@ -20,6 +20,7 @@ public class TuyenDuongController {
     private final DefaultTableModel model;
     private HashMap<Integer, String> mapGaTau = new HashMap<>();
     private int selectedRow;
+
     public TuyenDuongController(TuyenDuongPanel panel) {
         this.dao = new TuyenDuongDAO();
         this.panel = panel;
@@ -31,6 +32,7 @@ public class TuyenDuongController {
         model = (DefaultTableModel) panel.getTable().getModel();
         refresh();
     }
+
     public void refresh() {
         panel.resetForm();
         try {
@@ -64,10 +66,11 @@ public class TuyenDuongController {
         }
         model.fireTableDataChanged();
     }
-    public class  AddTuyen implements ActionListener {
+
+    public class AddTuyen implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            try{
+            try {
                 TuyenDuong td = panel.getTuyenDuong();
                 if (td.getMaTuyen().isEmpty() || td.getTenTuyen().isEmpty()) {
                     panel.showError("Vui lòng nhập đầy đủ thông tin!");
@@ -77,73 +80,77 @@ public class TuyenDuongController {
                     panel.showWarning("Tuyến đường đã tồn tại!");
                     return;
                 }
-                if (td.getIdGaDi()==td.getIdGaDen()){
+                if (td.getIdGaDi() == td.getIdGaDen()) {
                     panel.showError("Ga đi và Ga đến không được trùng nhau!");
                     return;
                 }
-                if (dao.insert(td)){
+                if (dao.insert(td)) {
                     panel.showMessage("Thêm tuyến đường thành công!");
                     panel.resetForm();
                     refresh();
-                }else {
+                } else {
                     panel.showError("Thêm thất bại!");
                 }
-            }catch(Exception ex){
+            } catch (Exception ex) {
                 ex.printStackTrace();
-                panel.showError("Lỗi không xác định: " +ex.getMessage());
+                panel.showError("Lỗi không xác định: " + ex.getMessage());
             }
         }
     }
-    public class  EditTuyen implements ActionListener {
+
+    public class EditTuyen implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            try{
+            try {
                 TuyenDuong td = panel.getTuyenDuong();
                 if (td.getMaTuyen().isEmpty() || td.getTenTuyen().isEmpty()) {
                     panel.showError("Tên tuyến không được để trống!");
                 }
-                if(panel.showConfirm("Bạn có muốn cập nhật thông tin của" +td.getMaTuyen()+ " không ?")){
-                    if(dao.update(td)){
+                if (panel.showConfirm("Bạn có muốn cập nhật thông tin của" + td.getMaTuyen() + " không ?")) {
+                    if (dao.update(td)) {
                         panel.showMessage("Cập nhật thành công!");
                         refresh();
-                    }else{
+                    } else {
                         panel.showError("Cập nhật thất bại!");
                     }
                 }
-            }catch(Exception ex){
+            } catch (Exception ex) {
                 ex.printStackTrace();
-                panel.showError("Lỗi hệ thống: "+ex.getMessage());
+                panel.showError("Lỗi hệ thống: " + ex.getMessage());
             }
         }
     }
-    public class  RemoveTuyen implements ActionListener {
+
+    public class RemoveTuyen implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            try{
+            try {
                 String maTuyen = model.getValueAt(selectedRow, 0).toString();
-                if(maTuyen.isEmpty()){
+                if (maTuyen.isEmpty()) {
                     return;
                 }
-                if (panel.showConfirm("Bạn có muốn xóa"+maTuyen+" không ?")){
+                if (panel.showConfirm("Bạn có muốn xóa" + maTuyen + " không ?")) {
                     if (dao.delete(maTuyen)) {
                         panel.showMessage("Xóa thành công!");
                         refresh();
-                    }else{
+                    } else {
                         panel.showError("Xóa thất bại!");
                     }
                 }
-            }catch(Exception ex){
+            } catch (Exception ex) {
                 ex.printStackTrace();
-                panel.showError("Lỗi hệ thống: "+ex.getMessage());
+                panel.showError("Lỗi hệ thống: " + ex.getMessage());
             }
         }
     }
-    public class  ResetTuyen implements ActionListener {
+
+    public class ResetTuyen implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             panel.resetForm();
         }
     }
+
     private class TableMouseClickListener implements MouseListener {
 
         @Override
@@ -169,13 +176,21 @@ public class TuyenDuongController {
             panel.setKhoangcach(model.getValueAt(selectedRow, 4).toString());
             panel.setGiaCB(model.getValueAt(selectedRow, 5).toString());
         }
+
         @Override
-        public void mousePressed(MouseEvent e) {}
+        public void mousePressed(MouseEvent e) {
+        }
+
         @Override
-        public void mouseReleased(MouseEvent e) {}
+        public void mouseReleased(MouseEvent e) {
+        }
+
         @Override
-        public void mouseEntered(MouseEvent e) {}
+        public void mouseEntered(MouseEvent e) {
+        }
+
         @Override
-        public void mouseExited(MouseEvent e) {}
+        public void mouseExited(MouseEvent e) {
+        }
     }
 }
