@@ -124,6 +124,7 @@ public final class MainFrame extends BaseFrame {
 
     public void showPanel(JPanel panel) {
         container.removeAll();
+        panel.setPreferredSize(new Dimension(1200, 700));
         container.add(panel);
         container.revalidate();
         container.repaint();

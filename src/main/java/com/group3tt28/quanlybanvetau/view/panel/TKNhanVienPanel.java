@@ -35,10 +35,10 @@ public class TKNhanVienPanel extends BasePanel {
         JPanel panelTop = new JPanel(new BorderLayout(5, 5));
         panelTop.setBackground(Color.WHITE);
 
-        JPanel panelTitle = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 5));
+        JPanel panelTitle = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         panelTitle.setBackground(PRIMARY_COLOR);
-        JLabel labelTitle = new JLabel("Danh sách nhân viên");
-        labelTitle.setFont(new Font("Segoe UI", Font.BOLD, 20));
+        JLabel labelTitle = new JLabel("DANH SÁCH NHÂN VIÊN");
+        labelTitle.setFont(new Font("Segoe UI", Font.BOLD, 22));
         labelTitle.setForeground(Color.WHITE);
         panelTitle.add(labelTitle);
 
