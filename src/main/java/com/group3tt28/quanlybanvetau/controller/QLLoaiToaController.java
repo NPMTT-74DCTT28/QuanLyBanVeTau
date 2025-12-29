@@ -1,11 +1,8 @@
 package com.group3tt28.quanlybanvetau.controller;
 
-import com.group3tt28.quanlybanvetau.dao.GheDAO;
-import com.group3tt28.quanlybanvetau.dao.NhanVienDAO;
-import com.group3tt28.quanlybanvetau.dao.ToaTauDAO;
-import com.group3tt28.quanlybanvetau.model.Ghe;
-import com.group3tt28.quanlybanvetau.model.ToaTau;
-import com.group3tt28.quanlybanvetau.view.panel.GhePanel;
+import com.group3tt28.quanlybanvetau.dao.LoaiToaDAO;
+import com.group3tt28.quanlybanvetau.model.LoaiToa;
+import com.group3tt28.quanlybanvetau.view.panel.QLLoaiToaPanel;
 
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
@@ -14,28 +11,22 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.List;
 
-public class GheController {
-    private final GhePanel panel;
-    private final GheDAO dao;
+public class QLLoaiToaController {
+
+    private final QLLoaiToaPanel panel;
+    private final LoaiToaDAO dao;
     private final DefaultTableModel model;
     private int selectedRow;
 
+    public QLLoaiToaController(QLLoaiToaPanel panel) {
+        this.dao = new LoaiToaDAO();
 
-    public GheController(GhePanel panel) {
         this.panel = panel;
-        this.dao = new GheDAO();
-        ToaTauDAO toaTauDAO = new ToaTauDAO();
-        NhanVienDAO nvDAO = new NhanVienDAO();
-
-        this.panel.addButtonThemActionListener(new GheController.ThemGheListener());
-        this.panel.addButtonSuaActionListener(new GheController.SuaGheListener());
-        this.panel.addButtonXoaActionListener(new GheController.XoaGheListener());
-        this.panel.addButtonResetActionListener(new GheController.ResetFormListener());
-        this.panel.addTableMouseClickListener(new GheController.TableMouseClickListener());
-
-        List<ToaTau> dsToa = toaTauDAO.getAll();
-        this.panel.setComboBoxToaTauData(dsToa);
-
+        panel.setButtonThemActionListener(new ThemLoaiToaListener());
+        panel.setButtonSuaActionListener(new SuaLoaiToaListener());
+        panel.setButtonXoaActionListener(new XoaLoaiToaListener());
+        panel.setButtonResetActionListener(new ResetFormListener());
+        panel.addTableMouseClickListener(new TableMouseClickListener());
 
         model = (DefaultTableModel) panel.getTable().getModel();
 
@@ -44,47 +35,48 @@ public class GheController {
 
     private void refresh() {
         panel.resetForm();
-        List<Ghe> list = dao.getAll();
+
+        List<LoaiToa> list = dao.getAll();
         model.setRowCount(0);
 
-        for (Ghe ghe : list) {
+        for (LoaiToa loaiToa : list) {
             model.addRow(new Object[]{
-                    ghe.getId(),
-                    ghe.getSoGhe(),
-                    ghe.getIdToaTau()
+                    loaiToa.getId(),
+                    loaiToa.getTenLoai(),
+                    loaiToa.getHeSoGia()
             });
         }
         model.fireTableDataChanged();
     }
 
-    private String validateInput(Ghe ghe) {
-        if (ghe.getSoGhe().isEmpty()) {
-            return "Số ghế không được để trống!";
+    private String validateInput(LoaiToa loaiToa) {
+        if (loaiToa.getTenLoai().isEmpty()) {
+            return "Tên loại toa không được để trống!";
         }
-        if (ghe.getIdToaTau() == 0) {
-            return "ID toa tàu không được để trống!";
+        if (loaiToa.getHeSoGia() <= 0 || loaiToa.getHeSoGia() >= 2) {
+            return "Hệ số giá phải lớn hơn 0 và bé hơn 2!";
         }
         return null;
     }
 
-    private class ThemGheListener implements ActionListener {
+    private class ThemLoaiToaListener implements ActionListener {
+
         @Override
         public void actionPerformed(ActionEvent e) {
             try {
-                Ghe ghe = panel.getGheFromForm();
-                ghe.setId(0);
+                LoaiToa loaiToa = panel.getLoaiToaFromForm();
 
-                if (validateInput(ghe) != null) {
-                    panel.showWarning(validateInput(ghe));
+                if (validateInput(loaiToa) != null) {
+                    panel.showWarning(validateInput(loaiToa));
                     return;
                 }
 
-                if (dao.checkTrung(ghe.getSoGhe(), ghe.getIdToaTau(), ghe.getId())) {
-                    panel.showWarning("Số ghế " + ghe.getSoGhe() + " đã tồn tại trong toa này!");
+                if (dao.checkTrung(loaiToa.getTenLoai(), loaiToa.getId())) {
+                    panel.showWarning("Tên loại toa " + loaiToa.getTenLoai() + " đã tồn tại!");
                     return;
                 }
-                if (dao.insert(ghe)) {
-                    panel.showMessage("Thêm ghế thành công!");
+                if (dao.insert(loaiToa)) {
+                    panel.showMessage("Thêm loại toa thành công!");
                     panel.resetForm();
                     refresh();
                 } else {
@@ -100,29 +92,24 @@ public class GheController {
         }
     }
 
-    private class SuaGheListener implements ActionListener {
-        @Override
+    private class SuaLoaiToaListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             try {
-                Ghe ghe = panel.getGheFromForm();
-                if (model.getValueAt(selectedRow, 0).toString().isEmpty()) {
-                    panel.showWarning("ID ghế không hợp lệ");
-                    return;
-                }
-                ghe.setId(Integer.parseInt(model.getValueAt(selectedRow, 0).toString()));
+                LoaiToa loaiToa = panel.getLoaiToaFromForm();
+                loaiToa.setId(Integer.parseInt(model.getValueAt(selectedRow, 0).toString()));
 
-                if (validateInput(ghe) != null) {
-                    panel.showWarning(validateInput(ghe));
+                if (validateInput(loaiToa) != null) {
+                    panel.showWarning(validateInput(loaiToa));
                     return;
                 }
 
-                if (dao.checkTrung(ghe.getSoGhe(), ghe.getIdToaTau(), ghe.getId())) {
-                    panel.showWarning("Số ghế " + ghe.getSoGhe() + " đã tồn tại trong toa!");
+                if (dao.checkTrung(loaiToa.getTenLoai(), loaiToa.getId())) {
+                    panel.showWarning("Tên loại toa " + loaiToa.getTenLoai() + " đã tồn tại");
                     return;
                 }
 
-                if (panel.showConfirm("Bạn có chắc muốn sửa ghế: " + ghe.getSoGhe() + "?")) {
-                    if (dao.update(ghe)) {
+                if (panel.showConfirm("Bạn có chắc muốn sửa loại toa: " + loaiToa.getTenLoai() + "?")) {
+                    if (dao.update(loaiToa)) {
                         panel.showMessage("Sửa thành công!");
                         refresh();
                     } else {
@@ -138,19 +125,19 @@ public class GheController {
         }
     }
 
-    private class XoaGheListener implements ActionListener {
+    private class XoaLoaiToaListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             try {
-                String SoGhe = model.getValueAt(selectedRow, 1).toString();
+                String Tenloai = model.getValueAt(selectedRow, 1).toString();
 
-                if (SoGhe.isEmpty()) {
-                    panel.showWarning("Số ghế không hợp lệ!");
+                if (Tenloai.isEmpty()) {
+                    panel.showWarning("Tên loại toa không hợp lệ!");
                     return;
                 }
 
-                if (panel.showConfirm("Bạn muốn xoá tàu " + SoGhe + "?")) {
-                    if (dao.delete(SoGhe)) {
+                if (panel.showConfirm("Bạn muốn xoá loại toa " + Tenloai + "?")) {
+                    if (dao.delete(Tenloai)) {
                         panel.showMessage("Xoá thành công!");
                         refresh();
                     } else {
@@ -181,8 +168,8 @@ public class GheController {
             selectedRow = panel.getTable().getSelectedRow();
             if (selectedRow == -1) return;
 
-            panel.setSoGhe(model.getValueAt(selectedRow, 1).toString());
-            panel.setIDToaTau(Integer.parseInt(model.getValueAt(selectedRow, 2).toString()));
+            panel.setTenLoai(model.getValueAt(selectedRow, 1).toString());
+            panel.setHeSoGia(model.getValueAt(selectedRow, 2).toString());
 
         }
 

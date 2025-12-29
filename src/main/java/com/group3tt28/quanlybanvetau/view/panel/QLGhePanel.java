@@ -13,7 +13,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
 import java.util.List;
 
-public class GhePanel extends BasePanel {
+public class QLGhePanel extends BasePanel {
     int k = 0;
     private JTextField fieldSoGhe;
     private JComboBox<ToaTau> ComboBoxIDToaTau;
@@ -24,7 +24,7 @@ public class GhePanel extends BasePanel {
     private JTable tblGhe;
     private boolean isEditMode = false;
 
-    public GhePanel() {
+    public QLGhePanel() {
         initComponents();
     }
 

@@ -9,13 +9,13 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
 
-public class TauPanel extends BasePanel {
+public class QLTauPanel extends BasePanel {
     private JTextField fieldMaTau, fieldTenTau;
     private JButton buttonThem, buttonSua, buttonXoa, buttonReset;
     private JTable tblTau;
     private DefaultTableModel model;
 
-    public TauPanel() {
+    public QLTauPanel() {
         initComponents();
     }
 

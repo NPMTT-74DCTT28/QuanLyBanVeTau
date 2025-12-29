@@ -19,7 +19,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
 import java.util.List;
 
-public final class TuyenDuongPanel extends BasePanel {
+public final class QLTuyenDuongPanel extends BasePanel {
     public boolean isEditMode = false;
     private JTextField fieldMaTuyen, fieldTenTuyen, fieldKhoangcach, fieldGiaCB;
     private JComboBox<Object> cboGadi, cboGaden;
@@ -27,7 +27,7 @@ public final class TuyenDuongPanel extends BasePanel {
     private DefaultTableModel model;
     private JTable table;
 
-    public TuyenDuongPanel() {
+    public QLTuyenDuongPanel() {
         initComponents();
     }
 
