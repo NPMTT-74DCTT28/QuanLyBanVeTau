@@ -8,167 +8,137 @@ import com.group3tt28.quanlybanvetau.model.Tau;
 import com.group3tt28.quanlybanvetau.model.TuyenDuong;
 import com.group3tt28.quanlybanvetau.view.panel.QLLichTrinhPanel;
 
-import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 
 public class QLLichTrinhController {
 
     private final QLLichTrinhPanel panel;
-    private final LichTrinhDAO dao;
+    private final LichTrinhDAO lichTrinhDAO;
     private final TauDAO tauDAO;
     private final TuyenDuongDAO tuyenDuongDAO;
-    private final DefaultTableModel model;
+    private final DefaultTableModel tableModel;
+    private int selectedId = -1; // Lưu ID của bản ghi đang chọn
 
-    // Danh sách gốc chứa toàn bộ dữ liệu từ DB
-    private List<LichTrinh> listLichTrinh;
-    private int selectedRow = -1;
+    // Cache để hiển thị tên trong bảng
+    private List<Tau> listTau;
+    private List<TuyenDuong> listTuyen;
 
     public QLLichTrinhController(QLLichTrinhPanel panel) {
         this.panel = panel;
-        this.dao = new LichTrinhDAO();
+        this.lichTrinhDAO = new LichTrinhDAO();
         this.tauDAO = new TauDAO();
         this.tuyenDuongDAO = new TuyenDuongDAO();
-        this.listLichTrinh = new ArrayList<>();
+        this.tableModel = (DefaultTableModel) panel.getTable().getModel();
 
-        // Đăng ký các sự kiện
+        // Đăng ký sự kiện
         panel.addThemListener(new ThemListener());
         panel.addSuaListener(new SuaListener());
         panel.addXoaListener(new XoaListener());
         panel.addResetListener(new ResetListener());
-        // Sự kiện MỚI: Tìm kiếm
-        panel.addTimKiemListener(new TimKiemListener());
+        panel.addTableMouseListener(new TableMouseListener());
 
-        panel.getTable().addMouseListener(new TableMouseClickListener());
-
-        model = (DefaultTableModel) panel.getTable().getModel();
-
-        loadDataToComboBoxes();
+        // Load dữ liệu
+        loadComboBoxData();
         refresh();
     }
 
-    private void loadDataToComboBoxes() {
+    private void loadComboBoxData() {
         try {
-            List<Tau> listTau = tauDAO.getAll();
+            listTau = tauDAO.getAll();
             panel.getBoxTau().removeAllItems();
             for (Tau t : listTau) panel.getBoxTau().addItem(t);
 
-            List<TuyenDuong> listTuyen = tuyenDuongDAO.getAll();
+            listTuyen = tuyenDuongDAO.getAll();
             panel.getBoxTuyenDuong().removeAllItems();
             for (TuyenDuong td : listTuyen) panel.getBoxTuyenDuong().addItem(td);
+
         } catch (Exception e) {
             e.printStackTrace();
-            panel.showError("Lỗi tải dữ liệu Tàu/Tuyến đường: " + e.getMessage());
+            panel.showError("Lỗi tải dữ liệu Tàu/Tuyến: " + e.getMessage());
         }
     }
 
-    // Hàm refresh tải lại toàn bộ dữ liệu
     private void refresh() {
         panel.resetForm();
-        selectedRow = -1;
-        // Tải lại toàn bộ từ DB
-        listLichTrinh = dao.getAll();
-        // Hiển thị toàn bộ lên bảng
-        updateTable(listLichTrinh);
-    }
+        selectedId = -1;
 
-    // Hàm cập nhật bảng dựa trên 1 danh sách (dùng chung cho refresh và tìm kiếm)
-    private void updateTable(List<LichTrinh> listHienThi) {
-        model.setRowCount(0);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        try {
+            List<LichTrinh> list = lichTrinhDAO.getAll();
+            tableModel.setRowCount(0);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-        for (LichTrinh lt : listHienThi) {
-            String tenTau = getTenTauById(lt.getIdTau());
-            String tenTuyen = getTenTuyenById(lt.getIdTuyenDuong());
+            for (LichTrinh lt : list) {
+                String tenTau = getTenTauById(lt.getIdTau());
+                String tenTuyen = getTenTuyenById(lt.getIdTuyenDuong());
 
-            model.addRow(new Object[]{
-                    lt.getMaLichTrinh(),
-                    tenTau,
-                    tenTuyen,
-                    lt.getNgayDi().format(formatter),
-                    lt.getNgayDen().format(formatter),
-                    lt.getTrangThai()
-            });
+                tableModel.addRow(new Object[]{
+                        lt.getId(),
+                        lt.getMaLichTrinh(),
+                        tenTau,
+                        tenTuyen,
+                        lt.getNgayDi().format(formatter),
+                        lt.getNgayDen().format(formatter),
+                        lt.getTrangThai()
+                });
+            }
+            tableModel.fireTableDataChanged();
+        } catch (Exception e) {
+            e.printStackTrace();
+            panel.showError("Lỗi tải danh sách lịch trình: " + e.getMessage());
         }
-        model.fireTableDataChanged();
     }
 
+    // Helper: Validate
+    private String validate(LichTrinh lt) {
+        if (lt.getMaLichTrinh().isEmpty()) return "Vui lòng nhập mã lịch trình!";
+        if (lt.getNgayDi().isAfter(lt.getNgayDen())) return "Ngày đi phải trước ngày đến!";
+        if (lt.getNgayDi().isEqual(lt.getNgayDen())) return "Ngày đi và đến không được trùng nhau!";
+        return null;
+    }
+
+    // Helper: Get Name by ID
     private String getTenTauById(int id) {
-        for (int i = 0; i < panel.getBoxTau().getItemCount(); i++) {
-            Tau t = panel.getBoxTau().getItemAt(i);
-            if (t.getId() == id) return t.toString();
-        }
-        return String.valueOf(id);
+        if (listTau == null) return String.valueOf(id);
+        return listTau.stream().filter(t -> t.getId() == id).findFirst().map(Tau::getTenTau).orElse(String.valueOf(id));
     }
 
     private String getTenTuyenById(int id) {
-        for (int i = 0; i < panel.getBoxTuyenDuong().getItemCount(); i++) {
-            TuyenDuong td = panel.getBoxTuyenDuong().getItemAt(i);
-            if (td.getId() == id) return td.toString();
-        }
-        return String.valueOf(id);
+        if (listTuyen == null) return String.valueOf(id);
+        return listTuyen.stream().filter(t -> t.getId() == id).findFirst().map(TuyenDuong::getTenTuyen).orElse(String.valueOf(id));
     }
 
-    // --- CLASS XỬ LÝ SỰ KIỆN TÌM KIẾM ---
-    private class TimKiemListener implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            String tuKhoa = panel.getTuKhoaTimKiem().toLowerCase();
-
-            // Nếu ô tìm kiếm trống, hiển thị lại toàn bộ
-            if (tuKhoa.isEmpty()) {
-                refresh();
-                return;
-            }
-
-            List<LichTrinh> ketQua = new ArrayList<>();
-            for (LichTrinh lt : listLichTrinh) {
-                // Lấy các chuỗi hiển thị để so sánh
-                String maLT = lt.getMaLichTrinh().toLowerCase();
-                String tenTau = getTenTauById(lt.getIdTau()).toLowerCase();
-                String tenTuyen = getTenTuyenById(lt.getIdTuyenDuong()).toLowerCase();
-                String trangThai = lt.getTrangThai().toLowerCase();
-
-                // Kiểm tra xem từ khóa có nằm trong bất kỳ trường nào không
-                if (maLT.contains(tuKhoa) || tenTau.contains(tuKhoa) || tenTuyen.contains(tuKhoa) || trangThai.contains(tuKhoa)) {
-                    ketQua.add(lt);
-                }
-            }
-
-            // Chỉ cập nhật bảng với kết quả tìm thấy, KHÔNG tải lại DB
-            updateTable(ketQua);
-
-            if (ketQua.isEmpty()) {
-                panel.showWarning("Không tìm thấy lịch trình nào khớp với từ khóa: " + tuKhoa);
-            }
-        }
-    }
-
-    // --- CÁC LISTENER CŨ ---
+    // --- INNER CLASSES LISTENER ---
 
     private class ThemListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             try {
                 LichTrinh lt = panel.getLichTrinhFromForm();
-                if (dao.checktrung(lt.getMaLichTrinh())) {
+                if (lt == null) return;
+
+                String err = validate(lt);
+                if (err != null) {
+                    panel.showWarning(err);
+                    return;
+                }
+
+                if (lichTrinhDAO.checktrung(lt.getMaLichTrinh())) {
                     panel.showWarning("Mã lịch trình đã tồn tại!");
                     return;
                 }
-                if (dao.insert(lt)) {
-                    panel.showMessage("Thêm lịch trình thành công!");
+
+                if (lichTrinhDAO.insert(lt)) {
+                    panel.showMessage("Thêm thành công!");
                     refresh();
                 } else {
                     panel.showError("Thêm thất bại!");
                 }
-            } catch (IllegalArgumentException ex) {
-                panel.showWarning(ex.getMessage());
             } catch (Exception ex) {
                 ex.printStackTrace();
                 panel.showError("Lỗi hệ thống: " + ex.getMessage());
@@ -180,41 +150,29 @@ public class QLLichTrinhController {
         @Override
         public void actionPerformed(ActionEvent e) {
             try {
-                if (selectedRow == -1 || selectedRow >= listLichTrinh.size()) {
-                    panel.showWarning("Vui lòng chọn lịch trình để sửa!");
+                if (selectedId == -1) {
+                    panel.showWarning("Chưa chọn dòng để sửa!");
                     return;
                 }
 
-                // Lưu ý: listLichTrinh có thể đang là danh sách tìm kiếm hoặc danh sách gốc
-                // Nên cần lấy ID từ table model để chính xác nhất nếu đang ở chế độ tìm kiếm
-                // Tuy nhiên, logic đơn giản là lấy từ list gốc theo index table (nếu chưa sort)
-                // Để an toàn, ở đây ta dùng selectedRow map vào list hiển thị.
+                LichTrinh lt = panel.getLichTrinhFromForm();
+                if (lt == null) return;
+                lt.setId(selectedId); // Gán ID để update đúng dòng
 
-                // Cách an toàn nhất: Lấy mã từ bảng dòng được chọn, rồi tìm trong list gốc
-                String maLichTrinhTable = (String) panel.getTable().getValueAt(selectedRow, 0);
-                LichTrinh ltCu = null;
-                for(LichTrinh lt : listLichTrinh) {
-                    if(lt.getMaLichTrinh().equals(maLichTrinhTable)) {
-                        ltCu = lt;
-                        break;
-                    }
+                String err = validate(lt);
+                if (err != null) {
+                    panel.showWarning(err);
+                    return;
                 }
 
-                if (ltCu == null) return; // Không tìm thấy
-
-                LichTrinh ltMoi = panel.getLichTrinhFromForm();
-                ltMoi.setId(ltCu.getId());
-
-                if (panel.showConfirm("Cập nhật lịch trình " + ltMoi.getMaLichTrinh() + "?")) {
-                    if (dao.update(ltMoi)) {
+                if (panel.showConfirm("Bạn muốn cập nhật lịch trình này?")) {
+                    if (lichTrinhDAO.update(lt)) {
                         panel.showMessage("Cập nhật thành công!");
                         refresh();
                     } else {
                         panel.showError("Cập nhật thất bại!");
                     }
                 }
-            } catch (IllegalArgumentException ex) {
-                panel.showWarning(ex.getMessage());
             } catch (Exception ex) {
                 ex.printStackTrace();
                 panel.showError("Lỗi hệ thống: " + ex.getMessage());
@@ -226,23 +184,14 @@ public class QLLichTrinhController {
         @Override
         public void actionPerformed(ActionEvent e) {
             try {
-                if (selectedRow == -1) {
-                    panel.showWarning("Vui lòng chọn lịch trình để xoá!");
+                if (selectedId == -1) {
+                    panel.showWarning("Chưa chọn dòng để xoá!");
                     return;
                 }
 
-                // Logic lấy object tương tự phần Sửa để đảm bảo đúng ID khi đang tìm kiếm
-                String maLichTrinhTable = (String) panel.getTable().getValueAt(selectedRow, 0);
-                LichTrinh lt = null;
-                for(LichTrinh item : listLichTrinh) {
-                    if(item.getMaLichTrinh().equals(maLichTrinhTable)) {
-                        lt = item;
-                        break;
-                    }
-                }
-
-                if (lt != null && panel.showConfirm("Xoá lịch trình " + lt.getMaLichTrinh() + "?")) {
-                    if (dao.delete(lt.getId())) {
+                String ma = panel.getMaLichTrinh();
+                if (panel.showConfirm("Bạn chắc chắn muốn xoá lịch trình " + ma + "?")) {
+                    if (lichTrinhDAO.delete(selectedId)) {
                         panel.showMessage("Xoá thành công!");
                         refresh();
                     } else {
@@ -251,7 +200,7 @@ public class QLLichTrinhController {
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();
-                panel.showError("Lỗi: " + ex.getMessage());
+                panel.showError("Lỗi xoá dữ liệu: " + ex.getMessage());
             }
         }
     }
@@ -259,53 +208,70 @@ public class QLLichTrinhController {
     private class ResetListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            refresh(); // Reset form và tải lại bảng full
+            panel.resetForm();
         }
     }
 
-    private class TableMouseClickListener implements MouseListener {
+    private class TableMouseListener implements MouseListener {
         @Override
         public void mouseClicked(MouseEvent e) {
-            selectedRow = panel.getTable().getSelectedRow();
-            if (selectedRow == -1) return;
+            int row = panel.getTable().getSelectedRow();
+            if (row == -1) return;
 
-            // Lấy dữ liệu từ bảng hiển thị (Visual)
-            String maLT = (String) panel.getTable().getValueAt(selectedRow, 0);
+            // Lấy ID từ cột ẩn (cột 0 trong model, nhưng đã bị remove khỏi view)
+            // Cần lấy từ Model
+            selectedId = Integer.parseInt(tableModel.getValueAt(row, 0).toString());
+            String maLT = tableModel.getValueAt(row, 1).toString();
+            // Các cột khác chỉ là text hiển thị, cần lấy từ DB hoặc List gốc để chính xác nhất
+            // Tuy nhiên, ta có thể lấy ID Tàu/Tuyến bằng cách map ngược (hoặc query lại getByID)
+            // Ở đây để đơn giản và chính xác, ta query lại object từ DB hoặc tìm trong list
 
-            // Tìm đối tượng gốc trong listLichTrinh
-            LichTrinh lt = null;
-            for (LichTrinh item : listLichTrinh) {
-                if (item.getMaLichTrinh().equals(maLT)) {
-                    lt = item;
-                    break;
-                }
-            }
+            // Cách nhanh: Lấy object đầy đủ từ DB dựa trên ID
+            // Nhưng để tối ưu, ta map dữ liệu từ bảng + list cache
 
-            if (lt == null) return;
+            // Tìm trong list hiện tại (đã load ở refresh) - nhưng list local ở refresh scope
+            // Nên gọi DAO getById hoặc filter
+            // Để đơn giản code này, ta dùng thông tin trên bảng và cache
 
             panel.startEditMode();
+            panel.setMaLichTrinh(maLT);
 
-            panel.setMaLichTrinh(lt.getMaLichTrinh());
-            panel.setNgayDi(lt.getNgayDi());
-            panel.setNgayDen(lt.getNgayDen());
-            panel.setTrangThai(lt.getTrangThai());
-
-            JComboBox<Tau> boxTau = panel.getBoxTau();
-            for (int i = 0; i < boxTau.getItemCount(); i++) {
-                if (boxTau.getItemAt(i).getId() == lt.getIdTau()) {
-                    boxTau.setSelectedIndex(i);
+            // Set Tau
+            String tenTau = tableModel.getValueAt(row, 2).toString();
+            for(Tau t : listTau) {
+                if(t.getTenTau().equals(tenTau)) {
+                    panel.setTau(t.getId());
                     break;
                 }
             }
 
-            JComboBox<TuyenDuong> boxTuyen = panel.getBoxTuyenDuong();
-            for (int i = 0; i < boxTuyen.getItemCount(); i++) {
-                if (boxTuyen.getItemAt(i).getId() == lt.getIdTuyenDuong()) {
-                    boxTuyen.setSelectedIndex(i);
+            // Set Tuyen
+            String tenTuyen = tableModel.getValueAt(row, 3).toString();
+            for(TuyenDuong td : listTuyen) {
+                if(td.getTenTuyen().equals(tenTuyen)) {
+                    panel.setTuyenDuong(td.getId());
                     break;
                 }
             }
+
+            // Set Ngay (Parse từ String trên bảng)
+            try {
+                String strDi = tableModel.getValueAt(row, 4).toString();
+                String strDen = tableModel.getValueAt(row, 5).toString();
+                DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+                panel.setNgayDi(java.time.LocalDateTime.parse(strDi, fmt));
+                panel.setNgayDen(java.time.LocalDateTime.parse(strDen, fmt));
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+
+            // Set Trang thai
+            String tt = tableModel.getValueAt(row, 6).toString();
+            panel.setTrangThai(tt);
         }
+
         @Override public void mousePressed(MouseEvent e) {}
         @Override public void mouseReleased(MouseEvent e) {}
         @Override public void mouseEntered(MouseEvent e) {}
