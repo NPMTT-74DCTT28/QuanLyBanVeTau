@@ -1,6 +1,7 @@
 package com.group3tt28.quanlybanvetau.view.frame;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 public final class MainFrame extends BaseFrame {
@@ -29,7 +30,10 @@ public final class MainFrame extends BaseFrame {
         setLayout(new BorderLayout());
 
         container = new JPanel();
-        add(container, BorderLayout.CENTER);
+        container.setBorder(new EmptyBorder(10, 5, 10, 5));
+
+        JScrollPane scrollPane = new JScrollPane(container);
+        add(scrollPane, BorderLayout.CENTER);
 
         qlNhanVien = new JMenuItem("Quản lý thông tin");
         tkNhanVien = new JMenuItem("Tra cứu");
