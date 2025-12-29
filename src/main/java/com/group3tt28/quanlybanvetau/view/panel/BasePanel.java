@@ -14,6 +14,7 @@ public abstract class BasePanel extends JPanel {
     public BasePanel() {
         setFont(FONT_PLAIN);
         setBackground(Color.WHITE);
+        setPreferredSize(new Dimension(1200, 700));
     }
 
     public void showMessage(String thongBao) {
