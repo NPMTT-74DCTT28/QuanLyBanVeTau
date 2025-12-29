@@ -28,6 +28,7 @@ public final class MainFrame extends BaseFrame {
     @Override
     protected void initComponents() {
         setLayout(new BorderLayout());
+        setLocationRelativeTo(null);
 
         container = new JPanel();
         container.setBorder(new EmptyBorder(10, 5, 10, 5));
