@@ -90,7 +90,7 @@ public class ToaTauDAO {
         }
     }
 
-    public static List<ToaTau> getAll() {
+    public List<ToaTau> getAll() {
         List<ToaTau> list = new ArrayList<>();
         String sql = "SELECT * FROM " + TEN_BANG;
         try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
