@@ -8,6 +8,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
+import java.awt.event.ActionListener;
 
 public class TKGaTauPanel extends BasePanel {
     private JTextField fieldTimkiem;
@@ -67,5 +68,17 @@ public class TKGaTauPanel extends BasePanel {
 
         add(panelTop, BorderLayout.NORTH);
         add(panelTable, BorderLayout.CENTER);
+    }
+    public String getTimkiem() {
+        return fieldTimkiem.getText();
+    }
+    public JTable getTable() {
+        return table;
+    }
+    public void TimKiemListener(ActionListener l){
+        btnTimkiem.addActionListener(l);
+    }
+    public void ResetListener(ActionListener l){
+        btnReset.addActionListener(l);
     }
 }
