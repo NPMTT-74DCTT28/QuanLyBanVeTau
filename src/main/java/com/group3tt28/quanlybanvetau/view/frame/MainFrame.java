@@ -93,7 +93,7 @@ public final class MainFrame extends BaseFrame {
         ghe.add(tkGhe);
 
         gaTau.add(qlGaTau);
-        gaTau.add(tkTuyenDuong);
+        gaTau.add(tkGaTau);
 
         tuyenDuong.add(qlTuyenDuong);
         tuyenDuong.add(tkTuyenDuong);

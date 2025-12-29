@@ -11,7 +11,7 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
 
-public class LoaiToaPanel extends BasePanel {
+public class QLLoaiToaPanel extends BasePanel {
     int k = 0;
     private JTextField fieldTenLoai;
     private JTextField fieldHeSoGia;
@@ -22,7 +22,7 @@ public class LoaiToaPanel extends BasePanel {
     private JTable tblLoaiToa;
     private DefaultTableModel tableModel;
 
-    public LoaiToaPanel() {
+    public QLLoaiToaPanel() {
         initComponents();
     }
 

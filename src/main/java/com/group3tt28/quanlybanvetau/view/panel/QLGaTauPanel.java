@@ -13,14 +13,14 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
 
-public class GaTauPanel extends BasePanel {
+public class QLGaTauPanel extends BasePanel {
     private JTextField fieldMaga, fieldTenga, fieldDiachi, fieldThanhpho;
     private JButton btnthem, btnsua, btnxoa, btnreset;
     private DefaultTableModel model;
     private JTable table;
     private boolean isEditmode = false;
 
-    public GaTauPanel() {
+    public QLGaTauPanel() {
         initComponents();
     }
 

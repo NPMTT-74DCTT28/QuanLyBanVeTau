@@ -2,7 +2,7 @@ package com.group3tt28.quanlybanvetau.controller;
 
 import com.group3tt28.quanlybanvetau.dao.GaTauDAO;
 import com.group3tt28.quanlybanvetau.model.GaTau;
-import com.group3tt28.quanlybanvetau.view.panel.GaTauPanel;
+import com.group3tt28.quanlybanvetau.view.panel.QLGaTauPanel;
 
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
@@ -11,14 +11,14 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.List;
 
-public class GaTauController {
-    private final GaTauPanel panel;
+public class QLGaTauController {
+    private final QLGaTauPanel panel;
     private final GaTauDAO dao;
     private final DefaultTableModel model;
     private int selectedRow;
 
 
-    public GaTauController(GaTauPanel panel) {
+    public QLGaTauController(QLGaTauPanel panel) {
         this.dao = new GaTauDAO();
         this.panel = panel;
         panel.AddGaTau(new AddGaTau());

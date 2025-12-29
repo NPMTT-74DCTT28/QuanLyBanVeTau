@@ -4,7 +4,7 @@ import com.group3tt28.quanlybanvetau.dao.GaTauDAO;
 import com.group3tt28.quanlybanvetau.dao.TuyenDuongDAO;
 import com.group3tt28.quanlybanvetau.model.GaTau;
 import com.group3tt28.quanlybanvetau.model.TuyenDuong;
-import com.group3tt28.quanlybanvetau.view.panel.TuyenDuongPanel;
+import com.group3tt28.quanlybanvetau.view.panel.QLTuyenDuongPanel;
 
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
@@ -14,14 +14,14 @@ import java.awt.event.MouseListener;
 import java.util.HashMap;
 import java.util.List;
 
-public class TuyenDuongController {
-    private final TuyenDuongPanel panel;
+public class QLTuyenDuongController {
+    private final QLTuyenDuongPanel panel;
     private final TuyenDuongDAO dao;
     private final DefaultTableModel model;
     private HashMap<Integer, String> mapGaTau = new HashMap<>();
     private int selectedRow;
 
-    public TuyenDuongController(TuyenDuongPanel panel) {
+    public QLTuyenDuongController(QLTuyenDuongPanel panel) {
         this.dao = new TuyenDuongDAO();
         this.panel = panel;
         panel.AddTuyen(new AddTuyen());
