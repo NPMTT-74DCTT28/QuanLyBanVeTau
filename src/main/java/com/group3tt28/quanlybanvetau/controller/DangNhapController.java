@@ -27,7 +27,7 @@ public class DangNhapController {
     }
 
     public static void main(String[] args) {
-        DangNhapController dangNhapController = new DangNhapController();
+        new DangNhapController();
     }
 
     private class LoginListener implements ActionListener {
@@ -51,7 +51,8 @@ public class DangNhapController {
                 }
 
                 SessionManager.setCurrentUser(nhanVien);
-                new MainFrame().setVisible(true);
+                MainFrame mainFrame = new MainFrame();
+                new MainController(mainFrame);
                 frame.dispose();
             } catch (RuntimeException ex) {
                 ex.printStackTrace();

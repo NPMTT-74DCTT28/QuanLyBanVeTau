@@ -79,7 +79,7 @@ public class QLToaTauController {
         for (ToaTau tt : listHienThi) {
             String tenTau = getTenTauById(tt.getIdTau());
             String tenLoai = getTenLoaiToaById(tt.getIdLoaiToa());
-            model.addRow(new Object[]{ tt.getId(), tt.getMaToa(), tenTau, tenLoai });
+            model.addRow(new Object[]{tt.getId(), tt.getMaToa(), tenTau, tenLoai});
         }
         model.fireTableDataChanged();
     }
@@ -171,7 +171,7 @@ public class QLToaTauController {
                 int idToa = (int) panel.getTable().getValueAt(selectedRow, 0);
 
                 ToaTau ttCu = null;
-                for(ToaTau item : listToaTau) {
+                for (ToaTau item : listToaTau) {
                     if (item.getId() == idToa) {
                         ttCu = item;
                         break;
@@ -214,7 +214,7 @@ public class QLToaTauController {
 
                 // Tìm object trong list gốc để lấy thông tin hiển thị (VD: Mã toa)
                 ToaTau tt = null;
-                for(ToaTau item : listToaTau) {
+                for (ToaTau item : listToaTau) {
                     if (item.getId() == idToa) {
                         tt = item;
                         break;
@@ -256,7 +256,7 @@ public class QLToaTauController {
 
             // Tìm đối tượng trong list gốc
             ToaTau tt = null;
-            for(ToaTau item : listToaTau) {
+            for (ToaTau item : listToaTau) {
                 if (item.getId() == idToa) {
                     tt = item;
                     break;
@@ -283,9 +283,21 @@ public class QLToaTauController {
                 }
             }
         }
-        @Override public void mousePressed(MouseEvent e) {}
-        @Override public void mouseReleased(MouseEvent e) {}
-        @Override public void mouseEntered(MouseEvent e) {}
-        @Override public void mouseExited(MouseEvent e) {}
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+        }
     }
 }

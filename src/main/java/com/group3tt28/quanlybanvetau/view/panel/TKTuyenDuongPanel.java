@@ -9,11 +9,12 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
 
-public class TKTuyenDuongPanel extends BasePanel{
+public class TKTuyenDuongPanel extends BasePanel {
     private JTextField fieldTimkiem;
     private DefaultTableModel model;
     private JButton btnTimkiem, btnReset;
     private JTable table;
+
     public TKTuyenDuongPanel() {
         initComponents();
     }
@@ -29,22 +30,22 @@ public class TKTuyenDuongPanel extends BasePanel{
         title.setFont(new Font("Segoe UI", Font.BOLD, 20));
         titlePanel.add(title);
 
-        JPanel panelTop = new JPanel(new BorderLayout(0,5));
-        JPanel panelFrom = new JPanel(new GridLayout(1,2, 5,5));
+        JPanel panelTop = new JPanel(new BorderLayout(0, 5));
+        JPanel panelFrom = new JPanel(new GridLayout(1, 2, 5, 5));
         panelFrom.setBorder(new EmptyBorder(5, 5, 5, 5));
 
         fieldTimkiem = new JTextField();
         panelFrom.add(createInputField("Mã / Tên Tuyến", fieldTimkiem, Color.WHITE));
 
         btnTimkiem = createStyledButton("Tìm Kiếm", new Dimension(100, 40), new Color(0, 123, 255), Color.BLACK);
-        btnReset= createStyledButton("Reset", new Dimension(100, 40), new Color(108, 117, 125), Color.BLACK);
-        JButton[] btn =  {btnTimkiem, btnReset};
+        btnReset = createStyledButton("Reset", new Dimension(100, 40), new Color(108, 117, 125), Color.BLACK);
+        JButton[] btn = {btnTimkiem, btnReset};
 
         panelTop.add(titlePanel, BorderLayout.NORTH);
         panelTop.add(panelFrom);
         panelTop.add(createButtonField(btn, Color.WHITE), BorderLayout.SOUTH);
 
-        String[] columNames = {"Mã Tuyến","Tên Tuyến","Ga Đi","Ga Đến","Khoảng Cách (km)","Giá Cơ Bản"};
+        String[] columNames = {"Mã Tuyến", "Tên Tuyến", "Ga Đi", "Ga Đến", "Khoảng Cách (km)", "Giá Cơ Bản"};
         model = new DefaultTableModel(columNames, 0);
 
         table = new JTable(model);

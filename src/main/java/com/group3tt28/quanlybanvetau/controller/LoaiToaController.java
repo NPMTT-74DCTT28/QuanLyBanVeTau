@@ -96,15 +96,15 @@ public class LoaiToaController {
         public void actionPerformed(ActionEvent e) {
             try {
                 LoaiToa loaiToa = panel.getLoaiToaFromForm();
-                loaiToa.setId(Integer.parseInt(model.getValueAt(selectedRow, 0 ).toString()));
+                loaiToa.setId(Integer.parseInt(model.getValueAt(selectedRow, 0).toString()));
 
                 if (validateInput(loaiToa) != null) {
                     panel.showWarning(validateInput(loaiToa));
                     return;
                 }
 
-                if(dao.checkTrung(loaiToa.getTenLoai(), loaiToa.getId())){
-                    panel.showWarning("Tên loại toa " + loaiToa.getTenLoai()+  " đã tồn tại");
+                if (dao.checkTrung(loaiToa.getTenLoai(), loaiToa.getId())) {
+                    panel.showWarning("Tên loại toa " + loaiToa.getTenLoai() + " đã tồn tại");
                     return;
                 }
 

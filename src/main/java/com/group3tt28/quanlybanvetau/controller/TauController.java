@@ -5,7 +5,10 @@ import com.group3tt28.quanlybanvetau.model.Tau;
 import com.group3tt28.quanlybanvetau.view.panel.TauPanel;
 
 import javax.swing.table.DefaultTableModel;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.List;
 
 public class TauController {
@@ -92,15 +95,15 @@ public class TauController {
         public void actionPerformed(ActionEvent e) {
             try {
                 Tau tau = panel.getTauFromForm();
-                tau.setId(Integer.parseInt(model.getValueAt(selectedRow, 0 ).toString()));
+                tau.setId(Integer.parseInt(model.getValueAt(selectedRow, 0).toString()));
 
                 if (validateInput(tau) != null) {
                     panel.showWarning(validateInput(tau));
                     return;
                 }
 
-                if(dao.checkTrung(tau.getMaTau(), tau.getId())){
-                    panel.showWarning("Tên mã tàu " + tau.getMaTau()+  " đã tồn tại");
+                if (dao.checkTrung(tau.getMaTau(), tau.getId())) {
+                    panel.showWarning("Tên mã tàu " + tau.getMaTau() + " đã tồn tại");
                     return;
                 }
 

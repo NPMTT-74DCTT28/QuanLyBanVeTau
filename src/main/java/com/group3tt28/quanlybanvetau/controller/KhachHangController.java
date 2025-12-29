@@ -20,28 +20,28 @@ public class KhachHangController {
     private int selectedRow;
 
     public KhachHangController(KhachHangPanel panel) {
-        this.dao=new KhachHangDAO();
+        this.dao = new KhachHangDAO();
 
-        this.panel=panel;
+        this.panel = panel;
         panel.addThemKhachHangListener(new ThemKhachHangListener());
         panel.addSuaKhachHangListener(new SuaKhachHangListener());
         panel.addXoaKhachHangListener(new XoaKhachHangListener());
         panel.addResetFormListener(new ResetFormListener());
         panel.addTableMouseClickListener(new TableMouseClickListener());
 
-        model=(DefaultTableModel) panel.getTable().getModel();
+        model = (DefaultTableModel) panel.getTable().getModel();
 
         refresh();
     }
 
-    private void refresh(){
+    private void refresh() {
         panel.resetForm();
 
         List<KhachHang> list = dao.getAll();
         model.setRowCount(0);
 
         for (KhachHang khachHang : list) {
-            model.addRow(new  Object[]{
+            model.addRow(new Object[]{
                     khachHang.getCccd(),
                     khachHang.getHoTen(),
                     khachHang.getNgaySinh(),
@@ -142,7 +142,7 @@ public class KhachHangController {
         @Override
         public void actionPerformed(ActionEvent e) {
             try {
-                String cccd = model.getValueAt(selectedRow,0).toString();
+                String cccd = model.getValueAt(selectedRow, 0).toString();
 
                 if (cccd.isEmpty()) {
                     panel.showWarning("CCCD không hợp lệ!");
@@ -153,14 +153,14 @@ public class KhachHangController {
                     if (dao.delete(cccd)) {
                         panel.showMessage("Xóa thành công");
                         refresh();
-                    }else {
+                    } else {
                         panel.showError("Xóa thất bại! Vui lòng kiểm tra lại thông tin");
                     }
                 }
             } catch (RuntimeException ex) {
                 ex.printStackTrace();
                 panel.showError("Lỗi hệ thống: " + ex.getMessage());
-            }catch (Exception ex) {
+            } catch (Exception ex) {
                 ex.printStackTrace();
                 panel.showError("Lỗi không xác định: " + ex.getMessage());
             }
@@ -169,7 +169,9 @@ public class KhachHangController {
 
     private class ResetFormListener implements ActionListener {
         @Override
-        public void actionPerformed(ActionEvent e) {panel.resetForm();}
+        public void actionPerformed(ActionEvent e) {
+            panel.resetForm();
+        }
     }
 
     private class TableMouseClickListener implements MouseListener {
@@ -180,26 +182,26 @@ public class KhachHangController {
             selectedRow = panel.getTable().getSelectedRow();
             if (selectedRow == -1) return;
 
-            panel.setCCCD(model.getValueAt(selectedRow,0).toString());
+            panel.setCCCD(model.getValueAt(selectedRow, 0).toString());
             panel.setHoTen(model.getValueAt(selectedRow, 1).toString());
 
-            Object ngaySinhObj = model.getValueAt(selectedRow,2);
+            Object ngaySinhObj = model.getValueAt(selectedRow, 2);
             if (ngaySinhObj instanceof LocalDate) {
                 panel.setNgaySinh((LocalDate) ngaySinhObj);
-            }else {
+            } else {
                 try {
                     panel.setNgaySinh(LocalDate.parse(ngaySinhObj.toString()));
-                }catch (Exception ex) {
+                } catch (Exception ex) {
                     ex.printStackTrace();
                     panel.showError("Lỗi chuyển đổi ngày tháng: " + ex.getMessage());
                 }
             }
 
-            panel.setGioiTinh(model.getValueAt(selectedRow,3).toString());
+            panel.setGioiTinh(model.getValueAt(selectedRow, 3).toString());
 
-            panel.setSdt(model.getValueAt(selectedRow,4).toString());
+            panel.setSdt(model.getValueAt(selectedRow, 4).toString());
 
-            Object diaChiObj = model.getValueAt(selectedRow,5);
+            Object diaChiObj = model.getValueAt(selectedRow, 5);
             panel.setDiaChi(diaChiObj != null ? diaChiObj.toString() : "");
         }
 

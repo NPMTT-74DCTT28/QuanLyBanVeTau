@@ -20,15 +20,17 @@ import java.awt.event.MouseListener;
 import java.util.List;
 
 public final class TuyenDuongPanel extends BasePanel {
-    private JTextField fieldMaTuyen, fieldTenTuyen, fieldKhoangcach, fieldGiaCB ;
+    public boolean isEditMode = false;
+    private JTextField fieldMaTuyen, fieldTenTuyen, fieldKhoangcach, fieldGiaCB;
     private JComboBox<Object> cboGadi, cboGaden;
     private JButton btnthem, btnsua, btnxoa, btnreset;
     private DefaultTableModel model;
     private JTable table;
-    public boolean isEditMode = false;
+
     public TuyenDuongPanel() {
         initComponents();
     }
+
     @Override
     protected void initComponents() {
         setLayout(new BorderLayout());
@@ -40,8 +42,8 @@ public final class TuyenDuongPanel extends BasePanel {
         title.setFont(new Font("Segoe UI", Font.BOLD, 20));
         titlePanel.add(title);
 
-        JPanel panelTop = new JPanel(new BorderLayout(0,5));
-        JPanel panelFrom = new JPanel(new GridLayout(3,2, 5,5));
+        JPanel panelTop = new JPanel(new BorderLayout(0, 5));
+        JPanel panelFrom = new JPanel(new GridLayout(3, 2, 5, 5));
         panelFrom.setBorder(new EmptyBorder(5, 5, 5, 5));
 
         fieldMaTuyen = new JTextField();
@@ -65,16 +67,16 @@ public final class TuyenDuongPanel extends BasePanel {
         panelFrom.add(createInputField("Giá cơ bản ", fieldGiaCB, Color.WHITE));
 
         btnthem = createStyledButton("Thêm", new Dimension(80, 40), new Color(40, 85, 243), Color.black);
-        btnsua = createStyledButton("Sửa",new Dimension(80, 40), new Color(255, 193, 7), Color.black);
-        btnxoa = createStyledButton("Xóa",new Dimension(80, 40), new Color(220, 53, 69), Color.black);
-        btnreset = createStyledButton("Reset",new Dimension(80, 40), new Color(108, 117, 125), Color.black);
-        JButton[] btn =  {btnthem, btnsua, btnxoa, btnreset};
+        btnsua = createStyledButton("Sửa", new Dimension(80, 40), new Color(255, 193, 7), Color.black);
+        btnxoa = createStyledButton("Xóa", new Dimension(80, 40), new Color(220, 53, 69), Color.black);
+        btnreset = createStyledButton("Reset", new Dimension(80, 40), new Color(108, 117, 125), Color.black);
+        JButton[] btn = {btnthem, btnsua, btnxoa, btnreset};
 
         panelTop.add(titlePanel, BorderLayout.NORTH);
         panelTop.add(panelFrom);
         panelTop.add(createButtonField(btn, Color.WHITE), BorderLayout.SOUTH);
 
-        String[] columNames = {"Mã Tuyến","Tên Tuyến","Ga Đi","Ga Đến","Khoảng Cách (km)","Giá Cơ Bản"};
+        String[] columNames = {"Mã Tuyến", "Tên Tuyến", "Ga Đi", "Ga Đến", "Khoảng Cách (km)", "Giá Cơ Bản"};
         model = new DefaultTableModel(columNames, 0);
 
         table = new JTable(model);
@@ -99,22 +101,28 @@ public final class TuyenDuongPanel extends BasePanel {
         add(panelTable, BorderLayout.CENTER);
 
     }
+
     public String getMaTuyen() {
         return fieldMaTuyen.getText().trim();
     }
+
     public void setMaTuyen(String maTuyen) {
         fieldMaTuyen.setText(maTuyen);
     }
+
     public String getTenTuyen() {
         return fieldTenTuyen.getText().trim();
     }
+
     public void setTenTuyen(String tenTuyen) {
         fieldTenTuyen.setText(tenTuyen);
     }
+
     public String getGadi() {
         Object selected = cboGadi.getSelectedItem();
         return (selected != null) ? selected.toString() : "__Chọn Ga Đi__";
     }
+
     public void setGadi(int idgadi) {
         for (int i = 0; i < cboGadi.getItemCount(); i++) {
             GaTau ga = (GaTau) cboGadi.getItemAt(i);
@@ -124,10 +132,12 @@ public final class TuyenDuongPanel extends BasePanel {
             }
         }
     }
+
     public String getGaden() {
         Object selected = cboGaden.getSelectedItem();
         return (selected != null) ? selected.toString() : "__Chọn Ga Đến__";
     }
+
     public void setGaden(int idgaden) {
         for (int i = 0; i < cboGaden.getItemCount(); i++) {
             GaTau ga = (GaTau) cboGaden.getItemAt(i);
@@ -137,18 +147,23 @@ public final class TuyenDuongPanel extends BasePanel {
             }
         }
     }
+
     public String getKhoangcach() {
         return fieldKhoangcach.getText().trim();
     }
+
     public void setKhoangcach(String khoangcach) {
         fieldKhoangcach.setText(khoangcach);
     }
+
     public String getGiaCB() {
         return fieldGiaCB.getText().trim();
     }
+
     public void setGiaCB(String giaCB) {
         fieldGiaCB.setText(giaCB);
     }
+
     public TuyenDuong getTuyenDuong() {
         String maTuyen = getMaTuyen();
         String tenTuyen = getTenTuyen();
@@ -158,16 +173,18 @@ public final class TuyenDuongPanel extends BasePanel {
         int idgaden = gaDen.getId();
         Double khoangcach = Double.parseDouble(getKhoangcach());
         Double giaCB = Double.parseDouble(getGiaCB());
-        return new TuyenDuong(maTuyen,tenTuyen,idgadi,idgaden,khoangcach, giaCB);
+        return new TuyenDuong(maTuyen, tenTuyen, idgadi, idgaden, khoangcach, giaCB);
     }
-    public void setGatau(List<GaTau> list){
+
+    public void setGatau(List<GaTau> list) {
         cboGadi.removeAllItems();
         cboGaden.removeAllItems();
-        for (GaTau gaTau: list){
+        for (GaTau gaTau : list) {
             cboGadi.addItem(gaTau);
             cboGaden.addItem(gaTau);
         }
     }
+
     private void onlyNumber(JTextField field) {
         AbstractDocument doc = (AbstractDocument) field.getDocument();
         doc.setDocumentFilter(new DocumentFilter() {
@@ -180,11 +197,13 @@ public final class TuyenDuongPanel extends BasePanel {
             }
         });
     }
+
     public JTable getTable() {
         return table;
     }
-    public void startEditMode(){
-        isEditMode=true;
+
+    public void startEditMode() {
+        isEditMode = true;
         fieldMaTuyen.setEnabled(false);
         fieldTenTuyen.setEnabled(true);
         cboGadi.setEnabled(true);
@@ -196,8 +215,9 @@ public final class TuyenDuongPanel extends BasePanel {
         btnxoa.setEnabled(true);
         btnreset.setEnabled(true);
     }
-    public void resetForm(){
-        isEditMode=false;
+
+    public void resetForm() {
+        isEditMode = false;
         fieldMaTuyen.setEnabled(true);
         fieldMaTuyen.setText("");
         fieldTenTuyen.setEnabled(true);
@@ -214,18 +234,23 @@ public final class TuyenDuongPanel extends BasePanel {
         btnsua.setEnabled(false);
         btnxoa.setEnabled(false);
     }
+
     public void AddTuyen(ActionListener l) {
         btnthem.addActionListener(l);
     }
+
     public void EditTuyen(ActionListener l) {
         btnsua.addActionListener(l);
     }
+
     public void RemoveTuyen(ActionListener l) {
         btnxoa.addActionListener(l);
     }
+
     public void ResetTuyen(ActionListener l) {
         btnreset.addActionListener(l);
     }
+
     public void TableMouseClickListener(MouseListener l) {
         table.addMouseListener(l);
     }
