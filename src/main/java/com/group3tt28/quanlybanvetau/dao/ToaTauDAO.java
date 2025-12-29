@@ -20,6 +20,7 @@ public class ToaTauDAO {
 
     /**
      * Check trùng mã toa trên cùng 1 tàu.
+     *
      * @param idLoaiTru: ID bản ghi hiện tại (dùng khi Sửa), nếu Thêm mới thì truyền 0.
      */
     public boolean checkTrung(String maToa, int idTau, int idLoaiTru) {

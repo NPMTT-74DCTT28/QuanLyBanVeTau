@@ -238,8 +238,8 @@ public class QLLichTrinhController {
 
             // Set Tau
             String tenTau = tableModel.getValueAt(row, 2).toString();
-            for(Tau t : listTau) {
-                if(t.getTenTau().equals(tenTau)) {
+            for (Tau t : listTau) {
+                if (t.getTenTau().equals(tenTau)) {
                     panel.setTau(t.getId());
                     break;
                 }
@@ -247,8 +247,8 @@ public class QLLichTrinhController {
 
             // Set Tuyen
             String tenTuyen = tableModel.getValueAt(row, 3).toString();
-            for(TuyenDuong td : listTuyen) {
-                if(td.getTenTuyen().equals(tenTuyen)) {
+            for (TuyenDuong td : listTuyen) {
+                if (td.getTenTuyen().equals(tenTuyen)) {
                     panel.setTuyenDuong(td.getId());
                     break;
                 }
@@ -272,9 +272,20 @@ public class QLLichTrinhController {
             panel.setTrangThai(tt);
         }
 
-        @Override public void mousePressed(MouseEvent e) {}
-        @Override public void mouseReleased(MouseEvent e) {}
-        @Override public void mouseEntered(MouseEvent e) {}
-        @Override public void mouseExited(MouseEvent e) {}
+        @Override
+        public void mousePressed(MouseEvent e) {
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+        }
     }
 }

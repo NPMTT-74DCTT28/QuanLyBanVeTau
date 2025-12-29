@@ -88,14 +88,29 @@ public final class QLToaTauPanel extends BasePanel {
 
     // --- Getters & Setters ---
 
-    public String getMaToa() { return fieldMaToa.getText().trim(); }
-    public void setMaToa(String maToa) { fieldMaToa.setText(maToa); }
+    public String getMaToa() {
+        return fieldMaToa.getText().trim();
+    }
 
-    public JComboBox<Tau> getBoxTau() { return boxTau; }
-    public Tau getSelectedTau() { return (Tau) boxTau.getSelectedItem(); }
+    public void setMaToa(String maToa) {
+        fieldMaToa.setText(maToa);
+    }
 
-    public JComboBox<LoaiToa> getBoxLoaiToa() { return boxLoaiToa; }
-    public LoaiToa getSelectedLoaiToa() { return (LoaiToa) boxLoaiToa.getSelectedItem(); }
+    public JComboBox<Tau> getBoxTau() {
+        return boxTau;
+    }
+
+    public Tau getSelectedTau() {
+        return (Tau) boxTau.getSelectedItem();
+    }
+
+    public JComboBox<LoaiToa> getBoxLoaiToa() {
+        return boxLoaiToa;
+    }
+
+    public LoaiToa getSelectedLoaiToa() {
+        return (LoaiToa) boxLoaiToa.getSelectedItem();
+    }
 
     public ToaTau getToaTauFromForm() {
         String maToa = getMaToa();
@@ -109,7 +124,9 @@ public final class QLToaTauPanel extends BasePanel {
         return new ToaTau(maToa, tau.getId(), loaiToa.getId());
     }
 
-    public JTable getTable() { return table; }
+    public JTable getTable() {
+        return table;
+    }
 
     public void startEditMode() {
         isEditMode = true;
@@ -139,8 +156,19 @@ public final class QLToaTauPanel extends BasePanel {
         if (table != null) table.clearSelection();
     }
 
-    public void addThemListener(ActionListener l) { buttonThem.addActionListener(l); }
-    public void addSuaListener(ActionListener l) { buttonSua.addActionListener(l); }
-    public void addXoaListener(ActionListener l) { buttonXoa.addActionListener(l); }
-    public void addResetListener(ActionListener l) { buttonReset.addActionListener(l); }
+    public void addThemListener(ActionListener l) {
+        buttonThem.addActionListener(l);
+    }
+
+    public void addSuaListener(ActionListener l) {
+        buttonSua.addActionListener(l);
+    }
+
+    public void addXoaListener(ActionListener l) {
+        buttonXoa.addActionListener(l);
+    }
+
+    public void addResetListener(ActionListener l) {
+        buttonReset.addActionListener(l);
+    }
 }

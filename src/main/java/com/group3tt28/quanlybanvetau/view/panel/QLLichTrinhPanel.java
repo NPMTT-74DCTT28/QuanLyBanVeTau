@@ -250,9 +250,23 @@ public class QLLichTrinhPanel extends BasePanel {
     }
 
     // --- LISTENERS ---
-    public void addThemListener(ActionListener l) { buttonThem.addActionListener(l); }
-    public void addSuaListener(ActionListener l) { buttonSua.addActionListener(l); }
-    public void addXoaListener(ActionListener l) { buttonXoa.addActionListener(l); }
-    public void addResetListener(ActionListener l) { buttonReset.addActionListener(l); }
-    public void addTableMouseListener(MouseListener l) { table.addMouseListener(l); }
+    public void addThemListener(ActionListener l) {
+        buttonThem.addActionListener(l);
+    }
+
+    public void addSuaListener(ActionListener l) {
+        buttonSua.addActionListener(l);
+    }
+
+    public void addXoaListener(ActionListener l) {
+        buttonXoa.addActionListener(l);
+    }
+
+    public void addResetListener(ActionListener l) {
+        buttonReset.addActionListener(l);
+    }
+
+    public void addTableMouseListener(MouseListener l) {
+        table.addMouseListener(l);
+    }
 }
