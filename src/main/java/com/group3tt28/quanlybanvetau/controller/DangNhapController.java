@@ -50,7 +50,7 @@ public class DangNhapController {
                     return;
                 }
 
-                SessionManager.setCurrentUser(nhanVien);
+                SessionManager.startSession(nhanVien);
                 MainFrame mainFrame = new MainFrame();
                 new MainController(mainFrame);
                 frame.dispose();

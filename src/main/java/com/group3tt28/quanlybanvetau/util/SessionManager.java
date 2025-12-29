@@ -1,5 +1,6 @@
 package com.group3tt28.quanlybanvetau.util;
 
+import com.group3tt28.quanlybanvetau.enums.VaiTro;
 import com.group3tt28.quanlybanvetau.model.NhanVien;
 
 public class SessionManager {
@@ -10,11 +11,11 @@ public class SessionManager {
         return currentUser;
     }
 
-    public static void setCurrentUser(NhanVien nhanVien) {
+    public static void startSession(NhanVien nhanVien) {
         currentUser = nhanVien;
     }
 
-    public static boolean hasAnyRole(String... roles) {
+    /*public static boolean hasAnyRole(String... roles) {
         if (currentUser == null) {
             return false;
         }
@@ -25,9 +26,13 @@ public class SessionManager {
             }
         }
         return false;
+    }*/
+
+    public boolean isAdmin() {
+        return currentUser.getVaiTro().equalsIgnoreCase(VaiTro.ADMIN.toString());
     }
 
-    public static void clearCurrentUser() {
+    public static void clearSession() {
         currentUser = null;
     }
 }
