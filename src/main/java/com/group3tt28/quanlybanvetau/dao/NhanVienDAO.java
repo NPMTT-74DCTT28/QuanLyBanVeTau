@@ -31,7 +31,8 @@ public class NhanVienDAO {
                 + " WHERE (" + COT_MA_NV + " = ? OR " + COT_SDT + " = ?)" +
                 " AND " + COT_ID + " != ? LIMIT 1";
 
-        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, maNhanVien);
             ps.setString(2, sdt);
             ps.setInt(3, idLoaiTru);
@@ -63,7 +64,8 @@ public class NhanVienDAO {
             sqlNgaySinh = Date.valueOf(nhanVien.getNgaySinh());
         }
 
-        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, nhanVien.getMaNhanVien());
             ps.setString(2, nhanVien.getMatKhau());
@@ -101,7 +103,8 @@ public class NhanVienDAO {
             sqlNgaySinh = Date.valueOf(nhanVien.getNgaySinh());
         }
 
-        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, nhanVien.getHoTen());
             ps.setDate(2, sqlNgaySinh);
             ps.setString(3, nhanVien.getGioiTinh());
@@ -123,7 +126,8 @@ public class NhanVienDAO {
         }
 
         String sql = "DELETE FROM " + TEN_BANG + " WHERE " + COT_ID + " = ?";
-        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, id);
 
             return ps.executeUpdate() > 0;
@@ -135,7 +139,8 @@ public class NhanVienDAO {
     public List<NhanVien> getAll() {
         List<NhanVien> list = new ArrayList<>();
         String sql = "SELECT * FROM " + TEN_BANG;
-        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 Date sqlDate = rs.getDate(COT_NGAY_SINH);
 
@@ -190,7 +195,8 @@ public class NhanVienDAO {
     public boolean doiMatKhau(int id, String matKhauDaBam) {
         String sql = "UPDATE " + TEN_BANG + " SET " + COT_MAT_KHAU + " = ? WHERE " + COT_ID + " = ?";
 
-        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, matKhauDaBam);
             ps.setInt(2, id);
 
@@ -200,25 +206,46 @@ public class NhanVienDAO {
         }
     }
 
-    public List<NhanVien> timKiemNhanVien(String keyword, String gioiTinhInput, String vaiTroInput) {
+    public List<NhanVien> timKiemNhanVien(String tuKhoa, String gioiTinhInput, String vaiTroInput) {
 
         List<NhanVien> list = new ArrayList<>();
-        String searchKeyword = "%" + keyword + "%";
-        String sql = "SELECT * FROM " + TEN_BANG + " WHERE "
-                + COT_HO_TEN + " LIKE ? OR "
-                + COT_GIOI_TINH + " = ? OR "
-                + COT_SDT + " LIKE ? OR "
-                + COT_EMAIL + " LIKE ? OR "
-                + COT_DIA_CHI + " LIKE ? OR "
-                + COT_VAI_TRO + " = ?";
+        List<Object> params = new ArrayList<>();
+        StringBuilder sql = new StringBuilder("SELECT * FROM " + TEN_BANG + " WHERE 1 = 1 ");
+        if (tuKhoa != null && !tuKhoa.trim().isEmpty()) {
+            sql.append(" AND (")
+                    .append(COT_MA_NV).append(" LIKE ? OR ")
+                    .append(COT_HO_TEN).append(" LIKE ? OR ")
+                    .append(COT_SDT).append(" LIKE ? OR ")
+                    .append(COT_EMAIL).append(" LIKE ? OR ")
+                    .append(COT_DIA_CHI).append(" LIKE ?")
+                    .append(") ");
 
-        try (Connection connection = DBConnection.getConnection(); PreparedStatement ps = connection.prepareStatement(sql);) {
-            ps.setString(1, searchKeyword);
-            ps.setString(2, gioiTinhInput);
-            ps.setString(3, searchKeyword);
-            ps.setString(4, searchKeyword);
-            ps.setString(5, searchKeyword);
-            ps.setString(6, vaiTroInput);
+            String searchKeyword = "%" + tuKhoa + "%";
+            for (int i = 1; i <= 5; i++) {
+                params.add(searchKeyword);
+            }
+        }
+
+        if (gioiTinhInput != null
+                && !gioiTinhInput.trim().isEmpty()
+                && !gioiTinhInput.equalsIgnoreCase("null")) {
+            sql.append(" AND ").append(COT_GIOI_TINH).append(" = ?");
+            params.add(gioiTinhInput);
+        }
+
+        if (vaiTroInput != null
+                && !vaiTroInput.trim().isEmpty()
+                && !vaiTroInput.equalsIgnoreCase("null")) {
+            sql.append(" AND ").append(COT_VAI_TRO).append(" = ?");
+            params.add(vaiTroInput);
+        }
+
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql.toString());) {
+
+            for (int i = 0; i < params.size(); i++) {
+                ps.setObject(i + 1, params.get(i));
+            }
 
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {

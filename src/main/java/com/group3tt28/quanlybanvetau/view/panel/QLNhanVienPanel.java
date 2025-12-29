@@ -27,11 +27,11 @@ public final class QLNhanVienPanel extends BasePanel {
     private JPasswordField fieldMatKhau;
     private JTextField fieldHoTen;
     private JDateChooser chooserNgaySinh;
-    private JComboBox<GioiTinh> boxGioiTinh;
+    private JComboBox<Object> boxGioiTinh;
     private JTextField fieldSdt;
     private JTextField fieldEmail;
     private JTextField fieldDiaChi;
-    private JComboBox<VaiTro> boxVaiTro;
+    private JComboBox<Object> boxVaiTro;
     private JButton buttonThem, buttonSua, buttonXoa, buttonReset;
     private JTable table;
     private boolean isEditMode = false;
@@ -60,32 +60,32 @@ public final class QLNhanVienPanel extends BasePanel {
         panelForm.setBackground(Color.WHITE);
 
         fieldMaNhanVien = new JTextField();
-        panelForm.add(createInputField("Mã nhân viên:  ", fieldMaNhanVien, Color.WHITE));
+        panelForm.add(createInputField("Mã nhân viên", fieldMaNhanVien, Color.WHITE));
 
         fieldMatKhau = new JPasswordField();
-        panelForm.add(createInputField("Mật khẩu: ", fieldMatKhau, Color.WHITE));
+        panelForm.add(createInputField("Mật khẩu", fieldMatKhau, Color.WHITE));
 
         fieldHoTen = new JTextField();
-        panelForm.add(createInputField("Họ tên: ", fieldHoTen, Color.WHITE));
+        panelForm.add(createInputField("Họ tên", fieldHoTen, Color.WHITE));
 
         chooserNgaySinh = new JDateChooser();
         chooserNgaySinh.setMaxSelectableDate(new Date(System.currentTimeMillis()));
-        panelForm.add(createInputField("Ngày sinh: ", chooserNgaySinh, Color.WHITE));
+        panelForm.add(createInputField("Ngày sinh", chooserNgaySinh, Color.WHITE));
 
-        boxGioiTinh = new JComboBox<>(GioiTinh.values());
-        panelForm.add(createInputField("Giới tính: ", boxGioiTinh, Color.WHITE));
+        boxGioiTinh = new JComboBox<>(createComboBoxModel(GioiTinh.values()));
+        panelForm.add(createInputField("Giới tính", boxGioiTinh, Color.WHITE));
 
         fieldSdt = new JTextField();
-        panelForm.add(createInputField("SĐT: ", fieldSdt, Color.WHITE));
+        panelForm.add(createInputField("SĐT", fieldSdt, Color.WHITE));
 
         fieldEmail = new JTextField();
-        panelForm.add(createInputField("eMail: ", fieldEmail, Color.WHITE));
+        panelForm.add(createInputField("Email", fieldEmail, Color.WHITE));
 
         fieldDiaChi = new JTextField();
-        panelForm.add(createInputField("Địa chỉ: ", fieldDiaChi, Color.WHITE));
+        panelForm.add(createInputField("Địa chỉ", fieldDiaChi, Color.WHITE));
 
-        boxVaiTro = new JComboBox<>(VaiTro.values());
-        panelForm.add(createInputField("Vai trò: ", boxVaiTro, Color.WHITE));
+        boxVaiTro = new JComboBox<>(createComboBoxModel(VaiTro.values()));
+        panelForm.add(createInputField("Vai trò", boxVaiTro, Color.WHITE));
 
         buttonThem = createStyledButton("Thêm", new Dimension(80, 40), PRIMARY_COLOR, Color.WHITE);
         buttonThem.setEnabled(true);
@@ -102,7 +102,7 @@ public final class QLNhanVienPanel extends BasePanel {
         panelTop.add(panelForm);
         panelTop.add(createButtonField(buttons, Color.white), BorderLayout.SOUTH);
 
-        Object[] columns = new Object[]{"ID", "Mã nhân viên", "Họ tên", "Ngày sinh", "Giới tính", "SĐT", "eMail", "Địa chỉ", "Vai trò"};
+        Object[] columns = new Object[]{"ID", "Mã nhân viên", "Họ tên", "Ngày sinh", "Giới tính", "SĐT", "Email", "Địa chỉ", "Vai trò"};
         DefaultTableModel tableModel = new DefaultTableModel(columns, 0);
 
         table = new JTable(tableModel);
@@ -174,7 +174,11 @@ public final class QLNhanVienPanel extends BasePanel {
     }
 
     public String getGioiTinh() {
-        return String.valueOf(boxGioiTinh.getSelectedItem());
+        Object selectedItem = boxGioiTinh.getSelectedItem();
+        if (selectedItem == null || selectedItem.toString().equalsIgnoreCase("Tất cả")) {
+            return null;
+        }
+        return selectedItem.toString();
     }
 
     public void setGioiTinh(String label) {
@@ -212,7 +216,11 @@ public final class QLNhanVienPanel extends BasePanel {
     }
 
     public String getVaiTro() {
-        return String.valueOf(boxVaiTro.getSelectedItem());
+        Object selectedItem = boxVaiTro.getSelectedItem();
+        if (selectedItem == null || selectedItem.toString().equalsIgnoreCase("Tất cả")) {
+            return null;
+        }
+        return selectedItem.toString();
     }
 
     public void setVaiTro(String label) {
