@@ -43,9 +43,15 @@ public class TKGaTauController {
     public class TimkiemListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             try {
+
                 model.setRowCount(0);
                 String timKiem = panel.getTimkiem();
                 List<GaTau> List = dao.timkiem(timKiem);
+
+                if (timKiem.isEmpty()){
+                    refreshTable();
+                    return;
+                }
 
                 for (GaTau gaTau : List) {
                     model.addRow(new Object[]{
