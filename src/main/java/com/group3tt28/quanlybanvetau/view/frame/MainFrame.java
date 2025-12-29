@@ -3,10 +3,10 @@ package com.group3tt28.quanlybanvetau.view.frame;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.event.ActionListener;
 
 public final class MainFrame extends BaseFrame {
 
-    private JMenuBar menuBar;
     private JMenuItem qlNhanVien, tkNhanVien;
     private JMenuItem qlTau, tkTau;
     private JMenuItem qlLoaiToa, tkLoaiToa;
@@ -106,7 +106,7 @@ public final class MainFrame extends BaseFrame {
         veTau.add(qlVeTau);
         veTau.add(tkVeTau);
 
-        menuBar = new JMenuBar();
+        JMenuBar menuBar = new JMenuBar();
         menuBar.add(nhanVien);
         menuBar.add(tau);
         menuBar.add(loaiToa);
@@ -126,5 +126,55 @@ public final class MainFrame extends BaseFrame {
         container.add(panel);
         container.revalidate();
         container.repaint();
+    }
+
+    public void addNhanVienListener(ActionListener qlListener, ActionListener tkListener) {
+        qlNhanVien.addActionListener(qlListener);
+        tkNhanVien.addActionListener(tkListener);
+    }
+
+    public void addTauListener(ActionListener qlListener, ActionListener tkListener) {
+        qlTau.addActionListener(qlListener);
+        tkTau.addActionListener(tkListener);
+    }
+
+    public void addLoaiToaListener(ActionListener qlListener, ActionListener tkListener) {
+        qlLoaiToa.addActionListener(qlListener);
+        tkLoaiToa.addActionListener(tkListener);
+    }
+
+    public void addToaTauListener(ActionListener qlListener, ActionListener tkListener) {
+        qlToaTau.addActionListener(qlListener);
+        tkToaTau.addActionListener(tkListener);
+    }
+
+    public void addGheListener(ActionListener qlListener, ActionListener tkListener) {
+        qlGhe.addActionListener(qlListener);
+        tkGhe.addActionListener(tkListener);
+    }
+
+    public void addGaTauListener(ActionListener qlListener, ActionListener tkListener) {
+        qlGaTau.addActionListener(qlListener);
+        tkGaTau.addActionListener(tkListener);
+    }
+
+    public void addTuyenDuongListener(ActionListener qlListener, ActionListener tkListener) {
+        qlTuyenDuong.addActionListener(qlListener);
+        tkTuyenDuong.addActionListener(tkListener);
+    }
+
+    public void addLichTrinhListener(ActionListener qlListener, ActionListener tkListener) {
+        qlLichTrinh.addActionListener(qlListener);
+        tkLichTrinh.addActionListener(tkListener);
+    }
+
+    public void addKhachHangListener(ActionListener qlListener, ActionListener tkListener) {
+        qlKhachHang.addActionListener(qlListener);
+        tkKhachHang.addActionListener(tkListener);
+    }
+
+    public void addVeTauListener(ActionListener qlListener, ActionListener tkListener) {
+        qlVeTau.addActionListener(qlListener);
+        tkVeTau.addActionListener(tkListener);
     }
 }
