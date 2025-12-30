@@ -4,6 +4,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowListener;
 
 public final class MainFrame extends BaseFrame {
 
@@ -246,5 +247,9 @@ public final class MainFrame extends BaseFrame {
 
     public void addThoatListener(ActionListener l) {
         thoat.addActionListener(l);
+    }
+
+    public void addWindowCloseListener(WindowListener l) {
+        addWindowListener(l);
     }
 }

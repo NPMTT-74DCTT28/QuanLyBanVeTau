@@ -6,6 +6,8 @@ import com.group3tt28.quanlybanvetau.view.panel.*;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class MainController {
 
@@ -37,6 +39,7 @@ public class MainController {
         mainFrame.addDoiMatKhauListener(new DoiMatKhauListener());
         mainFrame.addDangXuatListener(new DangXuatListener());
         mainFrame.addThoatListener(new ThoatListener());
+        mainFrame.addWindowCloseListener(new WindowCloseListener());
 
         quanLyMenu();
 
@@ -247,6 +250,16 @@ public class MainController {
     private class ThoatListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
+            if (mainFrame.showConfirm("Bạn chắc chắn muốn thoát ứng dụng?")) {
+                mainFrame.dispose();
+                System.exit(0);
+            }
+        }
+    }
+
+    private class WindowCloseListener extends WindowAdapter {
+        @Override
+        public void windowClosed(WindowEvent e) {
             if (mainFrame.showConfirm("Bạn chắc chắn muốn thoát ứng dụng?")) {
                 mainFrame.dispose();
                 System.exit(0);
