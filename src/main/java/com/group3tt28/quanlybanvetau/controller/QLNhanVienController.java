@@ -205,8 +205,13 @@ public class QLNhanVienController {
         public void mouseClicked(MouseEvent e) {
             panel.startEditMode();
 
-            selectedRow = panel.getTable().getSelectedRow();
-            if (selectedRow == -1) return;
+            if (panel.getTable() != null) {
+                selectedRow = panel.getTable().getSelectedRow();
+            }
+
+            if (selectedRow == -1) {
+                return;
+            }
 
             panel.setMaNhanVien(tableModel.getValueAt(selectedRow, 1).toString());
             panel.setHoTen(tableModel.getValueAt(selectedRow, 2).toString());
