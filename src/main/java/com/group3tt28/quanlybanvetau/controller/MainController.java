@@ -226,9 +226,7 @@ public class MainController {
     private class ThongTinCaNhanListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            ThongTinCaNhanPanel thongTinCaNhanPanel = new ThongTinCaNhanPanel();
-            mainFrame.showPanel(thongTinCaNhanPanel);
-            new ThongTinCaNhanController(mainFrame, thongTinCaNhanPanel);
+            new ThongTinCaNhanController(mainFrame);
         }
     }
 
@@ -262,7 +260,7 @@ public class MainController {
 
     private class WindowCloseListener extends WindowAdapter {
         @Override
-        public void windowClosed(WindowEvent e) {
+        public void windowClosing(WindowEvent e) {
             if (mainFrame.showConfirm("Bạn chắc chắn muốn thoát ứng dụng?")) {
                 mainFrame.dispose();
                 System.exit(0);

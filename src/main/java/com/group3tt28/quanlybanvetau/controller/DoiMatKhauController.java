@@ -4,7 +4,7 @@ import com.group3tt28.quanlybanvetau.dao.NhanVienDAO;
 import com.group3tt28.quanlybanvetau.model.NhanVien;
 import com.group3tt28.quanlybanvetau.util.BamMatKhau;
 import com.group3tt28.quanlybanvetau.util.SessionManager;
-import com.group3tt28.quanlybanvetau.view.DoitMatKhauDialog;
+import com.group3tt28.quanlybanvetau.view.dialog.DoitMatKhauDialog;
 import com.group3tt28.quanlybanvetau.view.frame.MainFrame;
 
 import javax.swing.*;
@@ -13,14 +13,14 @@ import java.awt.event.ActionListener;
 
 public class DoiMatKhauController {
 
+    private final MainFrame parent;
     private final DoitMatKhauDialog dialog;
     private final NhanVienDAO dao;
-    private final MainFrame parent;
 
     public DoiMatKhauController(MainFrame parent) {
-        this.dialog = new DoitMatKhauDialog(parent);
-        this.dao = new NhanVienDAO();
         this.parent = parent;
+        this.dialog = new DoitMatKhauDialog(this.parent);
+        this.dao = new NhanVienDAO();
 
         dialog.addXacNhanListener(new XacNhanListener());
         dialog.addHuyListener(new HuyListener());
@@ -44,19 +44,16 @@ public class DoiMatKhauController {
                     return;
                 }
 
-                if (currentUser != null) {
-                    String matKhauMoi = dialog.getMatKhauMoi();
-                    String matKhauBam = BamMatKhau.bamMatKhau(matKhauMoi);
+                String matKhauMoi = dialog.getMatKhauMoi();
+                String matKhauBam = BamMatKhau.bamMatKhau(matKhauMoi);
 
-                    if (dao.doiMatKhau(currentUser.getId(), matKhauBam)) {
-                        if (JOptionPane.showConfirmDialog(dialog, "Bạn muốn đổi mật khẩu?", "Xác nhận", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-                            JOptionPane.showMessageDialog(dialog, "Thay đổi mật khẩu thành công, " +
-                                    "vui lòng đăng nhập lại!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-                            SessionManager.clearSession();
-                            dialog.dispose();
-                            parent.dispose();
-                            new DangNhapController();
-                        }
+                if (dao.doiMatKhau(currentUser.getId(), matKhauBam)) {
+                    if (JOptionPane.showConfirmDialog(dialog, "Bạn muốn đổi mật khẩu?", "Xác nhận", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                        JOptionPane.showMessageDialog(dialog, "Thay đổi mật khẩu thành công, " + "vui lòng đăng nhập lại!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                        SessionManager.clearSession();
+                        dialog.dispose();
+                        parent.dispose();
+                        new DangNhapController();
                     }
                 }
             } catch (IllegalArgumentException ex) {
@@ -75,7 +72,7 @@ public class DoiMatKhauController {
     private class HuyListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-
+            dialog.dispose();
         }
     }
 }

@@ -3,46 +3,41 @@ package com.group3tt28.quanlybanvetau.controller;
 import com.group3tt28.quanlybanvetau.dao.NhanVienDAO;
 import com.group3tt28.quanlybanvetau.model.NhanVien;
 import com.group3tt28.quanlybanvetau.util.SessionManager;
-import com.group3tt28.quanlybanvetau.view.frame.DangNhapFrame;
 import com.group3tt28.quanlybanvetau.view.frame.MainFrame;
-import com.group3tt28.quanlybanvetau.view.panel.ThongTinCaNhanPanel;
-import com.group3tt28.quanlybanvetau.view.panel.TrangChu;
+import com.group3tt28.quanlybanvetau.view.dialog.ThongTinCaNhanDialog;
 
-import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class ThongTinCaNhanController {
 
-    private MainFrame parent;
-    private final ThongTinCaNhanPanel panel;
+    private final MainFrame parent;
+    private final ThongTinCaNhanDialog dialog;
     private final NhanVien currentUser;
     private final NhanVienDAO dao;
 
-    public ThongTinCaNhanController(MainFrame parent, ThongTinCaNhanPanel panel) {
+    public ThongTinCaNhanController(MainFrame parent) {
         this.parent = parent;
-        this.panel = panel;
-
-        dao = new NhanVienDAO();
-
+        this.dialog = new ThongTinCaNhanDialog(this.parent);
+        this.dao = new NhanVienDAO();
         this.currentUser = SessionManager.getCurrentUser();
 
         loadThongTin();
 
-        this.panel.addXacNhanListener(new XacNhanListener());
-        this.panel.addQuayLaiListener(new QuayLaiListener());
+        this.dialog.addXacNhanListener(new XacNhanListener());
+        this.dialog.addQuayLaiListener(new QuayLaiListener());
 
-        this.panel.setVisible(true);
+        this.dialog.setVisible(true);
     }
 
     private void loadThongTin() {
         if (currentUser != null) {
-            panel.setHoTen(currentUser.getHoTen());
-            panel.setNgaySinh(currentUser.getNgaySinh());
-            panel.setGioiTinh(currentUser.getGioiTinh());
-            panel.setSdt(currentUser.getSdt());
-            panel.setEmail(currentUser.getEmail());
-            panel.setDiaChi(currentUser.getDiaChi());
+            dialog.setHoTen(currentUser.getHoTen());
+            dialog.setNgaySinh(currentUser.getNgaySinh());
+            dialog.setGioiTinh(currentUser.getGioiTinh());
+            dialog.setSdt(currentUser.getSdt());
+            dialog.setEmail(currentUser.getEmail());
+            dialog.setDiaChi(currentUser.getDiaChi());
         }
     }
 
@@ -50,32 +45,32 @@ public class ThongTinCaNhanController {
         @Override
         public void actionPerformed(ActionEvent e) {
             try {
-                if (panel.thongBaoLoiDauVao() != null) {
-                    panel.showWarning(panel.thongBaoLoiDauVao());
+                if (dialog.thongBaoLoiDauVao() != null) {
+                    dialog.showWarning(dialog.thongBaoLoiDauVao());
                     return;
                 }
-                currentUser.setHoTen(panel.getHoTen());
-                currentUser.setNgaySinh(panel.getNgaySinh());
-                currentUser.setGioiTinh(panel.getGioiTinh());
-                currentUser.setSdt(panel.getSdt());
-                currentUser.setEmail(panel.getEmail());
-                currentUser.setDiaChi(panel.getDiaChi());
+                currentUser.setHoTen(dialog.getHoTen());
+                currentUser.setNgaySinh(dialog.getNgaySinh());
+                currentUser.setGioiTinh(dialog.getGioiTinh());
+                currentUser.setSdt(dialog.getSdt());
+                currentUser.setEmail(dialog.getEmail());
+                currentUser.setDiaChi(dialog.getDiaChi());
 
                 if (dao.update(currentUser)) {
-                    if (panel.showConfirm("Bạn muốn cập nhật thông tin?")) {
-                        panel.showMessage("Cập nhật thông tin thành công!");
+                    if (dialog.showConfirm("Bạn muốn cập nhật thông tin?")) {
+                        dialog.showMessage("Cập nhật thông tin thành công!");
                         parent.setXinChao(currentUser.getHoTen());
                         loadThongTin();
                     }
                 } else {
-                    panel.showError("Cập nhật thông tin thất bại! Vui lòng kiểm tra lại!");
+                    dialog.showError("Cập nhật thông tin thất bại! Vui lòng kiểm tra lại!");
                 }
             } catch (RuntimeException ex) {
                 ex.printStackTrace();
-                panel.showError("Lỗi hệ thống: " + ex.getMessage());
+                dialog.showError("Lỗi hệ thống: " + ex.getMessage());
             } catch (Exception ex) {
                 ex.printStackTrace();
-                panel.showError("Lỗi không xác định: " + ex.getMessage());
+                dialog.showError("Lỗi không xác định: " + ex.getMessage());
             }
         }
     }
@@ -84,8 +79,7 @@ public class ThongTinCaNhanController {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (parent instanceof MainFrame) {
-                TrangChu trangChu = new TrangChu();
-                ((MainFrame) parent).showPanel(trangChu);
+                dialog.dispose();
             }
         }
     }

@@ -35,8 +35,9 @@ public final class MainFrame extends BaseFrame {
 
     public MainFrame() {
         super("Quản lý hệ thống bán vé tàu");
-        this.setLocationRelativeTo(null);
+        this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         initComponents();
+        this.setLocationRelativeTo(null);
     }
 
     @Override

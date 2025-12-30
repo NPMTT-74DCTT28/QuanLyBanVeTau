@@ -1,7 +1,8 @@
-package com.group3tt28.quanlybanvetau.view.panel;
+package com.group3tt28.quanlybanvetau.view.dialog;
 
 import com.group3tt28.quanlybanvetau.enums.GioiTinh;
 import com.group3tt28.quanlybanvetau.util.DinhDang;
+import com.group3tt28.quanlybanvetau.view.frame.MainFrame;
 import com.toedter.calendar.JDateChooser;
 
 import javax.swing.*;
@@ -13,7 +14,7 @@ import java.time.Period;
 import java.time.ZoneId;
 import java.util.Date;
 
-public class ThongTinCaNhanPanel extends BasePanel {
+public class ThongTinCaNhanDialog extends JDialog {
 
     private JTextField fieldHoTen;
     private JDateChooser chooserNgaySinh;
@@ -23,18 +24,19 @@ public class ThongTinCaNhanPanel extends BasePanel {
     private JTextField fieldDiaChi;
     private JButton buttonXacNhan, buttonQuayLai;
 
-    public ThongTinCaNhanPanel() {
+    public ThongTinCaNhanDialog(MainFrame parent) {
+        super(parent, "Cập nhật thông tin cá nhân", true);
         initComponents();
+        this.setLocationRelativeTo(parent);
     }
 
-    @Override
-    protected void initComponents() {
+    private void initComponents() {
         setLayout(new BorderLayout(0, 0));
-        setPreferredSize(new Dimension(700, 500));
+        setSize(700, 500);
         setBackground(Color.WHITE);
 
         JPanel panelTitle = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        panelTitle.setBackground(PRIMARY_COLOR);
+        panelTitle.setBackground(new Color(60, 179, 113));
         JLabel labelTitle = new JLabel("THÔNG TIN CÁ NHÂN");
         labelTitle.setFont(new Font("Segoe UI", Font.BOLD, 22));
         labelTitle.setForeground(Color.WHITE);
@@ -63,7 +65,7 @@ public class ThongTinCaNhanPanel extends BasePanel {
         panelForm.add(createInputField("Địa chỉ*", fieldDiaChi, Color.WHITE));
 
         buttonXacNhan = createStyledButton("Lưu thông tin", new Dimension(150, 40), new Color(191, 214, 65), Color.BLACK);
-        buttonQuayLai = createStyledButton("Về trang chủ", new Dimension(150, 40), SECONDARY_COLOR, Color.BLACK);
+        buttonQuayLai = createStyledButton("Về trang chủ", new Dimension(150, 40), new Color(153, 204, 255), Color.BLACK);
         JButton[] buttons = new JButton[]{buttonXacNhan, buttonQuayLai};
 
         JPanel container = new JPanel(new BorderLayout(0, 0));
@@ -73,6 +75,46 @@ public class ThongTinCaNhanPanel extends BasePanel {
 
         JScrollPane scrollPane = new JScrollPane(container);
         add(scrollPane);
+    }
+
+    protected JComponent createInputField(String labelText, JComponent component, Color background) {
+        JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        panel.setBackground(background);
+
+        JLabel label = new JLabel(labelText);
+        label.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        label.setForeground(Color.BLACK);
+        label.setPreferredSize(new Dimension(100, 50));
+        panel.add(label);
+
+        component.setForeground(Color.BLACK);
+        component.setPreferredSize(new Dimension(200, 50));
+        panel.add(component);
+
+        return panel;
+    }
+
+    protected JComponent createButtonField(JButton[] buttons, Color background) {
+        JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        panel.setBorder(new EmptyBorder(5, 5, 5, 5));
+        panel.setBackground(background);
+
+        for (JButton button : buttons) {
+            panel.add(button);
+        }
+
+        return panel;
+    }
+
+    protected JButton createStyledButton(String text, Dimension buttonSize, Color background, Color foreground) {
+        JButton button = new JButton(text);
+        button.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        button.setBackground(background);
+        button.setForeground(foreground);
+        button.setPreferredSize(buttonSize);
+        button.setFocusPainted(false);
+        button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        return button;
     }
 
     public String getHoTen() {
@@ -197,5 +239,22 @@ public class ThongTinCaNhanPanel extends BasePanel {
 
     public void addQuayLaiListener(ActionListener l) {
         buttonQuayLai.addActionListener(l);
+    }
+
+    public void showMessage(String thongBao) {
+        JOptionPane.showMessageDialog(this, thongBao, "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    public void showWarning(String thongBao) {
+        JOptionPane.showMessageDialog(this, thongBao, "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+    }
+
+    public void showError(String thongBao) {
+        JOptionPane.showMessageDialog(this, thongBao, "Lỗi", JOptionPane.ERROR_MESSAGE);
+    }
+
+    public boolean showConfirm(String thongBao) {
+        int option = JOptionPane.showConfirmDialog(this, thongBao, "Xác nhận", JOptionPane.YES_NO_OPTION);
+        return option == JOptionPane.YES_OPTION;
     }
 }

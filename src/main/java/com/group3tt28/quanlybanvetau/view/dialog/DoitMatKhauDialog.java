@@ -1,4 +1,4 @@
-package com.group3tt28.quanlybanvetau.view;
+package com.group3tt28.quanlybanvetau.view.dialog;
 
 import com.group3tt28.quanlybanvetau.util.DinhDang;
 
@@ -52,7 +52,9 @@ public class DoitMatKhauDialog extends JDialog {
         buttonXacNhan.setBackground(new Color(60, 179, 113));
         buttonXacNhan.setForeground(Color.WHITE);
 
-        buttonHuy = new JButton("Hủy");
+        buttonHuy = new JButton("Huỷ");
+        buttonHuy.setBackground(new Color(223, 197, 123));
+        buttonHuy.setForeground(Color.WHITE);
 
         pnlButton.add(buttonXacNhan);
         pnlButton.add(buttonHuy);
@@ -122,5 +124,22 @@ public class DoitMatKhauDialog extends JDialog {
 
     public void addHuyListener(ActionListener l) {
         buttonHuy.addActionListener(l);
+    }
+
+    public void showMessage(String thongBao) {
+        JOptionPane.showMessageDialog(this, thongBao, "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    public void showWarning(String thongBao) {
+        JOptionPane.showMessageDialog(this, thongBao, "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+    }
+
+    public void showError(String thongBao) {
+        JOptionPane.showMessageDialog(this, thongBao, "Lỗi", JOptionPane.ERROR_MESSAGE);
+    }
+
+    public boolean showConfirm(String thongBao) {
+        int option = JOptionPane.showConfirmDialog(this, thongBao, "Xác nhận", JOptionPane.YES_NO_OPTION);
+        return option == JOptionPane.YES_OPTION;
     }
 }
