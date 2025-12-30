@@ -1,7 +1,8 @@
 package com.group3tt28.quanlybanvetau.controller;
 
-import com.group3tt28.quanlybanvetau.dao.VeTauDAO;
-import com.group3tt28.quanlybanvetau.model.VeTau;
+import com.group3tt28.quanlybanvetau.dao.*;
+import com.group3tt28.quanlybanvetau.model.*;
+import com.group3tt28.quanlybanvetau.util.SessionManager;
 import com.group3tt28.quanlybanvetau.view.panel.VeTauPanel;
 
 import javax.swing.table.DefaultTableModel;
@@ -11,18 +12,27 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 
 public class VeTauController {
     private final VeTauPanel panel;
     private final VeTauDAO dao;
     private final DefaultTableModel model;
-    private List<VeTau> listVeTau;
     private int selectedRow = -1;
+    private final NhanVien currentuser;
+    private HashMap<Integer, String> mapKhachHang = new HashMap<>();
 
-    public VeTauController(VeTauPanel panel){
+    public VeTauController(VeTauPanel panel) {
         this.dao = new VeTauDAO();
         this.panel = panel;
+        KhachHangDAO khachHangDAO = new KhachHangDAO();
+        LichTrinhDAO lichTrinhDAO = new LichTrinhDAO();
+        GheDAO gheDAO = new GheDAO();
+        currentuser = SessionManager.getCurrentUser();
+        this.panel.setFieldNhanVien(currentuser.getId());
+        System.out.println(currentuser.getId());
+
         panel.addThemVeTauListener(new ThemVeTauListener());
         panel.addSuaVeTauListener(new SuaVeTauListener());
         panel.addXoaVeTauListener(new XoaVeTauListener());
@@ -30,39 +40,59 @@ public class VeTauController {
         panel.addTableMouseClickListener(new TableMouseClickListener());
 
         model = (DefaultTableModel) panel.getTable().getModel();
-        listVeTau = dao.getAll();
+
+        List<KhachHang> dskh = khachHangDAO.getAll();
+        this.panel.setComboKhachHangData(dskh);
+
+        List<LichTrinh> dslt = lichTrinhDAO.getAll();
+        this.panel.setComboLichTrinhData(dslt);
+
+        List<Ghe> dsg = gheDAO.getAll();
+        this.panel.setComboGheData(dsg);
 
         refresh();
     }
 
-    private void refresh(){
+    private void refresh() {
         panel.resetForm();
         selectedRow = -1;
-        listVeTau = dao.getAll();
-        model.setRowCount(0);
+        try {
+            KhachHangDAO khachHangDAO = new KhachHangDAO();
+            List<KhachHang> listkh = khachHangDAO.getAll();
 
-        for (VeTau veTau : listVeTau){
-            model.addRow(new Object[]{
-                    veTau.getMaVe(),
-                    veTau.getIdKhachHang(),
-                    veTau.getIdLichTrinh(),
-                    veTau.getIdGhe(),
-                    veTau.getIdNhanVien(),
-                    veTau.getNgayDat() != null ? veTau.getNgayDat().toString() : "",
-                    veTau.getGiaVe(),
-                    veTau.getTrangThaiVe()
-            });
+            mapKhachHang.clear();
+            for (KhachHang khachHang : listkh) {
+                mapKhachHang.put(khachHang.getId(), khachHang.getCccd() + " - " + khachHang.getHoTen());
+            }
+
+            panel.setComboKhachHangData(listkh);
+
+            List<VeTau> listVeTau = dao.getAll();
+            model.setRowCount(0);
+            for (VeTau veTau : listVeTau) {
+                String tenKhachHang = mapKhachHang.getOrDefault(veTau.getIdKhachHang(), String.valueOf(veTau.getIdKhachHang()));
+                model.addRow(new Object[]{
+                        veTau.getId(),
+                        veTau.getMaVe(),
+                        tenKhachHang,
+                        veTau.getIdLichTrinh(),
+                        veTau.getIdGhe(),
+                        veTau.getIdNhanVien(),
+                        veTau.getNgayDat() != null ? veTau.getNgayDat().toString() : "",
+                        veTau.getGiaVe(),
+                        veTau.getTrangThaiVe()
+                });
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
         model.fireTableDataChanged();
     }
 
     private String validateInput(VeTau veTau, boolean isEditMode) {
-        if (veTau.getMaVe().isEmpty()){
+        if (veTau.getMaVe().isEmpty()) {
             return "Vui lòng nhập mã vé!";
-        }
-
-        if (!isEditMode && dao.checkTrung(veTau.getMaVe())){
-            return "Mã vé đã tồn tại!";
         }
 
         if (veTau.getIdKhachHang() < 1) {
@@ -81,11 +111,11 @@ public class VeTauController {
             return "ID Nhân viên không hợp lệ!";
         }
 
-        if (veTau.getGiaVe() <= 0){
+        if (veTau.getGiaVe() <= 0) {
             return "Giá vé phải lớn hơn 0!";
         }
 
-        if (veTau.getTrangThaiVe() == null || veTau.getTrangThaiVe().isEmpty()){
+        if (veTau.getTrangThaiVe() == null || veTau.getTrangThaiVe().isEmpty()) {
             return "Vui lòng nhập Trạng thái!";
         }
 
@@ -96,34 +126,27 @@ public class VeTauController {
         @Override
         public void actionPerformed(ActionEvent e) {
             try {
-                String maVe = panel.getMaVe();
-                int idKhachHang = (panel.getSelectedKhachHangId());
-                int idLichTrinh = (panel.getSelectedLichTrinhId());
-                int idGhe = (panel.getSelectedGheId());
-                int idNhanVien = (panel.getSelectedNhanVienId());
-                ;
-                LocalDateTime ngayDat = panel.getNgayDat() != null ?
-                        panel.getNgayDat() : null;
-                double giaVe = panel.getGiaVe();
-                String trangThai = panel.getTrangThai();
 
-                VeTau veTau = new VeTau(maVe, idKhachHang, idLichTrinh, idGhe,
-                        idNhanVien, ngayDat, giaVe, trangThai);
+                VeTau veTau = panel.getVeTauFromForm();
+                veTau.setId(0);
 
-                String error = validateInput(veTau, false);
-                if (error != null) {
-                    panel.showWarning(error);
+                if (dao.checkTrung(veTau.getMaVe(), veTau.getIdLichTrinh(), veTau.getIdGhe(), veTau.getId())) {
+                    panel.showWarning("Mã vé này đã tồn tại trên hệ thống!");
                     return;
                 }
 
-                if(dao.insert(veTau)){
-                    panel.showMessage("Thêm vé tàu thành công!");
+                if (dao.isGheDaDat(veTau.getIdLichTrinh(), veTau.getIdGhe(), null)) {
+                    panel.showWarning("Ghế này đã có người đặt trên lịch trình đã chọn!");
+                    return;
+                }
+
+                if (dao.insert(veTau)) {
+                    panel.showMessage("Thêm vé thành công!");
                     refresh();
                 } else {
                     panel.showError("Thêm thất bại! Vui lòng kiểm tra lại");
                 }
-            } catch (NumberFormatException ex) {
-                panel.showWarning("Các ID phải là số nguyên hợp lệ!");
+
             } catch (Exception ex) {
                 ex.printStackTrace();
                 panel.showError("Lỗi hệ thống: " + ex.getMessage());
@@ -135,44 +158,32 @@ public class VeTauController {
         @Override
         public void actionPerformed(ActionEvent e) {
             try {
-                if (selectedRow == -1 || selectedRow >= listVeTau.size()) {
+                if (selectedRow == -1) {
                     panel.showWarning("Vui lòng chọn vé tàu để sửa!");
                     return;
                 }
 
-                VeTau veTauCu = listVeTau.get(selectedRow);
-
-                String maVe = panel.getMaVe();
-                int idKhachHang = (panel.getSelectedKhachHangId());
-                int idLichTrinh = (panel.getSelectedLichTrinhId());
-                int idGhe = (panel.getSelectedGheId());
-                int idNhanVien = (panel.getSelectedNhanVienId());
-
-                LocalDateTime ngayDat = panel.getNgayDat() != null ?
-                        panel.getNgayDat() : null;
-                double giaVe = panel.getGiaVe();
-                String trangThai = panel.getTrangThai();
-
-                VeTau veTauMoi = new VeTau(maVe, idKhachHang, idLichTrinh, idGhe,
-                        idNhanVien, ngayDat, giaVe, trangThai);
-                veTauMoi.setId(veTauCu.getId());
-
-                String error = validateInput(veTauMoi, true);
-                if (error != null) {
+                VeTau veTau = panel.getVeTauFromForm();
+                String error = validateInput(veTau, true);
+                if (error != null){
                     panel.showWarning(error);
                     return;
                 }
+                veTau.setId(Integer.parseInt(model.getValueAt(selectedRow, 0).toString()));
 
-                if(panel.showConfirm("Bạn có muốn cập nhật thông tin vé " + maVe + "?")){
-                    if (dao.update(veTauMoi)){
+                if (dao.isGheDaDat(veTau.getIdLichTrinh(), veTau.getIdGhe(), veTau.getMaVe())) {
+                    panel.showWarning("Không thể sửa! Ghế này đã được đặt bởi một vé khác.");
+                    return;
+                }
+
+                if (panel.showConfirm("Bạn có muốn cập nhật thông tin vé " + veTau.getMaVe() + "?")) {
+                    if (dao.update(veTau)) {
                         panel.showMessage("Cập nhật thành công!");
                         refresh();
                     } else {
-                        panel.showError("Cập nhật thất bại! Vui lòng kiểm tra lại");
+                        panel.showError("Cập nhật thất bại! Vui lòng kiểm tra lại!");
                     }
                 }
-            } catch (NumberFormatException ex) {
-                panel.showWarning("Các ID phải là số nguyên hợp lệ!");
             } catch (Exception ex) {
                 ex.printStackTrace();
                 panel.showError("Lỗi hệ thống: " + ex.getMessage());
@@ -182,17 +193,18 @@ public class VeTauController {
 
     private class XoaVeTauListener implements ActionListener {
         @Override
-        public void actionPerformed (ActionEvent e){
+        public void actionPerformed(ActionEvent e) {
             try {
-                if (selectedRow == -1 || selectedRow >= listVeTau.size()) {
+                if (selectedRow == -1) {
                     panel.showWarning("Vui lòng chọn vé tàu để xóa!");
                     return;
                 }
 
-                VeTau veTau = listVeTau.get(selectedRow);
 
-                if (panel.showConfirm("Bạn có chắc chắn muốn xóa vé " + veTau.getMaVe() + "?")){
-                    if (dao.delete(veTau.getId())){
+                int ID = Integer.parseInt(model.getValueAt(selectedRow, 0).toString());
+                String maVe = model.getValueAt(selectedRow, 1).toString();
+                if (panel.showConfirm("Bạn có chắc chắn muốn xóa vé " + maVe + "?")) {
+                    if (dao.delete(ID)) {
                         panel.showMessage("Xóa thành công!");
                         refresh();
                     } else {
@@ -220,39 +232,50 @@ public class VeTauController {
             panel.startEditMode();
 
             selectedRow = panel.getTable().getSelectedRow();
-            if (selectedRow == -1 || selectedRow >= listVeTau.size()) {
+            if (selectedRow == -1) {
                 return;
             }
 
-            VeTau veTau = listVeTau.get(selectedRow);
+            List<VeTau> listVeTau = dao.getAll();
+            VeTau selectedVe = listVeTau.get(selectedRow);
 
-            panel.setMaVe(veTau.getMaVe());
-            panel.setSelectedKhachHangId((veTau.getIdKhachHang()));
-            panel.setSelectedLichTrinhId((veTau.getIdLichTrinh()));
-            panel.setSelectedGheId((veTau.getIdGhe()));
-            panel.setSelectedNhanVienId((veTau.getIdNhanVien()));
+            panel.setMaVe((model.getValueAt(selectedRow, 1).toString()));
+            panel.setSelectedKhachHangId((selectedVe.getIdKhachHang()));
+            panel.setSelectedLichTrinhId((Integer.parseInt(model.getValueAt(selectedRow, 3).toString())));
+            panel.setSelectedGheId((Integer.parseInt(model.getValueAt(selectedRow, 4).toString())));
+            panel.setFieldNhanVien((Integer.parseInt(model.getValueAt(selectedRow, 5).toString())));
 
-            if (veTau.getNgayDat() != null) {
-                LocalDateTime ngayDat = veTau.getNgayDat();
-                panel.setNgayDat(ngayDat);
+            Object ngayDatObj = model.getValueAt(selectedRow, 6);
+            if (ngayDatObj instanceof LocalDateTime) {
+                panel.setNgayDat((LocalDateTime) ngayDatObj);
             } else {
-                panel.setNgayDat(null);
+                try {
+                    panel.setNgayDat(LocalDateTime.parse(ngayDatObj.toString()));
+                } catch (Exception ex) {
+                    panel.showError("Lỗi chuyển đổi ngày tháng" + ex.getMessage());
+                }
             }
 
-            panel.setGiaVe(String.valueOf(veTau.getGiaVe()));
-            panel.setTrangThai(veTau.getTrangThaiVe());
+            panel.setGiaVe(Double.parseDouble(model.getValueAt(selectedRow, 7).toString()));
+            panel.setTrangThai(model.getValueAt(selectedRow, 8).toString());
         }
 
         @Override
-        public void mousePressed(MouseEvent e) {}
+        public void mousePressed(MouseEvent e) {
+        }
 
         @Override
-        public void mouseReleased(MouseEvent e) {}
+        public void mouseReleased(MouseEvent e) {
+        }
 
         @Override
-        public void mouseEntered(MouseEvent e) {}
+        public void mouseEntered(MouseEvent e) {
+        }
 
         @Override
-        public void mouseExited(MouseEvent e) {}
+        public void mouseExited(MouseEvent e) {
+        }
     }
+
+
 }

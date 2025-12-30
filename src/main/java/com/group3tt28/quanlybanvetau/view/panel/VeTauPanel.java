@@ -1,6 +1,7 @@
 package com.group3tt28.quanlybanvetau.view.panel;
 
 import com.group3tt28.quanlybanvetau.model.*;
+import com.group3tt28.quanlybanvetau.util.SessionManager;
 import com.toedter.calendar.JDateChooser;
 
 import javax.swing.*;
@@ -15,17 +16,18 @@ import java.util.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.List;
 
 public class VeTauPanel extends BasePanel{
 
     private JTextField fieldMaVe;
-    private JComboBox<KhachHang> comboKhachHang;
-    private JComboBox<LichTrinh> comboLichTrinh;
-    private JComboBox<Ghe> comboGhe;
-    private JComboBox<NhanVien> comboNhanVien;
+    private JComboBox <Integer> comboKhachHang;
+    private JComboBox<Integer> comboLichTrinh;
+    private JComboBox<Integer> comboGhe;
+    private JTextField fieldNhanVien;
     private JSpinner spinnerNgayDat;
     private JTextField fieldGiaVe;
-    private JTextField fieldTrangThai;
+    private JComboBox <String> comboTrangThai;
     private JButton buttonThem, buttonSua, buttonXoa, buttonReset;
     private JTable table;
 
@@ -44,8 +46,10 @@ public class VeTauPanel extends BasePanel{
         panelTitle.add(labelTitle);
 
         JPanel panelTop = new JPanel(new BorderLayout(5,5));
+        panelTop.setBackground(Color.WHITE);
 
-        JPanel panelForm = new JPanel(new GridLayout(2,4));
+        JPanel panelForm = new JPanel(new GridLayout(3,3));
+        panelForm.setBackground(Color.WHITE);
 
         fieldMaVe = new JTextField();
         panelForm.add(createInputField("Mã vé:", fieldMaVe, Color.WHITE));
@@ -59,8 +63,9 @@ public class VeTauPanel extends BasePanel{
         comboGhe = new JComboBox<>();
         panelForm.add(createInputField("Ghế:", comboGhe, Color.WHITE));
 
-        comboNhanVien = new JComboBox<>();
-        panelForm.add(createInputField("Nhân viên:", comboNhanVien, Color.WHITE));
+        fieldNhanVien = new JTextField();
+        fieldNhanVien.setEnabled(false);
+        panelForm.add(createInputField("Nhân viên:", fieldNhanVien, Color.WHITE));
 
         SpinnerDateModel modelDat = new SpinnerDateModel();
         spinnerNgayDat = new JSpinner(modelDat);
@@ -71,8 +76,8 @@ public class VeTauPanel extends BasePanel{
         fieldGiaVe = new JTextField();
         panelForm.add(createInputField("Giá vé:", fieldGiaVe, Color.WHITE));
 
-        fieldTrangThai = new JTextField();
-        panelForm.add(createInputField("Trạng thái:", fieldTrangThai, Color.WHITE));
+        comboTrangThai = new JComboBox<>(new String[]{"Chờ xác nhận", "Đã xác nhận", "Đã thanh toán", "Đã hủy"});
+        panelForm.add(createInputField("Trạng thái:", comboTrangThai, Color.WHITE));
 
         buttonThem = createStyledButton("Thêm", new Dimension(80,40),PRIMARY_COLOR, Color.WHITE);
         buttonThem.setEnabled(true);
@@ -112,15 +117,22 @@ public class VeTauPanel extends BasePanel{
     }
 
     public int getSelectedKhachHangId() {
-        if (comboKhachHang.getItemCount()>0 && comboKhachHang.getSelectedItem() != null){
-            return Integer.parseInt(comboKhachHang.getSelectedItem().toString());
+        Object selected = comboKhachHang.getSelectedItem();
+        if (selected instanceof Integer) {
+            return (Integer) selected;
+        } else if (selected != null) {
+            try {
+                return Integer.parseInt(selected.toString());
+            } catch (NumberFormatException e) {
+                return 0;
+            }
         }
         return 0;
     }
 
     public void setSelectedKhachHangId(int id) {
         for (int i = 0; i < comboKhachHang.getItemCount(); i++) {
-            if (comboKhachHang.getItemAt(i).getId() == id) {
+            if (comboKhachHang.getItemAt(i) == id) {
                 comboKhachHang.setSelectedIndex(i);
                 return;
             }
@@ -128,15 +140,22 @@ public class VeTauPanel extends BasePanel{
     }
 
     public int getSelectedLichTrinhId() {
-        if (comboLichTrinh.getItemCount()>0 && comboLichTrinh.getSelectedItem() != null){
-            return Integer.parseInt(comboLichTrinh.getSelectedItem().toString());
+        Object selected = comboLichTrinh.getSelectedItem();
+        if (selected instanceof Integer) {
+            return (Integer) selected;
+        } else if (selected != null) {
+            try {
+                return Integer.parseInt(selected.toString());
+            } catch (NumberFormatException e) {
+                return 0;
+            }
         }
         return 0;
     }
 
     public void setSelectedLichTrinhId(int id) {
         for (int i = 0; i < comboLichTrinh.getItemCount(); i++) {
-            if (comboLichTrinh.getItemAt(i).getId() == id) {
+            if (comboLichTrinh.getItemAt(i) == id) {
                 comboLichTrinh.setSelectedIndex(i);
                 return;
             }
@@ -144,35 +163,37 @@ public class VeTauPanel extends BasePanel{
     }
 
     public int getSelectedGheId() {
-        if (comboGhe.getItemCount()>0 && comboGhe.getSelectedItem() != null){
-            return Integer.parseInt(comboGhe.getSelectedItem().toString());
+        Object selected = comboGhe.getSelectedItem();
+        if (selected instanceof Integer) {
+            return (Integer) selected;
+        } else if (selected != null) {
+            try {
+                return Integer.parseInt(selected.toString());
+            } catch (NumberFormatException e) {
+                return 0;
+            }
         }
         return 0;
     }
 
     public void setSelectedGheId(int id) {
         for (int i = 0; i < comboGhe.getItemCount(); i++) {
-            if (comboGhe.getItemAt(i).getId() == id) {
+            if (comboGhe.getItemAt(i) == id) {
                 comboGhe.setSelectedIndex(i);
                 return;
             }
         }
     }
 
-    public int getSelectedNhanVienId() {
-        if (comboNhanVien.getItemCount()>0 && comboNhanVien.getSelectedItem() != null){
-            return Integer.parseInt(comboNhanVien.getSelectedItem().toString());
+    public int getIDNhanVien(){
+        if (!fieldNhanVien.getText().trim().isEmpty()){
+            return Integer.parseInt(fieldNhanVien.getText().trim());
         }
         return 0;
     }
 
-    public void setSelectedNhanVienId(int id) {
-        for (int i = 0; i < comboNhanVien.getItemCount(); i++) {
-            if (comboNhanVien.getItemAt(i).getId() == id) {
-                comboNhanVien.setSelectedIndex(i);
-                return;
-            }
-        }
+    public void setFieldNhanVien(int IDNhanVien){
+        fieldNhanVien.setText(String.valueOf(IDNhanVien));
     }
 
     public LocalDateTime getNgayDat() {
@@ -184,10 +205,9 @@ public class VeTauPanel extends BasePanel{
         return null;
     }
 
-    // Phương thức chuyển đổi LocalDateTime -> JSpinner
     public void setNgayDat(LocalDateTime localDateTime) {
         if (localDateTime == null) {
-            spinnerNgayDat.setValue(new Date()); // Nếu null thì đặt ngày hiện tại
+            spinnerNgayDat.setValue(new Date());
         } else {
             Date date = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
             spinnerNgayDat.setValue(date);
@@ -201,11 +221,18 @@ public class VeTauPanel extends BasePanel{
             return Double.parseDouble(fieldGiaVe.getText().trim());
     }
 
-    public void setGiaVe(String giaVe) {fieldGiaVe.setText(giaVe);}
+    public void setGiaVe(double giaVe) {
+        if (!(giaVe <=0)){
+            fieldGiaVe.setText(String.valueOf(giaVe));
+        }else {
+            fieldGiaVe.setText(null);
+        }
+    }
 
-    public String getTrangThai() {return fieldTrangThai.getText().trim();}
 
-    public void setTrangThai(String trangThai) {fieldTrangThai.setText(trangThai);}
+    public String getTrangThai() {return String.valueOf(comboTrangThai.getSelectedItem());}
+
+    public void setTrangThai(String trangThai) {comboTrangThai.setSelectedItem(trangThai);}
 
     public JTable getTable() {return table;}
 
@@ -214,9 +241,9 @@ public class VeTauPanel extends BasePanel{
         int idKhachHang =  getSelectedKhachHangId();
         int idLichTrinh = getSelectedLichTrinhId();
         int idGhe = getSelectedGheId();
-        int idNhanVien = getSelectedNhanVienId();
+        int idNhanVien = getIDNhanVien();
         LocalDateTime ngayDat = getNgayDat();
-        Double giaVe = getGiaVe();
+        double giaVe = getGiaVe();
         String trangThai = getTrangThai();
 
         return new VeTau(maVe, idKhachHang, idLichTrinh, idGhe, idNhanVien, ngayDat, giaVe, trangThai );
@@ -247,15 +274,13 @@ public class VeTauPanel extends BasePanel{
             comboGhe.setSelectedIndex(0);
         }
 
-        if (comboNhanVien.getItemCount()>0){
-            comboNhanVien.setSelectedIndex(0);
-        }
-
         spinnerNgayDat.setValue(new Date());
 
         fieldGiaVe.setText("");
 
-        fieldTrangThai.setText("");
+        if (comboTrangThai.getItemCount()>0){
+            comboTrangThai.setSelectedIndex(0);
+        }
 
         buttonThem.setEnabled(true);
         buttonSua.setEnabled(false);
@@ -277,5 +302,28 @@ public class VeTauPanel extends BasePanel{
 
     public void addTableMouseClickListener(MouseListener l) {table.addMouseListener(l);}
 
+    public void setComboKhachHangData(List<KhachHang> list){
+        comboKhachHang.removeAllItems();
+        for (KhachHang khachHang : list) {
+            comboKhachHang.addItem(khachHang.getId());
+        }
+    }
 
+    public void setComboLichTrinhData(List<LichTrinh> list){
+        comboLichTrinh.removeAllItems();
+        for (LichTrinh lichTrinh : list) {
+            comboLichTrinh.addItem(lichTrinh.getId());
+        }
+    }
+
+    public void setComboGheData(List<Ghe> list){
+        comboGhe.removeAllItems();
+        for (Ghe ghe : list) {
+            comboGhe.addItem(ghe.getId());
+        }
+    }
+
+    public void setfieldNhanVienData(int IDNhanVien){
+        fieldNhanVien.setText(String.valueOf(IDNhanVien));
+    }
 }

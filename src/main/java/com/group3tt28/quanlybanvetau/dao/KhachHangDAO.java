@@ -5,6 +5,7 @@ import com.group3tt28.quanlybanvetau.util.DBConnection;
 
 import java.sql.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -138,4 +139,33 @@ public class KhachHangDAO {
         }
         return list;
     }
+
+    public List<KhachHang> timKiemKH(String tuKhoa) {
+        List<KhachHang> list = new ArrayList<>();
+        String sql = ("SELECT * FROM " + TEN_BANG + " WHERE " + COT_CCCD + " LIKE ? OR " + COT_HO_TEN + " LIKE ? ");
+
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, "%" + tuKhoa + "%");
+            ps.setString(2, "%" + tuKhoa + "%");
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    int id = rs.getInt(COT_ID);
+                    String cccd = rs.getString(COT_CCCD);
+                    String hoTen = rs.getString(COT_HO_TEN);
+                    LocalDate ngaySinh = rs.getDate(COT_NGAY_SINH).toLocalDate();
+                    String gioiTinh = rs.getString(COT_GIOI_TINH);
+                    String sdt = rs.getString(COT_SDT);
+                    String diaChi = rs.getString(COT_DIA_CHI);
+                    KhachHang khachHang = new KhachHang(id, cccd, hoTen, ngaySinh, gioiTinh, sdt, diaChi);
+                    list.add(khachHang);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Lỗi khi tìm kiếm khách hàng: " + e.getMessage());
+        }
+        return list;
+    }
+
+
 }
