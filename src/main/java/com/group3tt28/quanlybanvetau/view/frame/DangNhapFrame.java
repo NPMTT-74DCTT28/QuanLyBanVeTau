@@ -14,7 +14,7 @@ public final class DangNhapFrame extends BaseFrame {
 
     public DangNhapFrame() {
         super("Đăng nhập");
-        this.setSize(400, 200);
+        this.setSize(400, 260);
         this.setResizable(false);
         this.setLocationRelativeTo(null);
 
@@ -24,27 +24,25 @@ public final class DangNhapFrame extends BaseFrame {
     @Override
     protected void initComponents() {
         JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
+        mainPanel.setBackground(Color.WHITE);
         mainPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
 
-        JPanel formPanel = new JPanel(new GridLayout(2, 2, 10, 10));
+        JPanel formPanel = new JPanel(new GridLayout(2, 1, 5, 5));
+        formPanel.setBackground(Color.white);
 
-        formPanel.add(new JLabel("Mã nhân viên: "));
         fieldMaNV = new JTextField();
-        formPanel.add(fieldMaNV);
+        formPanel.add(createInputField("Mã nhân viên", fieldMaNV, Color.WHITE));
 
-        formPanel.add(new JLabel("Mật khẩu: "));
         fieldMatKhau = new JPasswordField();
-        formPanel.add(fieldMatKhau);
+        formPanel.add(createInputField("Mật khẩu", fieldMatKhau, Color.WHITE));
 
         mainPanel.add(formPanel, BorderLayout.CENTER);
 
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        buttonDangNhap = new JButton("Đăng nhập");
-        buttonThoat = new JButton("Thoát");
-        buttonPanel.add(buttonDangNhap);
-        buttonPanel.add(buttonThoat);
+        buttonDangNhap = createStyledButton("Đăng nhập", new Dimension(110, 40), SECONDARY_COLOR, Color.BLACK);
+        buttonThoat = createStyledButton("Thoát", new Dimension(80, 40), new Color(200, 200, 40), Color.BLACK);
+        JButton[] buttons = new JButton[]{buttonDangNhap, buttonThoat};
 
-        mainPanel.add(buttonPanel, BorderLayout.SOUTH);
+        mainPanel.add(createButtonField(buttons, Color.WHITE), BorderLayout.SOUTH);
 
         this.add(mainPanel);
     }
