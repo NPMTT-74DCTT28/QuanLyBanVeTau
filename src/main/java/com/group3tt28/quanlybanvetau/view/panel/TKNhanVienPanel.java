@@ -47,7 +47,7 @@ public class TKNhanVienPanel extends BasePanel {
         panelForm.setBackground(Color.WHITE);
 
         fieldTuKhoa = new JTextField();
-        panelForm.add(createInputField("<html>Tên/SĐT/<br>Email/Địa chỉ</html>", fieldTuKhoa, Color.WHITE));
+        panelForm.add(createInputField("<html>Tên / SĐT /<br>Email / Địa chỉ</html>", fieldTuKhoa, Color.WHITE));
 
         boxGioiTinh = new JComboBox<>(createComboBoxModel(GioiTinh.values()));
         panelForm.add(createInputField("Giới tính", boxGioiTinh, Color.WHITE));

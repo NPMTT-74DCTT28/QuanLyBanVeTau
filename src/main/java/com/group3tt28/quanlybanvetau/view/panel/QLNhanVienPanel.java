@@ -32,7 +32,7 @@ public final class QLNhanVienPanel extends BasePanel {
     private JTextField fieldEmail;
     private JTextField fieldDiaChi;
     private JComboBox<Object> boxVaiTro;
-    private JButton buttonThem, buttonSua, buttonXoa, buttonReset;
+    private JButton buttonThem, buttonSua, buttonXoa, buttonReset, buttonRefresh;
     private JTable table;
     private boolean isEditMode = false;
 
@@ -95,8 +95,10 @@ public final class QLNhanVienPanel extends BasePanel {
         buttonXoa.setEnabled(false);
         buttonReset = createStyledButton("Reset form", new Dimension(110, 40), PRIMARY_COLOR, Color.WHITE);
         buttonReset.setEnabled(true);
+        buttonRefresh = createStyledButton("Làm mới", new Dimension(100, 40), PRIMARY_COLOR, Color.WHITE);
+        buttonRefresh.setEnabled(true);
 
-        JButton[] buttons = {buttonThem, buttonSua, buttonXoa, buttonReset};
+        JButton[] buttons = {buttonThem, buttonSua, buttonXoa, buttonReset, buttonRefresh};
 
         panelTop.add(panelTitle, BorderLayout.NORTH);
         panelTop.add(panelForm);
@@ -158,10 +160,6 @@ public final class QLNhanVienPanel extends BasePanel {
         return new String(fieldMatKhau.getPassword());
     }
 
-    public void setMatKhau(String matKhau) {
-        fieldMatKhau.setText(matKhau);
-    }
-
     public String getHoTen() {
         return fieldHoTen.getText().trim();
     }
@@ -212,7 +210,7 @@ public final class QLNhanVienPanel extends BasePanel {
     }
 
     public String getEmail() {
-        return fieldEmail.getText().trim();
+        return fieldEmail.getText().trim().isEmpty() ? null : fieldEmail.getText().trim();
     }
 
     public void setEmail(String email) {
@@ -279,6 +277,7 @@ public final class QLNhanVienPanel extends BasePanel {
         buttonSua.setEnabled(true);
         buttonXoa.setEnabled(true);
         buttonReset.setEnabled(true);
+        buttonRefresh.setEnabled(true);
     }
 
     public void resetForm() {
@@ -312,6 +311,7 @@ public final class QLNhanVienPanel extends BasePanel {
         buttonSua.setEnabled(false);
         buttonXoa.setEnabled(false);
         buttonReset.setEnabled(true);
+        buttonRefresh.setEnabled(true);
 
         if (table != null) {
             table.clearSelection();
@@ -332,6 +332,10 @@ public final class QLNhanVienPanel extends BasePanel {
 
     public void addResetFormListener(ActionListener l) {
         buttonReset.addActionListener(l);
+    }
+
+    public void addRefreshListener(ActionListener l) {
+        buttonRefresh.addActionListener(l);
     }
 
     public void addTableMouseClickListener(MouseListener l) {
