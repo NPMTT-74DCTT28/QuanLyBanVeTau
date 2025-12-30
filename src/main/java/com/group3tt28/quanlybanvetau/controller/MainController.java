@@ -12,14 +12,13 @@ import java.awt.event.ActionListener;
 public class MainController {
 
     private final MainFrame mainFrame;
-    private final NhanVien currentUser;
     private final boolean isAdmin;
+    private final boolean isLoggedIn;
 
     public MainController(MainFrame frame) {
         this.mainFrame = frame;
-        this.currentUser = SessionManager.getCurrentUser();
+        isLoggedIn = SessionManager.getCurrentUser() != null;
         this.isAdmin = SessionManager.isAdmin();
-        System.out.println("isAdmin: " + isAdmin);
 
         mainFrame.addNhanVienListener(new QLNhanVienListener(), new TKNhanVienListener());
         mainFrame.addTauListener(new QLTauListener(), new TKTauListener());
@@ -31,7 +30,7 @@ public class MainController {
         mainFrame.addLichTrinhListener(new QLLichTrinhListener(), new TKLichTrinhListener());
 //        mainFrame.addKhachHangListener();
 //        mainFrame.addVeTauListener();
-        if (currentUser != null) {
+        if (isLoggedIn) {
             mainFrame.setXinChao(SessionManager.getCurrentUser().getHoTen());
         } else {
             mainFrame.setXinChao(null);
@@ -41,7 +40,13 @@ public class MainController {
         mainFrame.addDangXuatListener(new DangXuatListener());
         mainFrame.addThoatListener(new ThoatListener());
 
+        quanLyMenu();
+
         mainFrame.setVisible(true);
+    }
+
+    private void quanLyMenu() {
+        mainFrame.hienMenuTheoQuyen(isAdmin, isLoggedIn);
     }
 
     private class QLNhanVienListener implements ActionListener {

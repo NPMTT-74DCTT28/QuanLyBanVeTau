@@ -148,84 +148,18 @@ public final class MainFrame extends BaseFrame {
         container.repaint();
     }
 
-    public void anMenuNhanVien() {
-        menuNhanVien.setVisible(false);
-    }
+    public void hienMenuTheoQuyen(boolean isAdmin, boolean isLoggedIn) {
+        menuNhanVien.setVisible(isAdmin);
+        menuTau.setVisible(isAdmin);
+        menuLoaiToa.setVisible(isAdmin);
+        menuToaTau.setVisible(isAdmin);
+        menuGhe.setVisible(isAdmin);
+        menuGaTau.setVisible(isAdmin);
+        menuTuyenDuong.setVisible(isAdmin);
 
-    public void hienMenuNhanVien() {
-        menuNhanVien.setVisible(true);
-    }
-
-    public void anMenuTau() {
-        menuTau.setVisible(false);
-    }
-
-    public void hienMenuTau() {
-        menuTau.setVisible(true);
-    }
-
-    public void anMenuLoaiToa() {
-        menuLoaiToa.setVisible(false);
-    }
-
-    public void hienMenuLoaiToa() {
-        menuLoaiToa.setVisible(true);
-    }
-
-    public void anMenuToaTau() {
-        menuToaTau.setVisible(false);
-    }
-
-    public void hienMenuToaTau() {
-        menuToaTau.setVisible(true);
-    }
-
-    public void anMenuGhe() {
-        menuGhe.setVisible(false);
-    }
-
-    public void hienMenuGhe() {
-        menuGhe.setVisible(true);
-    }
-
-    public void anMenuGaTau() {
-        menuGaTau.setVisible(false);
-    }
-
-    public void hienMenuGaTau() {
-        menuGaTau.setVisible(true);
-    }
-
-    public void anMenuTuyenDuong() {
-        menuTuyenDuong.setVisible(false);
-    }
-
-    public void hienMenuTuyenDuong() {
-        menuTuyenDuong.setVisible(true);
-    }
-
-    public void anMenuLichTrinh() {
-        menuLichTrinh.setVisible(false);
-    }
-
-    public void hienMenuLichTrinh() {
-        menuLichTrinh.setVisible(true);
-    }
-
-    public void anMenuKhachHang() {
-        menuKhachHang.setVisible(false);
-    }
-
-    public void hienMenuKhachHang() {
-        menuKhachHang.setVisible(true);
-    }
-
-    public void anMenuVeTau() {
-        menuVeTau.setVisible(false);
-    }
-
-    public void hienMenuVeTau() {
-        menuVeTau.setVisible(true);
+        menuLichTrinh.setVisible(isLoggedIn);
+        menuKhachHang.setVisible(isLoggedIn);
+        menuVeTau.setVisible(isLoggedIn);
     }
 
     public void addNhanVienListener(ActionListener qlListener, ActionListener tkListener) {
