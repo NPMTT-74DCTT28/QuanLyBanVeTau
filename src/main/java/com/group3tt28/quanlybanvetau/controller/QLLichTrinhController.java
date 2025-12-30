@@ -23,9 +23,8 @@ public class QLLichTrinhController {
     private final TauDAO tauDAO;
     private final TuyenDuongDAO tuyenDuongDAO;
     private final DefaultTableModel tableModel;
-    private int selectedId = -1; // Lưu ID của bản ghi đang chọn
+    private int selectedId = -1;
 
-    // Cache để hiển thị tên trong bảng
     private List<Tau> listTau;
     private List<TuyenDuong> listTuyen;
 
@@ -36,14 +35,12 @@ public class QLLichTrinhController {
         this.tuyenDuongDAO = new TuyenDuongDAO();
         this.tableModel = (DefaultTableModel) panel.getTable().getModel();
 
-        // Đăng ký sự kiện
         panel.addThemListener(new ThemListener());
         panel.addSuaListener(new SuaListener());
         panel.addXoaListener(new XoaListener());
         panel.addResetListener(new ResetListener());
         panel.addTableMouseListener(new TableMouseListener());
 
-        // Load dữ liệu
         loadComboBoxData();
         refresh();
     }
@@ -94,7 +91,6 @@ public class QLLichTrinhController {
         }
     }
 
-    // Helper: Validate
     private String validate(LichTrinh lt) {
         if (lt.getMaLichTrinh().isEmpty()) return "Vui lòng nhập mã lịch trình!";
         if (lt.getNgayDi().isAfter(lt.getNgayDen())) return "Ngày đi phải trước ngày đến!";
@@ -102,7 +98,6 @@ public class QLLichTrinhController {
         return null;
     }
 
-    // Helper: Get Name by ID
     private String getTenTauById(int id) {
         if (listTau == null) return String.valueOf(id);
         return listTau.stream().filter(t -> t.getId() == id).findFirst().map(Tau::getTenTau).orElse(String.valueOf(id));
@@ -113,7 +108,6 @@ public class QLLichTrinhController {
         return listTuyen.stream().filter(t -> t.getId() == id).findFirst().map(TuyenDuong::getTenTuyen).orElse(String.valueOf(id));
     }
 
-    // --- INNER CLASSES LISTENER ---
 
     private class ThemListener implements ActionListener {
         @Override
@@ -157,7 +151,7 @@ public class QLLichTrinhController {
 
                 LichTrinh lt = panel.getLichTrinhFromForm();
                 if (lt == null) return;
-                lt.setId(selectedId); // Gán ID để update đúng dòng
+                lt.setId(selectedId);
 
                 String err = validate(lt);
                 if (err != null) {
@@ -218,25 +212,12 @@ public class QLLichTrinhController {
             int row = panel.getTable().getSelectedRow();
             if (row == -1) return;
 
-            // Lấy ID từ cột ẩn (cột 0 trong model, nhưng đã bị remove khỏi view)
-            // Cần lấy từ Model
             selectedId = Integer.parseInt(tableModel.getValueAt(row, 0).toString());
             String maLT = tableModel.getValueAt(row, 1).toString();
-            // Các cột khác chỉ là text hiển thị, cần lấy từ DB hoặc List gốc để chính xác nhất
-            // Tuy nhiên, ta có thể lấy ID Tàu/Tuyến bằng cách map ngược (hoặc query lại getByID)
-            // Ở đây để đơn giản và chính xác, ta query lại object từ DB hoặc tìm trong list
-
-            // Cách nhanh: Lấy object đầy đủ từ DB dựa trên ID
-            // Nhưng để tối ưu, ta map dữ liệu từ bảng + list cache
-
-            // Tìm trong list hiện tại (đã load ở refresh) - nhưng list local ở refresh scope
-            // Nên gọi DAO getById hoặc filter
-            // Để đơn giản code này, ta dùng thông tin trên bảng và cache
 
             panel.startEditMode();
             panel.setMaLichTrinh(maLT);
 
-            // Set Tau
             String tenTau = tableModel.getValueAt(row, 2).toString();
             for (Tau t : listTau) {
                 if (t.getTenTau().equals(tenTau)) {
@@ -245,7 +226,6 @@ public class QLLichTrinhController {
                 }
             }
 
-            // Set Tuyen
             String tenTuyen = tableModel.getValueAt(row, 3).toString();
             for (TuyenDuong td : listTuyen) {
                 if (td.getTenTuyen().equals(tenTuyen)) {
@@ -254,7 +234,6 @@ public class QLLichTrinhController {
                 }
             }
 
-            // Set Ngay (Parse từ String trên bảng)
             try {
                 String strDi = tableModel.getValueAt(row, 4).toString();
                 String strDen = tableModel.getValueAt(row, 5).toString();
@@ -267,7 +246,6 @@ public class QLLichTrinhController {
                 ex.printStackTrace();
             }
 
-            // Set Trang thai
             String tt = tableModel.getValueAt(row, 6).toString();
             panel.setTrangThai(tt);
         }

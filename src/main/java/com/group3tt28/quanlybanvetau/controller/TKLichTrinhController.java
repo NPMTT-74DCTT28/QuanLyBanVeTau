@@ -22,7 +22,6 @@ public class TKLichTrinhController {
     private final TuyenDuongDAO tuyenDuongDAO;
     private final DefaultTableModel tableModel;
 
-    // Cache list
     private List<Tau> listTauCache;
     private List<TuyenDuong> listTuyenCache;
 
@@ -33,13 +32,10 @@ public class TKLichTrinhController {
         this.tuyenDuongDAO = new TuyenDuongDAO();
         this.tableModel = (DefaultTableModel) panel.getTable().getModel();
 
-        // 1. Load dữ liệu ComboBox TRƯỚC
         loadComboBoxData();
 
-        // 2. Load toàn bộ lịch trình lên bảng
         refresh();
 
-        // 3. Đăng ký sự kiện
         panel.addTimKiemListener(new TimKiemListener());
         panel.addResetFormListener(e -> panel.resetForm());
         panel.addLamMoiListener(e -> refresh());
@@ -47,7 +43,6 @@ public class TKLichTrinhController {
 
     private void loadComboBoxData() {
         try {
-            // Load Tàu
             listTauCache = tauDAO.getAll();
             panel.getBoxTau().removeAllItems();
             panel.getBoxTau().addItem("Tất cả");
@@ -55,7 +50,6 @@ public class TKLichTrinhController {
                 panel.getBoxTau().addItem(t);
             }
 
-            // Load Tuyến
             listTuyenCache = tuyenDuongDAO.getAll();
             panel.getBoxTuyenDuong().removeAllItems();
             panel.getBoxTuyenDuong().addItem("Tất cả");
@@ -122,14 +116,12 @@ public class TKLichTrinhController {
             try {
                 String tuKhoa = panel.getTuKhoa();
 
-                // Lấy ID Tàu
                 int idTau = 0;
                 Object selectedTau = panel.getBoxTau().getSelectedItem();
                 if (selectedTau instanceof Tau) {
                     idTau = ((Tau) selectedTau).getId();
                 }
 
-                // Lấy ID Tuyến
                 int idTuyen = 0;
                 Object selectedTuyen = panel.getBoxTuyenDuong().getSelectedItem();
                 if (selectedTuyen instanceof TuyenDuong) {

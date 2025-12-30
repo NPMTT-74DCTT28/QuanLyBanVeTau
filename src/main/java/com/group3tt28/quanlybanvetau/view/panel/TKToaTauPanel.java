@@ -29,11 +29,9 @@ public class TKToaTauPanel extends BasePanel {
         setLayout(new BorderLayout(0, 0));
         setBackground(Color.WHITE);
 
-        // --- PANEL TOP ---
         JPanel panelTop = new JPanel(new BorderLayout(5, 5));
         panelTop.setBackground(Color.WHITE);
 
-        // 1. Tiêu đề
         JPanel panelTitle = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 5));
         panelTitle.setBackground(PRIMARY_COLOR);
         JLabel labelTitle = new JLabel("TRA CỨU TOA TÀU");
@@ -41,25 +39,20 @@ public class TKToaTauPanel extends BasePanel {
         labelTitle.setForeground(Color.WHITE);
         panelTitle.add(labelTitle);
 
-        // 2. Form tìm kiếm (Sử dụng FlowLayout với kích thước cố định để tránh lỗi hiển thị)
         JPanel panelForm = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 10));
         panelForm.setBackground(Color.WHITE);
 
-        // a. Mã toa
         fieldTuKhoa = new JTextField(15);
         panelForm.add(createInputField("Mã toa", fieldTuKhoa, Color.WHITE));
 
-        // b. Tàu
         boxTau = new JComboBox<>();
-        boxTau.setPrototypeDisplayValue("--------------------------"); // Giữ chỗ kích thước
+        boxTau.setPrototypeDisplayValue("--------------------------");
         panelForm.add(createInputField("Thuộc tàu", boxTau, Color.WHITE));
 
-        // c. Loại toa
         boxLoaiToa = new JComboBox<>();
         boxLoaiToa.setPrototypeDisplayValue("--------------------------");
         panelForm.add(createInputField("Loại toa", boxLoaiToa, Color.WHITE));
 
-        // 3. Buttons
         JPanel panelButtons = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 5));
         panelButtons.setBackground(Color.WHITE);
 
@@ -75,7 +68,6 @@ public class TKToaTauPanel extends BasePanel {
         panelTop.add(panelForm, BorderLayout.CENTER);
         panelTop.add(panelButtons, BorderLayout.SOUTH);
 
-        // --- PANEL TABLE ---
         Object[] columns = new Object[]{
                 "ID", "Mã Toa", "Thuộc Tàu", "Loại Toa"
         };
@@ -84,7 +76,6 @@ public class TKToaTauPanel extends BasePanel {
         table = new JTable(model);
         table.setRowHeight(25);
 
-        // Ẩn cột ID
         TableColumnModel columnModel = table.getColumnModel();
         table.removeColumn(columnModel.getColumn(0));
 
@@ -113,13 +104,11 @@ public class TKToaTauPanel extends BasePanel {
         add(panelTable, BorderLayout.CENTER);
     }
 
-    // --- GETTERS ---
     public String getTuKhoa() { return fieldTuKhoa.getText().trim(); }
     public JComboBox<Object> getBoxTau() { return boxTau; }
     public JComboBox<Object> getBoxLoaiToa() { return boxLoaiToa; }
     public JTable getTable() { return table; }
 
-    // --- ACTIONS ---
     public void resetForm() {
         fieldTuKhoa.setText("");
         if (boxTau.getItemCount() > 0) boxTau.setSelectedIndex(0);
