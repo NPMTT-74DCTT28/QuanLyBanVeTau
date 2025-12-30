@@ -41,8 +41,6 @@ public class QLNhanVienController {
     }
 
     private void refresh() {
-        panel.resetForm();
-
         try {
             List<NhanVien> list = dao.getAll();
             tableModel.setRowCount(0);
