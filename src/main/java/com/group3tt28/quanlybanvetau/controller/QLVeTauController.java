@@ -1,29 +1,31 @@
 package com.group3tt28.quanlybanvetau.controller;
 
-import com.group3tt28.quanlybanvetau.dao.*;
+import com.group3tt28.quanlybanvetau.dao.GheDAO;
+import com.group3tt28.quanlybanvetau.dao.KhachHangDAO;
+import com.group3tt28.quanlybanvetau.dao.LichTrinhDAO;
+import com.group3tt28.quanlybanvetau.dao.VeTauDAO;
 import com.group3tt28.quanlybanvetau.model.*;
 import com.group3tt28.quanlybanvetau.util.SessionManager;
-import com.group3tt28.quanlybanvetau.view.panel.VeTauPanel;
+import com.group3tt28.quanlybanvetau.view.panel.QLVeTauPanel;
 
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 
-public class VeTauController {
-    private final VeTauPanel panel;
+public class QLVeTauController {
+    private final QLVeTauPanel panel;
     private final VeTauDAO dao;
     private final DefaultTableModel model;
     private int selectedRow = -1;
     private final NhanVien currentuser;
     private HashMap<Integer, String> mapKhachHang = new HashMap<>();
 
-    public VeTauController(VeTauPanel panel) {
+    public QLVeTauController(QLVeTauPanel panel) {
         this.dao = new VeTauDAO();
         this.panel = panel;
         KhachHangDAO khachHangDAO = new KhachHangDAO();
@@ -165,7 +167,7 @@ public class VeTauController {
 
                 VeTau veTau = panel.getVeTauFromForm();
                 String error = validateInput(veTau, true);
-                if (error != null){
+                if (error != null) {
                     panel.showWarning(error);
                     return;
                 }
@@ -223,6 +225,7 @@ public class VeTauController {
         public void actionPerformed(ActionEvent e) {
             panel.resetForm();
             selectedRow = -1;
+            panel.setFieldNhanVien(currentuser.getId());
         }
     }
 

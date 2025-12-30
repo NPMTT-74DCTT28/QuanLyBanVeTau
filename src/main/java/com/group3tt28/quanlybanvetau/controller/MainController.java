@@ -26,8 +26,8 @@ public class MainController {
         mainFrame.addGaTauListener(new QLGaTauListener(), new TKGaTauListener());
         mainFrame.addTuyenDuongListener(new QLTuyenDuongListener(), new TKTuyenDuongListener());
         mainFrame.addLichTrinhListener(new QLLichTrinhListener(), new TKLichTrinhListener());
-//        mainFrame.addKhachHangListener();
-//        mainFrame.addVeTauListener();
+        mainFrame.addKhachHangListener(new QLKhachHangListener(), new TKKhachHangListener());
+        mainFrame.addVeTauListener(new QLVeTauListener(), new TKVeTauListener());
         if (isLoggedIn) {
             mainFrame.setXinChao(SessionManager.getCurrentUser().getHoTen());
         } else {
@@ -198,28 +198,36 @@ public class MainController {
     private class QLKhachHangListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-
+            QLKhachHangPanel panel = new QLKhachHangPanel();
+            mainFrame.showPanel(panel);
+            new QLKhachHangController(panel);
         }
     }
 
     private class TKKhachHangListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-
+            TKKhachHangPanel panel = new TKKhachHangPanel();
+            mainFrame.showPanel(panel);
+            new TKKhachHangController(panel);
         }
     }
 
     private class QLVeTauListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-
+            QLVeTauPanel panel = new QLVeTauPanel();
+            mainFrame.showPanel(panel);
+            new QLVeTauController(panel);
         }
     }
 
     private class TKVeTauListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-
+            TKVeTauPanel panel = new TKVeTauPanel();
+            mainFrame.showPanel(panel);
+            new TKVeTauController(panel);
         }
     }
 

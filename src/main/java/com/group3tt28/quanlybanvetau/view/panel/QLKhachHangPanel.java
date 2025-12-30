@@ -14,7 +14,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 
-public class KhachHangPanel extends BasePanel {
+public class QLKhachHangPanel extends BasePanel {
 
     private JTextField fieldCCCD;
     private JTextField fieldHoTen;
@@ -25,7 +25,7 @@ public class KhachHangPanel extends BasePanel {
     private JButton buttonThem, buttonSua, buttonXoa, buttonReset;
     private JTable table;
 
-    public KhachHangPanel() {
+    public QLKhachHangPanel() {
         initComponents();
     }
 

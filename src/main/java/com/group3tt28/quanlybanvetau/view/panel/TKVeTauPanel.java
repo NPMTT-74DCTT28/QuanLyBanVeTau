@@ -40,7 +40,7 @@ public class TKVeTauPanel extends BasePanel{
         panelForm.setBackground(Color.WHITE);
 
         fieldTuKhoa = new JTextField();
-        panelForm.add(createInputField("Mã vé/ Lịch trình", fieldTuKhoa, Color.WHITE));
+        panelForm.add(createInputField("<html>Mã vé/<br>Lịch trình</html>", fieldTuKhoa, Color.WHITE));
 
         buttonTimKiem = createStyledButton("Tìm kiếm", new Dimension(100,40),PRIMARY_COLOR, Color.WHITE);
         buttonReset = createStyledButton("Reset form", new Dimension(110,40),PRIMARY_COLOR, Color.WHITE);

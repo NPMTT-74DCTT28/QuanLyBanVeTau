@@ -65,7 +65,7 @@ public class ThongTinCaNhanDialog extends JDialog {
         panelForm.add(createInputField("Địa chỉ*", fieldDiaChi, Color.WHITE));
 
         buttonXacNhan = createStyledButton("Lưu thông tin", new Dimension(150, 40), new Color(191, 214, 65), Color.BLACK);
-        buttonQuayLai = createStyledButton("Về trang chủ", new Dimension(150, 40), new Color(153, 204, 255), Color.BLACK);
+        buttonQuayLai = createStyledButton("Quay lại", new Dimension(150, 40), new Color(153, 204, 255), Color.BLACK);
         JButton[] buttons = new JButton[]{buttonXacNhan, buttonQuayLai};
 
         JPanel container = new JPanel(new BorderLayout(0, 0));
