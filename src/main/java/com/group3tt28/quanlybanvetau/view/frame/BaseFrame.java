@@ -1,6 +1,7 @@
 package com.group3tt28.quanlybanvetau.view.frame;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 public abstract class BaseFrame extends JFrame {
@@ -32,6 +33,46 @@ public abstract class BaseFrame extends JFrame {
     public boolean showConfirm(String thongBao) {
         int option = JOptionPane.showConfirmDialog(this, thongBao, "Xác nhận", JOptionPane.YES_NO_OPTION);
         return option == JOptionPane.YES_OPTION;
+    }
+
+    protected JComponent createInputField(String labelText, JComponent component, Color background) {
+        JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        panel.setBackground(background);
+
+        JLabel label = new JLabel(labelText);
+        label.setFont(FONT_PLAIN);
+        label.setForeground(Color.BLACK);
+        label.setPreferredSize(new Dimension(100, 50));
+        panel.add(label);
+
+        component.setForeground(Color.BLACK);
+        component.setPreferredSize(new Dimension(200, 50));
+        panel.add(component);
+
+        return panel;
+    }
+
+    protected JComponent createButtonField(JButton[] buttons, Color background) {
+        JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        panel.setBorder(new EmptyBorder(5, 5, 5, 5));
+        panel.setBackground(background);
+
+        for (JButton button : buttons) {
+            panel.add(button);
+        }
+
+        return panel;
+    }
+
+    protected JButton createStyledButton(String text, Dimension buttonSize, Color background, Color foreground) {
+        JButton button = new JButton(text);
+        button.setFont(FONT_BOLD);
+        button.setBackground(background);
+        button.setForeground(foreground);
+        button.setPreferredSize(buttonSize);
+        button.setFocusPainted(false);
+        button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        return button;
     }
 
     protected abstract void initComponents();

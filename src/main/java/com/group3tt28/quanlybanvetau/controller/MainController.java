@@ -1,5 +1,8 @@
 package com.group3tt28.quanlybanvetau.controller;
 
+import com.group3tt28.quanlybanvetau.enums.VaiTro;
+import com.group3tt28.quanlybanvetau.model.NhanVien;
+import com.group3tt28.quanlybanvetau.util.SessionManager;
 import com.group3tt28.quanlybanvetau.view.frame.MainFrame;
 import com.group3tt28.quanlybanvetau.view.panel.*;
 
@@ -9,9 +12,13 @@ import java.awt.event.ActionListener;
 public class MainController {
 
     private final MainFrame mainFrame;
+    private final boolean isAdmin;
+    private final boolean isLoggedIn;
 
     public MainController(MainFrame frame) {
         this.mainFrame = frame;
+        this.isLoggedIn = SessionManager.getCurrentUser() != null;
+        this.isAdmin = SessionManager.isAdmin();
 
         mainFrame.addNhanVienListener(new QLNhanVienListener(), new TKNhanVienListener());
         mainFrame.addTauListener(new QLTauListener(), new TKTauListener());
@@ -23,16 +30,31 @@ public class MainController {
         mainFrame.addLichTrinhListener(new QLLichTrinhListener(), new TKLichTrinhListener());
 //        mainFrame.addKhachHangListener();
 //        mainFrame.addVeTauListener();
+        if (isLoggedIn) {
+            mainFrame.setXinChao(SessionManager.getCurrentUser().getHoTen());
+        } else {
+            mainFrame.setXinChao(null);
+        }
+        mainFrame.addThongTinCaNhanListener(new ThongTinCaNhanListener());
+        mainFrame.addDoiMatKhauListener(new DoiMatKhauListener());
+        mainFrame.addDangXuatListener(new DangXuatListener());
+        mainFrame.addThoatListener(new ThoatListener());
+
+        quanLyMenu();
 
         mainFrame.setVisible(true);
+    }
+
+    private void quanLyMenu() {
+        mainFrame.hienMenuTheoQuyen(isAdmin, isLoggedIn);
     }
 
     private class QLNhanVienListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            QLNhanVienPanel panel = new QLNhanVienPanel();
-            mainFrame.showPanel(panel);
-            new QLNhanVienController(panel);
+            QLNhanVienPanel qlNhanVienPanel = new QLNhanVienPanel();
+            mainFrame.showPanel(qlNhanVienPanel);
+            new QLNhanVienController(qlNhanVienPanel);
         }
     }
 
@@ -182,6 +204,55 @@ public class MainController {
         @Override
         public void actionPerformed(ActionEvent e) {
 
+        }
+    }
+
+    private class QLVeTauListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+        }
+    }
+
+    private class TKVeTauListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+        }
+    }
+
+    private class ThongTinCaNhanListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+        }
+    }
+
+    private class DoiMatKhauListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+        }
+    }
+
+    private class DangXuatListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (mainFrame.showConfirm("Bạn chắc chắn muốn đăng xuất?")) {
+                mainFrame.dispose();
+                SessionManager.clearSession();
+                new DangNhapController();
+            }
+        }
+    }
+
+    private class ThoatListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (mainFrame.showConfirm("Bạn chắc chắn muốn thoát ứng dụng?")) {
+                mainFrame.dispose();
+                System.exit(0);
+            }
         }
     }
 }
