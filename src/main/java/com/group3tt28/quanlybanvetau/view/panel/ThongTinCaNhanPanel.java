@@ -21,7 +21,7 @@ public class ThongTinCaNhanPanel extends BasePanel {
     private JTextField fieldSdt;
     private JTextField fieldEmail;
     private JTextField fieldDiaChi;
-    private JButton buttonXacNhan;
+    private JButton buttonXacNhan, buttonQuayLai;
 
     public ThongTinCaNhanPanel() {
         initComponents();
@@ -63,7 +63,8 @@ public class ThongTinCaNhanPanel extends BasePanel {
         panelForm.add(createInputField("Địa chỉ*", fieldDiaChi, Color.WHITE));
 
         buttonXacNhan = createStyledButton("Lưu thông tin", new Dimension(150, 40), new Color(191, 214, 65), Color.BLACK);
-        JButton[] buttons = new JButton[]{buttonXacNhan};
+        buttonQuayLai = createStyledButton("Về trang chủ", new Dimension(150, 40), SECONDARY_COLOR, Color.BLACK);
+        JButton[] buttons = new JButton[]{buttonXacNhan, buttonQuayLai};
 
         JPanel container = new JPanel(new BorderLayout(0, 0));
         container.add(panelTitle, BorderLayout.NORTH);
@@ -192,5 +193,9 @@ public class ThongTinCaNhanPanel extends BasePanel {
 
     public void addXacNhanListener(ActionListener l) {
         buttonXacNhan.addActionListener(l);
+    }
+
+    public void addQuayLaiListener(ActionListener l) {
+        buttonQuayLai.addActionListener(l);
     }
 }

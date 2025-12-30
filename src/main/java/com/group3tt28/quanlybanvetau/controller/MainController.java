@@ -13,13 +13,11 @@ import java.awt.event.WindowEvent;
 public class MainController {
 
     private final MainFrame mainFrame;
-    private final boolean isAdmin;
-    private final boolean isLoggedIn;
 
     public MainController(MainFrame frame) {
         this.mainFrame = frame;
-        this.isLoggedIn = SessionManager.getCurrentUser() != null;
-        this.isAdmin = SessionManager.isAdmin();
+        boolean isLoggedIn = SessionManager.getCurrentUser() != null;
+        boolean isAdmin = SessionManager.isAdmin();
 
         mainFrame.addNhanVienListener(new QLNhanVienListener(), new TKNhanVienListener());
         mainFrame.addTauListener(new QLTauListener(), new TKTauListener());
@@ -42,13 +40,16 @@ public class MainController {
         mainFrame.addThoatListener(new ThoatListener());
         mainFrame.addWindowCloseListener(new WindowCloseListener());
 
-        quanLyMenu();
+        mainFrame.hienMenuTheoQuyen(isAdmin, isLoggedIn);
+
+        showTrangChu();
 
         mainFrame.setVisible(true);
     }
 
-    private void quanLyMenu() {
-        mainFrame.hienMenuTheoQuyen(isAdmin, isLoggedIn);
+    public final void showTrangChu() {
+        TrangChu trangChu = new TrangChu();
+        mainFrame.showPanel(trangChu);
     }
 
     private class QLNhanVienListener implements ActionListener {
@@ -228,7 +229,7 @@ public class MainController {
         public void actionPerformed(ActionEvent e) {
             ThongTinCaNhanPanel thongTinCaNhanPanel = new ThongTinCaNhanPanel();
             mainFrame.showPanel(thongTinCaNhanPanel);
-            new ThongTinCaNhanController(thongTinCaNhanPanel);
+            new ThongTinCaNhanController(mainFrame, thongTinCaNhanPanel);
         }
     }
 
