@@ -21,7 +21,6 @@ public class TKToaTauController {
     private final LoaiToaDAO loaiToaDAO;
     private final DefaultTableModel tableModel;
 
-    // Cache list để hiển thị tên
     private List<Tau> listTauCache;
     private List<LoaiToa> listLoaiToaCache;
 
@@ -32,13 +31,10 @@ public class TKToaTauController {
         this.loaiToaDAO = new LoaiToaDAO();
         this.tableModel = (DefaultTableModel) panel.getTable().getModel();
 
-        // 1. Load dữ liệu ComboBox
         loadComboBoxData();
 
-        // 2. Load toàn bộ dữ liệu lên bảng ban đầu
         refresh();
 
-        // 3. Đăng ký sự kiện
         panel.addTimKiemListener(new TimKiemListener());
         panel.addResetFormListener(e -> panel.resetForm());
         panel.addLamMoiListener(e -> refresh());
@@ -46,7 +42,6 @@ public class TKToaTauController {
 
     private void loadComboBoxData() {
         try {
-            // Load Tàu
             listTauCache = tauDAO.getAll();
             panel.getBoxTau().removeAllItems();
             panel.getBoxTau().addItem("Tất cả");
@@ -54,7 +49,6 @@ public class TKToaTauController {
                 panel.getBoxTau().addItem(t);
             }
 
-            // Load Loại Toa
             listLoaiToaCache = loaiToaDAO.getAll();
             panel.getBoxLoaiToa().removeAllItems();
             panel.getBoxLoaiToa().addItem("Tất cả");
@@ -117,14 +111,12 @@ public class TKToaTauController {
             try {
                 String tuKhoa = panel.getTuKhoa();
 
-                // Lấy ID Tàu
                 int idTau = 0;
                 Object selectedTau = panel.getBoxTau().getSelectedItem();
                 if (selectedTau instanceof Tau) {
                     idTau = ((Tau) selectedTau).getId();
                 }
 
-                // Lấy ID Loại Toa
                 int idLoaiToa = 0;
                 Object selectedLoai = panel.getBoxLoaiToa().getSelectedItem();
                 if (selectedLoai instanceof LoaiToa) {

@@ -28,7 +28,6 @@ public final class QLToaTauPanel extends BasePanel {
     protected void initComponents() {
         setLayout(new BorderLayout());
 
-        // 1. Header
         JPanel panelHome = new JPanel();
         panelHome.setBackground(new Color(152, 251, 152));
         panelHome.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -36,7 +35,6 @@ public final class QLToaTauPanel extends BasePanel {
         labelHome.setFont(new Font("Segoe UI", Font.BOLD, 20));
         panelHome.add(labelHome);
 
-        // 2. Form nhập liệu (GridLayout 1 hàng 3 cột)
         JPanel panelTop = new JPanel(new BorderLayout(0, 5));
         JPanel panelForm = new JPanel(new GridLayout(1, 3, 10, 5));
         panelForm.setBorder(new EmptyBorder(10, 5, 10, 5));
@@ -50,7 +48,6 @@ public final class QLToaTauPanel extends BasePanel {
         boxLoaiToa = new JComboBox<>();
         panelForm.add(createInputField("Loại toa:", boxLoaiToa, Color.WHITE));
 
-        // 3. Các nút chức năng (Thêm, Sửa, Xóa, Reset)
         buttonThem = createStyledButton("Thêm", new Dimension(80, 40), PRIMARY_COLOR, Color.WHITE);
         buttonSua = createStyledButton("Sửa", new Dimension(80, 40), new Color(200, 200, 40), Color.WHITE);
         buttonSua.setEnabled(false);
@@ -60,20 +57,17 @@ public final class QLToaTauPanel extends BasePanel {
 
         JButton[] buttons = {buttonThem, buttonSua, buttonXoa, buttonReset};
 
-        // Tạo panel chứa nút và gắn vào dưới Form
         JComponent panelButtons = createButtonField(buttons, Color.WHITE);
 
         panelTop.add(panelHome, BorderLayout.NORTH);
         panelTop.add(panelForm, BorderLayout.CENTER);
         panelTop.add(panelButtons, BorderLayout.SOUTH);
 
-        // 4. Bảng dữ liệu
         Object[] columns = new Object[]{"ID", "Mã Toa", "Tàu", "Loại Toa"};
         DefaultTableModel tableModel = new DefaultTableModel(columns, 0);
         table = new JTable(tableModel);
         table.setRowHeight(25);
 
-        // Ẩn cột ID
         table.getColumnModel().getColumn(0).setMinWidth(0);
         table.getColumnModel().getColumn(0).setMaxWidth(0);
         table.getColumnModel().getColumn(0).setWidth(0);
@@ -86,7 +80,6 @@ public final class QLToaTauPanel extends BasePanel {
         add(scrollPane, BorderLayout.CENTER);
     }
 
-    // --- Getters & Setters ---
 
     public String getMaToa() {
         return fieldMaToa.getText().trim();

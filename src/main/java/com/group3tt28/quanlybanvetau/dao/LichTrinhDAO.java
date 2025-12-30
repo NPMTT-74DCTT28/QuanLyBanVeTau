@@ -140,32 +140,27 @@ public class LichTrinhDAO {
         return list;
     }
 
-    // --- PHƯƠNG THỨC MỚI: TÌM KIẾM ---
     public List<LichTrinh> timKiemLichTrinh(String tuKhoa, int idTau, int idTuyen, String trangThai) {
         List<LichTrinh> list = new ArrayList<>();
         List<Object> params = new ArrayList<>();
 
         StringBuilder sql = new StringBuilder("SELECT * FROM " + TEN_BANG + " WHERE 1=1 ");
 
-        // 1. Tìm theo từ khóa (Mã lịch trình)
         if (tuKhoa != null && !tuKhoa.trim().isEmpty()) {
             sql.append(" AND ").append(COT_MA_LICH_TRINH).append(" LIKE ? ");
             params.add("%" + tuKhoa.trim() + "%");
         }
 
-        // 2. Tìm theo Tàu
         if (idTau > 0) {
             sql.append(" AND ").append(COT_ID_TAU).append(" = ? ");
             params.add(idTau);
         }
 
-        // 3. Tìm theo Tuyến đường
         if (idTuyen > 0) {
             sql.append(" AND ").append(COT_ID_TUYEN).append(" = ? ");
             params.add(idTuyen);
         }
 
-        // 4. Tìm theo Trạng thái
         if (trangThai != null && !trangThai.trim().isEmpty() && !trangThai.equalsIgnoreCase("Tất cả")) {
             sql.append(" AND ").append(COT_TRANG_THAI).append(" = ? ");
             params.add(trangThai);

@@ -43,11 +43,9 @@ public class QLLichTrinhPanel extends BasePanel {
         setLayout(new BorderLayout(0, 0));
         setBackground(Color.WHITE);
 
-        // --- TOP PANEL: Tiêu đề + Form + Button ---
         JPanel panelTop = new JPanel(new BorderLayout(0, 5));
         panelTop.setBackground(Color.WHITE);
 
-        // 1. Tiêu đề
         JPanel panelTitle = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         panelTitle.setBackground(PRIMARY_COLOR);
         JLabel labelTitle = new JLabel("QUẢN LÝ LỊCH TRÌNH CHẠY TÀU");
@@ -55,8 +53,7 @@ public class QLLichTrinhPanel extends BasePanel {
         labelTitle.setForeground(Color.WHITE);
         panelTitle.add(labelTitle);
 
-        // 2. Form nhập liệu
-        JPanel panelForm = new JPanel(new GridLayout(3, 2, 10, 10)); // 3 hàng, 2 cột input
+        JPanel panelForm = new JPanel(new GridLayout(3, 2, 10, 10));
         panelForm.setBorder(new EmptyBorder(10, 10, 10, 10));
         panelForm.setBackground(Color.WHITE);
 
@@ -72,19 +69,16 @@ public class QLLichTrinhPanel extends BasePanel {
         boxTrangThai = new JComboBox<>(TrangThaiLichTrinh.values());
         panelForm.add(createInputField("Trạng thái", boxTrangThai, Color.WHITE));
 
-        // Cấu hình Spinner cho Ngày Đi (Ngày + Giờ)
         spinnerNgayDi = new JSpinner(new SpinnerDateModel());
         JSpinner.DateEditor editorDi = new JSpinner.DateEditor(spinnerNgayDi, "yyyy-MM-dd HH:mm:ss");
         spinnerNgayDi.setEditor(editorDi);
         panelForm.add(createInputField("Thời gian đi", spinnerNgayDi, Color.WHITE));
 
-        // Cấu hình Spinner cho Ngày Đến
         spinnerNgayDen = new JSpinner(new SpinnerDateModel());
         JSpinner.DateEditor editorDen = new JSpinner.DateEditor(spinnerNgayDen, "yyyy-MM-dd HH:mm:ss");
         spinnerNgayDen.setEditor(editorDen);
         panelForm.add(createInputField("Thời gian đến", spinnerNgayDen, Color.WHITE));
 
-        // 3. Buttons
         buttonThem = createStyledButton("Thêm", new Dimension(80, 40), PRIMARY_COLOR, Color.WHITE);
         buttonSua = createStyledButton("Sửa", new Dimension(80, 40), new Color(200, 200, 40), Color.WHITE);
         buttonSua.setEnabled(false);
@@ -98,14 +92,12 @@ public class QLLichTrinhPanel extends BasePanel {
         panelTop.add(panelForm, BorderLayout.CENTER);
         panelTop.add(createButtonField(buttons, Color.WHITE), BorderLayout.SOUTH);
 
-        // --- CENTER PANEL: Table ---
         Object[] columns = new Object[]{"ID", "Mã LT", "Tàu", "Tuyến đường", "Ngày đi", "Ngày đến", "Trạng thái"};
         DefaultTableModel tableModel = new DefaultTableModel(columns, 0);
 
         table = new JTable(tableModel);
         table.setRowHeight(25);
 
-        // Ẩn cột ID
         TableColumnModel columnModel = table.getColumnModel();
         TableColumn columnId = columnModel.getColumn(0);
         table.removeColumn(columnId);
@@ -134,7 +126,6 @@ public class QLLichTrinhPanel extends BasePanel {
         add(panelTable, BorderLayout.CENTER);
     }
 
-    // --- GETTERS & SETTERS ---
 
     public String getMaLichTrinh() {
         return fieldMaLichTrinh.getText().trim();
@@ -208,7 +199,6 @@ public class QLLichTrinhPanel extends BasePanel {
         return table;
     }
 
-    // --- LOGIC FORM ---
 
     public LichTrinh getLichTrinhFromForm() {
         String ma = getMaLichTrinh();
@@ -225,7 +215,7 @@ public class QLLichTrinhPanel extends BasePanel {
 
     public void startEditMode() {
         isEditMode = true;
-        fieldMaLichTrinh.setEnabled(false); // Không cho sửa mã khi đang edit
+        fieldMaLichTrinh.setEnabled(false);
         buttonThem.setEnabled(false);
         buttonSua.setEnabled(true);
         buttonXoa.setEnabled(true);
@@ -249,7 +239,6 @@ public class QLLichTrinhPanel extends BasePanel {
         table.clearSelection();
     }
 
-    // --- LISTENERS ---
     public void addThemListener(ActionListener l) {
         buttonThem.addActionListener(l);
     }

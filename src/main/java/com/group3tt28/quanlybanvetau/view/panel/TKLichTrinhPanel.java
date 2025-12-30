@@ -32,11 +32,9 @@ public class TKLichTrinhPanel extends BasePanel {
         setLayout(new BorderLayout(0, 0));
         setBackground(Color.WHITE);
 
-        // --- PANEL TOP ---
         JPanel panelTop = new JPanel(new BorderLayout(5, 5));
         panelTop.setBackground(Color.WHITE);
 
-        // 1. Tiêu đề
         JPanel panelTitle = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 5));
         panelTitle.setBackground(PRIMARY_COLOR);
         JLabel labelTitle = new JLabel("TRA CỨU LỊCH TRÌNH");
@@ -44,29 +42,21 @@ public class TKLichTrinhPanel extends BasePanel {
         labelTitle.setForeground(Color.WHITE);
         panelTitle.add(labelTitle);
 
-        // 2. Form tìm kiếm
-        // Sử dụng FlowLayout để các thành phần tự căn chỉnh
         JPanel panelForm = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         panelForm.setBackground(Color.WHITE);
 
-        // --- TẠO CÁC Ô NHẬP LIỆU (CUSTOM SIZE ĐỂ VỪA MÀN HÌNH) ---
 
-        // a. Mã lịch trình
         fieldTuKhoa = new JTextField();
         panelForm.add(createCompactInputField("Mã lịch trình", fieldTuKhoa));
 
-        // b. Tàu
         boxTau = new JComboBox<>();
-        // Set mẫu hiển thị để ComboBox có độ rộng chuẩn ngay cả khi chưa có dữ liệu
         boxTau.setPrototypeDisplayValue("--------------------");
         panelForm.add(createCompactInputField("Tàu", boxTau));
 
-        // c. Tuyến đường
         boxTuyenDuong = new JComboBox<>();
         boxTuyenDuong.setPrototypeDisplayValue("--------------------");
         panelForm.add(createCompactInputField("Tuyến đường", boxTuyenDuong));
 
-        // d. Trạng thái
         boxTrangThai = new JComboBox<>();
         boxTrangThai.addItem("Tất cả");
         for (TrangThaiLichTrinh tt : TrangThaiLichTrinh.values()) {
@@ -75,7 +65,6 @@ public class TKLichTrinhPanel extends BasePanel {
         panelForm.add(createCompactInputField("Trạng thái", boxTrangThai));
 
 
-        // 3. Buttons
         JPanel panelButtons = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 5));
         panelButtons.setBackground(Color.WHITE);
 
@@ -91,7 +80,6 @@ public class TKLichTrinhPanel extends BasePanel {
         panelTop.add(panelForm, BorderLayout.CENTER);
         panelTop.add(panelButtons, BorderLayout.SOUTH);
 
-        // --- PANEL TABLE ---
         Object[] columns = new Object[]{
                 "ID", "Mã LT", "Tàu", "Tuyến đường", "Ngày đi", "Ngày đến", "Trạng thái"
         };
@@ -100,7 +88,6 @@ public class TKLichTrinhPanel extends BasePanel {
         table = new JTable(model);
         table.setRowHeight(25);
 
-        // Ẩn cột ID
         TableColumnModel columnModel = table.getColumnModel();
         table.removeColumn(columnModel.getColumn(0));
 
@@ -129,31 +116,25 @@ public class TKLichTrinhPanel extends BasePanel {
         add(panelTable, BorderLayout.CENTER);
     }
 
-    /**
-     * Hàm hỗ trợ tạo ô nhập liệu nhỏ gọn hơn BasePanel để vừa 4 cột
-     */
+
     private JComponent createCompactInputField(String labelText, JComponent component) {
-        JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 0)); // Gap nhỏ hơn
+        JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 0));
         panel.setBackground(Color.WHITE);
-        // Kích thước Panel bao ngoài: Rộng 260, Cao 50 (Nhỏ hơn 300 của BasePanel)
         panel.setPreferredSize(new Dimension(260, 50));
 
         JLabel label = new JLabel(labelText);
         label.setFont(FONT_PLAIN);
         label.setForeground(Color.BLACK);
-        // Giảm chiều rộng label xuống 90
         label.setPreferredSize(new Dimension(90, 30));
         panel.add(label);
 
         component.setForeground(Color.BLACK);
-        // Giảm chiều rộng input xuống 150 (thay vì 200) để vừa hàng
         component.setPreferredSize(new Dimension(150, 30));
         panel.add(component);
 
         return panel;
     }
 
-    // --- GETTERS ---
     public String getTuKhoa() { return fieldTuKhoa.getText().trim(); }
     public JComboBox<Object> getBoxTau() { return boxTau; }
     public JComboBox<Object> getBoxTuyenDuong() { return boxTuyenDuong; }
@@ -164,7 +145,6 @@ public class TKLichTrinhPanel extends BasePanel {
     }
     public JTable getTable() { return table; }
 
-    // --- ACTIONS ---
     public void resetForm() {
         fieldTuKhoa.setText("");
         if (boxTau.getItemCount() > 0) boxTau.setSelectedIndex(0);

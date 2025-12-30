@@ -25,7 +25,6 @@ public class QLToaTauController {
     private final LoaiToaDAO loaiToaDAO;
     private final DefaultTableModel model;
 
-    // List này lưu dữ liệu từ DB
     private List<ToaTau> listToaTau;
     private int selectedRow = -1;
 
@@ -36,7 +35,6 @@ public class QLToaTauController {
         this.loaiToaDAO = new LoaiToaDAO();
         this.listToaTau = new ArrayList<>();
 
-        // Đăng ký sự kiện CRUD
         panel.addThemListener(new ThemListener());
         panel.addSuaListener(new SuaListener());
         panel.addXoaListener(new XoaListener());
@@ -86,7 +84,6 @@ public class QLToaTauController {
         model.fireTableDataChanged();
     }
 
-    // Helper: Lấy tên hiển thị từ ComboBox (tránh query DB lắt nhắt)
     private String getTenTauById(int id) {
         JComboBox<Tau> box = panel.getBoxTau();
         for (int i = 0; i < box.getItemCount(); i++) {
@@ -105,7 +102,6 @@ public class QLToaTauController {
         return String.valueOf(id);
     }
 
-    // --- CÁC CLASS LISTENER ---
 
     private class ThemListener implements ActionListener {
         @Override
@@ -146,7 +142,6 @@ public class QLToaTauController {
                 ToaTau ttMoi = panel.getToaTauFromForm();
                 ttMoi.setId(idToa);
 
-                // Check trùng (loại trừ chính id của toa đang sửa)
                 if (dao.checkTrung(ttMoi.getMaToa(), ttMoi.getIdTau(), idToa)) {
                     panel.showWarning("Mã toa '" + ttMoi.getMaToa() + "' đã tồn tại trên tàu này!");
                     return;
@@ -212,10 +207,8 @@ public class QLToaTauController {
 
             panel.startEditMode();
 
-            // Lấy ID từ cột ẩn (cột 0)
             int idToa = Integer.parseInt(panel.getTable().getValueAt(selectedRow, 0).toString());
 
-            // Tìm object trong list gốc
             ToaTau tt = null;
             for (ToaTau item : listToaTau) {
                 if (item.getId() == idToa) {
@@ -227,7 +220,6 @@ public class QLToaTauController {
 
             panel.setMaToa(tt.getMaToa());
 
-            // Set ComboBox Tàu
             JComboBox<Tau> boxTau = panel.getBoxTau();
             for (int i = 0; i < boxTau.getItemCount(); i++) {
                 if (boxTau.getItemAt(i).getId() == tt.getIdTau()) {
@@ -236,7 +228,6 @@ public class QLToaTauController {
                 }
             }
 
-            // Set ComboBox Loại Toa
             JComboBox<LoaiToa> boxLoai = panel.getBoxLoaiToa();
             for (int i = 0; i < boxLoai.getItemCount(); i++) {
                 if (boxLoai.getItemAt(i).getId() == tt.getIdLoaiToa()) {

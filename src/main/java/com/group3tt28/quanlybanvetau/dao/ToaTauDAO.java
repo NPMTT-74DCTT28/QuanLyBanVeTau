@@ -18,11 +18,7 @@ public class ToaTauDAO {
     private static final String COT_ID_TAU = "id_tau";
     private static final String COT_ID_LOAI_TOA = "id_loai_toa";
 
-    /**
-     * Check trùng mã toa trên cùng 1 tàu.
-     *
-     * @param idLoaiTru: ID bản ghi hiện tại (dùng khi Sửa), nếu Thêm mới thì truyền 0.
-     */
+
     public boolean checkTrung(String maToa, int idTau, int idLoaiTru) {
         String sql = "SELECT id FROM " + TEN_BANG
                 + " WHERE " + COT_MA_TOA + " = ? AND " + COT_ID_TAU + " = ? AND " + COT_ID + " != ?";
@@ -95,7 +91,6 @@ public class ToaTauDAO {
         return list;
     }
 
-    // --- HÀM TÌM KIẾM (ĐỂ DÙNG CHO TKToaTauController) ---
     public List<ToaTau> timKiemToaTau(String tuKhoa, int idTau, int idLoaiToa) {
         List<ToaTau> list = new ArrayList<>();
         List<Object> params = new ArrayList<>();
