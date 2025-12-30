@@ -2,6 +2,7 @@ package com.group3tt28.quanlybanvetau.controller;
 
 import com.group3tt28.quanlybanvetau.util.SessionManager;
 import com.group3tt28.quanlybanvetau.view.frame.MainFrame;
+import com.group3tt28.quanlybanvetau.view.panel.ThongTinCaNhanPanel;
 import com.group3tt28.quanlybanvetau.view.panel.*;
 
 import java.awt.event.ActionEvent;
@@ -225,7 +226,9 @@ public class MainController {
     private class ThongTinCaNhanListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-
+            ThongTinCaNhanPanel thongTinCaNhanPanel = new ThongTinCaNhanPanel();
+            mainFrame.showPanel(thongTinCaNhanPanel);
+            new ThongTinCaNhanController(thongTinCaNhanPanel);
         }
     }
 
