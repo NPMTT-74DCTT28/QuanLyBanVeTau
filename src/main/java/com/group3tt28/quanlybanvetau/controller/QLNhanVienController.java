@@ -15,10 +15,6 @@ import java.util.List;
 
 public class QLNhanVienController {
 
-    private static final String DINH_DANG_EMAIL = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
-    private static final String DINH_DANG_SDT = "^0\\d{9}";
-    private static final String DINH_DANG_MAT_KHAU = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*+=])(?=\\S+$).{8,20}$";
-
     private final QLNhanVienPanel panel;
     private final NhanVienDAO dao;
     private final DefaultTableModel tableModel;
@@ -35,7 +31,11 @@ public class QLNhanVienController {
         panel.addRefreshListener(new RefreshListener());
         panel.addTableMouseClickListener(new TableMouseClickListener());
 
-        this.tableModel = (DefaultTableModel) panel.getTable().getModel();
+        if (this.panel.getTable() != null) {
+            tableModel = (DefaultTableModel) this.panel.getTable().getModel();
+        } else {
+            tableModel = new DefaultTableModel();
+        }
 
         refresh();
     }
@@ -71,37 +71,6 @@ public class QLNhanVienController {
         }
     }
 
-    private String validateInput(NhanVien nhanVien) {
-        if (nhanVien.getMaNhanVien().isEmpty()) {
-            return "Vui lòng nhập mã nhân viên!";
-        }
-        if (nhanVien.getHoTen().isEmpty()) {
-            return "Vui lòng nhập họ tên";
-        }
-        if (nhanVien.getNgaySinh() == null) {
-            return "Vui lòng chọn ngày sinh";
-        }
-        if (nhanVien.getGioiTinh() == null || nhanVien.getGioiTinh().isEmpty()) {
-            return "Vui lòng chọn giới tính!";
-        }
-        if (nhanVien.getSdt().isEmpty()) {
-            return "Vui lòng nhập số điện thoại";
-        }
-        if (!nhanVien.getSdt().matches(DINH_DANG_SDT)) {
-            return "Độ dài hoặc định dạng SĐT không hợp lệ";
-        }
-        if (nhanVien.getEmail() != null && !nhanVien.getEmail().matches(DINH_DANG_EMAIL)) {
-            return "Định dạng email không hợp lệ";
-        }
-        if (nhanVien.getDiaChi().isEmpty()) {
-            return "Vui lòng nhập địa chỉ";
-        }
-        if (nhanVien.getVaiTro() == null || nhanVien.getVaiTro().isEmpty()) {
-            return "Vui lòng chọn vai trò";
-        }
-        return null;
-    }
-
     private class ThemNhanVienListener implements ActionListener {
 
         @Override
@@ -110,20 +79,8 @@ public class QLNhanVienController {
                 NhanVien nhanVien = panel.getNhanVienFromForm();
                 nhanVien.setId(0);
 
-                if (validateInput(nhanVien) != null) {
-                    panel.showWarning(validateInput(nhanVien));
-                    return;
-                }
-
-                if (nhanVien.getMatKhau() == null || nhanVien.getMatKhau().isEmpty()) {
-                    panel.showWarning("Vui lòng nhập mật khẩu cho nhân viên mới!");
-                    return;
-                }
-
-                if (!nhanVien.getMatKhau().matches(DINH_DANG_MAT_KHAU)) {
-                    panel.showWarning("Mật khẩu phải từ 8-20 ký tự, " +
-                            "bao gồm ít nhất 1 chữ hoa, 1 chữ thường, 1 ký tự đặc biệt " +
-                            "và không có khoảng trắng");
+                if (panel.thongBaoLoiDauVao() != null) {
+                    panel.showWarning(panel.thongBaoLoiDauVao());
                     return;
                 }
 
@@ -134,7 +91,9 @@ public class QLNhanVienController {
 
                 String matKhauTho = nhanVien.getMatKhau();
                 String matKhauBam = BamMatKhau.bamMatKhau(matKhauTho);
-                nhanVien.setMatKhau(matKhauBam);
+                if (matKhauBam != null) {
+                    nhanVien.setMatKhau(matKhauBam);
+                }
 
                 if (dao.insert(nhanVien)) {
                     panel.showMessage("Thêm nhân viên thành công!");
@@ -160,8 +119,8 @@ public class QLNhanVienController {
                 NhanVien nhanVien = panel.getNhanVienFromForm();
                 nhanVien.setId(Integer.parseInt(tableModel.getValueAt(selectedRow, 0).toString()));
 
-                if (validateInput(nhanVien) != null) {
-                    panel.showWarning(validateInput(nhanVien));
+                if (panel.thongBaoLoiDauVao() != null) {
+                    panel.showWarning(panel.thongBaoLoiDauVao());
                     return;
                 }
 
