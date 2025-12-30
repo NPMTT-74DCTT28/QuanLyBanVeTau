@@ -100,6 +100,9 @@ public class QLNhanVienController {
                 } else {
                     panel.showError("Thêm thất bại! Vui lòng kiểm tra lại!");
                 }
+            } catch (IllegalArgumentException ex) {
+                ex.printStackTrace();
+                panel.showError("Lỗi khi check mật khẩu: " + ex.getMessage());
             } catch (RuntimeException ex) {
                 ex.printStackTrace();
                 panel.showError("Lỗi hệ thống: " + ex.getMessage());

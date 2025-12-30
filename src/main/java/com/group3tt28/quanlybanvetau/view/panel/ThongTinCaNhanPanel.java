@@ -156,11 +156,11 @@ public class ThongTinCaNhanPanel extends BasePanel {
         int tuoi = Period.between(getNgaySinh(), LocalDate.now()).getYears();
         if (tuoi < 18) {
             chooserNgaySinh.requestFocus();
-            return "Nhân viên phải từ 18 tuổi trở lên!";
+            return "Tuổi phải từ 18 trở lên!";
         }
         if (tuoi > 65) {
             chooserNgaySinh.requestFocus();
-            return "Nhân viên đã quá tuổi lao động!";
+            return "Tuổi vượt quá tuổi lao động!";
         }
         if (getGioiTinh() == null) {
             boxGioiTinh.requestFocus();

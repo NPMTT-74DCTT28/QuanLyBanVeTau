@@ -266,7 +266,8 @@ public final class QLNhanVienPanel extends BasePanel {
             }
             if (!getMatKhau().matches(DinhDang.MAT_KHAU_MANH)) {
                 fieldMatKhau.requestFocus();
-                return "Mật khẩu phải từ 8-20 ký tự, bao gồm ít nhất 1 chữ hoa, " + "1 chữ thường, 1 chữ số, 1 ký tự đặc biệt và không chứa khoảng trắng!";
+                return "Mật khẩu phải từ 8-20 ký tự, bao gồm ít nhất 1 chữ hoa, "
+                        + "1 chữ thường, 1 chữ số, 1 ký tự đặc biệt và không chứa khoảng trắng!";
             }
         }
         if (getHoTen().isEmpty()) {
