@@ -21,14 +21,20 @@ public class VeTauDAO {
     private static final String COT_GIA_VE = "gia_ve";
     private static final String COT_TRANG_THAI = "trang_thai";
 
-    public boolean checkTrung(String maVe) {
+    public boolean checkTrung(String maVe, int idLichtrinh, int idGhe, int id) {
+
         if (maVe == null || maVe.trim().isEmpty()) {
             return false;
         }
         String sql = "Select " + COT_MA_VE + " from " + TEN_BANG
-                + " where " + COT_MA_VE + " = ?";
+                + " where " + COT_MA_VE + " = ? or " + " ( " + COT_ID_LICH_TRINH + " =? and " + COT_ID_GHE + " =?) and " + COT_ID + " !=?  "  ;
         try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, maVe);
+            ps.setInt(2, idLichtrinh);
+            ps.setInt(3,idGhe);
+            ps.setInt(4,id);
+
+
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     return true;
@@ -36,6 +42,29 @@ public class VeTauDAO {
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        }
+        return false;
+    }
+
+    public boolean isGheDaDat(int idLichTrinh, int idGhe, String maVeHienTai) {
+        // Nếu maVeHienTai != null, ta loại trừ vé đang sửa ra (dùng cho trường hợp Sửa)
+        String sql = "SELECT COUNT(*) FROM " + TEN_BANG +
+                " WHERE " + COT_ID_LICH_TRINH + " = ? AND " + COT_ID_GHE + " = ? " +
+                " AND " + COT_TRANG_THAI + " != N'Đã hủy' " +
+                " AND " + COT_MA_VE + " != ?";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, idLichTrinh);
+            ps.setInt(2, idGhe);
+            ps.setString(3, maVeHienTai == null ? "" : maVeHienTai);
+
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return false;
     }
@@ -81,7 +110,6 @@ public class VeTauDAO {
                 + COT_ID_KH + " =  ?, "
                 + COT_ID_LICH_TRINH + " =  ?, "
                 + COT_ID_GHE + " =  ?, "
-                + COT_ID_NHAN_VIEN + " =  ?, "
                 + COT_NGAY_DAT + " =  ?, "
                 + COT_GIA_VE + " =  ?, "
                 + COT_TRANG_THAI + " =  ?"
@@ -93,18 +121,17 @@ public class VeTauDAO {
         }
 
         try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, veTau.getMaVe());
-            ps.setInt(2, veTau.getIdKhachHang());
-            ps.setInt(3, veTau.getIdLichTrinh());
-            ps.setInt(4, veTau.getIdGhe());
-            ps.setInt(5, veTau.getIdNhanVien());
-            ps.setTimestamp(6, sqlNgayDat);
+            ps.setInt(1, veTau.getIdKhachHang());
+            ps.setInt(2, veTau.getIdLichTrinh());
+            ps.setInt(3, veTau.getIdGhe());
+            ps.setTimestamp(4, sqlNgayDat);
+            ps.setDouble(5, veTau.getGiaVe());
+            ps.setString(6, veTau.getTrangThaiVe());
             ps.setString(7, veTau.getMaVe());
-            ps.setString(8, veTau.getTrangThaiVe());
 
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
-            throw new RuntimeException("Xay ra loi he thong khi cap nhat ve tau: " + e.getMessage(), e);
+            throw new RuntimeException("Lỗi hệ thống: " + e.getMessage(), e);
         }
     }
 
@@ -142,6 +169,39 @@ public class VeTauDAO {
 
                 VeTau vt = new VeTau(id, maVe, idKhachHang, idLichTrinh, idGhe, idNhanVien, ngayDat, giaVe, trangThai);
                 list.add(vt);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Co loi khi load du lieu ve tau: " + e.getMessage(), e);
+        }
+        return list;
+    }
+
+    public List<VeTau> timkiem(String tuKhoa) {
+        List<VeTau> list = new ArrayList<>();
+        String sql = ("SELECT * FROM " + TEN_BANG
+                + " WHERE " + COT_MA_VE + " LIKE ? OR "
+                + COT_ID_LICH_TRINH + " LIKE ? ");
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, "%" + tuKhoa + "%");
+            ps.setString(2, "%" + tuKhoa + "%");
+            try (ResultSet rs = ps.executeQuery()){
+                while (rs.next()) {
+                    Timestamp sqlNgayDat = rs.getTimestamp(COT_NGAY_DAT);
+
+                    int id = rs.getInt(COT_ID);
+                    String maVe = rs.getString(COT_MA_VE);
+                    int idKhachHang = rs.getInt(COT_ID_KH);
+                    int idLichTrinh = rs.getInt(COT_ID_LICH_TRINH);
+                    int idGhe = rs.getInt(COT_ID_GHE);
+                    int idNhanVien = rs.getInt(COT_ID_NHAN_VIEN);
+                    LocalDateTime ngayDat = (sqlNgayDat != null) ? sqlNgayDat.toLocalDateTime() : null;
+                    double giaVe = rs.getDouble(COT_GIA_VE);
+                    String trangThai = rs.getString(COT_TRANG_THAI);
+
+                    VeTau vt = new VeTau(id, maVe, idKhachHang, idLichTrinh, idGhe, idNhanVien, ngayDat, giaVe, trangThai);
+                    list.add(vt);
+            }
             }
         } catch (SQLException e) {
             throw new RuntimeException("Co loi khi load du lieu ve tau: " + e.getMessage(), e);

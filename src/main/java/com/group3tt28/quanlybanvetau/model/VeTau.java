@@ -1,5 +1,6 @@
 package com.group3tt28.quanlybanvetau.model;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class VeTau {
@@ -13,9 +14,6 @@ public class VeTau {
     private LocalDateTime ngayDat;
     private double giaVe;
     private String trangThai;
-
-    public VeTau() {
-    }
 
     public VeTau(String maVe, int idKhachHang, int idLichTrinh, int idGhe, int idNhanVien, LocalDateTime ngayDat, double giaVe, String trangThai) {
         this.maVe = maVe;
