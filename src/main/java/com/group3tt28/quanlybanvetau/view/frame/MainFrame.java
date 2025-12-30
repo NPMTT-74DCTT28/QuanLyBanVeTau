@@ -150,15 +150,27 @@ public final class MainFrame extends BaseFrame {
 
     public void hienMenuTheoQuyen(boolean isAdmin, boolean isLoggedIn) {
         menuNhanVien.setVisible(isAdmin);
-        menuTau.setVisible(isAdmin);
+
+        qlTau.setVisible(isAdmin);
+        tkTau.setVisible(isLoggedIn);
+
         menuLoaiToa.setVisible(isAdmin);
-        menuToaTau.setVisible(isAdmin);
+
+        qlToaTau.setVisible(isAdmin);
+        tkToaTau.setVisible(isLoggedIn);
+
         menuGhe.setVisible(isAdmin);
-        menuGaTau.setVisible(isAdmin);
-        menuTuyenDuong.setVisible(isAdmin);
+
+        qlGaTau.setVisible(isAdmin);
+        tkGaTau.setVisible(isLoggedIn);
+
+        qlTuyenDuong.setVisible(isAdmin);
+        tkTuyenDuong.setVisible(isLoggedIn);
 
         menuLichTrinh.setVisible(isLoggedIn);
+
         menuKhachHang.setVisible(isLoggedIn);
+
         menuVeTau.setVisible(isLoggedIn);
     }
 
