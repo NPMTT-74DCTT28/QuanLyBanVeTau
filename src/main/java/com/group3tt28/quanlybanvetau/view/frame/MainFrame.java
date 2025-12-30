@@ -87,8 +87,8 @@ public final class MainFrame extends BaseFrame {
 
         qlToaTau = new JMenuItem("Quản lý thông tin");
         tkToaTau = new JMenuItem("Tra cứu");
-        menuTau.add(qlToaTau);
-        menuTau.add(tkToaTau);
+        menuToaTau.add(qlToaTau);
+        menuToaTau.add(tkToaTau);
 
         qlGhe = new JMenuItem("Quản lý thông tin");
         tkGhe = new JMenuItem("Tra cứu");
@@ -151,19 +151,23 @@ public final class MainFrame extends BaseFrame {
     public void hienMenuTheoQuyen(boolean isAdmin, boolean isLoggedIn) {
         menuNhanVien.setVisible(isAdmin);
 
+        menuTau.setVisible(isLoggedIn);
         qlTau.setVisible(isAdmin);
         tkTau.setVisible(isLoggedIn);
 
         menuLoaiToa.setVisible(isAdmin);
 
+        menuToaTau.setVisible(isLoggedIn);
         qlToaTau.setVisible(isAdmin);
         tkToaTau.setVisible(isLoggedIn);
 
         menuGhe.setVisible(isAdmin);
 
+        menuGaTau.setVisible(isLoggedIn);
         qlGaTau.setVisible(isAdmin);
         tkGaTau.setVisible(isLoggedIn);
 
+        menuTuyenDuong.setVisible(isLoggedIn);
         qlTuyenDuong.setVisible(isAdmin);
         tkTuyenDuong.setVisible(isLoggedIn);
 
@@ -172,6 +176,10 @@ public final class MainFrame extends BaseFrame {
         menuKhachHang.setVisible(isLoggedIn);
 
         menuVeTau.setVisible(isLoggedIn);
+
+        thongTinCaNhan.setVisible(isLoggedIn);
+        doiMatKhau.setVisible(isLoggedIn);
+        dangXuat.setVisible(isLoggedIn);
     }
 
     public void addNhanVienListener(ActionListener qlListener, ActionListener tkListener) {

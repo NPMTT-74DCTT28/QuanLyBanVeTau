@@ -17,7 +17,7 @@ public class MainController {
 
     public MainController(MainFrame frame) {
         this.mainFrame = frame;
-        isLoggedIn = SessionManager.getCurrentUser() != null;
+        this.isLoggedIn = SessionManager.getCurrentUser() != null;
         this.isAdmin = SessionManager.isAdmin();
 
         mainFrame.addNhanVienListener(new QLNhanVienListener(), new TKNhanVienListener());
@@ -52,168 +52,126 @@ public class MainController {
     private class QLNhanVienListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (isAdmin) {
-                QLNhanVienPanel qlNhanVienPanel = new QLNhanVienPanel();
-                mainFrame.showPanel(qlNhanVienPanel);
-                new QLNhanVienController(qlNhanVienPanel);
-            }
-            mainFrame.showWarning("Bạn không có quyền thực hiện thao tác này!");
+            QLNhanVienPanel qlNhanVienPanel = new QLNhanVienPanel();
+            mainFrame.showPanel(qlNhanVienPanel);
+            new QLNhanVienController(qlNhanVienPanel);
         }
     }
 
     private class TKNhanVienListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (isAdmin) {
-                TKNhanVienPanel panel = new TKNhanVienPanel();
-                mainFrame.showPanel(panel);
-                new TKNhanVienController(panel);
-            }
-            mainFrame.showWarning("Bạn không có quyền thực hiện thao tác này!");
+            TKNhanVienPanel panel = new TKNhanVienPanel();
+            mainFrame.showPanel(panel);
+            new TKNhanVienController(panel);
         }
     }
 
     private class QLTauListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (isAdmin) {
-                QLTauPanel panel = new QLTauPanel();
-                mainFrame.showPanel(panel);
-                new QLTauController(panel);
-            }
-            mainFrame.showWarning("Bạn không có quyền thực hiện thao tác này!");
+            QLTauPanel panel = new QLTauPanel();
+            mainFrame.showPanel(panel);
+            new QLTauController(panel);
         }
     }
 
     private class TKTauListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (isAdmin) {
-                TKTauPanel panel = new TKTauPanel();
-                mainFrame.showPanel(panel);
-                new TKTauController(panel);
-            }
-            mainFrame.showWarning("Bạn không có quyền thực hiện thao tác này!");
+            TKTauPanel panel = new TKTauPanel();
+            mainFrame.showPanel(panel);
+            new TKTauController(panel);
         }
     }
 
     private class QLLoaiToaListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (isAdmin) {
-                QLLoaiToaPanel panel = new QLLoaiToaPanel();
-                mainFrame.showPanel(panel);
-                new QLLoaiToaController(panel);
-            }
-            mainFrame.showWarning("Bạn không có quyền thực hiện thao tác này!");
+            QLLoaiToaPanel panel = new QLLoaiToaPanel();
+            mainFrame.showPanel(panel);
+            new QLLoaiToaController(panel);
         }
     }
 
     private class TKLoaiToaListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (isAdmin) {
-                TKLoaiToaPanel panel = new TKLoaiToaPanel();
-                mainFrame.showPanel(panel);
-                new TKLoaiToaController(panel);
-            }
-            mainFrame.showWarning("Bạn không có quyền thực hiện thao tác này!");
+            TKLoaiToaPanel panel = new TKLoaiToaPanel();
+            mainFrame.showPanel(panel);
+            new TKLoaiToaController(panel);
         }
     }
 
     private class QLToaTauListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (isAdmin) {
-                QLToaTauPanel panel = new QLToaTauPanel();
-                mainFrame.showPanel(panel);
-                new QLToaTauController(panel);
-            }
-            mainFrame.showWarning("Bạn không có quyền thực hiện thao tác này!");
+            QLToaTauPanel panel = new QLToaTauPanel();
+            mainFrame.showPanel(panel);
+            new QLToaTauController(panel);
         }
     }
 
     private class TKToaTauListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (isAdmin) {
-                TKToaTauPanel panel = new TKToaTauPanel();
-                mainFrame.showPanel(panel);
-                new TKToaTauController(panel);
-            }
-            mainFrame.showWarning("Bạn không có quyền thực hiện thao tác này!");
+            TKToaTauPanel panel = new TKToaTauPanel();
+            mainFrame.showPanel(panel);
+            new TKToaTauController(panel);
         }
     }
 
     private class QLGheListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (isAdmin) {
-                QLGhePanel panel = new QLGhePanel();
-                mainFrame.showPanel(panel);
-                new QLGheController(panel);
-            }
-            mainFrame.showWarning("Bạn không có quyền thực hiện thao tác này!");
+            QLGhePanel panel = new QLGhePanel();
+            mainFrame.showPanel(panel);
+            new QLGheController(panel);
         }
     }
 
     private class TKGheListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (isAdmin) {
-                TKGhePanel panel = new TKGhePanel();
-                mainFrame.showPanel(panel);
-                new TKGheController(panel);
-            }
-            mainFrame.showWarning("Bạn không có quyền thực hiện thao tác này!");
+            TKGhePanel panel = new TKGhePanel();
+            mainFrame.showPanel(panel);
+            new TKGheController(panel);
         }
     }
 
     private class QLGaTauListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (isAdmin) {
-                QLGaTauPanel panel = new QLGaTauPanel();
-                mainFrame.showPanel(panel);
-                new QLGaTauController(panel);
-            }
-            mainFrame.showWarning("Bạn không có quyền thực hiện thao tác này!");
+            QLGaTauPanel panel = new QLGaTauPanel();
+            mainFrame.showPanel(panel);
+            new QLGaTauController(panel);
         }
     }
 
     private class TKGaTauListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (isAdmin) {
-                TKGaTauPanel panel = new TKGaTauPanel();
-                mainFrame.showPanel(panel);
-                new TKGaTauController(panel);
-            }
-            mainFrame.showWarning("Bạn không có quyền thực hiện thao tác này!");
+            TKGaTauPanel panel = new TKGaTauPanel();
+            mainFrame.showPanel(panel);
+            new TKGaTauController(panel);
         }
     }
 
     private class QLTuyenDuongListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (isAdmin) {
-                QLTuyenDuongPanel panel = new QLTuyenDuongPanel();
-                mainFrame.showPanel(panel);
-                new QLTuyenDuongController(panel);
-            }
-            mainFrame.showWarning("Bạn không có quyền thực hiện thao tác này!");
+            QLTuyenDuongPanel panel = new QLTuyenDuongPanel();
+            mainFrame.showPanel(panel);
+            new QLTuyenDuongController(panel);
         }
     }
 
     private class TKTuyenDuongListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (isAdmin) {
-                TKTuyenDuongPanel panel = new TKTuyenDuongPanel();
-                mainFrame.showPanel(panel);
-                new TKTuyenDuongController(panel);
-            }
-            mainFrame.showWarning("Bạn không có quyền thực hiện thao tác này!");
+            TKTuyenDuongPanel panel = new TKTuyenDuongPanel();
+            mainFrame.showPanel(panel);
+            new TKTuyenDuongController(panel);
         }
     }
 
