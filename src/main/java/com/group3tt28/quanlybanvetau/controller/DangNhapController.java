@@ -54,6 +54,9 @@ public class DangNhapController {
                 MainFrame mainFrame = new MainFrame();
                 new MainController(mainFrame);
                 frame.dispose();
+            } catch (IllegalArgumentException ex) {
+                ex.printStackTrace();
+                frame.showError("Lỗi kiểm tra mật khẩu: " + ex.getMessage());
             } catch (RuntimeException ex) {
                 ex.printStackTrace();
                 frame.showError("Lỗi hệ thống: " + ex.getMessage());

@@ -18,10 +18,15 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
 import java.time.LocalDate;
+import java.time.Period;
 import java.time.ZoneId;
 import java.util.Date;
 
 public final class QLNhanVienPanel extends BasePanel {
+
+    private static final String DINH_DANG_SDT = "^0\\d{9}";
+    private static final String DINH_DANG_EMAIL = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
+    private static final String MAT_KHAU_MANH = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*+=])(?=\\S+$).{8,20}$";
 
     private JTextField fieldMaNhanVien;
     private JPasswordField fieldMatKhau;
@@ -120,8 +125,7 @@ public final class QLNhanVienPanel extends BasePanel {
 
         JScrollPane scrollPane = new JScrollPane(table);
 
-        TitledBorder tableBorder = new TitledBorder(new LineBorder(Color.LIGHT_GRAY), "Danh sách nhân viên",
-                TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, FONT_BOLD, Color.BLACK);
+        TitledBorder tableBorder = new TitledBorder(new LineBorder(Color.LIGHT_GRAY), "Danh sách nhân viên", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, FONT_BOLD, Color.BLACK);
         scrollPane.setBorder(new CompoundBorder(new EmptyBorder(5, 5, 5, 5), tableBorder));
         scrollPane.setForeground(Color.BLACK);
         scrollPane.setBackground(Color.WHITE);
@@ -153,7 +157,7 @@ public final class QLNhanVienPanel extends BasePanel {
     }
 
     public void setMaNhanVien(String maNhanVien) {
-        fieldMaNhanVien.setText(maNhanVien);
+        fieldMaNhanVien.setText(maNhanVien != null ? maNhanVien : "");
     }
 
     public String getMatKhau() {
@@ -165,38 +169,39 @@ public final class QLNhanVienPanel extends BasePanel {
     }
 
     public void setHoTen(String hoTen) {
-        fieldHoTen.setText(hoTen);
+        fieldHoTen.setText(hoTen != null ? hoTen : "");
     }
 
     public LocalDate getNgaySinh() {
-        if (chooserNgaySinh.getDate() == null) {
-            return null;
+        if (chooserNgaySinh.getDate() != null) {
+            return chooserNgaySinh.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         }
-        return chooserNgaySinh.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        return null;
     }
 
     public void setNgaySinh(LocalDate localDate) {
-        if (localDate == null) {
-            chooserNgaySinh.setDate(null);
-        } else {
+        if (localDate != null) {
             chooserNgaySinh.setDate(Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+        } else {
+            chooserNgaySinh.setDate(null);
         }
     }
 
     public String getGioiTinh() {
         Object selectedItem = boxGioiTinh.getSelectedItem();
-        if (selectedItem == null || selectedItem.toString().equalsIgnoreCase("Tất cả")) {
-            return null;
+        if (selectedItem != null && !("Tất cả").equalsIgnoreCase(selectedItem.toString())) {
+            return selectedItem.toString();
         }
-        return selectedItem.toString();
+        return null;
     }
 
     public void setGioiTinh(String label) {
-        if (label == null) return;
-        for (int i = 0; i < boxGioiTinh.getItemCount(); i++) {
-            if (boxGioiTinh.getItemAt(i).toString().equals(label)) {
-                boxGioiTinh.setSelectedIndex(i);
-                return;
+        if (label != null) {
+            for (int i = 0; i < boxGioiTinh.getItemCount(); i++) {
+                if (boxGioiTinh.getItemAt(i).toString().equals(label)) {
+                    boxGioiTinh.setSelectedIndex(i);
+                    return;
+                }
             }
         }
     }
@@ -206,15 +211,15 @@ public final class QLNhanVienPanel extends BasePanel {
     }
 
     public void setSdt(String sdt) {
-        fieldSdt.setText(sdt);
+        fieldSdt.setText(sdt != null ? sdt : "");
     }
 
     public String getEmail() {
-        return fieldEmail.getText().trim().isEmpty() ? null : fieldEmail.getText().trim();
+        return !fieldEmail.getText().trim().isEmpty() ? fieldEmail.getText().trim() : null;
     }
 
     public void setEmail(String email) {
-        fieldEmail.setText(email);
+        fieldEmail.setText(email != null ? email : "");
     }
 
     public String getDiaChi() {
@@ -222,29 +227,103 @@ public final class QLNhanVienPanel extends BasePanel {
     }
 
     public void setDiaChi(String diaChi) {
-        fieldDiaChi.setText(diaChi);
+        fieldDiaChi.setText(diaChi != null ? diaChi : "");
     }
 
     public String getVaiTro() {
         Object selectedItem = boxVaiTro.getSelectedItem();
-        if (selectedItem == null || selectedItem.toString().equalsIgnoreCase("Tất cả")) {
-            return null;
+        if (selectedItem != null && !selectedItem.toString().equalsIgnoreCase("Tất cả")) {
+            return selectedItem.toString();
         }
-        return selectedItem.toString();
+        return null;
     }
 
     public void setVaiTro(String label) {
-        if (label == null) return;
-        for (int i = 0; i < boxVaiTro.getItemCount(); i++) {
-            if (boxVaiTro.getItemAt(i).toString().equals(label)) {
-                boxVaiTro.setSelectedIndex(i);
-                return;
+        if (label != null) {
+            for (int i = 0; i < boxVaiTro.getItemCount(); i++) {
+                if (boxVaiTro.getItemAt(i).toString().equals(label)) {
+                    boxVaiTro.setSelectedIndex(i);
+                    return;
+                }
             }
         }
     }
 
     public JTable getTable() {
-        return table;
+        return table != null ? table : null;
+    }
+
+    public String thongBaoLoiDauVao() {
+        if (getMaNhanVien().isEmpty()) {
+            fieldMaNhanVien.requestFocus();
+            return "Mã nhân viên không được để trống!";
+        }
+        if (getMaNhanVien().length() > 20) {
+            fieldMaNhanVien.requestFocus();
+            return "Mã nhân viên quá dài (tối đa 20 ký tự)";
+        }
+        if (!isEditMode) {
+            if (getMatKhau().isEmpty()) {
+                fieldMatKhau.requestFocus();
+                return "Vui lòng nhập mật khẩu cho nhân viên mới!";
+            }
+            if (!getMatKhau().matches(MAT_KHAU_MANH)) {
+                fieldMatKhau.requestFocus();
+                return "Mật khẩu phải từ 8-20 ký tự, bao gồm ít nhất 1 chữ hoa, " + "1 chữ thường, 1 chữ số, 1 ký tự đặc biệt và không chứa khoảng trắng!";
+            }
+        }
+        if (getHoTen().isEmpty()) {
+            fieldHoTen.requestFocus();
+            return "Họ tên không được để trống!";
+        }
+        if (getHoTen().length() > 50) {
+            fieldHoTen.requestFocus();
+            return "Họ tên quá dài (tối đa 50 ký tự)!";
+        }
+        if (getNgaySinh() == null) {
+            chooserNgaySinh.requestFocus();
+            return "Vui lòng chọn ngày sinh!";
+        }
+        int tuoi = Period.between(getNgaySinh(), LocalDate.now()).getYears();
+        if (tuoi < 18) {
+            chooserNgaySinh.requestFocus();
+            return "Nhân viên phải từ 18 tuổi trở lên!";
+        }
+        if (tuoi > 65) {
+            chooserNgaySinh.requestFocus();
+            return "Nhân viên đã quá tuổi lao động!";
+        }
+        if (getGioiTinh() == null) {
+            boxGioiTinh.requestFocus();
+            return "Vui lòng chọn giới tính!";
+        }
+        if (getSdt().isEmpty()) {
+            fieldSdt.requestFocus();
+            return "Số điện thoại không được để trống!";
+        }
+        if (!getSdt().matches(DINH_DANG_SDT)) {
+            fieldSdt.requestFocus();
+            return "Số điện thoại phải bắt đầu bằng số 0 và có 10 chữ số!";
+        }
+        if (getEmail() != null) {
+            if (getEmail().length() > 100) {
+                fieldEmail.requestFocus();
+                return "Email quá dài (tối đa 100 ký tự)!";
+            }
+            if (!getEmail().matches(DINH_DANG_EMAIL)) {
+                fieldEmail.requestFocus();
+                return "Định dạng email không hợp lệ!";
+            }
+        }
+        if (getDiaChi().isEmpty()) {
+            fieldDiaChi.requestFocus();
+            return "Địa chỉ không được để trống!";
+        }
+        if (getVaiTro() == null) {
+            boxVaiTro.requestFocus();
+            return "Vui lòng chọn vai trò!";
+        }
+        return null;
     }
 
     public NhanVien getNhanVienFromForm() {
