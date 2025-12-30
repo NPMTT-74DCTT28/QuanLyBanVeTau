@@ -15,6 +15,10 @@ import java.util.List;
 
 public class QLNhanVienController {
 
+    private static final String DINH_DANG_EMAIL = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+    private static final String DINH_DANG_SDT = "^0\\d{9}";
+    private static final String DINH_DANG_MAT_KHAU = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*+=])(?=\\S+$).{8,20}$";
+
     private final QLNhanVienPanel panel;
     private final NhanVienDAO dao;
     private final DefaultTableModel tableModel;
@@ -28,6 +32,7 @@ public class QLNhanVienController {
         panel.addSuaNhanVienListener(new SuaNhanVienListener());
         panel.addXoaNhanVienListener(new XoaNhanVienListener());
         panel.addResetFormListener(new ResetFormListener());
+        panel.addRefreshListener(new RefreshListener());
         panel.addTableMouseClickListener(new TableMouseClickListener());
 
         this.tableModel = (DefaultTableModel) panel.getTable().getModel();
@@ -82,6 +87,12 @@ public class QLNhanVienController {
         if (nhanVien.getSdt().isEmpty()) {
             return "Vui lòng nhập số điện thoại";
         }
+        if (!nhanVien.getSdt().matches(DINH_DANG_SDT)) {
+            return "Độ dài hoặc định dạng SĐT không hợp lệ";
+        }
+        if (nhanVien.getEmail() != null && !nhanVien.getEmail().matches(DINH_DANG_EMAIL)) {
+            return "Định dạng email không hợp lệ";
+        }
         if (nhanVien.getDiaChi().isEmpty()) {
             return "Vui lòng nhập địa chỉ";
         }
@@ -109,6 +120,13 @@ public class QLNhanVienController {
                     return;
                 }
 
+                if (!nhanVien.getMatKhau().matches(DINH_DANG_MAT_KHAU)) {
+                    panel.showWarning("Mật khẩu phải từ 8-20 ký tự, " +
+                            "bao gồm ít nhất 1 chữ hoa, 1 chữ thường, 1 ký tự đặc biệt " +
+                            "và không có khoảng trắng");
+                    return;
+                }
+
                 if (dao.checkTrung(nhanVien.getMaNhanVien(), nhanVien.getSdt(), nhanVien.getId())) {
                     panel.showWarning("Mã nhân viên hoặc SĐT đã tồn tại!");
                     return;
@@ -117,10 +135,6 @@ public class QLNhanVienController {
                 String matKhauTho = nhanVien.getMatKhau();
                 String matKhauBam = BamMatKhau.bamMatKhau(matKhauTho);
                 nhanVien.setMatKhau(matKhauBam);
-
-                if (nhanVien.getEmail().isEmpty()) {
-                    nhanVien.setEmail(null);
-                }
 
                 if (dao.insert(nhanVien)) {
                     panel.showMessage("Thêm nhân viên thành công!");
@@ -154,10 +168,6 @@ public class QLNhanVienController {
                 if (dao.checkTrung(nhanVien.getMaNhanVien(), nhanVien.getSdt(), nhanVien.getId())) {
                     panel.showWarning("SĐT đã được sử dụng!");
                     return;
-                }
-
-                if (nhanVien.getEmail().isEmpty()) {
-                    nhanVien.setEmail(null);
                 }
 
                 if (panel.showConfirm("Bạn muốn cập nhật thông tin nhân viên " + nhanVien.getMaNhanVien() + "?")) {
@@ -212,6 +222,13 @@ public class QLNhanVienController {
         @Override
         public void actionPerformed(ActionEvent e) {
             panel.resetForm();
+        }
+    }
+
+    private class RefreshListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            refresh();
         }
     }
 

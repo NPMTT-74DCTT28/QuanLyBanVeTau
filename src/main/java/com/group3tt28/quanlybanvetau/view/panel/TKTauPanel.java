@@ -42,7 +42,7 @@ public class TKTauPanel extends BasePanel {
         panelForm.setBackground(Color.WHITE);
 
         fieldTuKhoa = new JTextField();
-        panelForm.add(createInputField("Mã tàu / Tên Tàu", fieldTuKhoa, Color.WHITE));
+        panelForm.add(createInputField("<html>Mã tàu /<br>Tên Tàu</html>", fieldTuKhoa, Color.WHITE));
 
         buttonTimkiem = createStyledButton("Tìm kiếm", new Dimension(100, 40), PRIMARY_COLOR, Color.WHITE);
         buttonReset = createStyledButton("Reset form", new Dimension(110, 40), PRIMARY_COLOR, Color.WHITE);
