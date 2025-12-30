@@ -2,7 +2,7 @@ package com.group3tt28.quanlybanvetau.controller;
 
 import com.group3tt28.quanlybanvetau.dao.KhachHangDAO;
 import com.group3tt28.quanlybanvetau.model.KhachHang;
-import com.group3tt28.quanlybanvetau.view.panel.KhachHangPanel;
+import com.group3tt28.quanlybanvetau.view.panel.QLKhachHangPanel;
 
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
@@ -12,14 +12,14 @@ import java.awt.event.MouseListener;
 import java.time.LocalDate;
 import java.util.List;
 
-public class KhachHangController {
+public class QLKhachHangController {
 
-    private final KhachHangPanel panel;
+    private final QLKhachHangPanel panel;
     private final KhachHangDAO dao;
     private final DefaultTableModel model;
     private int selectedRow;
 
-    public KhachHangController(KhachHangPanel panel) {
+    public QLKhachHangController(QLKhachHangPanel panel) {
         this.dao = new KhachHangDAO();
 
         this.panel = panel;

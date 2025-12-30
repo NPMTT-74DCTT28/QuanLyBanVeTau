@@ -3,6 +3,7 @@ package com.group3tt28.quanlybanvetau.view.panel;
 import com.group3tt28.quanlybanvetau.enums.GioiTinh;
 import com.group3tt28.quanlybanvetau.enums.VaiTro;
 import com.group3tt28.quanlybanvetau.model.NhanVien;
+import com.group3tt28.quanlybanvetau.util.DinhDang;
 import com.toedter.calendar.JDateChooser;
 
 import javax.swing.*;
@@ -23,10 +24,6 @@ import java.time.ZoneId;
 import java.util.Date;
 
 public final class QLNhanVienPanel extends BasePanel {
-
-    private static final String DINH_DANG_SDT = "^0\\d{9}";
-    private static final String DINH_DANG_EMAIL = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
-    private static final String MAT_KHAU_MANH = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*+=])(?=\\S+$).{8,20}$";
 
     private JTextField fieldMaNhanVien;
     private JPasswordField fieldMatKhau;
@@ -267,9 +264,10 @@ public final class QLNhanVienPanel extends BasePanel {
                 fieldMatKhau.requestFocus();
                 return "Vui lòng nhập mật khẩu cho nhân viên mới!";
             }
-            if (!getMatKhau().matches(MAT_KHAU_MANH)) {
+            if (!getMatKhau().matches(DinhDang.MAT_KHAU_MANH)) {
                 fieldMatKhau.requestFocus();
-                return "Mật khẩu phải từ 8-20 ký tự, bao gồm ít nhất 1 chữ hoa, " + "1 chữ thường, 1 chữ số, 1 ký tự đặc biệt và không chứa khoảng trắng!";
+                return "Mật khẩu phải từ 8-20 ký tự, bao gồm ít nhất 1 chữ hoa, "
+                        + "1 chữ thường, 1 chữ số, 1 ký tự đặc biệt và không chứa khoảng trắng!";
             }
         }
         if (getHoTen().isEmpty()) {
@@ -301,7 +299,7 @@ public final class QLNhanVienPanel extends BasePanel {
             fieldSdt.requestFocus();
             return "Số điện thoại không được để trống!";
         }
-        if (!getSdt().matches(DINH_DANG_SDT)) {
+        if (!getSdt().matches(DinhDang.DINH_DANG_SDT)) {
             fieldSdt.requestFocus();
             return "Số điện thoại phải bắt đầu bằng số 0 và có 10 chữ số!";
         }
@@ -310,7 +308,7 @@ public final class QLNhanVienPanel extends BasePanel {
                 fieldEmail.requestFocus();
                 return "Email quá dài (tối đa 100 ký tự)!";
             }
-            if (!getEmail().matches(DINH_DANG_EMAIL)) {
+            if (!getEmail().matches(DinhDang.DINH_DANG_EMAIL)) {
                 fieldEmail.requestFocus();
                 return "Định dạng email không hợp lệ!";
             }

@@ -1,8 +1,9 @@
 package com.group3tt28.quanlybanvetau.view.panel;
 
-import com.group3tt28.quanlybanvetau.model.*;
-import com.group3tt28.quanlybanvetau.util.SessionManager;
-import com.toedter.calendar.JDateChooser;
+import com.group3tt28.quanlybanvetau.model.Ghe;
+import com.group3tt28.quanlybanvetau.model.KhachHang;
+import com.group3tt28.quanlybanvetau.model.LichTrinh;
+import com.group3tt28.quanlybanvetau.model.VeTau;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -12,13 +13,12 @@ import javax.swing.table.TableColumnModel;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
-import java.util.Date;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 
-public class VeTauPanel extends BasePanel{
+public class QLVeTauPanel extends BasePanel {
 
     private JTextField fieldMaVe;
     private JComboBox <Integer> comboKhachHang;
@@ -32,7 +32,9 @@ public class VeTauPanel extends BasePanel{
     private JTable table;
 
 
-    public VeTauPanel() { initComponents();}
+    public QLVeTauPanel() {
+        initComponents();
+    }
     @Override
     protected void initComponents() {
         setLayout(new BorderLayout());

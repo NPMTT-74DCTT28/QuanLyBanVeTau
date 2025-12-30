@@ -41,8 +41,6 @@ public class QLNhanVienController {
     }
 
     private void refresh() {
-        panel.resetForm();
-
         try {
             List<NhanVien> list = dao.getAll();
             tableModel.setRowCount(0);
@@ -102,6 +100,9 @@ public class QLNhanVienController {
                 } else {
                     panel.showError("Thêm thất bại! Vui lòng kiểm tra lại!");
                 }
+            } catch (IllegalArgumentException ex) {
+                ex.printStackTrace();
+                panel.showError("Lỗi khi check mật khẩu: " + ex.getMessage());
             } catch (RuntimeException ex) {
                 ex.printStackTrace();
                 panel.showError("Lỗi hệ thống: " + ex.getMessage());
@@ -116,6 +117,11 @@ public class QLNhanVienController {
         @Override
         public void actionPerformed(ActionEvent e) {
             try {
+                if (selectedRow == -1) {
+                    panel.showWarning("Bạn chưa chọn nhân viên nào để sửa thông tin!");
+                    return;
+                }
+
                 NhanVien nhanVien = panel.getNhanVienFromForm();
                 nhanVien.setId(Integer.parseInt(tableModel.getValueAt(selectedRow, 0).toString()));
 
@@ -151,6 +157,10 @@ public class QLNhanVienController {
         @Override
         public void actionPerformed(ActionEvent e) {
             try {
+                if (selectedRow == -1) {
+                    panel.showError("Bạn chưa chọn nhân viên nào để xoá!");
+                }
+
                 int id = Integer.parseInt(tableModel.getValueAt(selectedRow, 0).toString());
                 String maNhanVien = tableModel.getValueAt(selectedRow, 1).toString();
 
@@ -196,8 +206,13 @@ public class QLNhanVienController {
         public void mouseClicked(MouseEvent e) {
             panel.startEditMode();
 
-            selectedRow = panel.getTable().getSelectedRow();
-            if (selectedRow == -1) return;
+            if (panel.getTable() != null) {
+                selectedRow = panel.getTable().getSelectedRow();
+            }
+
+            if (selectedRow == -1) {
+                return;
+            }
 
             panel.setMaNhanVien(tableModel.getValueAt(selectedRow, 1).toString());
             panel.setHoTen(tableModel.getValueAt(selectedRow, 2).toString());

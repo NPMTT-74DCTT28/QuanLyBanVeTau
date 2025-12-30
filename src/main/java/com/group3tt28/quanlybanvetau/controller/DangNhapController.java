@@ -9,6 +9,8 @@ import com.group3tt28.quanlybanvetau.view.frame.MainFrame;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class DangNhapController {
 
@@ -22,6 +24,7 @@ public class DangNhapController {
         frame = new DangNhapFrame();
         frame.addLoginListener(new LoginListener());
         frame.addExitListener(new ExitListener());
+        frame.addWindowCloseListener(new WindowCloseListener());
 
         frame.setVisible(true);
     }
@@ -71,7 +74,17 @@ public class DangNhapController {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (frame.showConfirm("Bạn muốn thoát ứng dụng?")) {
+            if (frame.showConfirm("Bạn chắc chắn muốn thoát ứng dụng?")) {
+                frame.dispose();
+                System.exit(0);
+            }
+        }
+    }
+
+    private class WindowCloseListener extends WindowAdapter {
+        @Override
+        public void windowClosing(WindowEvent e) {
+            if (frame.showConfirm("Bạn chắc chắn muốn thoát ứng dụng?")) {
                 frame.dispose();
                 System.exit(0);
             }

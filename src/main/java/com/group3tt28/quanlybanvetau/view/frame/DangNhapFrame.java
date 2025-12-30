@@ -4,6 +4,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowListener;
 
 public final class DangNhapFrame extends BaseFrame {
 
@@ -14,15 +15,16 @@ public final class DangNhapFrame extends BaseFrame {
 
     public DangNhapFrame() {
         super("Đăng nhập");
-        this.setSize(400, 260);
-        this.setResizable(false);
-        this.setLocationRelativeTo(null);
-
+        this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         initComponents();
+        this.setLocationRelativeTo(null);
     }
 
     @Override
     protected void initComponents() {
+        this.setSize(400, 260);
+        this.setResizable(false);
+
         JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
         mainPanel.setBackground(Color.WHITE);
         mainPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
@@ -69,5 +71,9 @@ public final class DangNhapFrame extends BaseFrame {
 
     public void addExitListener(ActionListener l) {
         buttonThoat.addActionListener(l);
+    }
+
+    public void addWindowCloseListener(WindowListener l) {
+        addWindowListener(l);
     }
 }

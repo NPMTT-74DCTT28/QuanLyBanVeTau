@@ -6,17 +6,17 @@ import com.group3tt28.quanlybanvetau.view.panel.*;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class MainController {
 
     private final MainFrame mainFrame;
-    private final boolean isAdmin;
-    private final boolean isLoggedIn;
 
     public MainController(MainFrame frame) {
         this.mainFrame = frame;
-        this.isLoggedIn = SessionManager.getCurrentUser() != null;
-        this.isAdmin = SessionManager.isAdmin();
+        boolean isLoggedIn = SessionManager.getCurrentUser() != null;
+        boolean isAdmin = SessionManager.isAdmin();
 
         mainFrame.addNhanVienListener(new QLNhanVienListener(), new TKNhanVienListener());
         mainFrame.addTauListener(new QLTauListener(), new TKTauListener());
@@ -26,8 +26,8 @@ public class MainController {
         mainFrame.addGaTauListener(new QLGaTauListener(), new TKGaTauListener());
         mainFrame.addTuyenDuongListener(new QLTuyenDuongListener(), new TKTuyenDuongListener());
         mainFrame.addLichTrinhListener(new QLLichTrinhListener(), new TKLichTrinhListener());
-//        mainFrame.addKhachHangListener();
-//        mainFrame.addVeTauListener();
+        mainFrame.addKhachHangListener(new QLKhachHangListener(), new TKKhachHangListener());
+        mainFrame.addVeTauListener(new QLVeTauListener(), new TKVeTauListener());
         if (isLoggedIn) {
             mainFrame.setXinChao(SessionManager.getCurrentUser().getHoTen());
         } else {
@@ -37,14 +37,18 @@ public class MainController {
         mainFrame.addDoiMatKhauListener(new DoiMatKhauListener());
         mainFrame.addDangXuatListener(new DangXuatListener());
         mainFrame.addThoatListener(new ThoatListener());
+        mainFrame.addWindowCloseListener(new WindowCloseListener());
 
-        quanLyMenu();
+        mainFrame.hienMenuTheoQuyen(isAdmin, isLoggedIn);
+
+        showTrangChu();
 
         mainFrame.setVisible(true);
     }
 
-    private void quanLyMenu() {
-        mainFrame.hienMenuTheoQuyen(isAdmin, isLoggedIn);
+    public final void showTrangChu() {
+        TrangChu trangChu = new TrangChu();
+        mainFrame.showPanel(trangChu);
     }
 
     private class QLNhanVienListener implements ActionListener {
@@ -194,42 +198,50 @@ public class MainController {
     private class QLKhachHangListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-
+            QLKhachHangPanel panel = new QLKhachHangPanel();
+            mainFrame.showPanel(panel);
+            new QLKhachHangController(panel);
         }
     }
 
     private class TKKhachHangListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-
+            TKKhachHangPanel panel = new TKKhachHangPanel();
+            mainFrame.showPanel(panel);
+            new TKKhachHangController(panel);
         }
     }
 
     private class QLVeTauListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-
+            QLVeTauPanel panel = new QLVeTauPanel();
+            mainFrame.showPanel(panel);
+            new QLVeTauController(panel);
         }
     }
 
     private class TKVeTauListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-
+            TKVeTauPanel panel = new TKVeTauPanel();
+            mainFrame.showPanel(panel);
+            new TKVeTauController(panel);
         }
     }
 
     private class ThongTinCaNhanListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-
+            new ThongTinCaNhanController(mainFrame);
         }
     }
 
     private class DoiMatKhauListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-
+            new DoiMatKhauController(mainFrame);
         }
     }
 
@@ -247,6 +259,16 @@ public class MainController {
     private class ThoatListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
+            if (mainFrame.showConfirm("Bạn chắc chắn muốn thoát ứng dụng?")) {
+                mainFrame.dispose();
+                System.exit(0);
+            }
+        }
+    }
+
+    private class WindowCloseListener extends WindowAdapter {
+        @Override
+        public void windowClosing(WindowEvent e) {
             if (mainFrame.showConfirm("Bạn chắc chắn muốn thoát ứng dụng?")) {
                 mainFrame.dispose();
                 System.exit(0);
