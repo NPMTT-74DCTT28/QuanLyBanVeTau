@@ -19,7 +19,7 @@ public class DangNhapController {
     private final NhanVienDAO dao;
 
     public DangNhapController() {
-        dao = new NhanVienDAO();
+        dao = NhanVienDAO.getInstance();
 
         frame = new DangNhapFrame();
         frame.addLoginListener(new LoginListener());

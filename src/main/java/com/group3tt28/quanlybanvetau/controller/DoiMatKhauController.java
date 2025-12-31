@@ -10,6 +10,7 @@ import com.group3tt28.quanlybanvetau.view.frame.MainFrame;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 
 public class DoiMatKhauController {
 
@@ -20,7 +21,7 @@ public class DoiMatKhauController {
     public DoiMatKhauController(MainFrame parent) {
         this.parent = parent;
         this.dialog = new DoitMatKhauDialog(this.parent);
-        this.dao = new NhanVienDAO();
+        this.dao = NhanVienDAO.getInstance();
 
         dialog.addXacNhanListener(new XacNhanListener());
         dialog.addHuyListener(new HuyListener());
@@ -56,12 +57,9 @@ public class DoiMatKhauController {
                         new DangNhapController();
                     }
                 }
-            } catch (IllegalArgumentException ex) {
+            } catch (SQLException ex) {
                 ex.printStackTrace();
-                JOptionPane.showMessageDialog(dialog, "Lỗi khi check mật khẩu: " + ex.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
-            } catch (RuntimeException ex) {
-                ex.printStackTrace();
-                JOptionPane.showMessageDialog(dialog, "Lỗi hệ thống: " + ex.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(dialog, "Có lỗi xảy ra khi đổi mật khẩu: " + ex.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
             } catch (Exception ex) {
                 ex.printStackTrace();
                 JOptionPane.showMessageDialog(dialog, "Lỗi không xác định: " + ex.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);

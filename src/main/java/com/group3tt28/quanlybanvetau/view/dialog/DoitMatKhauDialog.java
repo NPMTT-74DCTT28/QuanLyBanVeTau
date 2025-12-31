@@ -49,10 +49,12 @@ public class DoitMatKhauDialog extends JDialog {
         pnlButton.setBackground(Color.WHITE);
 
         buttonXacNhan = new JButton("Lưu thay đổi");
+        buttonXacNhan.setPreferredSize(new Dimension(110, 40));
         buttonXacNhan.setBackground(new Color(60, 179, 113));
         buttonXacNhan.setForeground(Color.WHITE);
 
         buttonHuy = new JButton("Huỷ");
+        buttonHuy.setPreferredSize(new Dimension(80, 40));
         buttonHuy.setBackground(new Color(223, 197, 123));
         buttonHuy.setForeground(Color.WHITE);
 

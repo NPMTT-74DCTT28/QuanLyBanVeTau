@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -21,7 +22,7 @@ public class QLNhanVienController {
     private int selectedRow;
 
     public QLNhanVienController(QLNhanVienPanel panel) {
-        this.dao = new NhanVienDAO();
+        this.dao = NhanVienDAO.getInstance();
 
         this.panel = panel;
         panel.addThemNhanVienListener(new ThemNhanVienListener());
@@ -60,9 +61,9 @@ public class QLNhanVienController {
             }
 
             tableModel.fireTableDataChanged();
-        } catch (RuntimeException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
-            panel.showError("Lỗi hệ thống: " + e.getMessage());
+            panel.showError("Có lỗi xảy ra khi tải dữ liệu nhân viên: " + e.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
             panel.showError("Lỗi không xác định: " + e.getMessage());
@@ -83,32 +84,35 @@ public class QLNhanVienController {
                 }
 
                 if (dao.checkTrung(nhanVien.getMaNhanVien(), nhanVien.getSdt(), nhanVien.getId())) {
-                    panel.showWarning("Mã nhân viên hoặc SĐT đã tồn tại!");
+                    panel.showWarning("Mã nhân viên hoặc SĐT đã tồn tại.");
                     return;
                 }
 
                 String matKhauTho = nhanVien.getMatKhau();
                 String matKhauBam = BamMatKhau.bamMatKhau(matKhauTho);
-                if (matKhauBam != null) {
-                    nhanVien.setMatKhau(matKhauBam);
+                if (matKhauBam == null) {
+                    panel.showError("Lỗi bảo mật: Không thể mã hoá mật khẩu.");
+                    return;
                 }
+                nhanVien.setMatKhau(matKhauBam);
 
                 if (dao.insert(nhanVien)) {
                     panel.showMessage("Thêm nhân viên thành công!");
                     panel.resetForm();
                     refresh();
                 } else {
-                    panel.showError("Thêm thất bại! Vui lòng kiểm tra lại!");
+                    panel.showError("Thêm thất bại! Vui lòng kiểm tra lại.");
                 }
-            } catch (IllegalArgumentException ex) {
-                ex.printStackTrace();
-                panel.showError("Lỗi khi check mật khẩu: " + ex.getMessage());
-            } catch (RuntimeException ex) {
-                ex.printStackTrace();
-                panel.showError("Lỗi hệ thống: " + ex.getMessage());
+            } catch (SQLException ex) {
+                if (ex.getErrorCode() == 1062 || ex.getMessage().contains("Duplicate entry")) {
+                    panel.showError("Dữ liệu đã bị thay đổi! Mã nhân viên hoặc số điện thoại đã tồn tại.");
+                    refresh();
+                } else {
+                    panel.showError("Lỗi kết nối cơ sở dữ liệu (Mã lỗi: " + ex.getErrorCode() + ")");
+                }
             } catch (Exception ex) {
                 ex.printStackTrace();
-                panel.showError("Lỗi không xác định: " + ex.getMessage());
+                panel.showError("Đã xảy ra lỗi: " + ex.getMessage());
             }
         }
     }
@@ -131,7 +135,7 @@ public class QLNhanVienController {
                 }
 
                 if (dao.checkTrung(nhanVien.getMaNhanVien(), nhanVien.getSdt(), nhanVien.getId())) {
-                    panel.showWarning("SĐT đã được sử dụng!");
+                    panel.showWarning("SĐT đã được sử dụng.");
                     return;
                 }
 
@@ -143,9 +147,13 @@ public class QLNhanVienController {
                         panel.showError("Cập nhật thất bại! Vui lòng kiểm tra lại!");
                     }
                 }
-            } catch (RuntimeException ex) {
-                ex.printStackTrace();
-                panel.showError("Lỗi hệ thống: " + ex.getMessage());
+            } catch (SQLException ex) {
+                if (ex.getErrorCode() == 1062 || ex.getMessage().contains("Duplicate entry")) {
+                    panel.showError("Dữ liệu đã bị thay đổi! Mã nhân viên hoặc số điện thoại đã tồn tại.");
+                    refresh();
+                } else {
+                    panel.showError("Lỗi cơ sở dữ liệu (Mã lỗi: " + ex.getErrorCode() + ")");
+                }
             } catch (Exception ex) {
                 ex.printStackTrace();
                 panel.showError("Lỗi không xác định: " + ex.getMessage());
@@ -158,28 +166,32 @@ public class QLNhanVienController {
         public void actionPerformed(ActionEvent e) {
             try {
                 if (selectedRow == -1) {
-                    panel.showError("Bạn chưa chọn nhân viên nào để xoá!");
+                    panel.showError("Vui lòng chọn nhân viên cần xoá.");
+                    return;
+                }
+
+                if (tableModel.getValueAt(selectedRow, 0).toString().trim().isEmpty()) {
+                    panel.showWarning("Dữ liệu dòng chọn không hợp lệ.");
+                    return;
                 }
 
                 int id = Integer.parseInt(tableModel.getValueAt(selectedRow, 0).toString());
                 String maNhanVien = tableModel.getValueAt(selectedRow, 1).toString();
-
-                if (tableModel.getValueAt(selectedRow, 0).toString().trim().isEmpty()) {
-                    panel.showWarning("Mã nhân viên không hợp lệ!");
-                    return;
-                }
 
                 if (panel.showConfirm("Bạn muốn xoá nhân viên " + maNhanVien + "?")) {
                     if (dao.delete(id)) {
                         panel.showMessage("Xoá thành công!");
                         refresh();
                     } else {
-                        panel.showError("Xoá thất bại! Vui lòng kiểm tra lại!");
+                        panel.showError("Xoá thất bại! Vui lòng kiểm tra lại.");
                     }
                 }
-            } catch (RuntimeException ex) {
-                ex.printStackTrace();
-                panel.showError("Lỗi hệ thống: " + ex.getMessage());
+            } catch (SQLException ex) {
+                if (ex.getErrorCode() == 1451) {
+                    panel.showError("Không thể xoá nhân viên này vì họ đã có lịch sử bán vé.");
+                } else {
+                    panel.showError("Lỗi cơ sở dữ liệu (Mã lỗi: " + ex.getErrorCode() + ")");
+                }
             } catch (Exception ex) {
                 ex.printStackTrace();
                 panel.showError("Lỗi không xác định: " + ex.getMessage());

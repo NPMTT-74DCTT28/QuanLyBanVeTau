@@ -22,7 +22,16 @@ public class NhanVienDAO {
     private static final String COT_DIA_CHI = "dia_chi";
     private static final String COT_VAI_TRO = "vai_tro";
 
-    public boolean checkTrung(String maNhanVien, String sdt, int idLoaiTru) {
+    private static NhanVienDAO instance;
+
+    public static NhanVienDAO getInstance() {
+        if (instance == null) {
+            instance = new NhanVienDAO();
+        }
+        return instance;
+    }
+
+    public boolean checkTrung(String maNhanVien, String sdt, int idLoaiTru) throws SQLException {
         if (maNhanVien == null) {
             return false;
         }
@@ -42,13 +51,11 @@ public class NhanVienDAO {
                     return true;
                 }
             }
-        } catch (SQLException e) {
-            throw new RuntimeException("Lỗi khi kiểm tra trùng mã nhân viên: " + e.getMessage(), e);
         }
         return false;
     }
 
-    public boolean insert(NhanVien nhanVien) {
+    public boolean insert(NhanVien nhanVien) throws SQLException {
         if (nhanVien == null) {
             return false;
         }
@@ -78,12 +85,10 @@ public class NhanVienDAO {
             ps.setString(9, nhanVien.getVaiTro());
 
             return ps.executeUpdate() > 0;
-        } catch (SQLException e) {
-            throw new RuntimeException("Lỗi khi thêm nhân viên: " + e.getMessage(), e);
         }
     }
 
-    public boolean update(NhanVien nhanVien) {
+    public boolean update(NhanVien nhanVien) throws SQLException {
         if (nhanVien == null) {
             return false;
         }
@@ -115,12 +120,10 @@ public class NhanVienDAO {
             ps.setString(8, nhanVien.getMaNhanVien());
 
             return ps.executeUpdate() > 0;
-        } catch (SQLException e) {
-            throw new RuntimeException("Lỗi khi cập nhật nhân viên: " + e.getMessage(), e);
         }
     }
 
-    public boolean delete(int id) {
+    public boolean delete(int id) throws SQLException {
         if (id < 1) {
             return false;
         }
@@ -131,12 +134,10 @@ public class NhanVienDAO {
             ps.setInt(1, id);
 
             return ps.executeUpdate() > 0;
-        } catch (SQLException e) {
-            throw new RuntimeException("Lỗi khi xoá nhân viên: " + e.getMessage(), e);
         }
     }
 
-    public List<NhanVien> getAll() {
+    public List<NhanVien> getAll() throws SQLException {
         List<NhanVien> list = new ArrayList<>();
         String sql = "SELECT * FROM " + TEN_BANG;
         try (Connection conn = DBConnection.getConnection();
@@ -158,13 +159,11 @@ public class NhanVienDAO {
                 NhanVien nv = new NhanVien(id, maNhanVien, matKhau, hoTen, ngaySinh, gioiTinh, sdt, email, diaChi, vaiTro);
                 list.add(nv);
             }
-        } catch (SQLException e) {
-            throw new RuntimeException("Lỗi tải dữ liệu nhân viên: " + e.getMessage(), e);
         }
         return list;
     }
 
-    public NhanVien getNhanVienByMaNV(String maNhanVien) {
+    public NhanVien getNhanVienByMaNV(String maNhanVien) throws SQLException {
         String sql = "SELECT * FROM nhan_vien WHERE ma_nhan_vien = ? LIMIT 1";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -186,13 +185,11 @@ public class NhanVienDAO {
                             gioiTinh, sdt, email, diaChi, vaiTro);
                 }
             }
-        } catch (SQLException e) {
-            throw new RuntimeException("Lỗi khi lấy thông tin nhân viên: " + e.getMessage(), e);
         }
         return null;
     }
 
-    public boolean doiMatKhau(int id, String matKhauDaBam) {
+    public boolean doiMatKhau(int id, String matKhauDaBam) throws SQLException {
         String sql = "UPDATE " + TEN_BANG + " SET " + COT_MAT_KHAU + " = ? WHERE " + COT_ID + " = ?";
 
         try (Connection conn = DBConnection.getConnection();
@@ -201,12 +198,10 @@ public class NhanVienDAO {
             ps.setInt(2, id);
 
             return ps.executeUpdate() > 0;
-        } catch (SQLException e) {
-            throw new RuntimeException("Lỗi khi đổi mật khẩu: " + e.getMessage(), e);
         }
     }
 
-    public List<NhanVien> timKiemNhanVien(String tuKhoa, String gioiTinhInput, String vaiTroInput) {
+    public List<NhanVien> timKiemNhanVien(String tuKhoa, String gioiTinhInput, String vaiTroInput) throws SQLException {
 
         List<NhanVien> list = new ArrayList<>();
         List<Object> params = new ArrayList<>();
@@ -264,8 +259,6 @@ public class NhanVienDAO {
                     list.add(nhanVien);
                 }
             }
-        } catch (SQLException e) {
-            throw new RuntimeException("Lỗi khi tìm kiếm nhân viên: " + e.getMessage(), e);
         }
         return list;
     }
