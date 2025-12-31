@@ -3,6 +3,7 @@ package com.group3tt28.quanlybanvetau.controller;
 import com.group3tt28.quanlybanvetau.dao.NhanVienDAO;
 import com.group3tt28.quanlybanvetau.model.NhanVien;
 import com.group3tt28.quanlybanvetau.util.BamMatKhau;
+import com.group3tt28.quanlybanvetau.util.SessionManager;
 import com.group3tt28.quanlybanvetau.view.panel.QLNhanVienPanel;
 
 import javax.swing.table.DefaultTableModel;
@@ -19,10 +20,12 @@ public class QLNhanVienController {
     private final QLNhanVienPanel panel;
     private final NhanVienDAO dao;
     private final DefaultTableModel tableModel;
+    private NhanVien currentUser;
     private int selectedRow;
 
     public QLNhanVienController(QLNhanVienPanel panel) {
         this.dao = NhanVienDAO.getInstance();
+        this.currentUser = SessionManager.getCurrentUser();
 
         this.panel = panel;
         panel.addThemNhanVienListener(new ThemNhanVienListener());
@@ -129,6 +132,11 @@ public class QLNhanVienController {
                 NhanVien nhanVien = panel.getNhanVienFromForm();
                 nhanVien.setId(Integer.parseInt(tableModel.getValueAt(selectedRow, 0).toString()));
 
+                if (nhanVien.getId() == currentUser.getId()) {
+                    panel.showWarning("Bạn chỉ có thể cập nhật thông tin cá nhân bằng chức năng cập nhật thông tin trong menu tài khoản.");
+                    return;
+                }
+
                 if (panel.thongBaoLoiDauVao() != null) {
                     panel.showWarning(panel.thongBaoLoiDauVao());
                     return;
@@ -166,7 +174,7 @@ public class QLNhanVienController {
         public void actionPerformed(ActionEvent e) {
             try {
                 if (selectedRow == -1) {
-                    panel.showError("Vui lòng chọn nhân viên cần xoá.");
+                    panel.showWarning("Vui lòng chọn nhân viên cần xoá.");
                     return;
                 }
 
@@ -177,6 +185,11 @@ public class QLNhanVienController {
 
                 int id = Integer.parseInt(tableModel.getValueAt(selectedRow, 0).toString());
                 String maNhanVien = tableModel.getValueAt(selectedRow, 1).toString();
+
+                if (id == currentUser.getId()) {
+                    panel.showWarning("Bạn không thể xoá thông tin của chính mình!");
+                    return;
+                }
 
                 if (panel.showConfirm("Bạn muốn xoá nhân viên " + maNhanVien + "?")) {
                     if (dao.delete(id)) {
