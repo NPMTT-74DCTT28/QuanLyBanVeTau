@@ -47,7 +47,6 @@ public class VeTauDAO {
     }
 
     public boolean isGheDaDat(int idLichTrinh, int idGhe, String maVeHienTai) {
-        // Nếu maVeHienTai != null, ta loại trừ vé đang sửa ra (dùng cho trường hợp Sửa)
         String sql = "SELECT COUNT(*) FROM " + TEN_BANG +
                 " WHERE " + COT_ID_LICH_TRINH + " = ? AND " + COT_ID_GHE + " = ? " +
                 " AND " + COT_TRANG_THAI + " != N'Đã hủy' " +
