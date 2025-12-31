@@ -21,7 +21,7 @@ public class QLNhanVienController {
     private int selectedRow;
 
     public QLNhanVienController(QLNhanVienPanel panel) {
-        this.dao = new NhanVienDAO();
+        this.dao = NhanVienDAO.getInstance();
 
         this.panel = panel;
         panel.addThemNhanVienListener(new ThemNhanVienListener());

@@ -19,7 +19,7 @@ public class ThongTinCaNhanController {
     public ThongTinCaNhanController(MainFrame parent) {
         this.parent = parent;
         this.dialog = new ThongTinCaNhanDialog(this.parent);
-        this.dao = new NhanVienDAO();
+        this.dao = NhanVienDAO.getInstance();
         this.currentUser = SessionManager.getCurrentUser();
 
         loadThongTin();

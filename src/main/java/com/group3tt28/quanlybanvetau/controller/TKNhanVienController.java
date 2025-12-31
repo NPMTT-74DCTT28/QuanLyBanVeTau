@@ -17,7 +17,7 @@ public class TKNhanVienController {
 
     public TKNhanVienController(TKNhanVienPanel panel) {
         this.panel = panel;
-        this.dao = new NhanVienDAO();
+        this.dao = NhanVienDAO.getInstance();
 
         panel.addTimKiemListener(new TimKiemListener());
         panel.addResetFormListener(new ResetFormListener());

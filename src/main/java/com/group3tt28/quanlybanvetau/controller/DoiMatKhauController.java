@@ -20,7 +20,7 @@ public class DoiMatKhauController {
     public DoiMatKhauController(MainFrame parent) {
         this.parent = parent;
         this.dialog = new DoitMatKhauDialog(this.parent);
-        this.dao = new NhanVienDAO();
+        this.dao = NhanVienDAO.getInstance();
 
         dialog.addXacNhanListener(new XacNhanListener());
         dialog.addHuyListener(new HuyListener());

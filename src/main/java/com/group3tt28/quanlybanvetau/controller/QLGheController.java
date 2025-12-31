@@ -25,7 +25,6 @@ public class QLGheController {
         this.panel = panel;
         this.dao = new GheDAO();
         ToaTauDAO toaTauDAO = new ToaTauDAO();
-        NhanVienDAO nvDAO = new NhanVienDAO();
 
         this.panel.addButtonThemActionListener(new QLGheController.ThemGheListener());
         this.panel.addButtonSuaActionListener(new QLGheController.SuaGheListener());

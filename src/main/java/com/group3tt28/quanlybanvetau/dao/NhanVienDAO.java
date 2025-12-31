@@ -22,6 +22,15 @@ public class NhanVienDAO {
     private static final String COT_DIA_CHI = "dia_chi";
     private static final String COT_VAI_TRO = "vai_tro";
 
+    private static NhanVienDAO instance;
+
+    public static NhanVienDAO getInstance() {
+        if (instance == null) {
+            instance = new NhanVienDAO();
+        }
+        return instance;
+    }
+
     public boolean checkTrung(String maNhanVien, String sdt, int idLoaiTru) {
         if (maNhanVien == null) {
             return false;
