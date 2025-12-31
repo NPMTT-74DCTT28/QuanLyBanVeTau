@@ -253,73 +253,73 @@ public final class QLNhanVienPanel extends BasePanel {
     public String thongBaoLoiDauVao() {
         if (getMaNhanVien().isEmpty()) {
             fieldMaNhanVien.requestFocus();
-            return "Mã nhân viên không được để trống!";
+            return "Mã nhân viên không được để trống.";
         }
         if (getMaNhanVien().length() > 20) {
             fieldMaNhanVien.requestFocus();
-            return "Mã nhân viên quá dài (tối đa 20 ký tự)";
+            return "Mã nhân viên quá dài (tối đa 20 ký tự).";
         }
         if (!isEditMode) {
             if (getMatKhau().isEmpty()) {
                 fieldMatKhau.requestFocus();
-                return "Vui lòng nhập mật khẩu cho nhân viên mới!";
+                return "Vui lòng nhập mật khẩu cho nhân viên mới.";
             }
             if (!getMatKhau().matches(DinhDang.MAT_KHAU_MANH)) {
                 fieldMatKhau.requestFocus();
                 return "Mật khẩu phải từ 8-20 ký tự, bao gồm ít nhất 1 chữ hoa, "
-                        + "1 chữ thường, 1 chữ số, 1 ký tự đặc biệt và không chứa khoảng trắng!";
+                        + "1 chữ thường, 1 chữ số, 1 ký tự đặc biệt và không chứa khoảng trắng.";
             }
         }
         if (getHoTen().isEmpty()) {
             fieldHoTen.requestFocus();
-            return "Họ tên không được để trống!";
+            return "Họ tên không được để trống.";
         }
         if (getHoTen().length() > 50) {
             fieldHoTen.requestFocus();
-            return "Họ tên quá dài (tối đa 50 ký tự)!";
+            return "Họ tên quá dài (tối đa 50 ký tự).";
         }
         if (getNgaySinh() == null) {
             chooserNgaySinh.requestFocus();
-            return "Vui lòng chọn ngày sinh!";
+            return "Vui lòng chọn ngày sinh.";
         }
         int tuoi = Period.between(getNgaySinh(), LocalDate.now()).getYears();
         if (tuoi < 18) {
             chooserNgaySinh.requestFocus();
-            return "Nhân viên phải từ 18 tuổi trở lên!";
+            return "Nhân viên phải từ 18 tuổi trở lên.";
         }
         if (tuoi > 65) {
             chooserNgaySinh.requestFocus();
-            return "Nhân viên đã quá tuổi lao động!";
+            return "Nhân viên đã quá tuổi lao động.";
         }
         if (getGioiTinh() == null) {
             boxGioiTinh.requestFocus();
-            return "Vui lòng chọn giới tính!";
+            return "Vui lòng chọn giới tính.";
         }
         if (getSdt().isEmpty()) {
             fieldSdt.requestFocus();
-            return "Số điện thoại không được để trống!";
+            return "Số điện thoại không được để trống.";
         }
         if (!getSdt().matches(DinhDang.DINH_DANG_SDT)) {
             fieldSdt.requestFocus();
-            return "Số điện thoại phải bắt đầu bằng số 0 và có 10 chữ số!";
+            return "Số điện thoại phải bắt đầu bằng số 0 và có 10 chữ số.";
         }
         if (getEmail() != null) {
             if (getEmail().length() > 100) {
                 fieldEmail.requestFocus();
-                return "Email quá dài (tối đa 100 ký tự)!";
+                return "Email quá dài (tối đa 100 ký tự).";
             }
             if (!getEmail().matches(DinhDang.DINH_DANG_EMAIL)) {
                 fieldEmail.requestFocus();
-                return "Định dạng email không hợp lệ!";
+                return "Định dạng email không hợp lệ.";
             }
         }
         if (getDiaChi().isEmpty()) {
             fieldDiaChi.requestFocus();
-            return "Địa chỉ không được để trống!";
+            return "Địa chỉ không được để trống.";
         }
         if (getVaiTro() == null) {
             boxVaiTro.requestFocus();
-            return "Vui lòng chọn vai trò!";
+            return "Vui lòng chọn vai trò.";
         }
         return null;
     }

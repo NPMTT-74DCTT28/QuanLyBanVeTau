@@ -49,7 +49,7 @@ public class TKNhanVienController {
             tableModel.fireTableDataChanged();
         } catch (RuntimeException e) {
             e.printStackTrace();
-            panel.showError("Lỗi hệ thống: " + e.getMessage());
+            panel.showError("Có lỗi xảy ra khi tải dữ liệu nhân viên: " + e.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
             panel.showError("Lỗi không xác định: " + e.getMessage());
@@ -83,7 +83,7 @@ public class TKNhanVienController {
                 tableModel.fireTableDataChanged();
             } catch (RuntimeException ex) {
                 ex.printStackTrace();
-                panel.showError("Lỗi hệ thống: " + ex.getMessage());
+                panel.showError("Có lỗi xảy ra khi tải dữ liệu nhân viên: " + ex.getMessage());
             } catch (Exception ex) {
                 ex.printStackTrace();
                 panel.showError("Lỗi không xác định: " + ex.getMessage());

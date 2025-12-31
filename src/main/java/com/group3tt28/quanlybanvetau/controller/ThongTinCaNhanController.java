@@ -8,6 +8,7 @@ import com.group3tt28.quanlybanvetau.view.dialog.ThongTinCaNhanDialog;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 
 public class ThongTinCaNhanController {
 
@@ -56,6 +57,11 @@ public class ThongTinCaNhanController {
                 currentUser.setEmail(dialog.getEmail());
                 currentUser.setDiaChi(dialog.getDiaChi());
 
+                if (dao.checkTrung(currentUser.getMaNhanVien(), currentUser.getSdt(), currentUser.getId())) {
+                    parent.showError("Số điện thoại đã tồn tại.");
+                    return;
+                }
+
                 if (dao.update(currentUser)) {
                     if (dialog.showConfirm("Bạn muốn cập nhật thông tin?")) {
                         dialog.showMessage("Cập nhật thông tin thành công!");
@@ -63,11 +69,14 @@ public class ThongTinCaNhanController {
                         loadThongTin();
                     }
                 } else {
-                    dialog.showError("Cập nhật thông tin thất bại! Vui lòng kiểm tra lại!");
+                    dialog.showError("Cập nhật thông tin thất bại! Vui lòng kiểm tra lại.");
                 }
-            } catch (RuntimeException ex) {
-                ex.printStackTrace();
-                dialog.showError("Lỗi hệ thống: " + ex.getMessage());
+            } catch (SQLException ex) {
+                if (ex.getErrorCode() == 1062 || ex.getMessage().contains("Duplicate entry")) {
+                    parent.showError("Dữ liệu đã bị thay đổi! Số điện thoại đã tồn tại.");
+                } else {
+                    parent.showError("Lỗi kết nối cơ sở dữ liệu (Mã lỗi: " + ex.getErrorCode() + ")");
+                }
             } catch (Exception ex) {
                 ex.printStackTrace();
                 dialog.showError("Lỗi không xác định: " + ex.getMessage());
@@ -78,7 +87,7 @@ public class ThongTinCaNhanController {
     private class QuayLaiListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (parent instanceof MainFrame) {
+            if (parent != null) {
                 dialog.dispose();
             }
         }

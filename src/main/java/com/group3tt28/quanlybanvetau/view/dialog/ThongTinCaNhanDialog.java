@@ -185,50 +185,50 @@ public class ThongTinCaNhanDialog extends JDialog {
     public String thongBaoLoiDauVao() {
         if (getHoTen().isEmpty()) {
             fieldHoTen.requestFocus();
-            return "Họ tên không được để trống!";
+            return "Họ tên không được để trống.";
         }
         if (getHoTen().length() > 50) {
             fieldHoTen.requestFocus();
-            return "Họ tên quá dài (tối đa 50 ký tự)!";
+            return "Họ tên quá dài (tối đa 50 ký tự).";
         }
         if (getNgaySinh() == null) {
             chooserNgaySinh.requestFocus();
-            return "Vui lòng chọn ngày sinh!";
+            return "Vui lòng chọn ngày sinh.";
         }
         int tuoi = Period.between(getNgaySinh(), LocalDate.now()).getYears();
         if (tuoi < 18) {
             chooserNgaySinh.requestFocus();
-            return "Tuổi phải từ 18 trở lên!";
+            return "Tuổi phải từ 18 trở lên.";
         }
         if (tuoi > 65) {
             chooserNgaySinh.requestFocus();
-            return "Tuổi vượt quá tuổi lao động!";
+            return "Tuổi vượt quá tuổi lao động.";
         }
         if (getGioiTinh() == null) {
             boxGioiTinh.requestFocus();
-            return "Vui lòng chọn giới tính!";
+            return "Vui lòng chọn giới tính.";
         }
         if (getSdt().isEmpty()) {
             fieldSdt.requestFocus();
-            return "Số điện thoại không được để trống!";
+            return "Số điện thoại không được để trống.";
         }
         if (!getSdt().matches(DinhDang.DINH_DANG_SDT)) {
             fieldSdt.requestFocus();
-            return "Số điện thoại phải bắt đầu bằng số 0 và có 10 chữ số!";
+            return "Số điện thoại phải bắt đầu bằng số 0 và có 10 chữ số.";
         }
         if (getEmail() != null) {
             if (getEmail().length() > 100) {
                 fieldEmail.requestFocus();
-                return "Email quá dài (tối đa 100 ký tự)!";
+                return "Email quá dài (tối đa 100 ký tự).";
             }
             if (!getEmail().matches(DinhDang.DINH_DANG_EMAIL)) {
                 fieldEmail.requestFocus();
-                return "Định dạng email không hợp lệ!";
+                return "Định dạng email không hợp lệ.";
             }
         }
         if (getDiaChi().isEmpty()) {
             fieldDiaChi.requestFocus();
-            return "Địa chỉ không được để trống!";
+            return "Địa chỉ không được để trống.";
         }
         return null;
     }
