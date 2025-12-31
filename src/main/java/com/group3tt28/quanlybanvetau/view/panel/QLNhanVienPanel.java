@@ -276,7 +276,7 @@ public final class QLNhanVienPanel extends BasePanel {
         }
         if (getHoTen().length() > 50) {
             fieldHoTen.requestFocus();
-            return "Họ tên quá dài (tối đa 50 ký tự).";
+            return "Họ tên quá dài (tối đa 50 ký tự)";
         }
         if (getNgaySinh() == null) {
             chooserNgaySinh.requestFocus();
@@ -306,7 +306,7 @@ public final class QLNhanVienPanel extends BasePanel {
         if (getEmail() != null) {
             if (getEmail().length() > 100) {
                 fieldEmail.requestFocus();
-                return "Email quá dài (tối đa 100 ký tự).";
+                return "Email quá dài (tối đa 100 ký tự)";
             }
             if (!getEmail().matches(DinhDang.DINH_DANG_EMAIL)) {
                 fieldEmail.requestFocus();
@@ -316,6 +316,10 @@ public final class QLNhanVienPanel extends BasePanel {
         if (getDiaChi().isEmpty()) {
             fieldDiaChi.requestFocus();
             return "Địa chỉ không được để trống.";
+        }
+        if (getDiaChi().length() > 255) {
+            fieldDiaChi.requestFocus();
+            return "Địa chỉ quá dài (tối đa 255 ký tự)";
         }
         if (getVaiTro() == null) {
             boxVaiTro.requestFocus();

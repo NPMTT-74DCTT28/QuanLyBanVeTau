@@ -29,7 +29,7 @@ public class DoitMatKhauDialog extends JDialog {
         panelTitle.setBackground(new Color(60, 179, 113)); // PRIMARY_COLOR của bạn
         JLabel lblTitle = new JLabel("ĐỔI MẬT KHẨU");
         lblTitle.setForeground(Color.WHITE);
-        lblTitle.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        lblTitle.setFont(new Font("Segoe UI", Font.BOLD, 22));
         panelTitle.add(lblTitle);
 
         JPanel pnlForm = new JPanel(new GridLayout(3, 1, 10, 10));
@@ -49,11 +49,13 @@ public class DoitMatKhauDialog extends JDialog {
         pnlButton.setBackground(Color.WHITE);
 
         buttonXacNhan = new JButton("Lưu thay đổi");
-        buttonXacNhan.setPreferredSize(new Dimension(110, 40));
+        buttonXacNhan.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        buttonXacNhan.setPreferredSize(new Dimension(120, 40));
         buttonXacNhan.setBackground(new Color(60, 179, 113));
         buttonXacNhan.setForeground(Color.WHITE);
 
         buttonHuy = new JButton("Huỷ");
+        buttonXacNhan.setFont(new Font("Segoe UI", Font.BOLD, 14));
         buttonHuy.setPreferredSize(new Dimension(80, 40));
         buttonHuy.setBackground(new Color(223, 197, 123));
         buttonHuy.setForeground(Color.WHITE);
