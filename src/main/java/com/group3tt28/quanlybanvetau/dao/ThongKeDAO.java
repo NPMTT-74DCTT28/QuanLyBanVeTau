@@ -29,10 +29,10 @@ public class ThongKeDAO {
             try (ResultSet rs = cs.executeQuery()) {
                 while (rs.next()) {
                     String ngay = rs.getString("ngay");
-                    double doanhThu = rs.getDouble("doanh_thu");
                     int soVeBan = rs.getInt("so_ve_ban");
+                    double doanhThu = rs.getDouble("doanh_thu");
 
-                    list.add(new DoanhThuNgay(ngay, doanhThu, soVeBan));
+                    list.add(new DoanhThuNgay(ngay, soVeBan, doanhThu));
                 }
             }
         }
