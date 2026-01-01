@@ -30,6 +30,8 @@ public final class MainFrame extends BaseFrame {
     private JMenuItem qlKhachHang, tkKhachHang;
     private JMenu menuVeTau;
     private JMenuItem qlVeTau, tkVeTau;
+    private JMenu menuThongKe;
+    private JMenuItem thongKeDoanhThuNgay, thongKeDoanhThuTuyen, thongKeTyLeLapDay, thongKeKhachVIP, thongKeDoanhSo;
 
     private JPanel container;
 
@@ -52,17 +54,6 @@ public final class MainFrame extends BaseFrame {
         add(scrollPane, BorderLayout.CENTER);
 
         menuCaNhan = new JMenu("Xin chào");
-        menuNhanVien = new JMenu("Nhân viên");
-        menuTau = new JMenu("Tàu");
-        menuLoaiToa = new JMenu("Loại toa");
-        menuGhe = new JMenu("Ghế");
-        menuToaTau = new JMenu("Toa tàu");
-        menuGaTau = new JMenu("Ga tàu");
-        menuTuyenDuong = new JMenu("Tuyến đường");
-        menuLichTrinh = new JMenu("Lịch trình");
-        menuKhachHang = new JMenu("Khách hàng");
-        menuVeTau = new JMenu("Vé tàu");
-
         thongTinCaNhan = new JMenuItem("Thông tin cá nhân");
         doiMatKhau = new JMenuItem("Đổi mật khẩu");
         dangXuat = new JMenuItem("Đăng xuất");
@@ -72,55 +63,77 @@ public final class MainFrame extends BaseFrame {
         menuCaNhan.add(dangXuat);
         menuCaNhan.add(thoat);
 
+        menuNhanVien = new JMenu("Nhân viên");
         qlNhanVien = new JMenuItem("Quản lý thông tin");
         tkNhanVien = new JMenuItem("Tra cứu");
         menuNhanVien.add(qlNhanVien);
         menuNhanVien.add(tkNhanVien);
 
+        menuTau = new JMenu("Tàu");
         qlTau = new JMenuItem("Quản lý thông tin");
         tkTau = new JMenuItem("Tra cứu");
         menuTau.add(qlTau);
         menuTau.add(tkTau);
 
+        menuLoaiToa = new JMenu("Loại toa");
         qlLoaiToa = new JMenuItem("Quản lý thông tin");
         tkLoaiToa = new JMenuItem("Tra cứu");
         menuLoaiToa.add(qlLoaiToa);
         menuLoaiToa.add(tkLoaiToa);
 
+        menuToaTau = new JMenu("Toa tàu");
         qlToaTau = new JMenuItem("Quản lý thông tin");
         tkToaTau = new JMenuItem("Tra cứu");
         menuToaTau.add(qlToaTau);
         menuToaTau.add(tkToaTau);
 
+        menuGhe = new JMenu("Ghế");
         qlGhe = new JMenuItem("Quản lý thông tin");
         tkGhe = new JMenuItem("Tra cứu");
         menuGhe.add(qlGhe);
         menuGhe.add(tkGhe);
 
+        menuGaTau = new JMenu("Ga tàu");
         qlGaTau = new JMenuItem("Quản lý thông tin");
         tkGaTau = new JMenuItem("Tra cứu");
         menuGaTau.add(qlGaTau);
         menuGaTau.add(tkGaTau);
 
+        menuTuyenDuong = new JMenu("Tuyến đường");
         qlTuyenDuong = new JMenuItem("Quản lý thông tin");
         tkTuyenDuong = new JMenuItem("Tra cứu");
         menuTuyenDuong.add(qlTuyenDuong);
         menuTuyenDuong.add(tkTuyenDuong);
 
+        menuLichTrinh = new JMenu("Lịch trình");
         qlLichTrinh = new JMenuItem("Quản lý thông tin");
         tkLichTrinh = new JMenuItem("Tra cứu");
         menuLichTrinh.add(qlLichTrinh);
         menuLichTrinh.add(tkLichTrinh);
 
+        menuKhachHang = new JMenu("Khách hàng");
         qlKhachHang = new JMenuItem("Quản lý thông tin");
         tkKhachHang = new JMenuItem("Tra cứu");
         menuKhachHang.add(qlKhachHang);
         menuKhachHang.add(tkKhachHang);
 
+        menuVeTau = new JMenu("Vé tàu");
         qlVeTau = new JMenuItem("Quản lý thông tin");
         tkVeTau = new JMenuItem("Tra cứu");
         menuVeTau.add(qlVeTau);
         menuVeTau.add(tkVeTau);
+
+        menuThongKe = new JMenu("Thống kê");
+        thongKeDoanhThuNgay = new JMenuItem("Doanh thu theo ngày");
+        thongKeDoanhThuTuyen = new JMenuItem("Doanh thu theo tuyến");
+        thongKeTyLeLapDay = new JMenuItem("Tỷ lệ lấp đầy tàu");
+        thongKeKhachVIP = new JMenuItem("Khách hàng VIP");
+        thongKeDoanhSo = new JMenuItem("Doanh số bán hàng");
+        menuThongKe.add(thongKeDoanhThuNgay);
+        menuThongKe.add(thongKeDoanhThuTuyen);
+        menuThongKe.add(thongKeTyLeLapDay);
+        menuThongKe.add(thongKeKhachVIP);
+        menuThongKe.add(thongKeDoanhSo);
 
         JMenuBar menuBar = new JMenuBar();
         menuBar.add(menuNhanVien);
@@ -133,6 +146,7 @@ public final class MainFrame extends BaseFrame {
         menuBar.add(menuLichTrinh);
         menuBar.add(menuKhachHang);
         menuBar.add(menuVeTau);
+        menuBar.add(menuThongKe);
         menuBar.add(Box.createHorizontalGlue());
         menuBar.add(menuCaNhan);
 
@@ -144,10 +158,12 @@ public final class MainFrame extends BaseFrame {
     }
 
     public void showPanel(JPanel panel) {
-        container.removeAll();
-        container.add(panel);
-        container.revalidate();
-        container.repaint();
+        if (container != null) {
+            container.removeAll();
+            container.add(panel);
+            container.revalidate();
+            container.repaint();
+        }
     }
 
     public void hienMenuTheoQuyen(boolean isAdmin, boolean isLoggedIn) {
@@ -178,6 +194,8 @@ public final class MainFrame extends BaseFrame {
         menuKhachHang.setVisible(isLoggedIn);
 
         menuVeTau.setVisible(isLoggedIn);
+
+        menuThongKe.setVisible(isAdmin);
 
         thongTinCaNhan.setVisible(isLoggedIn);
         doiMatKhau.setVisible(isLoggedIn);
@@ -234,23 +252,43 @@ public final class MainFrame extends BaseFrame {
         tkVeTau.addActionListener(tkListener);
     }
 
-    public void addThongTinCaNhanListener(ActionListener l) {
-        thongTinCaNhan.addActionListener(l);
+    public void addThongKeDoanhThuNgayListener(ActionListener listener) {
+        thongKeDoanhThuNgay.addActionListener(listener);
     }
 
-    public void addDoiMatKhauListener(ActionListener l) {
-        doiMatKhau.addActionListener(l);
+    public void addThongKeDoanhThuTuyenListener(ActionListener listener) {
+        thongKeDoanhThuTuyen.addActionListener(listener);
     }
 
-    public void addDangXuatListener(ActionListener l) {
-        dangXuat.addActionListener(l);
+    public void addThongKeTyLeLapDayListener(ActionListener listener) {
+        thongKeTyLeLapDay.addActionListener(listener);
     }
 
-    public void addThoatListener(ActionListener l) {
-        thoat.addActionListener(l);
+    public void addThongKeKhachVIPListener(ActionListener listener) {
+        thongKeKhachVIP.addActionListener(listener);
     }
 
-    public void addWindowCloseListener(WindowListener l) {
-        addWindowListener(l);
+    public void addThongKeDoanhSoListener(ActionListener listener) {
+        thongKeDoanhSo.addActionListener(listener);
+    }
+
+    public void addThongTinCaNhanListener(ActionListener listener) {
+        thongTinCaNhan.addActionListener(listener);
+    }
+
+    public void addDoiMatKhauListener(ActionListener listener) {
+        doiMatKhau.addActionListener(listener);
+    }
+
+    public void addDangXuatListener(ActionListener listener) {
+        dangXuat.addActionListener(listener);
+    }
+
+    public void addThoatListener(ActionListener listener) {
+        thoat.addActionListener(listener);
+    }
+
+    public void addWindowCloseListener(WindowListener listener) {
+        addWindowListener(listener);
     }
 }
