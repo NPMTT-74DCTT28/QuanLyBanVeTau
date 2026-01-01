@@ -48,8 +48,7 @@ public class ThongKeDoanhThuNgayController {
                 }
 
                 if (ChronoUnit.DAYS.between(tuNgay, denNgay) > 365) {
-                    tab.showWarning("Khoảng thời gian thống kê quá dài (tối đa 365 ngày).\n" +
-                            "Chọn phạm vi nhỏ hơn để biểu đồ hiển thị tốt nhất.");
+                    tab.showWarning("Khoảng thời gian thống kê quá dài (tối đa 365 ngày).");
                     return;
                 }
 
