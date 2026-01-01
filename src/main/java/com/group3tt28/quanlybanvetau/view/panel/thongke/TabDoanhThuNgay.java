@@ -1,55 +1,41 @@
 package com.group3tt28.quanlybanvetau.view.panel.thongke;
 
 import com.group3tt28.quanlybanvetau.model.dto.DoanhThuNgay;
-import com.group3tt28.quanlybanvetau.view.panel.BasePanel;
+import com.group3tt28.quanlybanvetau.util.DinhDang;
 import com.toedter.calendar.JDateChooser;
-import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.axis.CategoryLabelPositions;
-import org.jfree.chart.plot.CategoryPlot;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionListener;
-import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
-public class TabDoanhThuNgay extends BasePanel {
+public class TabDoanhThuNgay extends BaseThongKeTab<DoanhThuNgay> {
 
     private JDateChooser chooserTuNgay;
     private JDateChooser chooserDenNgay;
-
     private JButton buttonThongKe;
 
     private JToggleButton buttonXemBang, buttonXemBieuDo;
     private ButtonGroup viewModeGroup;
 
-    private JPanel mainContainer;
-
     private JFreeChart currentChart;
     private List<DoanhThuNgay> currentList;
 
-    private JTable table;
-    private DefaultTableModel tableModel;
-
     public TabDoanhThuNgay() {
-        initComponents();
+        super();
     }
 
     @Override
     protected void initComponents() {
-        setLayout(new BorderLayout(0, 0));
+        super.initComponents();
 
         JPanel panelNorth = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         panelNorth.setBackground(Color.WHITE);
+        panelNorth.setBorder(BorderFactory.createMatteBorder(0, 0, 10, 0, Color.LIGHT_GRAY));
 
         chooserTuNgay = new JDateChooser();
         chooserTuNgay.setDateFormatString("dd/MM/yyyy");
@@ -59,15 +45,15 @@ public class TabDoanhThuNgay extends BasePanel {
         chooserDenNgay.setDateFormatString("dd/MM/yyyy");
         chooserDenNgay.setDate(new Date());
 
-        buttonThongKe = createStyledButton("Xem kết quả", new Dimension(120, 40), SECONDARY_COLOR, Color.BLACK);
+        buttonThongKe = createStyledButton("Xem kết quả", new Dimension(120, 38), SECONDARY_COLOR, Color.BLACK);
 
         buttonXemBieuDo = new JToggleButton("Biểu đồ");
-        buttonXemBieuDo.setPreferredSize(new Dimension(80, 30));
+        buttonXemBieuDo.setPreferredSize(new Dimension(80, 40));
         buttonXemBieuDo.setBackground(Color.WHITE);
         buttonXemBieuDo.setSelected(true);
 
         buttonXemBang = new JToggleButton("Bảng số liệu");
-        buttonXemBang.setPreferredSize(new Dimension(110, 30));
+        buttonXemBang.setPreferredSize(new Dimension(110, 40));
         buttonXemBang.setBackground(Color.WHITE);
 
         viewModeGroup = new ButtonGroup();
@@ -77,37 +63,50 @@ public class TabDoanhThuNgay extends BasePanel {
         panelNorth.add(createInputField("Từ ngày", chooserTuNgay, Color.WHITE));
         panelNorth.add(createInputField("Đến ngày", chooserDenNgay, Color.WHITE));
         panelNorth.add(buttonThongKe);
-        panelNorth.add(Box.createHorizontalStrut(30));
+        panelNorth.add(Box.createHorizontalStrut(20));
         panelNorth.add(buttonXemBieuDo);
         panelNorth.add(buttonXemBang);
 
-        mainContainer = new JPanel(new BorderLayout());
-        mainContainer.setBackground(Color.WHITE);
-        mainContainer.setBorder(new EmptyBorder(10, 10, 10, 10));
-
-        mainContainer.add(new JLabel("Chưa có dữ liệu.", JLabel.CENTER), BorderLayout.CENTER);
-
-        String[] columns = {"STT", "Ngày", "Số vé bán", "Doanh thu"};
-        tableModel = new DefaultTableModel(columns, 0);
-        table = new JTable(tableModel);
-        table.setRowHeight(25);
-        table.getTableHeader().setFont(FONT_PLAIN);
-
-        DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
-        rightRenderer.setHorizontalAlignment(JLabel.RIGHT);
-        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-
-        table.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
-        table.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
-        table.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
-        table.getColumnModel().getColumn(3).setCellRenderer(rightRenderer);
-
         add(panelNorth, BorderLayout.NORTH);
-        add(mainContainer, BorderLayout.CENTER);
 
-        buttonXemBieuDo.addActionListener(e -> veBieuDo());
-        buttonXemBang.addActionListener(e -> veBang());
+        if (table.getColumnCount() >= 4) {
+            table.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
+            table.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
+            table.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
+            table.getColumnModel().getColumn(3).setCellRenderer(rightRenderer);
+        }
+
+        buttonXemBieuDo.addActionListener(e -> super.veBieuDo(currentChart));
+        buttonXemBang.addActionListener(e -> super.veBang(currentList));
+    }
+
+    @Override
+    protected String[] getTenCot() {
+        return new String[]{"STT", "Ngày", "Số vé bán", "Doanh thu"};
+    }
+
+    @Override
+    protected String getTieuDeBang() {
+        return "DOANH THU THEO NGÀY";
+    }
+
+    @Override
+    protected Object[] getRowData(int stt, DoanhThuNgay item) {
+        return new Object[]{
+                stt,
+                DinhDang.formatNgayVN(item.getNgay()),
+                item.getSoVeBan(),
+                tienVN.format(item.getDoanhThu()),
+        };
+    }
+
+    @Override
+    protected String getTextTongKet(List<DoanhThuNgay> listData) {
+        double tongDoanhThu = 0;
+        for (DoanhThuNgay item : listData) {
+            tongDoanhThu += item.getDoanhThu();
+        }
+        return "TỔNG DOANH THU: " + tienVN.format(tongDoanhThu);
     }
 
     public void setData(JFreeChart chart, List<DoanhThuNgay> list) {
@@ -115,70 +114,10 @@ public class TabDoanhThuNgay extends BasePanel {
         this.currentList = list;
 
         if (buttonXemBieuDo.isSelected()) {
-            veBieuDo();
+            super.veBieuDo(currentChart);
         } else {
-            veBang();
+            super.veBang(currentList);
         }
-    }
-
-    private void veBieuDo() {
-        mainContainer.removeAll();
-
-        if (currentChart != null) {
-            ChartPanel panel = new ChartPanel(currentChart);
-            panel.setBackground(Color.WHITE);
-            panel.setMouseWheelEnabled(true);
-            panel.setMinimumDrawWidth(0);
-            panel.setMinimumDrawHeight(0);
-
-            CategoryPlot plot = currentChart.getCategoryPlot();
-            plot.getDomainAxis().setCategoryLabelPositions(CategoryLabelPositions.UP_90);
-
-            mainContainer.add(panel, BorderLayout.CENTER);
-        } else {
-            mainContainer.add(new JLabel("Chưa có dữ liệu.", JLabel.CENTER), BorderLayout.CENTER);
-        }
-
-        mainContainer.revalidate();
-        mainContainer.repaint();
-    }
-
-    private void veBang() {
-        mainContainer.removeAll();
-
-        if (currentList != null && !currentList.isEmpty()) {
-            tableModel.setRowCount(0);
-            int stt = 1;
-            double doanhThu = 0;
-            NumberFormat tienVN = NumberFormat.getCurrencyInstance(Locale.forLanguageTag("vi-VN"));
-            for (DoanhThuNgay item : currentList) {
-                tableModel.addRow(new Object[]{
-                        stt++,
-                        formatNgayVN(item.getNgay()),
-                        item.getSoVeBan(),
-                        tienVN.format(item.getDoanhThu())
-                });
-                doanhThu += item.getDoanhThu();
-            }
-            tableModel.fireTableDataChanged();
-
-            JLabel labelTitle = new JLabel("DOANH THU THEO NGÀY", JLabel.CENTER);
-            labelTitle.setFont(new Font("Segoe UI", Font.BOLD, 20));
-            labelTitle.setBorder(new EmptyBorder(0, 0, 10, 0));
-            mainContainer.add(labelTitle, BorderLayout.NORTH);
-
-            mainContainer.add(new JScrollPane(table), BorderLayout.CENTER);
-
-            JLabel labelDoanhThu = new JLabel("TỔNG DOANH THU: " + tienVN.format(doanhThu), JLabel.RIGHT);
-            labelDoanhThu.setFont(new Font("Segoe UI", Font.BOLD, 16));
-            labelDoanhThu.setForeground(Color.RED);
-            mainContainer.add(labelDoanhThu, BorderLayout.SOUTH);
-        } else {
-            mainContainer.add(new JLabel("Chưa có dữ liệu.", JLabel.CENTER), BorderLayout.CENTER);
-        }
-
-        mainContainer.revalidate();
-        mainContainer.repaint();
     }
 
     public LocalDate getTuNgay() {
