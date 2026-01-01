@@ -5,6 +5,8 @@ import com.group3tt28.quanlybanvetau.view.panel.BasePanel;
 import com.toedter.calendar.JDateChooser;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.CategoryLabelPositions;
+import org.jfree.chart.plot.CategoryPlot;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -60,9 +62,13 @@ public class TabDoanhThuNgay extends BasePanel {
         buttonThongKe = createStyledButton("Xem kết quả", new Dimension(120, 40), SECONDARY_COLOR, Color.BLACK);
 
         buttonXemBieuDo = new JToggleButton("Biểu đồ");
+        buttonXemBieuDo.setPreferredSize(new Dimension(80, 30));
+        buttonXemBieuDo.setBackground(Color.WHITE);
         buttonXemBieuDo.setSelected(true);
 
         buttonXemBang = new JToggleButton("Bảng số liệu");
+        buttonXemBang.setPreferredSize(new Dimension(110, 30));
+        buttonXemBang.setBackground(Color.WHITE);
 
         viewModeGroup = new ButtonGroup();
         viewModeGroup.add(buttonXemBieuDo);
@@ -124,6 +130,10 @@ public class TabDoanhThuNgay extends BasePanel {
             panel.setMouseWheelEnabled(true);
             panel.setMinimumDrawWidth(0);
             panel.setMinimumDrawHeight(0);
+
+            CategoryPlot plot = currentChart.getCategoryPlot();
+            plot.getDomainAxis().setCategoryLabelPositions(CategoryLabelPositions.UP_90);
+
             mainContainer.add(panel, BorderLayout.CENTER);
         } else {
             mainContainer.add(new JLabel("Chưa có dữ liệu.", JLabel.CENTER), BorderLayout.CENTER);
