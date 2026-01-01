@@ -1,8 +1,8 @@
 package com.group3tt28.quanlybanvetau.controller;
 
 import com.group3tt28.quanlybanvetau.dao.ThongKeDAO;
-import com.group3tt28.quanlybanvetau.model.dto.DoanhThuNgay;
-import com.group3tt28.quanlybanvetau.view.panel.thongke.TabDoanhThuNgay;
+import com.group3tt28.quanlybanvetau.model.dto.DoanhThuTuyen;
+import com.group3tt28.quanlybanvetau.view.panel.thongke.TabDoanhThuTuyen;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
@@ -12,17 +12,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
-public class ThongKeDoanhThuNgayController {
+public class ThongKeDoanhThuTuyenController {
 
-    private final TabDoanhThuNgay tab;
+    private final TabDoanhThuTuyen tab;
     private final ThongKeDAO dao;
 
-    public ThongKeDoanhThuNgayController(TabDoanhThuNgay tabDoanhThuNgay) {
-        this.tab = tabDoanhThuNgay;
+    public ThongKeDoanhThuTuyenController(TabDoanhThuTuyen tabDoanhThuTuyen) {
+        this.tab = tabDoanhThuTuyen;
         this.dao = ThongKeDAO.getInstance();
 
         this.tab.addThongKeListener(new ThongKeListener());
@@ -53,32 +52,28 @@ public class ThongKeDoanhThuNgayController {
                     return;
                 }
 
-                List<DoanhThuNgay> listDoanhThu = dao.getDoanhThuTheoNgay(tuNgay, denNgay);
-                if (listDoanhThu.isEmpty()) {
+                List<DoanhThuTuyen> list = dao.getDoanhThuTheoTuyen(tuNgay, denNgay);
+                if (list.isEmpty()) {
                     tab.showMessage("Không có dữ liệu doanh thu trong khoảng thời gian này!");
                     return;
                 }
 
                 DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM");
-
-                for (DoanhThuNgay item : listDoanhThu) {
-                    LocalDate date = LocalDate.parse(item.getNgay());
-                    String ngayVN = formatter.format(date);
-                    dataset.addValue(item.getDoanhThu(), "Doanh thu", ngayVN);
+                for (DoanhThuTuyen item : list) {
+                    dataset.addValue(item.getDoanhThu(), "Doanh thu", item.getTenTuyen());
                 }
 
-                JFreeChart chart = ChartFactory.createLineChart(
-                        "DOANH THU THEO NGÀY",
-                        "Ngày",
+                JFreeChart chart = ChartFactory.createBarChart(
+                        "DOANH THU THEO TUYẾN",
+                        "Tên tuyến",
                         "Doanh thu",
                         dataset,
                         PlotOrientation.VERTICAL,
                         false, false, false
                 );
 
-                tab.setData(chart, listDoanhThu);
+                tab.setData(chart, list);
             } catch (SQLException ex) {
                 ex.printStackTrace();
                 tab.showError("Xảy ra lỗi khi tải dữ liệu thống kê: " + ex.getMessage());

@@ -3,6 +3,8 @@ package com.group3tt28.quanlybanvetau.view.panel;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public abstract class BasePanel extends JPanel {
 
@@ -72,6 +74,17 @@ public abstract class BasePanel extends JPanel {
         button.setFocusPainted(false);
         button.setCursor(new Cursor(Cursor.HAND_CURSOR));
         return button;
+    }
+
+    protected String formatNgayVN(String sqlDate) {
+        try {
+            LocalDate date = LocalDate.parse(sqlDate);
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            return date.format(formatter);
+        } catch (Exception e) {
+            return sqlDate;
+        }
     }
 
     protected abstract void initComponents();
