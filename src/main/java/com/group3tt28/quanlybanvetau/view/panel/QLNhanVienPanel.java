@@ -19,8 +19,8 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
 import java.time.LocalDate;
-import java.time.Period;
 import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
 public final class QLNhanVienPanel extends BasePanel {
@@ -282,12 +282,11 @@ public final class QLNhanVienPanel extends BasePanel {
             chooserNgaySinh.requestFocus();
             return "Vui lòng chọn ngày sinh.";
         }
-        int tuoi = Period.between(getNgaySinh(), LocalDate.now()).getYears();
-        if (tuoi < 18) {
+        if (ChronoUnit.YEARS.between(getNgaySinh(), LocalDate.now()) < 18) {
             chooserNgaySinh.requestFocus();
-            return "Nhân viên phải từ 18 tuổi trở lên.";
+            return "Nhân viên phải từ đủ 18 tuổi trở lên.";
         }
-        if (tuoi > 65) {
+        if (ChronoUnit.YEARS.between(getNgaySinh(), LocalDate.now()) > 65) {
             chooserNgaySinh.requestFocus();
             return "Nhân viên đã quá tuổi lao động.";
         }

@@ -15,6 +15,7 @@ import java.awt.event.ActionListener;
 import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -143,7 +144,7 @@ public class TabDoanhThuNgay extends BasePanel {
             for (DoanhThuNgay item : currentList) {
                 tableModel.addRow(new Object[]{
                         stt++,
-                        item.getNgay(),
+                        formatNgayVN(item.getNgay()),
                         item.getSoVeBan(),
                         tienVN.format(item.getDoanhThu())
                 });
@@ -182,6 +183,17 @@ public class TabDoanhThuNgay extends BasePanel {
             return chooserDenNgay.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         }
         return null;
+    }
+
+    private String formatNgayVN(String sqlDate) {
+        try {
+            LocalDate date = LocalDate.parse(sqlDate);
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            return date.format(formatter);
+        } catch (Exception e) {
+            return sqlDate;
+        }
     }
 
     public void addThongKeListener(ActionListener l) {

@@ -12,6 +12,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 public class ThongKeDoanhThuNgayController {
@@ -45,6 +48,12 @@ public class ThongKeDoanhThuNgayController {
                     return;
                 }
 
+                if (ChronoUnit.DAYS.between(tuNgay, denNgay) > 365) {
+                    tab.showWarning("Khoảng thời gian thống kê quá dài (tối đa 365 ngày).\n" +
+                            "Chọn phạm vi nhỏ hơn để biểu đồ hiển thị tốt nhất.");
+                    return;
+                }
+
                 List<DoanhThuNgay> listDoanhThu = dao.getDoanhThuTheoNgay(tuNgay, denNgay);
                 if (listDoanhThu.isEmpty()) {
                     tab.showWarning("Không có dữ liệu doanh thu trong khoảng thời gian này.");
@@ -52,8 +61,13 @@ public class ThongKeDoanhThuNgayController {
                 }
 
                 DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM");
+
                 for (DoanhThuNgay item : listDoanhThu) {
-                    dataset.addValue(item.getDoanhThu(), "Doanh thu", item.getNgay());
+                    LocalDate date = LocalDate.parse(item.getNgay());
+                    String ngayVN = formatter.format(date);
+                    dataset.addValue(item.getDoanhThu(), "Doanh thu", ngayVN);
                 }
 
                 JFreeChart chart = ChartFactory.createLineChart(
