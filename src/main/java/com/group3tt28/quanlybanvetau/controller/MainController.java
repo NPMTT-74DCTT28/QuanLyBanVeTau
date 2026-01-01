@@ -3,6 +3,8 @@ package com.group3tt28.quanlybanvetau.controller;
 import com.group3tt28.quanlybanvetau.util.SessionManager;
 import com.group3tt28.quanlybanvetau.view.frame.MainFrame;
 import com.group3tt28.quanlybanvetau.view.panel.*;
+import com.group3tt28.quanlybanvetau.view.panel.thongke.TabDoanhThuNgay;
+import com.group3tt28.quanlybanvetau.view.panel.thongke.TabDoanhThuTuyen;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -33,6 +35,8 @@ public class MainController {
         } else {
             mainFrame.setXinChao(null);
         }
+        mainFrame.addThongKeDoanhThuNgayListener(new ThongKeDoanhThuNgayListener());
+        mainFrame.addThongKeDoanhThuTuyenListener(new ThongKeDoanhThuTuyenListener());
         mainFrame.addThongTinCaNhanListener(new ThongTinCaNhanListener());
         mainFrame.addDoiMatKhauListener(new DoiMatKhauListener());
         mainFrame.addDangXuatListener(new DangXuatListener());
@@ -228,6 +232,24 @@ public class MainController {
             TKVeTauPanel panel = new TKVeTauPanel();
             mainFrame.showPanel(panel);
             new TKVeTauController(panel);
+        }
+    }
+
+    private class ThongKeDoanhThuNgayListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            TabDoanhThuNgay tab = new TabDoanhThuNgay();
+            mainFrame.showPanel(tab);
+            new ThongKeDoanhThuNgayController(tab);
+        }
+    }
+
+    private class ThongKeDoanhThuTuyenListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            TabDoanhThuTuyen tab = new TabDoanhThuTuyen();
+            mainFrame.showPanel(tab);
+            new ThongKeDoanhThuTuyenController(tab);
         }
     }
 
