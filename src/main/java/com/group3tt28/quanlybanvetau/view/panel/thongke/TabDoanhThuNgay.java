@@ -127,6 +127,7 @@ public class TabDoanhThuNgay extends BasePanel {
         if (currentList != null && !currentList.isEmpty()) {
             tableModel.setRowCount(0);
             int stt = 1;
+            double tongDoanhThu = 0;
             NumberFormat tienVN = NumberFormat.getCurrencyInstance(Locale.forLanguageTag("vi-VN"));
             for (DoanhThuNgay item : currentList) {
                 tableModel.addRow(new Object[]{
@@ -135,13 +136,21 @@ public class TabDoanhThuNgay extends BasePanel {
                         item.getSoVeBan(),
                         tienVN.format(item.getDoanhThu())
                 });
+                tongDoanhThu += item.getDoanhThu();
             }
             tableModel.fireTableDataChanged();
+
             JLabel title = new JLabel("BẢNG THỐNG KÊ DOANH THU", JLabel.CENTER);
             title.setFont(new Font("Segoe UI", Font.BOLD, 20));
             title.setBorder(new EmptyBorder(0, 0, 10, 0));
             mainContainer.add(title, BorderLayout.NORTH);
+
             mainContainer.add(new JScrollPane(table), BorderLayout.CENTER);
+
+            JLabel labelTong = new JLabel("TỔNG DOANH THU: " + tienVN.format(tongDoanhThu), JLabel.RIGHT);
+            labelTong.setFont(new Font("Segoe UI", Font.BOLD, 16));
+            labelTong.setForeground(Color.RED);
+            mainContainer.add(labelTong, BorderLayout.SOUTH);
         } else {
             mainContainer.add(new JLabel("Chưa có dữ liệu.", JLabel.CENTER), BorderLayout.CENTER);
         }

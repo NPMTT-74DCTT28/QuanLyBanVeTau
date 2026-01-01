@@ -45,10 +45,9 @@ public final class MainFrame extends BaseFrame {
     @Override
     protected void initComponents() {
         setLayout(new BorderLayout());
-        setLocationRelativeTo(null);
 
         container = new JPanel();
-        container.setBorder(new EmptyBorder(10, 5, 10, 5));
+        container.setBorder(new EmptyBorder(5, 5, 5, 5));
 
         JScrollPane scrollPane = new JScrollPane(container);
         add(scrollPane, BorderLayout.CENTER);
