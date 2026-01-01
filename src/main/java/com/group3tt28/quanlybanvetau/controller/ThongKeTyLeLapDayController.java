@@ -5,6 +5,9 @@ import com.group3tt28.quanlybanvetau.model.dto.TyLeLapDay;
 import com.group3tt28.quanlybanvetau.view.panel.thongke.TabTyLeLapDay;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.CategoryLabelPositions;
+import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 
@@ -71,6 +74,10 @@ public class ThongKeTyLeLapDayController {
                         PlotOrientation.VERTICAL,
                         false, false, false
                 );
+
+                CategoryPlot plot = chart.getCategoryPlot();
+                plot.getDomainAxis().setCategoryLabelPositions(CategoryLabelPositions.UP_90);
+                ((NumberAxis) plot.getRangeAxis()).setAutoRangeIncludesZero(true);
 
                 tab.setData(chart, listData);
             } catch (SQLException ex) {

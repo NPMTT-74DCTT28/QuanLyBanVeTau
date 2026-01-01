@@ -5,6 +5,9 @@ import com.group3tt28.quanlybanvetau.model.dto.DoanhThuTuyen;
 import com.group3tt28.quanlybanvetau.view.panel.thongke.TabDoanhThuTuyen;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.CategoryLabelPositions;
+import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 
@@ -51,15 +54,15 @@ public class ThongKeDoanhThuTuyenController {
                     return;
                 }
 
-                List<DoanhThuTuyen> list = dao.getDoanhThuTheoTuyen(tuNgay, denNgay);
-                if (list.isEmpty()) {
+                List<DoanhThuTuyen> listData = dao.getDoanhThuTheoTuyen(tuNgay, denNgay);
+                if (listData.isEmpty()) {
                     tab.showMessage("Không có dữ liệu doanh thu trong khoảng thời gian này!");
                     return;
                 }
 
                 DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 
-                for (DoanhThuTuyen item : list) {
+                for (DoanhThuTuyen item : listData) {
                     dataset.addValue(item.getDoanhThu(), "Doanh thu", item.getTenTuyen());
                 }
 
@@ -72,7 +75,11 @@ public class ThongKeDoanhThuTuyenController {
                         false, false, false
                 );
 
-                tab.setData(chart, list);
+                CategoryPlot plot = chart.getCategoryPlot();
+                plot.getDomainAxis().setCategoryLabelPositions(CategoryLabelPositions.UP_90);
+                ((NumberAxis) plot.getRangeAxis()).setAutoRangeIncludesZero(true);
+
+                tab.setData(chart, listData);
             } catch (SQLException ex) {
                 ex.printStackTrace();
                 tab.showError("Xảy ra lỗi khi tải dữ liệu thống kê: " + ex.getMessage());
