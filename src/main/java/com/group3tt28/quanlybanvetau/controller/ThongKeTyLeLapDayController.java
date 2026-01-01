@@ -68,7 +68,7 @@ public class ThongKeTyLeLapDayController {
                         "Tên tàu",
                         "Tỷ lệ",
                         dataset,
-                        PlotOrientation.HORIZONTAL,
+                        PlotOrientation.VERTICAL,
                         false, false, false
                 );
 
