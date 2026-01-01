@@ -80,7 +80,7 @@ public class ThongKeDAO {
 
     public List<KhachHangVIP> getKhachHangVIP(int soLuong) throws SQLException {
         List<KhachHangVIP> list = new ArrayList<>();
-        String sql = "{CALL sp_KhachHangVIP(?)}";
+        String sql = "{CALL sp_ThongKeKhachHangVIP(?)}";
 
         try (Connection conn = DBConnection.getConnection(); CallableStatement cs = conn.prepareCall(sql)) {
             cs.setInt(1, soLuong);

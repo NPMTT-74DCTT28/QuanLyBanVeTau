@@ -63,13 +63,13 @@ public class ThongKeDoanhThuTuyenController {
                 DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 
                 for (DoanhThuTuyen item : listData) {
-                    dataset.addValue(item.getDoanhThu(), "Doanh thu", item.getTenTuyen());
+                    dataset.addValue(item.getDoanhThu(), "Doanh thu (VNĐ)", item.getTenTuyen());
                 }
 
                 JFreeChart chart = ChartFactory.createBarChart(
                         "DOANH THU THEO TUYẾN",
                         "Tên tuyến",
-                        "Doanh thu",
+                        "Doanh thu (VNĐ)",
                         dataset,
                         PlotOrientation.VERTICAL,
                         false, false, false

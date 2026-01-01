@@ -68,14 +68,14 @@ public class ThongKeDoanhThuNgayController {
                 for (DoanhThuNgay item : listData) {
                     LocalDate date = LocalDate.parse(item.getNgay());
                     String ngayVN = formatter.format(date);
-                    dataset.addValue(item.getDoanhThu(), "Doanh thu", ngayVN);
+                    dataset.addValue(item.getDoanhThu(), "Doanh thu (VNĐ)", ngayVN);
                     dataset.addValue(item.getSoVeBan(), "Số vé bán", ngayVN);
                 }
 
                 JFreeChart chart = ChartFactory.createLineChart(
                         "DOANH THU THEO NGÀY",
                         "Ngày",
-                        "Doanh thu",
+                        "Doanh thu (VNĐ)",
                         dataset,
                         PlotOrientation.VERTICAL,
                         true, false, false
