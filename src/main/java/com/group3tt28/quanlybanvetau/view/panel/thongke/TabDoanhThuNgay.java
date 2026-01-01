@@ -6,6 +6,7 @@ import com.toedter.calendar.JDateChooser;
 import org.jfree.chart.JFreeChart;
 
 import javax.swing.*;
+import javax.swing.border.MatteBorder;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
@@ -35,7 +36,7 @@ public class TabDoanhThuNgay extends BaseThongKeTab<DoanhThuNgay> {
 
         JPanel panelNorth = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         panelNorth.setBackground(Color.WHITE);
-        panelNorth.setBorder(BorderFactory.createMatteBorder(0, 0, 10, 0, Color.LIGHT_GRAY));
+        panelNorth.setBorder(new MatteBorder(0, 0, 2, 0, Color.LIGHT_GRAY));
 
         chooserTuNgay = new JDateChooser();
         chooserTuNgay.setDateFormatString("dd/MM/yyyy");

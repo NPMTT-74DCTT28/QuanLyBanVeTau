@@ -7,6 +7,7 @@ import org.jfree.chart.JFreeChart;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.MatteBorder;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
@@ -36,9 +37,9 @@ public class TabDoanhThuTuyen extends BaseThongKeTab<DoanhThuTuyen> {
     protected void initComponents() {
         super.initComponents();
 
-        JPanel panelNorth = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        JPanel panelNorth = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         panelNorth.setBackground(Color.white);
-        panelNorth.setBorder(new EmptyBorder(0, 0, 10, 0));
+        panelNorth.setBorder(new MatteBorder(0, 0, 2, 0, Color.LIGHT_GRAY));
 
         chooserTuNgay = new JDateChooser();
         chooserTuNgay.setDateFormatString(DinhDang.PATTERN_NGAY_VN);
