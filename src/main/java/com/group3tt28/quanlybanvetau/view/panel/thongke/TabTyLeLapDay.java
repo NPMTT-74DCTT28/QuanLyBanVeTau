@@ -1,7 +1,8 @@
 package com.group3tt28.quanlybanvetau.view.panel.thongke;
 
-import com.group3tt28.quanlybanvetau.model.dto.DoanhThuTuyen;
+import com.group3tt28.quanlybanvetau.model.dto.TyLeLapDay;
 import com.group3tt28.quanlybanvetau.util.DinhDang;
+import com.group3tt28.quanlybanvetau.view.panel.BasePanel;
 import com.toedter.calendar.JDateChooser;
 import org.jfree.chart.JFreeChart;
 
@@ -14,7 +15,7 @@ import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 
-public class TabDoanhThuTuyen extends BaseThongKeTab<DoanhThuTuyen> {
+public class TabTyLeLapDay extends BaseThongKeTab<TyLeLapDay> {
 
     private JDateChooser chooserTuNgay;
     private JDateChooser chooserDenNgay;
@@ -26,9 +27,9 @@ public class TabDoanhThuTuyen extends BaseThongKeTab<DoanhThuTuyen> {
     private JToggleButton buttonXemBang;
 
     private JFreeChart chart;
-    private List<DoanhThuTuyen> listData;
+    private List<TyLeLapDay> listData;
 
-    public TabDoanhThuTuyen() {
+    public TabTyLeLapDay() {
         super();
     }
 
@@ -37,7 +38,7 @@ public class TabDoanhThuTuyen extends BaseThongKeTab<DoanhThuTuyen> {
         super.initComponents();
 
         JPanel panelNorth = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
-        panelNorth.setBackground(Color.white);
+        panelNorth.setBackground(Color.WHITE);
         panelNorth.setBorder(new MatteBorder(0, 0, 2, 0, Color.LIGHT_GRAY));
 
         chooserTuNgay = new JDateChooser();
@@ -75,7 +76,7 @@ public class TabDoanhThuTuyen extends BaseThongKeTab<DoanhThuTuyen> {
         if (table.getColumnCount() >= 3) {
             table.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
             table.getColumnModel().getColumn(1).setCellRenderer(leftRenderer);
-            table.getColumnModel().getColumn(2).setCellRenderer(rightRenderer);
+            table.getColumnModel().getColumn(2).setCellRenderer(leftRenderer);
         }
 
         buttonXemBieuDo.addActionListener(e -> super.veBieuDo(chart));
@@ -84,33 +85,29 @@ public class TabDoanhThuTuyen extends BaseThongKeTab<DoanhThuTuyen> {
 
     @Override
     protected String[] getTenCot() {
-        return new String[]{"STT", "Tên tuyến", "Doanh thu"};
+        return new String[]{"STT", "Tên tàu", "Tỷ lệ lấp đầy (%)"};
     }
 
     @Override
     protected String getTieuDeBang() {
-        return "DOANH THU THEO TUYẾN";
+        return "TỶ LỆ LẤP ĐẦY TÀU";
     }
 
     @Override
-    protected Object[] getRowData(int stt, DoanhThuTuyen item) {
+    protected Object[] getRowData(int stt, TyLeLapDay item) {
         return new Object[]{
                 stt,
-                item.getTenTuyen(),
-                tienVN.format(item.getDoanhThu())
+                item.getTenTau(),
+                item.getTyLeLapDay()
         };
     }
 
     @Override
-    protected String getTextTongKet(List<DoanhThuTuyen> listData) {
-        double doanhThu = 0;
-        for (DoanhThuTuyen item : listData) {
-            doanhThu += item.getDoanhThu();
-        }
-        return "TỔNG DOANH THU: " + tienVN.format(doanhThu);
+    protected String getTextTongKet(List<TyLeLapDay> listData) {
+        return "";
     }
 
-    public void setData(JFreeChart chart, List<DoanhThuTuyen> listData) {
+    public void setData(JFreeChart chart, List<TyLeLapDay> listData) {
         this.chart = chart;
         this.listData = listData;
 

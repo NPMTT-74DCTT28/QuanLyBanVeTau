@@ -23,8 +23,8 @@ public class TabDoanhThuNgay extends BaseThongKeTab<DoanhThuNgay> {
     private JToggleButton buttonXemBang, buttonXemBieuDo;
     private ButtonGroup viewModeGroup;
 
-    private JFreeChart currentChart;
-    private List<DoanhThuNgay> currentList;
+    private JFreeChart chart;
+    private List<DoanhThuNgay> listData;
 
     public TabDoanhThuNgay() {
         super();
@@ -39,14 +39,14 @@ public class TabDoanhThuNgay extends BaseThongKeTab<DoanhThuNgay> {
         panelNorth.setBorder(new MatteBorder(0, 0, 2, 0, Color.LIGHT_GRAY));
 
         chooserTuNgay = new JDateChooser();
-        chooserTuNgay.setDateFormatString("dd/MM/yyyy");
+        chooserTuNgay.setDateFormatString(DinhDang.PATTERN_NGAY_VN);
         chooserTuNgay.setDate(new Date());
 
         chooserDenNgay = new JDateChooser();
-        chooserDenNgay.setDateFormatString("dd/MM/yyyy");
+        chooserDenNgay.setDateFormatString(DinhDang.PATTERN_NGAY_VN);
         chooserDenNgay.setDate(new Date());
 
-        buttonThongKe = createStyledButton("Xem kết quả", new Dimension(120, 38), SECONDARY_COLOR, Color.BLACK);
+        buttonThongKe = createStyledButton("Xem kết quả", new Dimension(120, 40), SECONDARY_COLOR, Color.BLACK);
 
         buttonXemBieuDo = new JToggleButton("Biểu đồ");
         buttonXemBieuDo.setPreferredSize(new Dimension(80, 40));
@@ -64,7 +64,7 @@ public class TabDoanhThuNgay extends BaseThongKeTab<DoanhThuNgay> {
         panelNorth.add(createInputField("Từ ngày", chooserTuNgay, Color.WHITE));
         panelNorth.add(createInputField("Đến ngày", chooserDenNgay, Color.WHITE));
         panelNorth.add(buttonThongKe);
-        panelNorth.add(Box.createHorizontalStrut(20));
+        panelNorth.add(Box.createHorizontalStrut(30));
         panelNorth.add(buttonXemBieuDo);
         panelNorth.add(buttonXemBang);
 
@@ -77,8 +77,8 @@ public class TabDoanhThuNgay extends BaseThongKeTab<DoanhThuNgay> {
             table.getColumnModel().getColumn(3).setCellRenderer(rightRenderer);
         }
 
-        buttonXemBieuDo.addActionListener(e -> super.veBieuDo(currentChart));
-        buttonXemBang.addActionListener(e -> super.veBang(currentList));
+        buttonXemBieuDo.addActionListener(e -> super.veBieuDo(chart));
+        buttonXemBang.addActionListener(e -> super.veBang(listData));
     }
 
     @Override
@@ -111,13 +111,13 @@ public class TabDoanhThuNgay extends BaseThongKeTab<DoanhThuNgay> {
     }
 
     public void setData(JFreeChart chart, List<DoanhThuNgay> list) {
-        this.currentChart = chart;
-        this.currentList = list;
+        this.chart = chart;
+        this.listData = list;
 
         if (buttonXemBieuDo.isSelected()) {
-            super.veBieuDo(currentChart);
+            super.veBieuDo(this.chart);
         } else {
-            super.veBang(currentList);
+            super.veBang(listData);
         }
     }
 

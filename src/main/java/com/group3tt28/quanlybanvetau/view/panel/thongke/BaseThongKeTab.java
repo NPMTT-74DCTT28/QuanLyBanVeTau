@@ -80,7 +80,7 @@ public abstract class BaseThongKeTab<T> extends BasePanel {
                 mainContainer.add(labelTong, BorderLayout.SOUTH);
             }
         } else {
-            mainContainer.add(new JLabel("Chưa có dữ liệu bảng.", JLabel.CENTER), BorderLayout.CENTER);
+            mainContainer.add(new JLabel("Chưa có dữ liệu.", JLabel.CENTER), BorderLayout.CENTER);
         }
         refreshUI();
     }
@@ -95,7 +95,7 @@ public abstract class BaseThongKeTab<T> extends BasePanel {
             chartPanel.setMinimumDrawHeight(0);
             mainContainer.add(chartPanel, BorderLayout.CENTER);
         } else {
-            mainContainer.add(new JLabel("Chưa có dữ liệu biểu đồ.", JLabel.CENTER), BorderLayout.CENTER);
+            mainContainer.add(new JLabel("Chưa có dữ liệu.", JLabel.CENTER), BorderLayout.CENTER);
         }
 
         refreshUI();

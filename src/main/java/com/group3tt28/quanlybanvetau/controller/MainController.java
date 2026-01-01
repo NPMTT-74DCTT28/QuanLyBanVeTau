@@ -5,6 +5,7 @@ import com.group3tt28.quanlybanvetau.view.frame.MainFrame;
 import com.group3tt28.quanlybanvetau.view.panel.*;
 import com.group3tt28.quanlybanvetau.view.panel.thongke.TabDoanhThuNgay;
 import com.group3tt28.quanlybanvetau.view.panel.thongke.TabDoanhThuTuyen;
+import com.group3tt28.quanlybanvetau.view.panel.thongke.TabTyLeLapDay;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -37,6 +38,7 @@ public class MainController {
         }
         mainFrame.addThongKeDoanhThuNgayListener(new ThongKeDoanhThuNgayListener());
         mainFrame.addThongKeDoanhThuTuyenListener(new ThongKeDoanhThuTuyenListener());
+        mainFrame.addThongKeTyLeLapDayListener(new ThongKeTyLeLapDayListener());
         mainFrame.addThongTinCaNhanListener(new ThongTinCaNhanListener());
         mainFrame.addDoiMatKhauListener(new DoiMatKhauListener());
         mainFrame.addDangXuatListener(new DangXuatListener());
@@ -250,6 +252,15 @@ public class MainController {
             TabDoanhThuTuyen tab = new TabDoanhThuTuyen();
             mainFrame.showPanel(tab);
             new ThongKeDoanhThuTuyenController(tab);
+        }
+    }
+
+    private class ThongKeTyLeLapDayListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            TabTyLeLapDay tab = new TabTyLeLapDay();
+            mainFrame.showPanel(tab);
+            new ThongKeTyLeLapDayController(tab);
         }
     }
 

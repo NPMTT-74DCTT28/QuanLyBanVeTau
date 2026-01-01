@@ -67,7 +67,7 @@ public class ThongKeDAO {
 
             try (ResultSet rs = cs.executeQuery()) {
                 while (rs.next()) {
-                    int maLichTrinh = rs.getInt("ma_lic_trinh");
+                    String maLichTrinh = rs.getString("ma_lich_trinh");
                     String tenTau = rs.getString("ten_tau");
                     double tyLeLapDay = rs.getDouble("ty_le_lap_day");
 
