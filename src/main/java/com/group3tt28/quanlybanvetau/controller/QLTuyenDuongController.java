@@ -76,8 +76,9 @@ public class QLTuyenDuongController {
                     panel.showError("Vui lòng nhập đầy đủ thông tin!");
                     return;
                 }
+
                 if (td.getKhoangCachKm() <= 0 || td.getGiaCoBan() <= 0){
-                    panel.showError("Khoảng cách / giá cơ bản không hợp lệ!");
+                    panel.showError("Khoảng cách / giá cơ bản phải lớn hon 0!");
                     return;
                 }
                 if (dao.checkTrung(td.getMaTuyen(), td.getIdGaDi(), td.getIdGaDen())) {
@@ -95,6 +96,8 @@ public class QLTuyenDuongController {
                 } else {
                     panel.showError("Thêm thất bại!");
                 }
+            } catch (NumberFormatException ex) {
+                panel.showError("Khoảng cách / Giá cơ bản phải là số!");
             } catch (Exception ex) {
                 ex.printStackTrace();
                 panel.showError("Lỗi không xác định: " + ex.getMessage());
@@ -112,7 +115,7 @@ public class QLTuyenDuongController {
                     return;
                 }
                 if (td.getKhoangCachKm() <= 0 || td.getGiaCoBan() <= 0){
-                    panel.showError("Khoảng cách / giá cơ bản không hợp lệ!");
+                    panel.showError("Khoảng cách / giá cơ bản phải lớn hon 0!");
                     return;
                 }
                 if (panel.showConfirm("Bạn có muốn cập nhật thông tin của" + td.getMaTuyen() + " không ?")) {
@@ -123,6 +126,8 @@ public class QLTuyenDuongController {
                         panel.showError("Cập nhật thất bại!");
                     }
                 }
+            } catch (NumberFormatException ex) {
+                panel.showError("Khoảng cách / Giá cơ bản phải là số!");
             } catch (Exception ex) {
                 ex.printStackTrace();
                 panel.showError("Lỗi hệ thống: " + ex.getMessage());
@@ -138,6 +143,7 @@ public class QLTuyenDuongController {
                 if (maTuyen.isEmpty()) {
                     return;
                 }
+
                 if (panel.showConfirm("Bạn có muốn xóa" + maTuyen + " không ?")) {
                     if (dao.delete(maTuyen)) {
                         panel.showMessage("Xóa thành công!");

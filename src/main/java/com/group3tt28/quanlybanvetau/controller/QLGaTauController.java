@@ -50,8 +50,8 @@ public class QLGaTauController {
         public void actionPerformed(ActionEvent e) {
             try {
                 GaTau gaTau = panel.getGaTau();
-                if (gaTau.getMaGa().isEmpty() || gaTau.getTenGa().isEmpty()) {
-                    panel.showError("Vui lòng nhập đầy đủ Mã ga/ Tên ga!");
+                if (gaTau.getMaGa().isEmpty() || gaTau.getTenGa().isEmpty()||gaTau.getDiaChi().isEmpty() || gaTau.getThanhPho().isEmpty()) {
+                    panel.showError("Vui lòng nhập đầy đủ!");
                     return;
                 }
                 if (dao.checkTrung(gaTau.getMaGa())) {
@@ -77,8 +77,8 @@ public class QLGaTauController {
         public void actionPerformed(ActionEvent e) {
             try {
                 GaTau gaTau = panel.getGaTau();
-                if (gaTau.getMaGa().isEmpty() || gaTau.getTenGa().isEmpty()) {
-                    panel.showError("Tên ga không được để trống!");
+                if (gaTau.getMaGa().isEmpty() || gaTau.getTenGa().isEmpty()||gaTau.getDiaChi().isEmpty() || gaTau.getThanhPho().isEmpty()) {
+                    panel.showError("Vui lòng nhập đầy đủ!");
                     return;
                 }
                 if (panel.showConfirm("Bạn có muốn cập nhật thông tin của " + gaTau.getMaGa() + " không ?")) {
