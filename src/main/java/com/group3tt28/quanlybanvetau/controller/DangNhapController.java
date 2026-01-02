@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.sql.SQLException;
 
 public class DangNhapController {
 
@@ -59,13 +60,16 @@ public class DangNhapController {
                 frame.dispose();
             } catch (IllegalArgumentException ex) {
                 ex.printStackTrace();
-                frame.showError("Lỗi kiểm tra mật khẩu: " + ex.getMessage());
+                frame.showError("Xảy ra lỗi khi kiểm tra mật khẩu: " + ex.getMessage());
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+                frame.showError("Xảy ra lỗi khi lấy thông tin: " + ex.getMessage());
             } catch (RuntimeException ex) {
                 ex.printStackTrace();
                 frame.showError("Lỗi hệ thống: " + ex.getMessage());
             } catch (Exception ex) {
                 ex.printStackTrace();
-                frame.showError("Lỗi không xác định: " + ex.getMessage());
+                frame.showError("Xảy ra lỗi không xác định: " + ex.getMessage());
             }
         }
     }

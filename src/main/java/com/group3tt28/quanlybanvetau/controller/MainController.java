@@ -1,5 +1,6 @@
 package com.group3tt28.quanlybanvetau.controller;
 
+import com.group3tt28.quanlybanvetau.enums.VaiTro;
 import com.group3tt28.quanlybanvetau.util.SessionManager;
 import com.group3tt28.quanlybanvetau.view.frame.MainFrame;
 import com.group3tt28.quanlybanvetau.view.panel.*;
@@ -16,8 +17,6 @@ public class MainController {
 
     public MainController(MainFrame frame) {
         this.mainFrame = frame;
-        boolean isLoggedIn = SessionManager.getCurrentUser() != null;
-        boolean isAdmin = SessionManager.isAdmin();
 
         mainFrame.addNhanVienListener(new QLNhanVienListener(), new TKNhanVienListener());
         mainFrame.addTauListener(new QLTauListener(), new TKTauListener());
@@ -29,7 +28,7 @@ public class MainController {
         mainFrame.addLichTrinhListener(new QLLichTrinhListener(), new TKLichTrinhListener());
         mainFrame.addKhachHangListener(new QLKhachHangListener(), new TKKhachHangListener());
         mainFrame.addVeTauListener(new QLVeTauListener(), new TKVeTauListener());
-        if (isLoggedIn) {
+        if (SessionManager.getCurrentUser() != null) {
             mainFrame.setXinChao(SessionManager.getCurrentUser().getHoTen());
         } else {
             mainFrame.setXinChao(null);
@@ -45,7 +44,9 @@ public class MainController {
         mainFrame.addThoatListener(new ThoatListener());
         mainFrame.addWindowCloseListener(new WindowCloseListener());
 
-        mainFrame.hienMenuTheoQuyen(isAdmin, isLoggedIn);
+        String vaiTroString = SessionManager.getCurrentUser().getVaiTro();
+        VaiTro vaiTro = VaiTro.fromLabel(vaiTroString);
+        mainFrame.hienMenuTheoQuyen(vaiTro);
 
         showTrangChu();
 

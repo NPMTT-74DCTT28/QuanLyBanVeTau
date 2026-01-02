@@ -1,5 +1,7 @@
 package com.group3tt28.quanlybanvetau.view.frame;
 
+import com.group3tt28.quanlybanvetau.enums.VaiTro;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -165,36 +167,34 @@ public final class MainFrame extends BaseFrame {
         }
     }
 
-    public void hienMenuTheoQuyen(boolean isAdmin, boolean isLoggedIn) {
+    public void hienMenuTheoQuyen(VaiTro vaiTro) {
+        boolean isLoggedIn = (vaiTro != null);
+        boolean isAdmin = (vaiTro == VaiTro.ADMIN);
+
         menuNhanVien.setVisible(isAdmin);
+        menuLoaiToa.setVisible(isAdmin);
+        menuGhe.setVisible(isAdmin);
+        menuThongKe.setVisible(isAdmin);
 
         menuTau.setVisible(isLoggedIn);
+        menuToaTau.setVisible(isLoggedIn);
+        menuGaTau.setVisible(isLoggedIn);
+        menuTuyenDuong.setVisible(isLoggedIn);
+        menuLichTrinh.setVisible(isLoggedIn);
+        menuKhachHang.setVisible(isLoggedIn);
+        menuVeTau.setVisible(isLoggedIn);
+
         qlTau.setVisible(isAdmin);
         tkTau.setVisible(isLoggedIn);
 
-        menuLoaiToa.setVisible(isAdmin);
-
-        menuToaTau.setVisible(isLoggedIn);
         qlToaTau.setVisible(isAdmin);
         tkToaTau.setVisible(isLoggedIn);
 
-        menuGhe.setVisible(isAdmin);
-
-        menuGaTau.setVisible(isLoggedIn);
         qlGaTau.setVisible(isAdmin);
         tkGaTau.setVisible(isLoggedIn);
 
-        menuTuyenDuong.setVisible(isLoggedIn);
         qlTuyenDuong.setVisible(isAdmin);
         tkTuyenDuong.setVisible(isLoggedIn);
-
-        menuLichTrinh.setVisible(isLoggedIn);
-
-        menuKhachHang.setVisible(isLoggedIn);
-
-        menuVeTau.setVisible(isLoggedIn);
-
-        menuThongKe.setVisible(isAdmin);
 
         thongTinCaNhan.setVisible(isLoggedIn);
         doiMatKhau.setVisible(isLoggedIn);
