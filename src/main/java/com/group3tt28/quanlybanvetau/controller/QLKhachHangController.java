@@ -2,6 +2,7 @@ package com.group3tt28.quanlybanvetau.controller;
 
 import com.group3tt28.quanlybanvetau.dao.KhachHangDAO;
 import com.group3tt28.quanlybanvetau.model.KhachHang;
+import com.group3tt28.quanlybanvetau.util.DinhDang;
 import com.group3tt28.quanlybanvetau.view.panel.QLKhachHangPanel;
 
 import javax.swing.table.DefaultTableModel;
@@ -44,7 +45,7 @@ public class QLKhachHangController {
             model.addRow(new Object[]{
                     khachHang.getCccd(),
                     khachHang.getHoTen(),
-                    khachHang.getNgaySinh(),
+                    khachHang.getNgaySinh().format(DinhDang.DATE_FORMATTER),
                     khachHang.getGioiTinh(),
                     khachHang.getSdt(),
                     khachHang.getDiaChi()
@@ -190,7 +191,7 @@ public class QLKhachHangController {
                 panel.setNgaySinh((LocalDate) ngaySinhObj);
             } else {
                 try {
-                    panel.setNgaySinh(LocalDate.parse(ngaySinhObj.toString()));
+                    panel.setNgaySinh(LocalDate.parse(ngaySinhObj.toString(), DinhDang.DATE_FORMATTER));
                 } catch (Exception ex) {
                     ex.printStackTrace();
                     panel.showError("Lỗi chuyển đổi ngày tháng: " + ex.getMessage());

@@ -6,6 +6,7 @@ import com.group3tt28.quanlybanvetau.dao.TuyenDuongDAO;
 import com.group3tt28.quanlybanvetau.model.LichTrinh;
 import com.group3tt28.quanlybanvetau.model.Tau;
 import com.group3tt28.quanlybanvetau.model.TuyenDuong;
+import com.group3tt28.quanlybanvetau.util.DinhDang;
 import com.group3tt28.quanlybanvetau.view.panel.QLLichTrinhPanel;
 
 import javax.swing.table.DefaultTableModel;
@@ -68,7 +69,6 @@ public class QLLichTrinhController {
         try {
             List<LichTrinh> list = lichTrinhDAO.getAll();
             tableModel.setRowCount(0);
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
             for (LichTrinh lt : list) {
                 String tenTau = getTenTauById(lt.getIdTau());
@@ -79,8 +79,8 @@ public class QLLichTrinhController {
                         lt.getMaLichTrinh(),
                         tenTau,
                         tenTuyen,
-                        lt.getNgayDi().format(formatter),
-                        lt.getNgayDen().format(formatter),
+                        lt.getNgayDi().format(DinhDang.DATE_TIME_FORMATTER),
+                        lt.getNgayDen().format(DinhDang.DATE_TIME_FORMATTER),
                         lt.getTrangThai()
                 });
             }
@@ -237,10 +237,9 @@ public class QLLichTrinhController {
             try {
                 String strDi = tableModel.getValueAt(row, 4).toString();
                 String strDen = tableModel.getValueAt(row, 5).toString();
-                DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-                panel.setNgayDi(java.time.LocalDateTime.parse(strDi, fmt));
-                panel.setNgayDen(java.time.LocalDateTime.parse(strDen, fmt));
+                panel.setNgayDi(java.time.LocalDateTime.parse(strDi, DinhDang.DATE_TIME_FORMATTER));
+                panel.setNgayDen(java.time.LocalDateTime.parse(strDen, DinhDang.DATE_TIME_FORMATTER));
 
             } catch (Exception ex) {
                 ex.printStackTrace();

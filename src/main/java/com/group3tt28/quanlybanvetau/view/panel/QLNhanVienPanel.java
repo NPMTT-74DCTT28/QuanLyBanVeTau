@@ -71,6 +71,8 @@ public final class QLNhanVienPanel extends BasePanel {
         panelForm.add(createInputField("Họ tên", fieldHoTen, Color.WHITE));
 
         chooserNgaySinh = new JDateChooser();
+        chooserNgaySinh.setDateFormatString(DinhDang.DATE_VN);
+        chooserNgaySinh.setDate(new Date());
         chooserNgaySinh.setMaxSelectableDate(new Date(System.currentTimeMillis()));
         panelForm.add(createInputField("Ngày sinh", chooserNgaySinh, Color.WHITE));
 

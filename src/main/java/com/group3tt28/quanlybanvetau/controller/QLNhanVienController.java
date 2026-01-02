@@ -3,6 +3,7 @@ package com.group3tt28.quanlybanvetau.controller;
 import com.group3tt28.quanlybanvetau.dao.NhanVienDAO;
 import com.group3tt28.quanlybanvetau.model.NhanVien;
 import com.group3tt28.quanlybanvetau.util.BamMatKhau;
+import com.group3tt28.quanlybanvetau.util.DinhDang;
 import com.group3tt28.quanlybanvetau.util.SessionManager;
 import com.group3tt28.quanlybanvetau.view.panel.QLNhanVienPanel;
 
@@ -54,7 +55,7 @@ public class QLNhanVienController {
                         nhanVien.getId(),
                         nhanVien.getMaNhanVien(),
                         nhanVien.getHoTen(),
-                        nhanVien.getNgaySinh(),
+                        DinhDang.formatNgayVN(nhanVien.getNgaySinh()),
                         nhanVien.getGioiTinh(),
                         nhanVien.getSdt(),
                         nhanVien.getEmail(),
@@ -125,7 +126,7 @@ public class QLNhanVienController {
         public void actionPerformed(ActionEvent e) {
             try {
                 if (selectedRow == -1) {
-                    panel.showWarning("Bạn chưa chọn nhân viên nào để sửa thông tin!");
+                    panel.showWarning("Vui lòng chọn nhân viên cần sửa thông tin.");
                     return;
                 }
 
@@ -133,7 +134,7 @@ public class QLNhanVienController {
                 nhanVien.setId(Integer.parseInt(tableModel.getValueAt(selectedRow, 0).toString()));
 
                 if (nhanVien.getId() == currentUser.getId()) {
-                    panel.showWarning("Bạn chỉ có thể cập nhật thông tin cá nhân bằng chức năng cập nhật thông tin trong menu tài khoản.");
+                    panel.showWarning("Bạn chỉ có thể cập nhật thông tin cá nhân bằng chức năng\ncập nhật thông tin trong menu tài khoản.");
                     return;
                 }
 
@@ -247,7 +248,7 @@ public class QLNhanVienController {
                 panel.setNgaySinh((LocalDate) ngaySinhObj);
             } else {
                 try {
-                    panel.setNgaySinh(LocalDate.parse(ngaySinhObj.toString()));
+                    panel.setNgaySinh(LocalDate.parse(ngaySinhObj.toString(), DinhDang.DATE_FORMATTER));
                 } catch (Exception ex) {
                     ex.printStackTrace();
                     panel.showError("Lỗi khi chuyển đổi ngày tháng: " + ex.getMessage());
