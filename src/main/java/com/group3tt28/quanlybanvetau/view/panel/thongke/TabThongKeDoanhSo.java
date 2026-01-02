@@ -6,6 +6,7 @@ import org.jfree.chart.JFreeChart;
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -127,5 +128,9 @@ public class TabThongKeDoanhSo extends BaseThongKeTab<DoanhSoNhanVien> {
             return Integer.parseInt(spinnerNam.getValue().toString());
         }
         return 0;
+    }
+
+    public void addThongKeListener(ActionListener listener) {
+        buttonThongKe.addActionListener(listener);
     }
 }
