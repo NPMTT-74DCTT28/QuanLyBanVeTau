@@ -1,9 +1,9 @@
 package com.group3tt28.quanlybanvetau.controller;
 
 import com.group3tt28.quanlybanvetau.dao.ThongKeDAO;
-import com.group3tt28.quanlybanvetau.model.dto.DoanhThuNgay;
+import com.group3tt28.quanlybanvetau.model.dto.TyLeLapDay;
 import com.group3tt28.quanlybanvetau.util.DinhDang;
-import com.group3tt28.quanlybanvetau.view.panel.thongke.TabDoanhThuNgay;
+import com.group3tt28.quanlybanvetau.view.panel.thongke.TabTyLeLapDay;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.CategoryLabelPositions;
@@ -16,17 +16,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
-public class ThongKeDoanhThuNgayController {
+public class ThongKeTyLeLapDayController {
 
-    private final TabDoanhThuNgay tab;
+    private final TabTyLeLapDay tab;
     private final ThongKeDAO dao;
 
-    public ThongKeDoanhThuNgayController(TabDoanhThuNgay tabDoanhThuNgay) {
-        this.tab = tabDoanhThuNgay;
+    public ThongKeTyLeLapDayController(TabTyLeLapDay tab) {
+        this.tab = tab;
         this.dao = ThongKeDAO.getInstance();
 
         this.tab.addThongKeListener(new ThongKeListener());
@@ -52,35 +51,32 @@ public class ThongKeDoanhThuNgayController {
                 }
 
                 if (ChronoUnit.DAYS.between(tuNgay, denNgay) > 365) {
-                    tab.showWarning("Khoảng thời gian thống kê quá dài (tối đa 365 ngày).");
+                    tab.showWarning("Khoảng thời gian thống kê quá dài (tối đa 365 ngày)");
                     return;
                 }
 
-                List<DoanhThuNgay> listData = dao.getDoanhThuTheoNgay(tuNgay, denNgay);
+                List<TyLeLapDay> listData = dao.getTyLeLapDay(tuNgay, denNgay);
+
                 if (listData.isEmpty()) {
-                    tab.showMessage("Không có dữ liệu doanh thu trong khoảng thời gian này!");
+                    tab.showMessage("Không có dữ liệu thống kê trong khoảng thời gian này!");
                     tab.setData(null, null);
                     return;
                 }
 
                 DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM");
-
-                for (DoanhThuNgay item : listData) {
-                    LocalDate date = LocalDate.parse(item.getNgay());
-                    String ngayVN = formatter.format(date);
-                    dataset.addValue(item.getDoanhThu(), "Doanh thu (VNĐ)", ngayVN);
-                    dataset.addValue(item.getSoVeBan(), "Số vé bán", ngayVN);
+                for (TyLeLapDay item : listData) {
+                    dataset.addValue(item.getTyLeLapDay(), "Tỷ lệ (%)", item.getTenTau());
                 }
 
-                JFreeChart chart = ChartFactory.createLineChart(
-                        "BIẾN ĐỘNG DOANH THU TỪ " + DinhDang.formatNgayVN(tuNgay) + " ĐẾN " + DinhDang.formatNgayVN(denNgay),
-                        "Ngày",
-                        "Doanh thu (VNĐ)",
+                JFreeChart chart = ChartFactory.createBarChart(
+                        "SO SÁNH TỶ LỆ LẤP ĐẦY GIỮA CÁC TÀU TỪ "
+                                + DinhDang.formatNgayVN(tuNgay)
+                                + " ĐẾN " + DinhDang.formatNgayVN(denNgay),
+                        "Tên tàu",
+                        "Tỷ lệ (%)",
                         dataset,
                         PlotOrientation.VERTICAL,
-                        true, false, false
+                        false, false, false
                 );
 
                 CategoryPlot plot = chart.getCategoryPlot();

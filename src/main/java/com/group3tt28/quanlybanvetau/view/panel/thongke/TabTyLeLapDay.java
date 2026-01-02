@@ -1,7 +1,8 @@
 package com.group3tt28.quanlybanvetau.view.panel.thongke;
 
-import com.group3tt28.quanlybanvetau.model.dto.DoanhThuNgay;
+import com.group3tt28.quanlybanvetau.model.dto.TyLeLapDay;
 import com.group3tt28.quanlybanvetau.util.DinhDang;
+import com.group3tt28.quanlybanvetau.view.panel.BasePanel;
 import com.toedter.calendar.JDateChooser;
 import org.jfree.chart.JFreeChart;
 
@@ -14,19 +15,21 @@ import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 
-public class TabDoanhThuNgay extends BaseThongKeTab<DoanhThuNgay> {
+public class TabTyLeLapDay extends BaseThongKeTab<TyLeLapDay> {
 
     private JDateChooser chooserTuNgay;
     private JDateChooser chooserDenNgay;
+
     private JButton buttonThongKe;
 
-    private JToggleButton buttonXemBang, buttonXemBieuDo;
     private ButtonGroup viewModeGroup;
+    private JToggleButton buttonXemBieuDo;
+    private JToggleButton buttonXemBang;
 
     private JFreeChart chart;
-    private List<DoanhThuNgay> listData;
+    private List<TyLeLapDay> listData;
 
-    public TabDoanhThuNgay() {
+    public TabTyLeLapDay() {
         super();
     }
 
@@ -70,11 +73,10 @@ public class TabDoanhThuNgay extends BaseThongKeTab<DoanhThuNgay> {
 
         add(panelNorth, BorderLayout.NORTH);
 
-        if (table.getColumnCount() >= 4) {
+        if (table.getColumnCount() >= 3) {
             table.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
-            table.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
-            table.getColumnModel().getColumn(2).setCellRenderer(rightRenderer);
-            table.getColumnModel().getColumn(3).setCellRenderer(rightRenderer);
+            table.getColumnModel().getColumn(1).setCellRenderer(leftRenderer);
+            table.getColumnModel().getColumn(2).setCellRenderer(leftRenderer);
         }
 
         buttonXemBieuDo.addActionListener(e -> super.veBieuDo(chart));
@@ -83,35 +85,35 @@ public class TabDoanhThuNgay extends BaseThongKeTab<DoanhThuNgay> {
 
     @Override
     protected String[] getTenCot() {
-        return new String[]{"STT", "Ngày", "Số vé bán", "Doanh thu"};
+        return new String[]{"Hạng", "Tên tàu", "Tỷ lệ lấp đầy (%)"};
     }
 
     @Override
     protected String getTieuDeBang() {
-        return "CHI TIẾT DOANH THU TỪ " + DinhDang.formatNgayVN(getTuNgay()) + " ĐẾN " + DinhDang.formatNgayVN(getDenNgay());
+        return "BẢNG XẾP HẠNG TÀU CÓ TỶ LỆ LẤP ĐẦY CAO NHẤT TỪ " + DinhDang.formatNgayVN(getTuNgay()) + " ĐẾN " + DinhDang.formatNgayVN(getDenNgay());
     }
 
     @Override
-    protected Object[] getRowData(int stt, DoanhThuNgay item) {
-        return new Object[]{stt, DinhDang.formatNgayVN(item.getNgay()), item.getSoVeBan(), DinhDang.formatTienVN(item.getDoanhThu()),};
+    protected Object[] getRowData(int stt, TyLeLapDay item) {
+        return new Object[]{
+                stt,
+                item.getTenTau(),
+                item.getTyLeLapDay()
+        };
     }
 
     @Override
-    protected String getTextTongKet(List<DoanhThuNgay> listData) {
-        double tongDoanhThu = 0;
-        for (DoanhThuNgay item : listData) {
-            tongDoanhThu += item.getDoanhThu();
-        }
-        return "TỔNG DOANH THU: " + DinhDang.formatTienVN(tongDoanhThu);
+    protected String getTextTongKet(List<TyLeLapDay> listData) {
+        return "";
     }
 
-    public void setData(JFreeChart chart, List<DoanhThuNgay> list) {
+    public void setData(JFreeChart chart, List<TyLeLapDay> listData) {
         this.chart = chart;
-        this.listData = list;
+        this.listData = listData;
 
         if (buttonXemBieuDo.isSelected()) {
-            super.veBieuDo(this.chart);
-        } else {
+            super.veBieuDo(chart);
+        } else if (buttonXemBang.isSelected()) {
             super.veBang(listData);
         }
     }
@@ -130,7 +132,7 @@ public class TabDoanhThuNgay extends BaseThongKeTab<DoanhThuNgay> {
         return null;
     }
 
-    public void addThongKeListener(ActionListener l) {
-        buttonThongKe.addActionListener(l);
+    public void addThongKeListener(ActionListener listener) {
+        buttonThongKe.addActionListener(listener);
     }
 }

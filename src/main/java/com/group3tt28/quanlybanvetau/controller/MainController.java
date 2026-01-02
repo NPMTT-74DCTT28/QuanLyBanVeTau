@@ -3,8 +3,7 @@ package com.group3tt28.quanlybanvetau.controller;
 import com.group3tt28.quanlybanvetau.util.SessionManager;
 import com.group3tt28.quanlybanvetau.view.frame.MainFrame;
 import com.group3tt28.quanlybanvetau.view.panel.*;
-import com.group3tt28.quanlybanvetau.view.panel.thongke.TabDoanhThuNgay;
-import com.group3tt28.quanlybanvetau.view.panel.thongke.TabDoanhThuTuyen;
+import com.group3tt28.quanlybanvetau.view.panel.thongke.*;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -37,6 +36,9 @@ public class MainController {
         }
         mainFrame.addThongKeDoanhThuNgayListener(new ThongKeDoanhThuNgayListener());
         mainFrame.addThongKeDoanhThuTuyenListener(new ThongKeDoanhThuTuyenListener());
+        mainFrame.addThongKeTyLeLapDayListener(new ThongKeTyLeLapDayListener());
+        mainFrame.addThongKeKhachVIPListener(new ThongKeKhachHangVIPListener());
+        mainFrame.addThongKeDoanhSoListener(new ThongKeDoanhSoListener());
         mainFrame.addThongTinCaNhanListener(new ThongTinCaNhanListener());
         mainFrame.addDoiMatKhauListener(new DoiMatKhauListener());
         mainFrame.addDangXuatListener(new DangXuatListener());
@@ -250,6 +252,33 @@ public class MainController {
             TabDoanhThuTuyen tab = new TabDoanhThuTuyen();
             mainFrame.showPanel(tab);
             new ThongKeDoanhThuTuyenController(tab);
+        }
+    }
+
+    private class ThongKeTyLeLapDayListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            TabTyLeLapDay tab = new TabTyLeLapDay();
+            mainFrame.showPanel(tab);
+            new ThongKeTyLeLapDayController(tab);
+        }
+    }
+
+    private class ThongKeKhachHangVIPListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            TabKhachHangVIP tab = new TabKhachHangVIP();
+            mainFrame.showPanel(tab);
+            new ThongKeKhachHangVIPController(tab);
+        }
+    }
+
+    private class ThongKeDoanhSoListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            TabThongKeDoanhSo tab = new TabThongKeDoanhSo();
+            mainFrame.showPanel(tab);
+            new ThongKeDoanhSoController(tab);
         }
     }
 

@@ -67,7 +67,7 @@ public class ThongKeDAO {
 
             try (ResultSet rs = cs.executeQuery()) {
                 while (rs.next()) {
-                    int maLichTrinh = rs.getInt("ma_lic_trinh");
+                    String maLichTrinh = rs.getString("ma_lich_trinh");
                     String tenTau = rs.getString("ten_tau");
                     double tyLeLapDay = rs.getDouble("ty_le_lap_day");
 
@@ -80,7 +80,7 @@ public class ThongKeDAO {
 
     public List<KhachHangVIP> getKhachHangVIP(int soLuong) throws SQLException {
         List<KhachHangVIP> list = new ArrayList<>();
-        String sql = "{CALL sp_KhachHangVIP(?)}";
+        String sql = "{CALL sp_ThongKeKhachHangVIP(?)}";
 
         try (Connection conn = DBConnection.getConnection(); CallableStatement cs = conn.prepareCall(sql)) {
             cs.setInt(1, soLuong);
@@ -108,10 +108,12 @@ public class ThongKeDAO {
 
             try (ResultSet rs = cs.executeQuery()) {
                 while (rs.next()) {
+                    String maNhanVien = rs.getString("ma_nhan_vien");
                     String hoTen = rs.getString("ho_ten");
+                    int soVeBan = rs.getInt("so_ve_ban");
                     double doanhSo = rs.getDouble("doanh_so");
 
-                    list.add(new DoanhSoNhanVien(hoTen, doanhSo));
+                    list.add(new DoanhSoNhanVien(maNhanVien, hoTen, soVeBan, doanhSo));
                 }
             }
         }
