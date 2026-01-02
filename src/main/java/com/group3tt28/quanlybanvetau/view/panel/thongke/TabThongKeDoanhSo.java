@@ -1,6 +1,7 @@
 package com.group3tt28.quanlybanvetau.view.panel.thongke;
 
 import com.group3tt28.quanlybanvetau.model.dto.DoanhSoNhanVien;
+import com.group3tt28.quanlybanvetau.util.DinhDang;
 import org.jfree.chart.JFreeChart;
 
 import javax.swing.*;
@@ -70,7 +71,7 @@ public class TabThongKeDoanhSo extends BaseThongKeTab<DoanhSoNhanVien> {
 
         if (table.getColumnCount() >= 5) {
             table.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
-            table.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
+            table.getColumnModel().getColumn(1).setCellRenderer(leftRenderer);
             table.getColumnModel().getColumn(2).setCellRenderer(rightRenderer);
             table.getColumnModel().getColumn(3).setCellRenderer(rightRenderer);
             table.getColumnModel().getColumn(4).setCellRenderer(rightRenderer);
@@ -82,12 +83,12 @@ public class TabThongKeDoanhSo extends BaseThongKeTab<DoanhSoNhanVien> {
 
     @Override
     protected String[] getTenCot() {
-        return new String[]{"STT", "Mã nhân viên", "Họ tên", "Số vé bán", "Doanh số (VNĐ)"};
+        return new String[]{"Hạng", "Mã nhân viên", "Họ tên", "Số vé bán", "Doanh số (VNĐ)"};
     }
 
     @Override
     protected String getTieuDeBang() {
-        return "DOANH SỐ NHÂN VIÊN";
+        return "BẢNG XẾP HẠNG NHÂN VIÊN CÓ DOANH SỐ CAO NHẤT THÁNG " + getThang() + "/" + getNam();
     }
 
     @Override
@@ -97,7 +98,7 @@ public class TabThongKeDoanhSo extends BaseThongKeTab<DoanhSoNhanVien> {
                 item.getMaNhanVien(),
                 item.getHoTen(),
                 item.getSoVeBan(),
-                tienVN.format(item.getDoanhSo())
+                DinhDang.formatTienVN(item.getDoanhSo())
         };
     }
 

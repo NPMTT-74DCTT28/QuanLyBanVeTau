@@ -84,12 +84,12 @@ public class TabDoanhThuTuyen extends BaseThongKeTab<DoanhThuTuyen> {
 
     @Override
     protected String[] getTenCot() {
-        return new String[]{"STT", "Tên tuyến", "Doanh thu"};
+        return new String[]{"Hạng", "Tên tuyến", "Doanh thu"};
     }
 
     @Override
     protected String getTieuDeBang() {
-        return "DOANH THU THEO TUYẾN";
+        return "BẢNG XẾP HẠNG DOANH THU THEO TUYẾN TỪ " + DinhDang.formatNgayVN(getTuNgay()) + " ĐẾN " + DinhDang.formatNgayVN(getDenNgay());
     }
 
     @Override
@@ -97,7 +97,7 @@ public class TabDoanhThuTuyen extends BaseThongKeTab<DoanhThuTuyen> {
         return new Object[]{
                 stt,
                 item.getTenTuyen(),
-                tienVN.format(item.getDoanhThu())
+                DinhDang.formatTienVN(item.getDoanhThu())
         };
     }
 
@@ -107,7 +107,7 @@ public class TabDoanhThuTuyen extends BaseThongKeTab<DoanhThuTuyen> {
         for (DoanhThuTuyen item : listData) {
             doanhThu += item.getDoanhThu();
         }
-        return "TỔNG DOANH THU: " + tienVN.format(doanhThu);
+        return "TỔNG DOANH THU: " + DinhDang.formatTienVN(doanhThu);
     }
 
     public void setData(JFreeChart chart, List<DoanhThuTuyen> listData) {

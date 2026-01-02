@@ -71,7 +71,7 @@ public class ThongKeDoanhSoController {
                 }
 
                 JFreeChart chart = ChartFactory.createPieChart(
-                        "CƠ CẤU DOANH SỐ THEO NHÂN VIÊN",
+                        "CƠ CẤU DOANH SỐ THEO NHÂN VIÊN THÁNG " + thang + "/" + nam,
                         dataset,
                         true, false, false
                 );

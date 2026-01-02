@@ -2,6 +2,7 @@ package com.group3tt28.quanlybanvetau.controller;
 
 import com.group3tt28.quanlybanvetau.dao.ThongKeDAO;
 import com.group3tt28.quanlybanvetau.model.dto.DoanhThuNgay;
+import com.group3tt28.quanlybanvetau.util.DinhDang;
 import com.group3tt28.quanlybanvetau.view.panel.thongke.TabDoanhThuNgay;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
@@ -74,7 +75,7 @@ public class ThongKeDoanhThuNgayController {
                 }
 
                 JFreeChart chart = ChartFactory.createLineChart(
-                        "DOANH THU THEO NGÀY",
+                        "BIẾN ĐỘNG DOANH THU TỪ " + DinhDang.formatNgayVN(tuNgay) + " ĐẾN " + DinhDang.formatNgayVN(denNgay),
                         "Ngày",
                         "Doanh thu (VNĐ)",
                         dataset,

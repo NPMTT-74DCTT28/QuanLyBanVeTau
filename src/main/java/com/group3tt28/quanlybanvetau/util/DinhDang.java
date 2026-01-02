@@ -15,8 +15,11 @@ public class DinhDang {
 
     public static final String PATTERN_NGAY_VN = "dd/MM/yyyy";
 
-    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern(PATTERN_NGAY_VN);
     private static final Locale LOCALE_VN = Locale.forLanguageTag("vi-VN");
+
+    private static final NumberFormat TIEN_VN = NumberFormat.getCurrencyInstance(LOCALE_VN);
+
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern(PATTERN_NGAY_VN);
 
     public static String formatNgayVN(String sqlDate) {
         if (sqlDate == null || sqlDate.isEmpty()) return "";
@@ -35,12 +38,12 @@ public class DinhDang {
     }
 
     public static String formatTienVN(double tien) {
-        return NumberFormat.getCurrencyInstance(LOCALE_VN).format(tien);
+        return TIEN_VN.format(tien);
     }
 
     public static double parseTienVN(String tienString) {
         try {
-            return NumberFormat.getCurrencyInstance(LOCALE_VN).parse(tienString).doubleValue();
+            return TIEN_VN.parse(tienString).doubleValue();
         } catch (Exception e) {
             e.printStackTrace();
             return 0;

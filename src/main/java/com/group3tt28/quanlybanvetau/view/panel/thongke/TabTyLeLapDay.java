@@ -85,12 +85,12 @@ public class TabTyLeLapDay extends BaseThongKeTab<TyLeLapDay> {
 
     @Override
     protected String[] getTenCot() {
-        return new String[]{"STT", "Tên tàu", "Tỷ lệ lấp đầy (%)"};
+        return new String[]{"Hạng", "Tên tàu", "Tỷ lệ lấp đầy (%)"};
     }
 
     @Override
     protected String getTieuDeBang() {
-        return "TỶ LỆ LẤP ĐẦY TÀU";
+        return "BẢNG XẾP HẠNG TÀU CÓ TỶ LỆ LẤP ĐẦY CAO NHẤT TỪ " + DinhDang.formatNgayVN(getTuNgay()) + " ĐẾN " + DinhDang.formatNgayVN(getDenNgay());
     }
 
     @Override

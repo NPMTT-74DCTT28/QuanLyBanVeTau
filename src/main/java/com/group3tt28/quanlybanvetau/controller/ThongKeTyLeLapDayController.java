@@ -2,6 +2,7 @@ package com.group3tt28.quanlybanvetau.controller;
 
 import com.group3tt28.quanlybanvetau.dao.ThongKeDAO;
 import com.group3tt28.quanlybanvetau.model.dto.TyLeLapDay;
+import com.group3tt28.quanlybanvetau.util.DinhDang;
 import com.group3tt28.quanlybanvetau.view.panel.thongke.TabTyLeLapDay;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
@@ -68,7 +69,9 @@ public class ThongKeTyLeLapDayController {
                 }
 
                 JFreeChart chart = ChartFactory.createBarChart(
-                        "TỶ LỆ LẤP ĐẦY TÀU",
+                        "SO SÁNH TỶ LỆ LẤP ĐẦY GIỮA CÁC TÀU TỪ "
+                                + DinhDang.formatNgayVN(tuNgay)
+                                + " ĐẾN " + DinhDang.formatNgayVN(denNgay),
                         "Tên tàu",
                         "Tỷ lệ (%)",
                         dataset,

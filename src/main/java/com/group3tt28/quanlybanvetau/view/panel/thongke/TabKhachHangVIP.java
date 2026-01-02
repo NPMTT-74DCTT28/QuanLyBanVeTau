@@ -1,6 +1,7 @@
 package com.group3tt28.quanlybanvetau.view.panel.thongke;
 
 import com.group3tt28.quanlybanvetau.model.dto.KhachHangVIP;
+import com.group3tt28.quanlybanvetau.util.DinhDang;
 import org.jfree.chart.JFreeChart;
 
 import javax.swing.*;
@@ -73,12 +74,12 @@ public class TabKhachHangVIP extends BaseThongKeTab<KhachHangVIP> {
 
     @Override
     protected String[] getTenCot() {
-        return new String[]{"STT", "Họ tên", "SĐT", "Tổng chi tiêu"};
+        return new String[]{"Hạng", "Họ tên", "SĐT", "Tổng chi tiêu"};
     }
 
     @Override
     protected String getTieuDeBang() {
-        return "TOP KHÁCH HÀNG CHI TIÊU NHIỀU NHẤT";
+        return "BẢNG XẾP HẠNG " + getSoLuong() + " KHÁCH HÀNG CHI TIÊU NHIỀU NHẤT";
     }
 
     @Override
@@ -87,7 +88,7 @@ public class TabKhachHangVIP extends BaseThongKeTab<KhachHangVIP> {
                 stt,
                 item.getHoTen(),
                 item.getSdt(),
-                tienVN.format(item.getTongTienChiTieu())
+                DinhDang.formatTienVN(item.getTongTienChiTieu())
         };
     }
 

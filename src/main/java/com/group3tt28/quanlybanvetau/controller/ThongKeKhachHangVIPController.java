@@ -53,7 +53,7 @@ public class ThongKeKhachHangVIPController {
                 }
 
                 JFreeChart chart = ChartFactory.createBarChart(
-                        "TOP KHÁCH HÀNG CHI TIÊU NHIỀU NHẤT",
+                        "TOP " + soLuong + " KHÁCH HÀNG CHI TIÊU NHIỀU NHẤT",
                         "Họ tên",
                         "Tổng chi tiêu (VNĐ)",
                         dataset,

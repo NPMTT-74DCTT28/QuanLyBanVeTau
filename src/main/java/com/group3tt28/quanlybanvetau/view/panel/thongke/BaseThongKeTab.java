@@ -9,23 +9,18 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.text.NumberFormat;
 import java.util.List;
-import java.util.Locale;
 
 public abstract class BaseThongKeTab<T> extends BasePanel {
 
     protected JPanel mainContainer;
     protected JTable table;
     protected DefaultTableModel tableModel;
-    protected NumberFormat tienVN;
     protected DefaultTableCellRenderer leftRenderer;
     protected DefaultTableCellRenderer centerRenderer;
     protected DefaultTableCellRenderer rightRenderer;
 
     public BaseThongKeTab() {
-        tienVN = NumberFormat.getCurrencyInstance(Locale.forLanguageTag("vi-VN"));
-
         leftRenderer = new DefaultTableCellRenderer();
         leftRenderer.setHorizontalAlignment(JLabel.LEFT);
 

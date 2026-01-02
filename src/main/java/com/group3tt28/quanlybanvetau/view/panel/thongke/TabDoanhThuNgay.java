@@ -73,7 +73,7 @@ public class TabDoanhThuNgay extends BaseThongKeTab<DoanhThuNgay> {
         if (table.getColumnCount() >= 4) {
             table.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
             table.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
-            table.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
+            table.getColumnModel().getColumn(2).setCellRenderer(rightRenderer);
             table.getColumnModel().getColumn(3).setCellRenderer(rightRenderer);
         }
 
@@ -88,17 +88,12 @@ public class TabDoanhThuNgay extends BaseThongKeTab<DoanhThuNgay> {
 
     @Override
     protected String getTieuDeBang() {
-        return "DOANH THU THEO NGÀY";
+        return "CHI TIẾT DOANH THU TỪ " + DinhDang.formatNgayVN(getTuNgay()) + " ĐẾN " + DinhDang.formatNgayVN(getDenNgay());
     }
 
     @Override
     protected Object[] getRowData(int stt, DoanhThuNgay item) {
-        return new Object[]{
-                stt,
-                DinhDang.formatNgayVN(item.getNgay()),
-                item.getSoVeBan(),
-                tienVN.format(item.getDoanhThu()),
-        };
+        return new Object[]{stt, DinhDang.formatNgayVN(item.getNgay()), item.getSoVeBan(), DinhDang.formatTienVN(item.getDoanhThu()),};
     }
 
     @Override
@@ -107,7 +102,7 @@ public class TabDoanhThuNgay extends BaseThongKeTab<DoanhThuNgay> {
         for (DoanhThuNgay item : listData) {
             tongDoanhThu += item.getDoanhThu();
         }
-        return "TỔNG DOANH THU: " + tienVN.format(tongDoanhThu);
+        return "TỔNG DOANH THU: " + DinhDang.formatTienVN(tongDoanhThu);
     }
 
     public void setData(JFreeChart chart, List<DoanhThuNgay> list) {
