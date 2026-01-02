@@ -108,10 +108,12 @@ public class ThongKeDAO {
 
             try (ResultSet rs = cs.executeQuery()) {
                 while (rs.next()) {
+                    String maNhanVien = rs.getString("ma_nhan_vien");
                     String hoTen = rs.getString("ho_ten");
+                    int soVeBan = rs.getInt("so_ve_ban");
                     double doanhSo = rs.getDouble("doanh_so");
 
-                    list.add(new DoanhSoNhanVien(hoTen, doanhSo));
+                    list.add(new DoanhSoNhanVien(maNhanVien, hoTen, soVeBan, doanhSo));
                 }
             }
         }
