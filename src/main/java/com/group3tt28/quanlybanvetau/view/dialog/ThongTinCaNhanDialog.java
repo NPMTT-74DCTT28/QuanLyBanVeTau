@@ -50,6 +50,7 @@ public class ThongTinCaNhanDialog extends JDialog {
         panelForm.add(createInputField("Họ tên*", fieldHoTen, Color.WHITE));
 
         chooserNgaySinh = new JDateChooser();
+        chooserNgaySinh.setDateFormatString(DinhDang.DATE_VN);
         panelForm.add(createInputField("Ngày sinh*", chooserNgaySinh, Color.WHITE));
 
         boxGioiTinh = new JComboBox<>(GioiTinh.values());

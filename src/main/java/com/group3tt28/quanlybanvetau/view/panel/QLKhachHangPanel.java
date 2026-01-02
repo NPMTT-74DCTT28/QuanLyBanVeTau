@@ -2,6 +2,7 @@ package com.group3tt28.quanlybanvetau.view.panel;
 
 import com.group3tt28.quanlybanvetau.enums.GioiTinh;
 import com.group3tt28.quanlybanvetau.model.KhachHang;
+import com.group3tt28.quanlybanvetau.util.DinhDang;
 import com.toedter.calendar.JDateChooser;
 
 import javax.swing.*;
@@ -52,6 +53,8 @@ public class QLKhachHangPanel extends BasePanel {
         panelForm.add(createInputField("Họ tên: ", fieldHoTen, Color.WHITE));
 
         chooserNgaySinh = new JDateChooser();
+        chooserNgaySinh.setDateFormatString(DinhDang.DATE_VN);
+        chooserNgaySinh.setDate(new Date());
         chooserNgaySinh.setMaxSelectableDate(new Date(System.currentTimeMillis()));
         panelForm.add(createInputField("Ngày sinh: ", chooserNgaySinh, Color.WHITE));
 

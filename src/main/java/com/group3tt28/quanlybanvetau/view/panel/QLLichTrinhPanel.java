@@ -4,6 +4,7 @@ import com.group3tt28.quanlybanvetau.enums.TrangThaiLichTrinh;
 import com.group3tt28.quanlybanvetau.model.LichTrinh;
 import com.group3tt28.quanlybanvetau.model.Tau;
 import com.group3tt28.quanlybanvetau.model.TuyenDuong;
+import com.group3tt28.quanlybanvetau.util.DinhDang;
 
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;
@@ -70,12 +71,12 @@ public class QLLichTrinhPanel extends BasePanel {
         panelForm.add(createInputField("Trạng thái", boxTrangThai, Color.WHITE));
 
         spinnerNgayDi = new JSpinner(new SpinnerDateModel());
-        JSpinner.DateEditor editorDi = new JSpinner.DateEditor(spinnerNgayDi, "yyyy-MM-dd HH:mm:ss");
+        JSpinner.DateEditor editorDi = new JSpinner.DateEditor(spinnerNgayDi, DinhDang.DATE_TIME_VN);
         spinnerNgayDi.setEditor(editorDi);
         panelForm.add(createInputField("Thời gian đi", spinnerNgayDi, Color.WHITE));
 
         spinnerNgayDen = new JSpinner(new SpinnerDateModel());
-        JSpinner.DateEditor editorDen = new JSpinner.DateEditor(spinnerNgayDen, "yyyy-MM-dd HH:mm:ss");
+        JSpinner.DateEditor editorDen = new JSpinner.DateEditor(spinnerNgayDen, DinhDang.DATE_TIME_VN);
         spinnerNgayDen.setEditor(editorDen);
         panelForm.add(createInputField("Thời gian đến", spinnerNgayDen, Color.WHITE));
 

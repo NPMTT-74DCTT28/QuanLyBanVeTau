@@ -41,12 +41,14 @@ public class TabDoanhThuTuyen extends BaseThongKeTab<DoanhThuTuyen> {
         panelNorth.setBorder(new MatteBorder(0, 0, 2, 0, Color.LIGHT_GRAY));
 
         chooserTuNgay = new JDateChooser();
-        chooserTuNgay.setDateFormatString(DinhDang.PATTERN_NGAY_VN);
+        chooserTuNgay.setDateFormatString(DinhDang.DATE_VN);
         chooserTuNgay.setDate(new Date());
+        chooserTuNgay.setMaxSelectableDate(new Date(System.currentTimeMillis()));
 
         chooserDenNgay = new JDateChooser();
-        chooserDenNgay.setDateFormatString(DinhDang.PATTERN_NGAY_VN);
+        chooserDenNgay.setDateFormatString(DinhDang.DATE_VN);
         chooserDenNgay.setDate(new Date());
+        chooserDenNgay.setMaxSelectableDate(new Date(System.currentTimeMillis()));
 
         buttonThongKe = createStyledButton("Xem kết quả", new Dimension(120, 40), SECONDARY_COLOR, Color.BLACK);
 

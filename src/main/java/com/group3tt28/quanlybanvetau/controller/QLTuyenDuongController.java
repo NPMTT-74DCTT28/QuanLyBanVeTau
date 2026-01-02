@@ -76,6 +76,10 @@ public class QLTuyenDuongController {
                     panel.showError("Vui lòng nhập đầy đủ thông tin!");
                     return;
                 }
+                if (td.getKhoangCachKm() <= 0 || td.getGiaCoBan() <= 0){
+                    panel.showError("Khoảng cách / giá cơ bản không hợp lệ!");
+                    return;
+                }
                 if (dao.checkTrung(td.getMaTuyen(), td.getIdGaDi(), td.getIdGaDen())) {
                     panel.showWarning("Tuyến đường đã tồn tại!");
                     return;
@@ -103,8 +107,13 @@ public class QLTuyenDuongController {
         public void actionPerformed(ActionEvent e) {
             try {
                 TuyenDuong td = panel.getTuyenDuong();
-                if (td.getMaTuyen().isEmpty() || td.getTenTuyen().isEmpty()) {
-                    panel.showError("Tên tuyến không được để trống!");
+                if (td.getMaTuyen().isEmpty() || td.getTenTuyen().isEmpty() ) {
+                    panel.showError("Vui lòng nhập đầy đủ thông tin!");
+                    return;
+                }
+                if (td.getKhoangCachKm() <= 0 || td.getGiaCoBan() <= 0){
+                    panel.showError("Khoảng cách / giá cơ bản không hợp lệ!");
+                    return;
                 }
                 if (panel.showConfirm("Bạn có muốn cập nhật thông tin của" + td.getMaTuyen() + " không ?")) {
                     if (dao.update(td)) {
