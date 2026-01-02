@@ -1,0 +1,95 @@
+package com.group3tt28.quanlybanvetau.controller.core;
+
+import com.group3tt28.quanlybanvetau.dao.NhanVienDAO;
+import com.group3tt28.quanlybanvetau.model.NhanVien;
+import com.group3tt28.quanlybanvetau.util.SessionManager;
+import com.group3tt28.quanlybanvetau.view.core.MainFrame;
+import com.group3tt28.quanlybanvetau.view.core.ThongTinCaNhanDialog;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.SQLException;
+
+public class ThongTinCaNhanController {
+
+    private final MainFrame parent;
+    private final ThongTinCaNhanDialog dialog;
+    private final NhanVien currentUser;
+    private final NhanVienDAO dao;
+
+    public ThongTinCaNhanController(MainFrame parent) {
+        this.parent = parent;
+        this.dialog = new ThongTinCaNhanDialog(this.parent);
+        this.dao = NhanVienDAO.getInstance();
+        this.currentUser = SessionManager.getCurrentUser();
+
+        loadThongTin();
+
+        this.dialog.addXacNhanListener(new XacNhanListener());
+        this.dialog.addQuayLaiListener(new QuayLaiListener());
+
+        this.dialog.setVisible(true);
+    }
+
+    private void loadThongTin() {
+        if (currentUser != null) {
+            dialog.setHoTen(currentUser.getHoTen());
+            dialog.setNgaySinh(currentUser.getNgaySinh());
+            dialog.setGioiTinh(currentUser.getGioiTinh());
+            dialog.setSdt(currentUser.getSdt());
+            dialog.setEmail(currentUser.getEmail());
+            dialog.setDiaChi(currentUser.getDiaChi());
+        }
+    }
+
+    private class XacNhanListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            try {
+                if (dialog.thongBaoLoiDauVao() != null) {
+                    dialog.showWarning(dialog.thongBaoLoiDauVao());
+                    return;
+                }
+                currentUser.setHoTen(dialog.getHoTen());
+                currentUser.setNgaySinh(dialog.getNgaySinh());
+                currentUser.setGioiTinh(dialog.getGioiTinh());
+                currentUser.setSdt(dialog.getSdt());
+                currentUser.setEmail(dialog.getEmail());
+                currentUser.setDiaChi(dialog.getDiaChi());
+
+                if (dao.checkTrung(currentUser.getMaNhanVien(), currentUser.getSdt(), currentUser.getId())) {
+                    parent.showError("Số điện thoại đã tồn tại.");
+                    return;
+                }
+
+                if (dao.update(currentUser)) {
+                    if (dialog.showConfirm("Bạn muốn cập nhật thông tin?")) {
+                        dialog.showMessage("Cập nhật thông tin thành công!");
+                        parent.setXinChao(currentUser.getHoTen());
+                        loadThongTin();
+                    }
+                } else {
+                    dialog.showError("Cập nhật thông tin thất bại! Vui lòng kiểm tra lại.");
+                }
+            } catch (SQLException ex) {
+                if (ex.getErrorCode() == 1062 || ex.getMessage().contains("Duplicate entry")) {
+                    parent.showError("Dữ liệu đã bị thay đổi! Số điện thoại đã tồn tại.");
+                } else {
+                    parent.showError("Lỗi kết nối cơ sở dữ liệu (Mã lỗi: " + ex.getErrorCode() + ")");
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                dialog.showError("Lỗi không xác định: " + ex.getMessage());
+            }
+        }
+    }
+
+    private class QuayLaiListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (parent != null) {
+                dialog.dispose();
+            }
+        }
+    }
+}

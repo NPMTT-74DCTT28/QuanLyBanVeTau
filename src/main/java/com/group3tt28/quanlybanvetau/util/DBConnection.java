@@ -23,14 +23,11 @@ public class DBConnection {
             String password = p.getProperty("db.password");
             conn = DriverManager.getConnection(url, user, password);
         } catch (ClassNotFoundException e) {
-            System.err.println("Loi: Khong tim thay Driver MySQL! Kiem tra file pom.xml.");
-            throw new RuntimeException(e);
+            throw new RuntimeException("Không tìm thấy driver MySQL! Kiểm tra file pom.xml.", e);
         } catch (IOException e) {
-            System.err.println("Loi: Khong tim thay file db.properties!");
-            throw new RuntimeException(e);
+            throw new RuntimeException("Không tìm thấy file db.properties.", e);
         } catch (SQLException e) {
-            System.err.println("Loi: Sai thong tin ket noi CSDL! Kiem tra lai file db.properties");
-            throw new RuntimeException(e);
+            throw new RuntimeException("Sai thông tin kết nối CSDL! Kiểm tra lại file db.properties.", e);
         }
         return conn;
     }
