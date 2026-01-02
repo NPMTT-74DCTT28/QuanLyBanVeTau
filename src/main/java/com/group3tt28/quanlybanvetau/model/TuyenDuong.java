@@ -86,7 +86,5 @@ public class TuyenDuong {
     @Override
     public String toString() {
         return tenTuyen;
-        // Hoặc nếu bạn muốn hiện cả mã cho dễ nhìn thì dùng dòng dưới:
-        // return maTuyen + " - " + tenTuyen;
     }
 }

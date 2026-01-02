@@ -148,16 +148,22 @@ public final class QLTuyenDuongPanel extends BasePanel {
         }
     }
 
-    public String getKhoangcach() {
-        return fieldKhoangcach.getText().trim();
+    public double getKhoangcach() {
+        if(!fieldKhoangcach.getText().trim().isEmpty()){
+            return Double.parseDouble(fieldKhoangcach.getText().trim());
+        }
+        return 0;
     }
 
     public void setKhoangcach(String khoangcach) {
         fieldKhoangcach.setText(khoangcach);
     }
 
-    public String getGiaCB() {
-        return fieldGiaCB.getText().trim();
+    public double getGiaCB() {
+        if(!fieldGiaCB.getText().trim().isEmpty()){
+            return Double.parseDouble(fieldGiaCB.getText().trim());
+        }
+        return 0;
     }
 
     public void setGiaCB(String giaCB) {
@@ -171,8 +177,8 @@ public final class QLTuyenDuongPanel extends BasePanel {
         GaTau gaDen = (GaTau) cboGaden.getSelectedItem();
         int idgadi = gaDi.getId();
         int idgaden = gaDen.getId();
-        Double khoangcach = Double.parseDouble(getKhoangcach());
-        Double giaCB = Double.parseDouble(getGiaCB());
+        double khoangcach = getKhoangcach();
+        double giaCB = getGiaCB();
         return new TuyenDuong(maTuyen, tenTuyen, idgadi, idgaden, khoangcach, giaCB);
     }
 
