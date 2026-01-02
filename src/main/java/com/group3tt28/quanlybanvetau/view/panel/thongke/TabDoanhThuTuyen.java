@@ -43,10 +43,12 @@ public class TabDoanhThuTuyen extends BaseThongKeTab<DoanhThuTuyen> {
         chooserTuNgay = new JDateChooser();
         chooserTuNgay.setDateFormatString(DinhDang.DATE_VN);
         chooserTuNgay.setDate(new Date());
+        chooserTuNgay.setMaxSelectableDate(new Date(System.currentTimeMillis()));
 
         chooserDenNgay = new JDateChooser();
         chooserDenNgay.setDateFormatString(DinhDang.DATE_VN);
         chooserDenNgay.setDate(new Date());
+        chooserDenNgay.setMaxSelectableDate(new Date(System.currentTimeMillis()));
 
         buttonThongKe = createStyledButton("Xem kết quả", new Dimension(120, 40), SECONDARY_COLOR, Color.BLACK);
 
