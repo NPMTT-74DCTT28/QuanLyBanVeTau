@@ -58,6 +58,7 @@ public class ThongKeDoanhThuNgayController {
                 List<DoanhThuNgay> listData = dao.getDoanhThuTheoNgay(tuNgay, denNgay);
                 if (listData.isEmpty()) {
                     tab.showMessage("Không có dữ liệu doanh thu trong khoảng thời gian này!");
+                    tab.setData(null, null);
                     return;
                 }
 

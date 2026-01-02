@@ -22,9 +22,6 @@ public class TabThongKeDoanhSo extends BaseThongKeTab<DoanhSoNhanVien> {
     private JFreeChart currentChart;
     private List<DoanhSoNhanVien> currenntList;
 
-    private int currentYear = LocalDate.now().getYear();
-    private int startYear = 2020;
-
     public TabThongKeDoanhSo() {
         super();
     }
@@ -36,6 +33,9 @@ public class TabThongKeDoanhSo extends BaseThongKeTab<DoanhSoNhanVien> {
         JPanel panelNorth = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         panelNorth.setBackground(Color.WHITE);
         panelNorth.setBorder(new MatteBorder(0, 0, 2, 0, Color.LIGHT_GRAY));
+
+        int currentYear = LocalDate.now().getYear();
+        int startYear = 2020;
 
         spinnerThang = new JSpinner();
         spinnerThang.setModel(new SpinnerNumberModel(1, 1, 12, 1));
@@ -49,6 +49,7 @@ public class TabThongKeDoanhSo extends BaseThongKeTab<DoanhSoNhanVien> {
         buttonXemBieuDo = new JToggleButton("Biểu đồ");
         buttonXemBieuDo.setBackground(Color.WHITE);
         buttonXemBieuDo.setPreferredSize(new Dimension(80, 40));
+        buttonXemBieuDo.setSelected(true);
 
         buttonXemBang = new JToggleButton("Bảng số liệu");
         buttonXemBang.setBackground(Color.WHITE);
@@ -117,17 +118,19 @@ public class TabThongKeDoanhSo extends BaseThongKeTab<DoanhSoNhanVien> {
     }
 
     public int getThang() {
-        if (spinnerThang.getValue() != null) {
-            return Integer.parseInt(spinnerThang.getValue().toString());
+        Object value = spinnerThang.getValue();
+        if (value instanceof Number) {
+            return ((Number) value).intValue();
         }
-        return 0;
+        return 1;
     }
 
     public int getNam() {
-        if (spinnerNam.getValue() != null) {
-            return Integer.parseInt(spinnerNam.getValue().toString());
+        Object value = spinnerNam.getValue();
+        if (value instanceof Number) {
+            return ((Number) value).intValue();
         }
-        return 0;
+        return LocalDate.now().getYear();
     }
 
     public void addThongKeListener(ActionListener listener) {

@@ -58,6 +58,7 @@ public class ThongKeTyLeLapDayController {
 
                 if (listData.isEmpty()) {
                     tab.showMessage("Không có dữ liệu thống kê trong khoảng thời gian này!");
+                    tab.setData(null, null);
                     return;
                 }
 

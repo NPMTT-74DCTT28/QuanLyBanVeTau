@@ -43,6 +43,7 @@ public class ThongKeKhachHangVIPController {
                 List<KhachHangVIP> listData = dao.getKhachHangVIP(soLuong);
                 if (listData.isEmpty()) {
                     tab.showMessage("Không tìm thấy dữ liệu khách hàng!");
+                    tab.setData(null, null);
                     return;
                 }
 
