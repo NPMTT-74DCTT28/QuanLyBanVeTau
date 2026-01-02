@@ -56,14 +56,12 @@ public final class QLTuyenDuongPanel extends BasePanel {
         panelFrom.add(createInputField("Ga đi ", cboGadi, Color.WHITE));
 
         fieldKhoangcach = new JTextField();
-        onlyNumber(fieldKhoangcach);
         panelFrom.add(createInputField("Khoảng cách ", fieldKhoangcach, Color.WHITE));
 
         cboGaden = new JComboBox<>();
         panelFrom.add(createInputField("Ga đến ", cboGaden, Color.WHITE));
 
         fieldGiaCB = new JTextField();
-        onlyNumber(fieldGiaCB);
         panelFrom.add(createInputField("Giá cơ bản ", fieldGiaCB, Color.WHITE));
 
         btnthem = createStyledButton("Thêm", new Dimension(80, 40), new Color(40, 85, 243), Color.black);
@@ -118,11 +116,6 @@ public final class QLTuyenDuongPanel extends BasePanel {
         fieldTenTuyen.setText(tenTuyen);
     }
 
-    public String getGadi() {
-        Object selected = cboGadi.getSelectedItem();
-        return (selected != null) ? selected.toString() : "__Chọn Ga Đi__";
-    }
-
     public void setGadi(int idgadi) {
         for (int i = 0; i < cboGadi.getItemCount(); i++) {
             GaTau ga = (GaTau) cboGadi.getItemAt(i);
@@ -131,11 +124,6 @@ public final class QLTuyenDuongPanel extends BasePanel {
                 break;
             }
         }
-    }
-
-    public String getGaden() {
-        Object selected = cboGaden.getSelectedItem();
-        return (selected != null) ? selected.toString() : "__Chọn Ga Đến__";
     }
 
     public void setGaden(int idgaden) {
@@ -191,18 +179,6 @@ public final class QLTuyenDuongPanel extends BasePanel {
         }
     }
 
-    private void onlyNumber(JTextField field) {
-        AbstractDocument doc = (AbstractDocument) field.getDocument();
-        doc.setDocumentFilter(new DocumentFilter() {
-            @Override
-            public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs)
-                    throws BadLocationException {
-                if (text.matches("[0-9.]*")) {
-                    super.replace(fb, offset, length, text, attrs);
-                }
-            }
-        });
-    }
 
     public JTable getTable() {
         return table;
@@ -228,10 +204,15 @@ public final class QLTuyenDuongPanel extends BasePanel {
         fieldMaTuyen.setText("");
         fieldTenTuyen.setEnabled(true);
         fieldTenTuyen.setText("");
+        if (cboGadi.getItemCount() > 0) {
+            cboGadi.setSelectedIndex(0);
+        }
         cboGadi.setEnabled(true);
-        cboGadi.setSelectedItem(null);
+
+        if (cboGaden.getItemCount() > 0) {
+            cboGaden.setSelectedIndex(0);
+        }
         cboGaden.setEnabled(true);
-        cboGaden.setSelectedItem(null);
         fieldKhoangcach.setEnabled(true);
         fieldKhoangcach.setText("");
         fieldGiaCB.setEnabled(true);
