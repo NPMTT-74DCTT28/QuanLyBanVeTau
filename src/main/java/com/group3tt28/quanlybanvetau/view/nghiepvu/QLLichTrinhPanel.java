@@ -190,11 +190,14 @@ public class QLLichTrinhPanel extends BasePanel {
     }
 
     public void setTrangThai(String status) {
-        try {
-            boxTrangThai.setSelectedItem(TrangThaiLichTrinh.valueOf(status));
-        } catch (Exception e) {
-            boxTrangThai.setSelectedIndex(0);
+        for (int i = 0; i < boxTrangThai.getItemCount(); i++) {
+            TrangThaiLichTrinh item = boxTrangThai.getItemAt(i);
+            if (item.toString().equals(status)) {
+                boxTrangThai.setSelectedIndex(i);
+                return;
+            }
         }
+
     }
 
     public JTable getTable() {
