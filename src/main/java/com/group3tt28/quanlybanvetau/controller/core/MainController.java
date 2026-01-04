@@ -6,10 +6,10 @@ import com.group3tt28.quanlybanvetau.controller.nghiepvu.*;
 import com.group3tt28.quanlybanvetau.controller.thongke.*;
 import com.group3tt28.quanlybanvetau.enums.VaiTro;
 import com.group3tt28.quanlybanvetau.util.SessionManager;
-import com.group3tt28.quanlybanvetau.view.TrangChu;
-import com.group3tt28.quanlybanvetau.view.core.MainFrame;
 import com.group3tt28.quanlybanvetau.view.admin.QLNhanVienPanel;
 import com.group3tt28.quanlybanvetau.view.admin.TKNhanVienPanel;
+import com.group3tt28.quanlybanvetau.view.core.Dashboard;
+import com.group3tt28.quanlybanvetau.view.core.MainFrame;
 import com.group3tt28.quanlybanvetau.view.nghiepvu.*;
 import com.group3tt28.quanlybanvetau.view.thongke.*;
 
@@ -25,6 +25,7 @@ public class MainController {
     public MainController(MainFrame frame) {
         this.mainFrame = frame;
 
+        mainFrame.addTrangChuListener(new TrangChuListener());
         mainFrame.addNhanVienListener(new QLNhanVienListener(), new TKNhanVienListener());
         mainFrame.addTauListener(new QLTauListener(), new TKTauListener());
         mainFrame.addLoaiToaListener(new QLLoaiToaListener(), new TKLoaiToaListener());
@@ -61,8 +62,16 @@ public class MainController {
     }
 
     public final void showTrangChu() {
-        TrangChu trangChu = new TrangChu();
-        mainFrame.showPanel(trangChu);
+        Dashboard dashboard = new Dashboard();
+        mainFrame.showPanel(dashboard);
+        new DashboardController(dashboard);
+    }
+
+    private class TrangChuListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            showTrangChu();
+        }
     }
 
     private class QLNhanVienListener implements ActionListener {

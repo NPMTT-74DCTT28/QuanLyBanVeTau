@@ -1,7 +1,7 @@
 package com.group3tt28.quanlybanvetau.controller.thongke;
 
 import com.group3tt28.quanlybanvetau.dao.ThongKeDAO;
-import com.group3tt28.quanlybanvetau.model.dto.DoanhSoNhanVien;
+import com.group3tt28.quanlybanvetau.model.dto.DoanhSo;
 import com.group3tt28.quanlybanvetau.view.thongke.TabThongKeDoanhSo;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
@@ -56,7 +56,7 @@ public class ThongKeDoanhSoController {
                     return;
                 }
 
-                List<DoanhSoNhanVien> listData = dao.getDoanhSoNhanVien(thang, nam);
+                List<DoanhSo> listData = dao.getDoanhSo(thang, nam);
                 listData.removeIf(doanhSoNhanVien -> doanhSoNhanVien.getDoanhSo() == 0);
                 if (listData.isEmpty()) {
                     tab.showMessage("Không có dữ liệu thống kê trong tháng " + thang + "/" + nam + "!");
@@ -65,7 +65,7 @@ public class ThongKeDoanhSoController {
                 }
 
                 DefaultPieDataset<String> dataset = new DefaultPieDataset<>();
-                for (DoanhSoNhanVien item : listData) {
+                for (DoanhSo item : listData) {
                     dataset.setValue(item.getHoTen(), item.getDoanhSo());
                 }
 

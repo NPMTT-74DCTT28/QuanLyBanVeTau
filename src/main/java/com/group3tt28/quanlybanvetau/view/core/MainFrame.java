@@ -11,8 +11,8 @@ import java.awt.event.WindowListener;
 
 public final class MainFrame extends BaseFrame {
 
-    private JMenu menuCaNhan;
-    private JMenuItem thongTinCaNhan, doiMatKhau, dangXuat, thoat;
+    private JMenu menuTrangChu;
+    private JMenuItem trangChu;
     private JMenu menuNhanVien;
     private JMenuItem qlNhanVien, tkNhanVien;
     private JMenu menuTau;
@@ -35,6 +35,8 @@ public final class MainFrame extends BaseFrame {
     private JMenuItem qlVeTau, tkVeTau;
     private JMenu menuThongKe;
     private JMenuItem thongKeDoanhThuNgay, thongKeDoanhThuTuyen, thongKeTyLeLapDay, thongKeKhachVIP, thongKeDoanhSo;
+    private JMenu menuCaNhan;
+    private JMenuItem thongTinCaNhan, doiMatKhau, dangXuat, thoat;
 
     private JPanel container;
 
@@ -54,6 +56,10 @@ public final class MainFrame extends BaseFrame {
 
         JScrollPane scrollPane = new JScrollPane(container);
         add(scrollPane, BorderLayout.CENTER);
+
+        menuTrangChu = new JMenu("Trang chủ");
+        trangChu = new JMenuItem("Quay về trang chủ");
+        menuTrangChu.add(trangChu);
 
         menuCaNhan = new JMenu("Xin chào");
         thongTinCaNhan = new JMenuItem("Thông tin cá nhân");
@@ -138,6 +144,7 @@ public final class MainFrame extends BaseFrame {
         menuThongKe.add(thongKeDoanhSo);
 
         JMenuBar menuBar = new JMenuBar();
+        menuBar.add(menuTrangChu);
         menuBar.add(menuNhanVien);
         menuBar.add(menuTau);
         menuBar.add(menuLoaiToa);
@@ -172,6 +179,8 @@ public final class MainFrame extends BaseFrame {
         boolean isLoggedIn = (vaiTro != null);
         boolean isAdmin = (vaiTro == VaiTro.ADMIN);
 
+        menuTrangChu.setVisible(isLoggedIn);
+
         menuNhanVien.setVisible(isAdmin);
         menuLoaiToa.setVisible(isAdmin);
         menuGhe.setVisible(isAdmin);
@@ -200,6 +209,10 @@ public final class MainFrame extends BaseFrame {
         thongTinCaNhan.setVisible(isLoggedIn);
         doiMatKhau.setVisible(isLoggedIn);
         dangXuat.setVisible(isLoggedIn);
+    }
+
+    public void addTrangChuListener(ActionListener listener) {
+        trangChu.addActionListener(listener);
     }
 
     public void addNhanVienListener(ActionListener qlListener, ActionListener tkListener) {

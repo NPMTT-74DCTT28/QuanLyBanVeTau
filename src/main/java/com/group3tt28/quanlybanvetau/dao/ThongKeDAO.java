@@ -2,11 +2,14 @@ package com.group3tt28.quanlybanvetau.dao;
 
 import com.group3tt28.quanlybanvetau.model.dto.*;
 import com.group3tt28.quanlybanvetau.util.DBConnection;
+import org.jfree.data.category.DefaultCategoryDataset;
 
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ThongKeDAO {
 
@@ -98,9 +101,9 @@ public class ThongKeDAO {
         return list;
     }
 
-    public List<DoanhSoNhanVien> getDoanhSoNhanVien(int thang, int nam) throws SQLException {
-        List<DoanhSoNhanVien> list = new ArrayList<>();
-        String sql = "{CALL sp_ThongKeDoanhSoNhanVien(?, ?)}";
+    public List<DoanhSo> getDoanhSo(int thang, int nam) throws SQLException {
+        List<DoanhSo> list = new ArrayList<>();
+        String sql = "{CALL sp_ThongKeDoanhSo(?, ?)}";
 
         try (Connection conn = DBConnection.getConnection(); CallableStatement cs = conn.prepareCall(sql)) {
             cs.setInt(1, thang);
@@ -113,10 +116,47 @@ public class ThongKeDAO {
                     int soVeBan = rs.getInt("so_ve_ban");
                     double doanhSo = rs.getDouble("doanh_so");
 
-                    list.add(new DoanhSoNhanVien(maNhanVien, hoTen, soVeBan, doanhSo));
+                    list.add(new DoanhSo(maNhanVien, hoTen, soVeBan, doanhSo));
                 }
             }
         }
         return list;
+    }
+
+    public Map<String, String> getDashboardData() throws SQLException {
+        Map<String, String> data = new HashMap<>();
+
+        String sql = "SELECT " +
+                "(SELECT COALESCE(SUM(gia_ve), 0) FROM ve_tau WHERE DATE(ngay_dat) = CURDATE()) AS doanh_thu, " +
+                "(SELECT COUNT(*) FROM ve_tau WHERE DATE(ngay_dat) = CURDATE()) AS so_ve, " +
+                "(SELECT COUNT(*) FROM lich_trinh WHERE ngay_di BETWEEN NOW() AND DATE_ADD(NOW(), INTERVAL 3 HOUR)) AS tau_sap_chay";
+        try (Connection conn = DBConnection.getConnection(); Statement stmt = conn.createStatement()) {
+            try (ResultSet rs = stmt.executeQuery(sql)) {
+                if (rs.next()) {
+                    double doanhThu = rs.getDouble("doanh_thu");
+                    data.put("doanhThu", String.valueOf(doanhThu));
+
+                    int soVe = rs.getInt("so_ve");
+                    data.put("soVe", String.valueOf(soVe));
+
+                    int tauSapChay = rs.getInt("tau_sap_chay");
+                    data.put("tauSapChay", String.valueOf(tauSapChay));
+                }
+            }
+            return data;
+        }
+    }
+
+    public DefaultCategoryDataset getDoanhThuBayNgay() throws SQLException {
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        String sql = "{CALL sp_DoanhThuBayNgay}";
+        try (Connection conn = DBConnection.getConnection(); CallableStatement cs = conn.prepareCall(sql)) {
+            try (ResultSet rs = cs.executeQuery()) {
+                while (rs.next()) {
+                    dataset.addValue(rs.getDouble("doanh_thu"), "Doanh thu", rs.getString("ngay"));
+                }
+            }
+        }
+        return dataset;
     }
 }

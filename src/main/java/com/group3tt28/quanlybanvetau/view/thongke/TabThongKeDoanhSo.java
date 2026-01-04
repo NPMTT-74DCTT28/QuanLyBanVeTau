@@ -1,6 +1,6 @@
 package com.group3tt28.quanlybanvetau.view.thongke;
 
-import com.group3tt28.quanlybanvetau.model.dto.DoanhSoNhanVien;
+import com.group3tt28.quanlybanvetau.model.dto.DoanhSo;
 import com.group3tt28.quanlybanvetau.util.DinhDang;
 import com.group3tt28.quanlybanvetau.view.BaseThongKeTab;
 import org.jfree.chart.JFreeChart;
@@ -12,7 +12,7 @@ import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.util.List;
 
-public class TabThongKeDoanhSo extends BaseThongKeTab<DoanhSoNhanVien> {
+public class TabThongKeDoanhSo extends BaseThongKeTab<DoanhSo> {
 
     private JSpinner spinnerThang, spinnerNam;
 
@@ -22,7 +22,7 @@ public class TabThongKeDoanhSo extends BaseThongKeTab<DoanhSoNhanVien> {
     private JToggleButton buttonXemBieuDo, buttonXemBang;
 
     private JFreeChart currentChart;
-    private List<DoanhSoNhanVien> currenntList;
+    private List<DoanhSo> currenntList;
 
     public TabThongKeDoanhSo() {
         super();
@@ -93,7 +93,7 @@ public class TabThongKeDoanhSo extends BaseThongKeTab<DoanhSoNhanVien> {
     }
 
     @Override
-    protected Object[] getRowData(int stt, DoanhSoNhanVien item) {
+    protected Object[] getRowData(int stt, DoanhSo item) {
         return new Object[]{
                 stt,
                 item.getMaNhanVien(),
@@ -104,11 +104,11 @@ public class TabThongKeDoanhSo extends BaseThongKeTab<DoanhSoNhanVien> {
     }
 
     @Override
-    protected String getTextTongKet(List<DoanhSoNhanVien> listData) {
+    protected String getTextTongKet(List<DoanhSo> listData) {
         return "";
     }
 
-    public void setData(JFreeChart chart, List<DoanhSoNhanVien> listData) {
+    public void setData(JFreeChart chart, List<DoanhSo> listData) {
         this.currentChart = chart;
         this.currenntList = listData;
 
