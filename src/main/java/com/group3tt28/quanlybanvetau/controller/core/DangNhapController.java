@@ -34,6 +34,13 @@ public class DangNhapController {
         new DangNhapController();
     }
 
+    private void exit() {
+        if (frame.showConfirm("Bạn chắc chắn muốn thoát ứng dụng?")) {
+            frame.dispose();
+            System.exit(0);
+        }
+    }
+
     private class LoginListener implements ActionListener {
 
         @Override
@@ -64,9 +71,6 @@ public class DangNhapController {
             } catch (SQLException ex) {
                 ex.printStackTrace();
                 frame.showError("Xảy ra lỗi khi lấy thông tin: " + ex.getMessage());
-            } catch (RuntimeException ex) {
-                ex.printStackTrace();
-                frame.showError("Lỗi hệ thống: " + ex.getMessage());
             } catch (Exception ex) {
                 ex.printStackTrace();
                 frame.showError("Xảy ra lỗi không xác định: " + ex.getMessage());
@@ -75,23 +79,16 @@ public class DangNhapController {
     }
 
     private class ExitListener implements ActionListener {
-
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (frame.showConfirm("Bạn chắc chắn muốn thoát ứng dụng?")) {
-                frame.dispose();
-                System.exit(0);
-            }
+            exit();
         }
     }
 
     private class WindowCloseListener extends WindowAdapter {
         @Override
         public void windowClosing(WindowEvent e) {
-            if (frame.showConfirm("Bạn chắc chắn muốn thoát ứng dụng?")) {
-                frame.dispose();
-                System.exit(0);
-            }
+            exit();
         }
     }
 }

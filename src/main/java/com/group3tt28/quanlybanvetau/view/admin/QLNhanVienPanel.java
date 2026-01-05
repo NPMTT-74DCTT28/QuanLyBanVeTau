@@ -112,7 +112,12 @@ public final class QLNhanVienPanel extends BasePanel {
         Object[] columns = new Object[]{"ID", "Mã nhân viên", "Họ tên", "Ngày sinh", "Giới tính", "SĐT", "Email", "Địa chỉ", "Vai trò"};
         DefaultTableModel tableModel = new DefaultTableModel(columns, 0);
 
-        table = new JTable(tableModel);
+        table = new JTable(tableModel) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
         TableColumnModel columnModel = table.getColumnModel();
         TableColumn columnId = columnModel.getColumn(0);
         table.removeColumn(columnId);
@@ -374,7 +379,7 @@ public final class QLNhanVienPanel extends BasePanel {
 
         fieldHoTen.setText("");
 
-        chooserNgaySinh.setDate(null);
+        chooserNgaySinh.setDate(new Date());
 
         if (boxGioiTinh.getItemCount() > 0) {
             boxGioiTinh.setSelectedIndex(0);

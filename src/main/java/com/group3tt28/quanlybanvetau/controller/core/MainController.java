@@ -59,10 +59,17 @@ public class MainController {
         mainFrame.setVisible(true);
     }
 
-    public final void showTrangChu() {
+    private void showTrangChu() {
         Dashboard dashboard = new Dashboard();
         mainFrame.showPanel(dashboard);
         new DashboardController(dashboard);
+    }
+
+    private void exit() {
+        if (mainFrame.showConfirm("Bạn chắc chắn muốn thoát ứng dụng?")) {
+            mainFrame.dispose();
+            System.exit(0);
+        }
     }
 
     private class TrangChuListener implements ActionListener {
@@ -325,20 +332,14 @@ public class MainController {
     private class ThoatListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (mainFrame.showConfirm("Bạn chắc chắn muốn thoát ứng dụng?")) {
-                mainFrame.dispose();
-                System.exit(0);
-            }
+            exit();
         }
     }
 
     private class WindowCloseListener extends WindowAdapter {
         @Override
         public void windowClosing(WindowEvent e) {
-            if (mainFrame.showConfirm("Bạn chắc chắn muốn thoát ứng dụng?")) {
-                mainFrame.dispose();
-                System.exit(0);
-            }
+            exit();
         }
     }
 }
