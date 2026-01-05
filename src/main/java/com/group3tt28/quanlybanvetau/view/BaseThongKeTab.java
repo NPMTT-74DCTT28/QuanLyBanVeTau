@@ -43,7 +43,12 @@ public abstract class BaseThongKeTab<T> extends BasePanel {
         mainContainer.add(new JLabel("Chưa có dữ liệu.", JLabel.CENTER), BorderLayout.CENTER);
 
         tableModel = new DefaultTableModel(getTenCot(), 0);
-        table = new JTable(tableModel);
+        table = new JTable(tableModel) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
         table.setRowHeight(25);
         table.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 13));
 

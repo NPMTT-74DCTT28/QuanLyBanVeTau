@@ -1,8 +1,8 @@
-package com.group3tt28.quanlybanvetau.controller.nghiepvu;
+package com.group3tt28.quanlybanvetau.controller.admin;
 
-import com.group3tt28.quanlybanvetau.dao.TauDAO;
-import com.group3tt28.quanlybanvetau.model.Tau;
-import com.group3tt28.quanlybanvetau.view.nghiepvu.QLTauPanel;
+import com.group3tt28.quanlybanvetau.dao.LoaiToaDAO;
+import com.group3tt28.quanlybanvetau.model.LoaiToa;
+import com.group3tt28.quanlybanvetau.view.admin.QLLoaiToaPanel;
 
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
@@ -11,22 +11,22 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.List;
 
-public class QLTauController {
-    private final QLTauPanel panel;
-    private final TauDAO dao;
+public class QLLoaiToaController {
+
+    private final QLLoaiToaPanel panel;
+    private final LoaiToaDAO dao;
     private final DefaultTableModel model;
     private int selectedRow;
 
-    public QLTauController(QLTauPanel panel) {
-
-        this.dao = new TauDAO();
+    public QLLoaiToaController(QLLoaiToaPanel panel) {
+        this.dao = new LoaiToaDAO();
 
         this.panel = panel;
-        this.panel.addButtonThemActionListener(new ThemTauListener());
-        this.panel.addButtonSuaActionListener(new SuaTauListener());
-        this.panel.addButtonXoaActionListener(new XoaTauListener());
-        this.panel.addButtonResetActionListener(new ResetFormListener());
-        this.panel.addTableMouseClickListener(new TableMouseClickListener());
+        panel.setButtonThemActionListener(new ThemLoaiToaListener());
+        panel.setButtonSuaActionListener(new SuaLoaiToaListener());
+        panel.setButtonXoaActionListener(new XoaLoaiToaListener());
+        panel.setButtonResetActionListener(new ResetFormListener());
+        panel.addTableMouseClickListener(new TableMouseClickListener());
 
         model = (DefaultTableModel) panel.getTable().getModel();
 
@@ -35,46 +35,48 @@ public class QLTauController {
 
     private void refresh() {
         panel.resetForm();
-        List<Tau> list = dao.getAll();
+
+        List<LoaiToa> list = dao.getAll();
         model.setRowCount(0);
 
-        for (Tau tau : list) {
+        for (LoaiToa loaiToa : list) {
             model.addRow(new Object[]{
-                    tau.getId(),
-                    tau.getMaTau(),
-                    tau.getTenTau()
+                    loaiToa.getId(),
+                    loaiToa.getTenLoai(),
+                    loaiToa.getHeSoGia()
             });
         }
         model.fireTableDataChanged();
     }
 
-    private String validateInput(Tau tau) {
-        if (tau.getMaTau().isEmpty()) {
-            return "Mã tàu không được để trống!";
+    private String validateInput(LoaiToa loaiToa) {
+        if (loaiToa.getTenLoai().isEmpty()) {
+            return "Tên loại toa không được để trống!";
         }
-        if (tau.getTenTau().isEmpty()) {
-            return "Tên tàu không được để trống!";
+        if (loaiToa.getHeSoGia() <= 0 || loaiToa.getHeSoGia() >= 2) {
+            return "Hệ số giá phải lớn hơn 0 và bé hơn 2!";
         }
         return null;
     }
 
-    private class ThemTauListener implements ActionListener {
+    private class ThemLoaiToaListener implements ActionListener {
+
         @Override
         public void actionPerformed(ActionEvent e) {
             try {
-                Tau tau = panel.getTauFromForm();
+                LoaiToa loaiToa = panel.getLoaiToaFromForm();
 
-                if (validateInput(tau) != null) {
-                    panel.showWarning(validateInput(tau));
+                if (validateInput(loaiToa) != null) {
+                    panel.showWarning(validateInput(loaiToa));
                     return;
                 }
 
-                if (dao.checkTrung(tau.getMaTau(), tau.getId())) {
-                    panel.showWarning("Mã tàu " + tau.getMaTau() + " đã tồn tại!");
+                if (dao.checkTrung(loaiToa.getTenLoai(), loaiToa.getId())) {
+                    panel.showWarning("Tên loại toa " + loaiToa.getTenLoai() + " đã tồn tại!");
                     return;
                 }
-                if (dao.insert(tau)) {
-                    panel.showMessage("Thêm tàu thành công!");
+                if (dao.insert(loaiToa)) {
+                    panel.showMessage("Thêm loại toa thành công!");
                     panel.resetForm();
                     refresh();
                 } else {
@@ -90,25 +92,24 @@ public class QLTauController {
         }
     }
 
-    private class SuaTauListener implements ActionListener {
-        @Override
+    private class SuaLoaiToaListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             try {
-                Tau tau = panel.getTauFromForm();
-                tau.setId(Integer.parseInt(model.getValueAt(selectedRow, 0).toString()));
+                LoaiToa loaiToa = panel.getLoaiToaFromForm();
+                loaiToa.setId(Integer.parseInt(model.getValueAt(selectedRow, 0).toString()));
 
-                if (validateInput(tau) != null) {
-                    panel.showWarning(validateInput(tau));
+                if (validateInput(loaiToa) != null) {
+                    panel.showWarning(validateInput(loaiToa));
                     return;
                 }
 
-                if (dao.checkTrung(tau.getMaTau(), tau.getId())) {
-                    panel.showWarning("Tên mã tàu " + tau.getMaTau() + " đã tồn tại");
+                if (dao.checkTrung(loaiToa.getTenLoai(), loaiToa.getId())) {
+                    panel.showWarning("Tên loại toa " + loaiToa.getTenLoai() + " đã tồn tại");
                     return;
                 }
 
-                if (panel.showConfirm("Bạn có chắc muốn sửa loại toa: " + tau.getMaTau() + "?")) {
-                    if (dao.update(tau)) {
+                if (panel.showConfirm("Bạn có chắc muốn sửa loại toa: " + loaiToa.getTenLoai() + "?")) {
+                    if (dao.update(loaiToa)) {
                         panel.showMessage("Sửa thành công!");
                         refresh();
                     } else {
@@ -124,19 +125,19 @@ public class QLTauController {
         }
     }
 
-    private class XoaTauListener implements ActionListener {
+    private class XoaLoaiToaListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             try {
-                String MaTau = model.getValueAt(selectedRow, 1).toString();
+                String Tenloai = model.getValueAt(selectedRow, 1).toString();
 
-                if (MaTau.isEmpty()) {
+                if (Tenloai.isEmpty()) {
                     panel.showWarning("Tên loại toa không hợp lệ!");
                     return;
                 }
 
-                if (panel.showConfirm("Bạn muốn xoá tàu " + MaTau + "?")) {
-                    if (dao.delete(MaTau)) {
+                if (panel.showConfirm("Bạn muốn xoá loại toa " + Tenloai + "?")) {
+                    if (dao.delete(Tenloai)) {
                         panel.showMessage("Xoá thành công!");
                         refresh();
                     } else {
@@ -167,8 +168,8 @@ public class QLTauController {
             selectedRow = panel.getTable().getSelectedRow();
             if (selectedRow == -1) return;
 
-            panel.setMaTau(model.getValueAt(selectedRow, 1).toString());
-            panel.setTenTau(model.getValueAt(selectedRow, 2).toString());
+            panel.setTenLoai(model.getValueAt(selectedRow, 1).toString());
+            panel.setHeSoGia(model.getValueAt(selectedRow, 2).toString());
 
         }
 

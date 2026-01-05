@@ -1,4 +1,4 @@
-package com.group3tt28.quanlybanvetau.view.nghiepvu;
+package com.group3tt28.quanlybanvetau.view.admin;
 
 import com.group3tt28.quanlybanvetau.view.BasePanel;
 
@@ -14,13 +14,13 @@ import javax.swing.table.TableColumnModel;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
-public class TKGhePanel extends BasePanel {
+public class TKLoaiToaPanel extends BasePanel {
     private JTextField fieldTuKhoa;
     private DefaultTableModel model;
     private JButton buttonTimkiem, buttonReset, buttonLamMoi;
     private JTable table;
 
-    public TKGhePanel() {
+    public TKLoaiToaPanel () {
         initComponents();
     }
 
@@ -34,7 +34,7 @@ public class TKGhePanel extends BasePanel {
 
         JPanel panelTitle = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 5));
         panelTitle.setBackground(PRIMARY_COLOR);
-        JLabel labelTitle = new JLabel("Danh sách Ghế");
+        JLabel labelTitle = new JLabel("Danh sách Loại Toa");
         labelTitle.setFont(new Font("Segoe UI", Font.BOLD, 20));
         labelTitle.setForeground(Color.WHITE);
         panelTitle.add(labelTitle);
@@ -44,7 +44,7 @@ public class TKGhePanel extends BasePanel {
         panelForm.setBackground(Color.WHITE);
 
         fieldTuKhoa = new JTextField();
-        panelForm.add(createInputField("Số ghế", fieldTuKhoa, Color.WHITE));
+        panelForm.add(createInputField("Loại Toa / Hệ Số Giá", fieldTuKhoa, Color.WHITE));
 
         buttonTimkiem = createStyledButton("Tìm kiếm", new Dimension(100, 40), PRIMARY_COLOR, Color.WHITE);
         buttonReset = createStyledButton("Reset form", new Dimension(110, 40), PRIMARY_COLOR, Color.WHITE);
@@ -55,8 +55,8 @@ public class TKGhePanel extends BasePanel {
         panelTop.add(panelForm, BorderLayout.CENTER);
         panelTop.add(createButtonField(buttons, Color.WHITE), BorderLayout.SOUTH);
 
-        String[] columns = {"ID", "Số ghế", "ID Toa tàu"};
-        DefaultTableModel model = new DefaultTableModel(columns, 0);
+        String[] columNames = {"ID", "Tên loại toa","Hệ số giá"};
+        model = new DefaultTableModel(columNames, 0);
 
         table = new JTable(model);
         TableColumnModel columnModel = table.getColumnModel();
@@ -71,7 +71,8 @@ public class TKGhePanel extends BasePanel {
 
         JScrollPane scrollPane = new JScrollPane(table);
 
-        TitledBorder tableBorder = new TitledBorder(new LineBorder(Color.LIGHT_GRAY), "Danh sách nhân viên", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, FONT_BOLD, Color.BLACK);
+        TitledBorder tableBorder = new TitledBorder(new LineBorder(Color.LIGHT_GRAY), "Danh sách nhân viên",
+                TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, FONT_BOLD, Color.BLACK);
 
         scrollPane.setBorder(new CompoundBorder(new EmptyBorder(10, 10, 10, 10), tableBorder));
         scrollPane.setForeground(Color.BLACK);
