@@ -1,4 +1,4 @@
-package com.group3tt28.quanlybanvetau.view.nghiepvu;
+package com.group3tt28.quanlybanvetau.view.admin;
 
 import com.group3tt28.quanlybanvetau.model.GaTau;
 import com.group3tt28.quanlybanvetau.view.BasePanel;

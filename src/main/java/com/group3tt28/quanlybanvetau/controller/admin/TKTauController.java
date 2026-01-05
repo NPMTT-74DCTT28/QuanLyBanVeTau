@@ -1,23 +1,23 @@
-package com.group3tt28.quanlybanvetau.controller.nghiepvu;
+package com.group3tt28.quanlybanvetau.controller.admin;
 
-import com.group3tt28.quanlybanvetau.dao.GheDAO;
-import com.group3tt28.quanlybanvetau.model.Ghe;
-import com.group3tt28.quanlybanvetau.view.nghiepvu.TKGhePanel;
+import com.group3tt28.quanlybanvetau.dao.TauDAO;
+import com.group3tt28.quanlybanvetau.model.Tau;
+import com.group3tt28.quanlybanvetau.view.admin.TKTauPanel;
 
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
-public class TKGheController {
+public class TKTauController {
 
-    private final TKGhePanel panel;
-    private final GheDAO dao;
+    private final TKTauPanel panel;
+    private final TauDAO dao;
     private DefaultTableModel tableModel;
 
-    public TKGheController(TKGhePanel panel) {
+    public TKTauController(TKTauPanel panel) {
         this.panel = panel;
-        this.dao = new GheDAO();
+        this.dao = new TauDAO();
 
         panel.addTimKiemListener(new TimKiemListener());
         panel.addResetFormListener(new ResetFormListener());
@@ -31,12 +31,12 @@ public class TKGheController {
     private void refresh() {
         try {
             tableModel.setRowCount(0);
-            List<Ghe> list = dao.getAll();
-            for (Ghe ghe : list) {
+            List<Tau> list = dao.getAll();
+            for (Tau tau : list) {
                 tableModel.addRow(new Object[]{
-                        ghe.getId(),
-                        ghe.getSoGhe(),
-                        ghe.getIdToaTau()
+                        tau.getId(),
+                        tau.getMaTau(),
+                        tau.getTenTau()
                 });
             }
 
@@ -56,13 +56,13 @@ public class TKGheController {
             try {
                 tableModel.setRowCount(0);
                 String tuKhoa = panel.getTuKhoa();
-                List<Ghe> list = dao.timKiemGhe(tuKhoa);
+                List<Tau> list = dao.timKiemTau(tuKhoa);
 
-                for (Ghe ghe : list) {
+                for (Tau tau : list) {
                     tableModel.addRow(new Object[]{
-                            ghe.getId(),
-                            ghe.getSoGhe(),
-                            ghe.getIdToaTau()
+                            tau.getId(),
+                            tau.getMaTau(),
+                            tau.getTenTau()
                     });
                 }
 

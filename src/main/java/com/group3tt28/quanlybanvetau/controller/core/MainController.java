@@ -1,13 +1,11 @@
 package com.group3tt28.quanlybanvetau.controller.core;
 
-import com.group3tt28.quanlybanvetau.controller.admin.QLNhanVienController;
-import com.group3tt28.quanlybanvetau.controller.admin.TKNhanVienController;
+import com.group3tt28.quanlybanvetau.controller.admin.*;
 import com.group3tt28.quanlybanvetau.controller.nghiepvu.*;
 import com.group3tt28.quanlybanvetau.controller.thongke.*;
 import com.group3tt28.quanlybanvetau.enums.VaiTro;
 import com.group3tt28.quanlybanvetau.util.SessionManager;
-import com.group3tt28.quanlybanvetau.view.admin.QLNhanVienPanel;
-import com.group3tt28.quanlybanvetau.view.admin.TKNhanVienPanel;
+import com.group3tt28.quanlybanvetau.view.admin.*;
 import com.group3tt28.quanlybanvetau.view.core.Dashboard;
 import com.group3tt28.quanlybanvetau.view.core.MainFrame;
 import com.group3tt28.quanlybanvetau.view.nghiepvu.*;

@@ -1,8 +1,8 @@
-package com.group3tt28.quanlybanvetau.controller.nghiepvu;
+package com.group3tt28.quanlybanvetau.controller.admin;
 
 import com.group3tt28.quanlybanvetau.dao.GaTauDAO;
 import com.group3tt28.quanlybanvetau.model.GaTau;
-import com.group3tt28.quanlybanvetau.view.nghiepvu.QLGaTauPanel;
+import com.group3tt28.quanlybanvetau.view.admin.QLGaTauPanel;
 
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
