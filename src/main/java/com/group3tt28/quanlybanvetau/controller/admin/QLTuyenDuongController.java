@@ -77,7 +77,7 @@ public class QLTuyenDuongController {
                     return;
                 }
 
-                if (td.getKhoangCachKm() <= 0 || td.getGiaCoBan() <= 0){
+                if (td.getKhoangCachKm() <= 0 || td.getGiaCoBan() <= 0) {
                     panel.showError("Khoảng cách / giá cơ bản phải lớn hon 0!");
                     return;
                 }
@@ -110,11 +110,11 @@ public class QLTuyenDuongController {
         public void actionPerformed(ActionEvent e) {
             try {
                 TuyenDuong td = panel.getTuyenDuong();
-                if (td.getMaTuyen().isEmpty() || td.getTenTuyen().isEmpty() ) {
+                if (td.getMaTuyen().isEmpty() || td.getTenTuyen().isEmpty()) {
                     panel.showError("Vui lòng nhập đầy đủ thông tin!");
                     return;
                 }
-                if (td.getKhoangCachKm() <= 0 || td.getGiaCoBan() <= 0){
+                if (td.getKhoangCachKm() <= 0 || td.getGiaCoBan() <= 0) {
                     panel.showError("Khoảng cách / giá cơ bản phải lớn hon 0!");
                     return;
                 }

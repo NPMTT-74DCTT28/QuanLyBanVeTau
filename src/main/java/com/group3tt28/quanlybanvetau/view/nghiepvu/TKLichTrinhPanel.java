@@ -136,15 +136,27 @@ public class TKLichTrinhPanel extends BasePanel {
         return panel;
     }
 
-    public String getTuKhoa() { return fieldTuKhoa.getText().trim(); }
-    public JComboBox<Object> getBoxTau() { return boxTau; }
-    public JComboBox<Object> getBoxTuyenDuong() { return boxTuyenDuong; }
+    public String getTuKhoa() {
+        return fieldTuKhoa.getText().trim();
+    }
+
+    public JComboBox<Object> getBoxTau() {
+        return boxTau;
+    }
+
+    public JComboBox<Object> getBoxTuyenDuong() {
+        return boxTuyenDuong;
+    }
+
     public String getTrangThai() {
         Object selected = boxTrangThai.getSelectedItem();
         if (selected == null || selected.toString().equalsIgnoreCase("Tất cả")) return null;
         return selected.toString();
     }
-    public JTable getTable() { return table; }
+
+    public JTable getTable() {
+        return table;
+    }
 
     public void resetForm() {
         fieldTuKhoa.setText("");
@@ -152,7 +164,16 @@ public class TKLichTrinhPanel extends BasePanel {
         if (boxTuyenDuong.getItemCount() > 0) boxTuyenDuong.setSelectedIndex(0);
         if (boxTrangThai.getItemCount() > 0) boxTrangThai.setSelectedIndex(0);
     }
-    public void addTimKiemListener(ActionListener l) { buttonTimKiem.addActionListener(l); }
-    public void addResetFormListener(ActionListener l) { buttonReset.addActionListener(l); }
-    public void addLamMoiListener(ActionListener l) { buttonLamMoi.addActionListener(l); }
+
+    public void addTimKiemListener(ActionListener l) {
+        buttonTimKiem.addActionListener(l);
+    }
+
+    public void addResetFormListener(ActionListener l) {
+        buttonReset.addActionListener(l);
+    }
+
+    public void addLamMoiListener(ActionListener l) {
+        buttonLamMoi.addActionListener(l);
+    }
 }

@@ -50,7 +50,7 @@ public class QLGaTauController {
         public void actionPerformed(ActionEvent e) {
             try {
                 GaTau gaTau = panel.getGaTau();
-                if (gaTau.getMaGa().isEmpty() || gaTau.getTenGa().isEmpty()||gaTau.getDiaChi().isEmpty() || gaTau.getThanhPho().isEmpty()) {
+                if (gaTau.getMaGa().isEmpty() || gaTau.getTenGa().isEmpty() || gaTau.getDiaChi().isEmpty() || gaTau.getThanhPho().isEmpty()) {
                     panel.showError("Vui lòng nhập đầy đủ!");
                     return;
                 }
@@ -77,7 +77,7 @@ public class QLGaTauController {
         public void actionPerformed(ActionEvent e) {
             try {
                 GaTau gaTau = panel.getGaTau();
-                if (gaTau.getMaGa().isEmpty() || gaTau.getTenGa().isEmpty()||gaTau.getDiaChi().isEmpty() || gaTau.getThanhPho().isEmpty()) {
+                if (gaTau.getMaGa().isEmpty() || gaTau.getTenGa().isEmpty() || gaTau.getDiaChi().isEmpty() || gaTau.getThanhPho().isEmpty()) {
                     panel.showError("Vui lòng nhập đầy đủ!");
                     return;
                 }

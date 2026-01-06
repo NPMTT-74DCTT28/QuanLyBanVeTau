@@ -1,7 +1,6 @@
 package com.group3tt28.quanlybanvetau.dao;
 
 import com.group3tt28.quanlybanvetau.model.LoaiToa;
-import com.group3tt28.quanlybanvetau.model.Tau;
 import com.group3tt28.quanlybanvetau.util.DBConnection;
 
 import java.sql.Connection;
@@ -115,7 +114,8 @@ public class LoaiToaDAO {
         }
         return list;
     }
-    public List<LoaiToa> timKiemLoaiToa(String tuKhoa){
+
+    public List<LoaiToa> timKiemLoaiToa(String tuKhoa) {
         List<LoaiToa> list = new ArrayList<>();
         List<Object> params = new ArrayList<>();
         StringBuilder sql = new StringBuilder("SELECT * FROM " + TEN_BANG + " WHERE 1 = 1 ");

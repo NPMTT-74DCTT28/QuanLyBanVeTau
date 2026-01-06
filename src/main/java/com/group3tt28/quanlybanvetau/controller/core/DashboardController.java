@@ -3,7 +3,6 @@ package com.group3tt28.quanlybanvetau.controller.core;
 import com.group3tt28.quanlybanvetau.dao.ThongKeDAO;
 import com.group3tt28.quanlybanvetau.view.core.Dashboard;
 import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.CategoryLabelPositions;
 import org.jfree.chart.axis.NumberAxis;

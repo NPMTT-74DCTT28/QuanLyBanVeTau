@@ -1,6 +1,5 @@
 package com.group3tt28.quanlybanvetau.model;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class VeTau {

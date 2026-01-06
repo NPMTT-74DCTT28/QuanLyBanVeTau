@@ -21,8 +21,8 @@ public class QLVeTauController {
     private final QLVeTauPanel panel;
     private final VeTauDAO dao;
     private final DefaultTableModel model;
-    private int selectedRow = -1;
     private final NhanVien currentuser;
+    private int selectedRow = -1;
     private HashMap<Integer, String> mapKhachHang = new HashMap<>();
 
     public QLVeTauController(QLVeTauPanel panel) {

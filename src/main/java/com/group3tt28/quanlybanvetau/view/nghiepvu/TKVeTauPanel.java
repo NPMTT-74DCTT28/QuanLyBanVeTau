@@ -20,41 +20,43 @@ public class TKVeTauPanel extends BasePanel {
     private JButton buttonTimKiem, buttonReset, buttonLammoi;
     private JTable table;
 
-    public TKVeTauPanel(){ initComponents();}
+    public TKVeTauPanel() {
+        initComponents();
+    }
 
     @Override
-    protected void initComponents(){
-        setLayout(new BorderLayout(0,0));
+    protected void initComponents() {
+        setLayout(new BorderLayout(0, 0));
         setBackground(Color.WHITE);
 
-        JPanel panelTop = new JPanel(new BorderLayout(5,5));
+        JPanel panelTop = new JPanel(new BorderLayout(5, 5));
         panelTop.setBackground(Color.WHITE);
 
-        JPanel panelTitle = new JPanel(new FlowLayout(FlowLayout.CENTER, 5,5));
+        JPanel panelTitle = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 5));
         panelTitle.setBackground(PRIMARY_COLOR);
         JLabel labelTitle = new JLabel("Danh sách Vé tàu");
-        labelTitle.setFont(new Font("segoe UI", Font.BOLD,20));
+        labelTitle.setFont(new Font("segoe UI", Font.BOLD, 20));
         labelTitle.setForeground(Color.WHITE);
         panelTitle.add(labelTitle);
 
-        JPanel panelForm = new JPanel(new GridLayout(1,3,5,5));
-        panelForm.setBorder(new EmptyBorder(10,10,10,10));
+        JPanel panelForm = new JPanel(new GridLayout(1, 3, 5, 5));
+        panelForm.setBorder(new EmptyBorder(10, 10, 10, 10));
         panelForm.setBackground(Color.WHITE);
 
         fieldTuKhoa = new JTextField();
         panelForm.add(createInputField("<html>Mã vé/<br>Lịch trình</html>", fieldTuKhoa, Color.WHITE));
 
-        buttonTimKiem = createStyledButton("Tìm kiếm", new Dimension(100,40),PRIMARY_COLOR, Color.WHITE);
-        buttonReset = createStyledButton("Reset form", new Dimension(110,40),PRIMARY_COLOR, Color.WHITE);
-        buttonLammoi = createStyledButton("Làm mới", new Dimension(100,40),PRIMARY_COLOR, Color.WHITE);
-        JButton[] buttons =new JButton[]{buttonTimKiem, buttonReset,buttonLammoi};
+        buttonTimKiem = createStyledButton("Tìm kiếm", new Dimension(100, 40), PRIMARY_COLOR, Color.WHITE);
+        buttonReset = createStyledButton("Reset form", new Dimension(110, 40), PRIMARY_COLOR, Color.WHITE);
+        buttonLammoi = createStyledButton("Làm mới", new Dimension(100, 40), PRIMARY_COLOR, Color.WHITE);
+        JButton[] buttons = new JButton[]{buttonTimKiem, buttonReset, buttonLammoi};
 
         panelTop.add(panelTitle, BorderLayout.NORTH);
         panelTop.add(panelForm, BorderLayout.CENTER);
         panelTop.add(createButtonField(buttons, Color.WHITE), BorderLayout.SOUTH);
 
-        Object[] columns = new Object[] {"ID", "Mã vé", "ID Khách hàng", "ID Lịch trình", "ID Ghế", "ID Nhân viên", "Ngày đặt", "Giá vé", "Trạng thái"};
-        DefaultTableModel model = new DefaultTableModel(columns,0);
+        Object[] columns = new Object[]{"ID", "Mã vé", "ID Khách hàng", "ID Lịch trình", "ID Ghế", "ID Nhân viên", "Ngày đặt", "Giá vé", "Trạng thái"};
+        DefaultTableModel model = new DefaultTableModel(columns, 0);
 
         table = new JTable(model);
         TableColumnModel columnModel = table.getColumnModel();
@@ -72,13 +74,13 @@ public class TKVeTauPanel extends BasePanel {
         TitledBorder tableBorder = new TitledBorder(new LineBorder(Color.LIGHT_GRAY), "Danh sách Vé tàu",
                 TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, FONT_BOLD, Color.BLACK);
 
-        scrollPane.setBorder(new CompoundBorder(new EmptyBorder(10,10,10,10),tableBorder));
+        scrollPane.setBorder(new CompoundBorder(new EmptyBorder(10, 10, 10, 10), tableBorder));
         scrollPane.setForeground(Color.BLACK);
         scrollPane.setBackground(Color.WHITE);
         scrollPane.setFont(FONT_PLAIN);
 
         JPanel panelTable = new JPanel(new BorderLayout());
-        panelTable.setBorder(new EmptyBorder(10,10,10,10));
+        panelTable.setBorder(new EmptyBorder(10, 10, 10, 10));
         panelTable.setBackground(Color.WHITE);
         panelTable.add(scrollPane, BorderLayout.CENTER);
 
@@ -86,15 +88,27 @@ public class TKVeTauPanel extends BasePanel {
         add(panelTable, BorderLayout.CENTER);
     }
 
-    public String getTuKhoa() {return fieldTuKhoa.getText().trim();}
+    public String getTuKhoa() {
+        return fieldTuKhoa.getText().trim();
+    }
 
-    public JTable getTable() {return table;}
+    public JTable getTable() {
+        return table;
+    }
 
-    public void resetForm() {fieldTuKhoa.setText("");}
+    public void resetForm() {
+        fieldTuKhoa.setText("");
+    }
 
-    public void TimKiemListener(ActionListener l){buttonTimKiem.addActionListener(l);}
+    public void TimKiemListener(ActionListener l) {
+        buttonTimKiem.addActionListener(l);
+    }
 
-    public void ResetFormListener(ActionListener l){buttonReset.addActionListener(l);}
+    public void ResetFormListener(ActionListener l) {
+        buttonReset.addActionListener(l);
+    }
 
-    public void LamMoiListener(ActionListener l) {buttonLammoi.addActionListener(l);}
+    public void LamMoiListener(ActionListener l) {
+        buttonLammoi.addActionListener(l);
+    }
 }

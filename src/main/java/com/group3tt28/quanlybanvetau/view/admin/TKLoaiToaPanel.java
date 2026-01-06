@@ -20,7 +20,7 @@ public class TKLoaiToaPanel extends BasePanel {
     private JButton buttonTimkiem, buttonReset, buttonLamMoi;
     private JTable table;
 
-    public TKLoaiToaPanel () {
+    public TKLoaiToaPanel() {
         initComponents();
     }
 
@@ -55,7 +55,7 @@ public class TKLoaiToaPanel extends BasePanel {
         panelTop.add(panelForm, BorderLayout.CENTER);
         panelTop.add(createButtonField(buttons, Color.WHITE), BorderLayout.SOUTH);
 
-        String[] columNames = {"ID", "Tên loại toa","Hệ số giá"};
+        String[] columNames = {"ID", "Tên loại toa", "Hệ số giá"};
         model = new DefaultTableModel(columNames, 0);
 
         table = new JTable(model);

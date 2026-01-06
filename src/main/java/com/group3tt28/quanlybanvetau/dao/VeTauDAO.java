@@ -27,12 +27,12 @@ public class VeTauDAO {
             return false;
         }
         String sql = "Select " + COT_MA_VE + " from " + TEN_BANG
-                + " where " + COT_MA_VE + " = ? or " + " ( " + COT_ID_LICH_TRINH + " =? and " + COT_ID_GHE + " =?) and " + COT_ID + " !=?  "  ;
+                + " where " + COT_MA_VE + " = ? or " + " ( " + COT_ID_LICH_TRINH + " =? and " + COT_ID_GHE + " =?) and " + COT_ID + " !=?  ";
         try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, maVe);
             ps.setInt(2, idLichtrinh);
-            ps.setInt(3,idGhe);
-            ps.setInt(4,id);
+            ps.setInt(3, idGhe);
+            ps.setInt(4, id);
 
 
             try (ResultSet rs = ps.executeQuery()) {
@@ -184,7 +184,7 @@ public class VeTauDAO {
              PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, "%" + tuKhoa + "%");
             ps.setString(2, "%" + tuKhoa + "%");
-            try (ResultSet rs = ps.executeQuery()){
+            try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     Timestamp sqlNgayDat = rs.getTimestamp(COT_NGAY_DAT);
 
@@ -200,7 +200,7 @@ public class VeTauDAO {
 
                     VeTau vt = new VeTau(id, maVe, idKhachHang, idLichTrinh, idGhe, idNhanVien, ngayDat, giaVe, trangThai);
                     list.add(vt);
-            }
+                }
             }
         } catch (SQLException e) {
             throw new RuntimeException("Co loi khi load du lieu ve tau: " + e.getMessage(), e);

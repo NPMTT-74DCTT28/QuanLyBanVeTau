@@ -106,10 +106,21 @@ public class TKToaTauPanel extends BasePanel {
         add(panelTable, BorderLayout.CENTER);
     }
 
-    public String getTuKhoa() { return fieldTuKhoa.getText().trim(); }
-    public JComboBox<Object> getBoxTau() { return boxTau; }
-    public JComboBox<Object> getBoxLoaiToa() { return boxLoaiToa; }
-    public JTable getTable() { return table; }
+    public String getTuKhoa() {
+        return fieldTuKhoa.getText().trim();
+    }
+
+    public JComboBox<Object> getBoxTau() {
+        return boxTau;
+    }
+
+    public JComboBox<Object> getBoxLoaiToa() {
+        return boxLoaiToa;
+    }
+
+    public JTable getTable() {
+        return table;
+    }
 
     public void resetForm() {
         fieldTuKhoa.setText("");
@@ -117,7 +128,15 @@ public class TKToaTauPanel extends BasePanel {
         if (boxLoaiToa.getItemCount() > 0) boxLoaiToa.setSelectedIndex(0);
     }
 
-    public void addTimKiemListener(ActionListener l) { buttonTimKiem.addActionListener(l); }
-    public void addResetFormListener(ActionListener l) { buttonReset.addActionListener(l); }
-    public void addLamMoiListener(ActionListener l) { buttonLamMoi.addActionListener(l); }
+    public void addTimKiemListener(ActionListener l) {
+        buttonTimKiem.addActionListener(l);
+    }
+
+    public void addResetFormListener(ActionListener l) {
+        buttonReset.addActionListener(l);
+    }
+
+    public void addLamMoiListener(ActionListener l) {
+        buttonLamMoi.addActionListener(l);
+    }
 }

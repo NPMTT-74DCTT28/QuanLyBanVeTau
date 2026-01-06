@@ -11,10 +11,9 @@ import java.awt.*;
 
 public class Dashboard extends BasePanel {
 
+    private static final String ICON_PATH = "src/main/resources/icon/";
     private JLabel labelDoanhThu, labelSoVe, labelChuyenTau;
     private JPanel chartContainer;
-
-    private static final String ICON_PATH = "src/main/resources/icon/";
 
     public Dashboard() {
         initComponents();

@@ -27,16 +27,18 @@ public class TKTuyenDuongController {
         loadGa();
         refreshTable();
     }
+
     private void loadGa() {
         GaTauDAO dao = new GaTauDAO();
         map.clear();
-        for (GaTau gaTau: dao.getAll()){
+        for (GaTau gaTau : dao.getAll()) {
             map.put(
                     gaTau.getId(),
-                    gaTau.getMaGa()+" - "+gaTau.getTenGa()
+                    gaTau.getMaGa() + " - " + gaTau.getTenGa()
             );
         }
     }
+
     private void refreshTable() {
         try {
             model.setRowCount(0);
@@ -67,6 +69,7 @@ public class TKTuyenDuongController {
             panel.showError("Lỗi không xác định: " + e.getMessage());
         }
     }
+
     private class TimkiemListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
