@@ -23,7 +23,7 @@ public abstract class BaseFrame extends JFrame {
     }
 
     public void showWarning(String thongBao) {
-        JOptionPane.showMessageDialog(this, thongBao, "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+        JOptionPane.showMessageDialog(this, thongBao, "Chú ý", JOptionPane.WARNING_MESSAGE);
     }
 
     public void showError(String thongBao) {
