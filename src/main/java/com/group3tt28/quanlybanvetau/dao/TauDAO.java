@@ -1,6 +1,5 @@
 package com.group3tt28.quanlybanvetau.dao;
 
-import com.group3tt28.quanlybanvetau.model.NhanVien;
 import com.group3tt28.quanlybanvetau.model.Tau;
 import com.group3tt28.quanlybanvetau.util.DBConnection;
 
@@ -8,7 +7,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -115,7 +113,8 @@ public class TauDAO {
         }
         return list;
     }
-    public List<Tau> timKiemTau(String tuKhoa){
+
+    public List<Tau> timKiemTau(String tuKhoa) {
         List<Tau> list = new ArrayList<>();
         List<Object> params = new ArrayList<>();
         StringBuilder sql = new StringBuilder("SELECT * FROM " + TEN_BANG + " WHERE 1 = 1 ");

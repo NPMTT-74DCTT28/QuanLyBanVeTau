@@ -71,16 +71,20 @@ public class TKGaTauPanel extends BasePanel {
         add(panelTop, BorderLayout.NORTH);
         add(panelTable, BorderLayout.CENTER);
     }
+
     public String getTimkiem() {
         return fieldTimkiem.getText();
     }
+
     public JTable getTable() {
         return table;
     }
-    public void TimKiemListener(ActionListener l){
+
+    public void TimKiemListener(ActionListener l) {
         btnTimkiem.addActionListener(l);
     }
-    public void ResetListener(ActionListener l){
+
+    public void ResetListener(ActionListener l) {
         btnReset.addActionListener(l);
     }
 }

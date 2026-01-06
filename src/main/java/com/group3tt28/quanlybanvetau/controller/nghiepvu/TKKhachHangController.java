@@ -14,24 +14,24 @@ public class TKKhachHangController {
     private final KhachHangDAO dao;
     private final DefaultTableModel tableModel;
 
-    public TKKhachHangController(TKKhachHangPanel panel){
-        this.panel=panel;
-        this.dao=new KhachHangDAO();
+    public TKKhachHangController(TKKhachHangPanel panel) {
+        this.panel = panel;
+        this.dao = new KhachHangDAO();
 
         panel.TimKiemListener(new TimKiemListener());
         panel.ResetFormListener(new ResetListener());
         panel.LamMoiListener(new LamMoiListener());
 
-        this.tableModel=(DefaultTableModel) panel.getTable().getModel();
+        this.tableModel = (DefaultTableModel) panel.getTable().getModel();
 
         refresh();
     }
 
-    private void refresh(){
+    private void refresh() {
         try {
             tableModel.setRowCount(0);
             List<KhachHang> list = dao.getAll();
-            for (KhachHang khachHang : list){
+            for (KhachHang khachHang : list) {
                 tableModel.addRow(new Object[]{
                         khachHang.getId(),
                         khachHang.getCccd(),
@@ -44,29 +44,29 @@ public class TKKhachHangController {
             }
 
             tableModel.fireTableDataChanged();
-        }catch (RuntimeException e){
+        } catch (RuntimeException e) {
             e.printStackTrace();
             panel.showError("Lỗi hệ thống: " + e.getMessage());
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             panel.showError("Lỗi không xác định: " + e.getMessage());
         }
     }
 
-    private class TimKiemListener implements ActionListener{
+    private class TimKiemListener implements ActionListener {
         @Override
-        public void actionPerformed(ActionEvent e){
+        public void actionPerformed(ActionEvent e) {
             try {
                 tableModel.setRowCount(0);
                 String tuKhoa = panel.getTuKhoa();
                 List<KhachHang> list = dao.timKiemKH(tuKhoa);
 
-                if (tuKhoa.isEmpty()){
+                if (tuKhoa.isEmpty()) {
                     refresh();
                     return;
                 }
 
-                for (KhachHang khachHang : list){
+                for (KhachHang khachHang : list) {
                     tableModel.addRow(new Object[]{
                             khachHang.getId(),
                             khachHang.getCccd(),
@@ -78,17 +78,22 @@ public class TKKhachHangController {
                     });
                 }
                 tableModel.fireTableDataChanged();
-            }catch (Exception ex){
+            } catch (Exception ex) {
                 ex.printStackTrace();
                 panel.showError("Lỗi không xác đinh: " + ex.getMessage());
             }
         }
     }
-    private class ResetListener implements ActionListener{
-        public void actionPerformed(ActionEvent e){ panel.resetForm();}
+
+    private class ResetListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            panel.resetForm();
+        }
     }
 
-    private class LamMoiListener implements ActionListener{
-        public void actionPerformed(ActionEvent e) {refresh();}
+    private class LamMoiListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            refresh();
+        }
     }
 }

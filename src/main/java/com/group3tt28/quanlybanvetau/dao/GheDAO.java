@@ -116,7 +116,8 @@ public class GheDAO {
         }
         return list;
     }
-    public List<Ghe> timKiemGhe(String tuKhoa){
+
+    public List<Ghe> timKiemGhe(String tuKhoa) {
         List<Ghe> list = new ArrayList<>();
         List<Object> params = new ArrayList<>();
         StringBuilder sql = new StringBuilder("SELECT * FROM " + TEN_BANG + " WHERE 1 = 1 ");

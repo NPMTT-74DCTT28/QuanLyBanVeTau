@@ -134,7 +134,7 @@ public final class QLTuyenDuongPanel extends BasePanel {
     }
 
     public double getKhoangcach() {
-        if(!fieldKhoangcach.getText().trim().isEmpty()){
+        if (!fieldKhoangcach.getText().trim().isEmpty()) {
             return Double.parseDouble(fieldKhoangcach.getText().trim());
         }
         return 0;
@@ -145,7 +145,7 @@ public final class QLTuyenDuongPanel extends BasePanel {
     }
 
     public double getGiaCB() {
-        if(!fieldGiaCB.getText().trim().isEmpty()){
+        if (!fieldGiaCB.getText().trim().isEmpty()) {
             return Double.parseDouble(fieldGiaCB.getText().trim());
         }
         return 0;

@@ -22,6 +22,7 @@ public class TKGaTauController {
         this.model = (DefaultTableModel) panel.getTable().getModel();
         refreshTable();
     }
+
     private void refreshTable() {
         try {
             model.setRowCount(0);
@@ -35,11 +36,12 @@ public class TKGaTauController {
                 });
             }
             model.fireTableDataChanged();
-        }catch(Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
-            panel.showError("Lỗi không xác định: "+ ex.getMessage());
+            panel.showError("Lỗi không xác định: " + ex.getMessage());
         }
     }
+
     public class TimkiemListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             try {
@@ -48,26 +50,27 @@ public class TKGaTauController {
                 String timKiem = panel.getTimkiem();
                 List<GaTau> List = dao.timkiem(timKiem);
 
-                if (timKiem.isEmpty()){
+                if (timKiem.isEmpty()) {
                     refreshTable();
                     return;
                 }
 
                 for (GaTau gaTau : List) {
                     model.addRow(new Object[]{
-                       gaTau.getMaGa(),
-                       gaTau.getTenGa(),
-                       gaTau.getDiaChi(),
-                       gaTau.getThanhPho()
+                            gaTau.getMaGa(),
+                            gaTau.getTenGa(),
+                            gaTau.getDiaChi(),
+                            gaTau.getThanhPho()
                     });
                 }
                 model.fireTableDataChanged();
-            }catch(Exception ex) {
+            } catch (Exception ex) {
                 ex.printStackTrace();
-                panel.showError("Lỗi không xác định: "+ ex.getMessage());
+                panel.showError("Lỗi không xác định: " + ex.getMessage());
             }
         }
     }
+
     public class ResetListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             refreshTable();
