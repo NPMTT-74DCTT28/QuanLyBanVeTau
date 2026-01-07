@@ -14,20 +14,20 @@ public class VeTau {
     private double giaVe;
     private String trangThai;
 
-    public VeTau(String maVe, int idKhachHang, int idLichTrinh, int idGhe, int idNhanVien, LocalDateTime ngayDat, double giaVe, String trangThai) {
+    public VeTau(String maVe, int idKhachHang, int idLichTrinh, int idGhe, int idNhanVien, double giaVe, String trangThai) {
         this.maVe = maVe;
         this.idKhachHang = idKhachHang;
         this.idLichTrinh = idLichTrinh;
         this.idGhe = idGhe;
         this.idNhanVien = idNhanVien;
-        this.ngayDat = ngayDat;
         this.giaVe = giaVe;
         this.trangThai = trangThai;
     }
 
     public VeTau(int id, String maVe, int idKhachHang, int idLichTrinh, int idGhe, int idNhanVien, LocalDateTime ngayDat, double giaVe, String trangThai) {
-        this(maVe, idKhachHang, idLichTrinh, idGhe, idNhanVien, ngayDat, giaVe, trangThai);
+        this(maVe, idKhachHang, idLichTrinh, idGhe, idNhanVien, giaVe, trangThai);
         this.id = id;
+        this.ngayDat = ngayDat;
     }
 
     public int getId() {

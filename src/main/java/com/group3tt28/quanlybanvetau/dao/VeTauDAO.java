@@ -74,13 +74,9 @@ public class VeTauDAO {
         }
         String sql = "Insert into " + TEN_BANG + " ("
                 + COT_MA_VE + ", " + COT_ID_KH + ", " + COT_ID_LICH_TRINH + ", "
-                + COT_ID_GHE + ", " + COT_ID_NHAN_VIEN + ", " + COT_NGAY_DAT + ", "
+                + COT_ID_GHE + ", " + COT_ID_NHAN_VIEN
                 + COT_GIA_VE + ", " + COT_TRANG_THAI
-                + ") Values (?,?,?,?,?,?,?,?)";
-        Timestamp sqlNgayDat = null;
-        if (veTau.getNgayDat() != null) {
-            sqlNgayDat = Timestamp.valueOf(veTau.getNgayDat());
-        }
+                + ") Values (?,?,?,?,?,?,?)";
 
         try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, veTau.getMaVe());
@@ -88,9 +84,8 @@ public class VeTauDAO {
             ps.setInt(3, veTau.getIdLichTrinh());
             ps.setInt(4, veTau.getIdGhe());
             ps.setInt(5, veTau.getIdNhanVien());
-            ps.setTimestamp(6, sqlNgayDat);
-            ps.setDouble(7, veTau.getGiaVe());
-            ps.setString(8, veTau.getTrangThaiVe());
+            ps.setDouble(6, veTau.getGiaVe());
+            ps.setString(7, veTau.getTrangThaiVe());
 
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
@@ -109,24 +104,17 @@ public class VeTauDAO {
                 + COT_ID_KH + " =  ?, "
                 + COT_ID_LICH_TRINH + " =  ?, "
                 + COT_ID_GHE + " =  ?, "
-                + COT_NGAY_DAT + " =  ?, "
                 + COT_GIA_VE + " =  ?, "
                 + COT_TRANG_THAI + " =  ?"
                 + " WHERE " + COT_MA_VE + " = ?";
-
-        Timestamp sqlNgayDat = null;
-        if (veTau.getNgayDat() != null) {
-            sqlNgayDat = Timestamp.valueOf(veTau.getNgayDat());
-        }
 
         try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, veTau.getIdKhachHang());
             ps.setInt(2, veTau.getIdLichTrinh());
             ps.setInt(3, veTau.getIdGhe());
-            ps.setTimestamp(4, sqlNgayDat);
-            ps.setDouble(5, veTau.getGiaVe());
-            ps.setString(6, veTau.getTrangThaiVe());
-            ps.setString(7, veTau.getMaVe());
+            ps.setDouble(4, veTau.getGiaVe());
+            ps.setString(5, veTau.getTrangThaiVe());
+            ps.setString(6, veTau.getMaVe());
 
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
