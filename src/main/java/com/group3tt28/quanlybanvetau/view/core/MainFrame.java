@@ -194,6 +194,8 @@ public final class MainFrame extends BaseFrame {
         menuKhachHang.setVisible(isLoggedIn);
         menuVeTau.setVisible(isLoggedIn);
 
+        trangChu.setVisible(isLoggedIn);
+
         qlTau.setVisible(isAdmin);
         tkTau.setVisible(isLoggedIn);
 
