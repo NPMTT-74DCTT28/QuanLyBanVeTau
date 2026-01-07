@@ -36,8 +36,15 @@ public class MainController {
         mainFrame.addVeTauListener(new QLVeTauListener(), new TKVeTauListener());
         if (SessionManager.getCurrentUser() != null) {
             mainFrame.setXinChao(SessionManager.getCurrentUser().getHoTen());
+            String vaiTroString = SessionManager.getCurrentUser().getVaiTro();
+            VaiTro vaiTro = VaiTro.fromLabel(vaiTroString);
+            mainFrame.hienMenuTheoQuyen(vaiTro);
+            showTrangChu();
         } else {
-            mainFrame.setXinChao(null);
+            mainFrame.showWarning("Vui lòng đăng nhập để sử dụng các chức năng.");
+            mainFrame.dispose();
+            new DangNhapController();
+            return;
         }
         mainFrame.addThongKeDoanhThuNgayListener(new ThongKeDoanhThuNgayListener());
         mainFrame.addThongKeDoanhThuTuyenListener(new ThongKeDoanhThuTuyenListener());
@@ -49,12 +56,6 @@ public class MainController {
         mainFrame.addDangXuatListener(new DangXuatListener());
         mainFrame.addThoatListener(new ThoatListener());
         mainFrame.addWindowCloseListener(new WindowCloseListener());
-
-        String vaiTroString = SessionManager.getCurrentUser().getVaiTro();
-        VaiTro vaiTro = VaiTro.fromLabel(vaiTroString);
-        mainFrame.hienMenuTheoQuyen(vaiTro);
-
-        showTrangChu();
 
         mainFrame.setVisible(true);
     }
