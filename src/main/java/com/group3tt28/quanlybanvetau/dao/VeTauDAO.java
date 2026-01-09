@@ -74,7 +74,7 @@ public class VeTauDAO {
         }
         String sql = "Insert into " + TEN_BANG + " ("
                 + COT_MA_VE + ", " + COT_ID_KH + ", " + COT_ID_LICH_TRINH + ", "
-                + COT_ID_GHE + ", " + COT_ID_NHAN_VIEN
+                + COT_ID_GHE + ", " + COT_ID_NHAN_VIEN + ", "
                 + COT_GIA_VE + ", " + COT_TRANG_THAI
                 + ") Values (?,?,?,?,?,?,?)";
 
