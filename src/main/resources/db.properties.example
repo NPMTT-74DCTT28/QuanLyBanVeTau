@@ -1,0 +1,3 @@
+db.url=jdbc:mysql://localhost:3306/quan_ly_ban_ve_tau
+db.user=root
+db.password=

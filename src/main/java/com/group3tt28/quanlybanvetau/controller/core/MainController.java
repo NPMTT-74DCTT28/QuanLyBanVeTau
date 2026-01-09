@@ -1,0 +1,346 @@
+package com.group3tt28.quanlybanvetau.controller.core;
+
+import com.group3tt28.quanlybanvetau.controller.admin.*;
+import com.group3tt28.quanlybanvetau.controller.nghiepvu.*;
+import com.group3tt28.quanlybanvetau.controller.thongke.*;
+import com.group3tt28.quanlybanvetau.enums.VaiTro;
+import com.group3tt28.quanlybanvetau.util.SessionManager;
+import com.group3tt28.quanlybanvetau.view.admin.*;
+import com.group3tt28.quanlybanvetau.view.core.Dashboard;
+import com.group3tt28.quanlybanvetau.view.core.MainFrame;
+import com.group3tt28.quanlybanvetau.view.nghiepvu.*;
+import com.group3tt28.quanlybanvetau.view.thongke.*;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
+public class MainController {
+
+    private final MainFrame mainFrame;
+
+    public MainController(MainFrame frame) {
+        this.mainFrame = frame;
+
+        mainFrame.addTrangChuListener(new TrangChuListener());
+        mainFrame.addNhanVienListener(new QLNhanVienListener(), new TKNhanVienListener());
+        mainFrame.addTauListener(new QLTauListener(), new TKTauListener());
+        mainFrame.addLoaiToaListener(new QLLoaiToaListener(), new TKLoaiToaListener());
+        mainFrame.addToaTauListener(new QLToaTauListener(), new TKToaTauListener());
+        mainFrame.addGheListener(new QLGheListener(), new TKGheListener());
+        mainFrame.addGaTauListener(new QLGaTauListener(), new TKGaTauListener());
+        mainFrame.addTuyenDuongListener(new QLTuyenDuongListener(), new TKTuyenDuongListener());
+        mainFrame.addLichTrinhListener(new QLLichTrinhListener(), new TKLichTrinhListener());
+        mainFrame.addKhachHangListener(new QLKhachHangListener(), new TKKhachHangListener());
+        mainFrame.addVeTauListener(new QLVeTauListener(), new TKVeTauListener());
+        if (SessionManager.getCurrentUser() != null) {
+            mainFrame.setXinChao(SessionManager.getCurrentUser().getHoTen());
+            String vaiTroString = SessionManager.getCurrentUser().getVaiTro();
+            VaiTro vaiTro = VaiTro.fromLabel(vaiTroString);
+            mainFrame.hienMenuTheoQuyen(vaiTro);
+            showTrangChu();
+        } else {
+            mainFrame.showWarning("Vui lòng đăng nhập để sử dụng các chức năng.");
+            mainFrame.dispose();
+            new DangNhapController();
+            return;
+        }
+        mainFrame.addThongKeDoanhThuNgayListener(new ThongKeDoanhThuNgayListener());
+        mainFrame.addThongKeDoanhThuTuyenListener(new ThongKeDoanhThuTuyenListener());
+        mainFrame.addThongKeTyLeLapDayListener(new ThongKeTyLeLapDayListener());
+        mainFrame.addThongKeKhachVIPListener(new ThongKeKhachHangVIPListener());
+        mainFrame.addThongKeDoanhSoListener(new ThongKeDoanhSoListener());
+        mainFrame.addThongTinCaNhanListener(new ThongTinCaNhanListener());
+        mainFrame.addDoiMatKhauListener(new DoiMatKhauListener());
+        mainFrame.addDangXuatListener(new DangXuatListener());
+        mainFrame.addThoatListener(new ThoatListener());
+        mainFrame.addWindowCloseListener(new WindowCloseListener());
+
+        mainFrame.setVisible(true);
+    }
+
+    private void showTrangChu() {
+        Dashboard dashboard = new Dashboard();
+        mainFrame.showPanel(dashboard);
+        new DashboardController(dashboard);
+    }
+
+    private void exit() {
+        if (mainFrame.showConfirm("Bạn chắc chắn muốn thoát ứng dụng?")) {
+            mainFrame.dispose();
+            System.exit(0);
+        }
+    }
+
+    private class TrangChuListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            showTrangChu();
+        }
+    }
+
+    private class QLNhanVienListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            QLNhanVienPanel qlNhanVienPanel = new QLNhanVienPanel();
+            mainFrame.showPanel(qlNhanVienPanel);
+            new QLNhanVienController(qlNhanVienPanel);
+        }
+    }
+
+    private class TKNhanVienListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            TKNhanVienPanel panel = new TKNhanVienPanel();
+            mainFrame.showPanel(panel);
+            new TKNhanVienController(panel);
+        }
+    }
+
+    private class QLTauListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            QLTauPanel panel = new QLTauPanel();
+            mainFrame.showPanel(panel);
+            new QLTauController(panel);
+        }
+    }
+
+    private class TKTauListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            TKTauPanel panel = new TKTauPanel();
+            mainFrame.showPanel(panel);
+            new TKTauController(panel);
+        }
+    }
+
+    private class QLLoaiToaListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            QLLoaiToaPanel panel = new QLLoaiToaPanel();
+            mainFrame.showPanel(panel);
+            new QLLoaiToaController(panel);
+        }
+    }
+
+    private class TKLoaiToaListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            TKLoaiToaPanel panel = new TKLoaiToaPanel();
+            mainFrame.showPanel(panel);
+            new TKLoaiToaController(panel);
+        }
+    }
+
+    private class QLToaTauListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            QLToaTauPanel panel = new QLToaTauPanel();
+            mainFrame.showPanel(panel);
+            new QLToaTauController(panel);
+        }
+    }
+
+    private class TKToaTauListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            TKToaTauPanel panel = new TKToaTauPanel();
+            mainFrame.showPanel(panel);
+            new TKToaTauController(panel);
+        }
+    }
+
+    private class QLGheListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            QLGhePanel panel = new QLGhePanel();
+            mainFrame.showPanel(panel);
+            new QLGheController(panel);
+        }
+    }
+
+    private class TKGheListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            TKGhePanel panel = new TKGhePanel();
+            mainFrame.showPanel(panel);
+            new TKGheController(panel);
+        }
+    }
+
+    private class QLGaTauListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            QLGaTauPanel panel = new QLGaTauPanel();
+            mainFrame.showPanel(panel);
+            new QLGaTauController(panel);
+        }
+    }
+
+    private class TKGaTauListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            TKGaTauPanel panel = new TKGaTauPanel();
+            mainFrame.showPanel(panel);
+            new TKGaTauController(panel);
+        }
+    }
+
+    private class QLTuyenDuongListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            QLTuyenDuongPanel panel = new QLTuyenDuongPanel();
+            mainFrame.showPanel(panel);
+            new QLTuyenDuongController(panel);
+        }
+    }
+
+    private class TKTuyenDuongListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            TKTuyenDuongPanel panel = new TKTuyenDuongPanel();
+            mainFrame.showPanel(panel);
+            new TKTuyenDuongController(panel);
+        }
+    }
+
+    private class QLLichTrinhListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            QLLichTrinhPanel panel = new QLLichTrinhPanel();
+            mainFrame.showPanel(panel);
+            new QLLichTrinhController(panel);
+        }
+    }
+
+    private class TKLichTrinhListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            TKLichTrinhPanel panel = new TKLichTrinhPanel();
+            mainFrame.showPanel(panel);
+            new TKLichTrinhController(panel);
+        }
+    }
+
+    private class QLKhachHangListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            QLKhachHangPanel panel = new QLKhachHangPanel();
+            mainFrame.showPanel(panel);
+            new QLKhachHangController(panel);
+        }
+    }
+
+    private class TKKhachHangListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            TKKhachHangPanel panel = new TKKhachHangPanel();
+            mainFrame.showPanel(panel);
+            new TKKhachHangController(panel);
+        }
+    }
+
+    private class QLVeTauListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            QLVeTauPanel panel = new QLVeTauPanel();
+            mainFrame.showPanel(panel);
+            new QLVeTauController(panel);
+        }
+    }
+
+    private class TKVeTauListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            TKVeTauPanel panel = new TKVeTauPanel();
+            mainFrame.showPanel(panel);
+            new TKVeTauController(panel);
+        }
+    }
+
+    private class ThongKeDoanhThuNgayListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            TabDoanhThuNgay tab = new TabDoanhThuNgay();
+            mainFrame.showPanel(tab);
+            new ThongKeDoanhThuNgayController(tab);
+        }
+    }
+
+    private class ThongKeDoanhThuTuyenListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            TabDoanhThuTuyen tab = new TabDoanhThuTuyen();
+            mainFrame.showPanel(tab);
+            new ThongKeDoanhThuTuyenController(tab);
+        }
+    }
+
+    private class ThongKeTyLeLapDayListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            TabTyLeLapDay tab = new TabTyLeLapDay();
+            mainFrame.showPanel(tab);
+            new ThongKeTyLeLapDayController(tab);
+        }
+    }
+
+    private class ThongKeKhachHangVIPListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            TabKhachHangVIP tab = new TabKhachHangVIP();
+            mainFrame.showPanel(tab);
+            new ThongKeKhachHangVIPController(tab);
+        }
+    }
+
+    private class ThongKeDoanhSoListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            TabThongKeDoanhSo tab = new TabThongKeDoanhSo();
+            mainFrame.showPanel(tab);
+            new ThongKeDoanhSoController(tab);
+        }
+    }
+
+    private class ThongTinCaNhanListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            new ThongTinCaNhanController(mainFrame);
+        }
+    }
+
+    private class DoiMatKhauListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            new DoiMatKhauController(mainFrame);
+        }
+    }
+
+    private class DangXuatListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (mainFrame.showConfirm("Bạn chắc chắn muốn đăng xuất?")) {
+                mainFrame.dispose();
+                SessionManager.clearSession();
+                new DangNhapController();
+            }
+        }
+    }
+
+    private class ThoatListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            exit();
+        }
+    }
+
+    private class WindowCloseListener extends WindowAdapter {
+        @Override
+        public void windowClosing(WindowEvent e) {
+            exit();
+        }
+    }
+}

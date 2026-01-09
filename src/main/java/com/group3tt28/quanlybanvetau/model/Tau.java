@@ -1,13 +1,5 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.group3tt28.quanlybanvetau.model;
 
-/**
- *
- * @author qphwn
- */
 public class Tau {
 
     private int id;
@@ -49,5 +41,10 @@ public class Tau {
 
     public void setTenTau(String tenTau) {
         this.tenTau = tenTau;
+    }
+
+    @Override
+    public String toString() {
+        return tenTau;
     }
 }
