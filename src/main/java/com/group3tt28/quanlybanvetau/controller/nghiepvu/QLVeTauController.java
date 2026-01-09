@@ -248,17 +248,6 @@ public class QLVeTauController {
             panel.setSelectedGheId((Integer.parseInt(model.getValueAt(selectedRow, 4).toString())));
             panel.setFieldNhanVien((Integer.parseInt(model.getValueAt(selectedRow, 5).toString())));
 
-            Object ngayDatObj = model.getValueAt(selectedRow, 6);
-            if (ngayDatObj instanceof LocalDateTime) {
-                panel.setNgayDat((LocalDateTime) ngayDatObj);
-            } else {
-                try {
-                    panel.setNgayDat(LocalDateTime.parse(ngayDatObj.toString()));
-                } catch (Exception ex) {
-                    panel.showError("Lỗi chuyển đổi ngày tháng" + ex.getMessage());
-                }
-            }
-
             panel.setGiaVe(Double.parseDouble(model.getValueAt(selectedRow, 7).toString()));
             panel.setTrangThai(model.getValueAt(selectedRow, 8).toString());
         }

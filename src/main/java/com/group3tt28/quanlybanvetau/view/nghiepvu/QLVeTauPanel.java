@@ -14,9 +14,6 @@ import javax.swing.table.TableColumnModel;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Date;
 import java.util.List;
 
 public class QLVeTauPanel extends BasePanel {
@@ -26,7 +23,6 @@ public class QLVeTauPanel extends BasePanel {
     private JComboBox<Integer> comboLichTrinh;
     private JComboBox<Integer> comboGhe;
     private JTextField fieldNhanVien;
-    private JSpinner spinnerNgayDat;
     private JTextField fieldGiaVe;
     private JComboBox<String> comboTrangThai;
     private JButton buttonThem, buttonSua, buttonXoa, buttonReset;
@@ -70,12 +66,6 @@ public class QLVeTauPanel extends BasePanel {
         fieldNhanVien = new JTextField();
         fieldNhanVien.setEnabled(false);
         panelForm.add(createInputField("Nhân viên:", fieldNhanVien, Color.WHITE));
-
-        SpinnerDateModel modelDat = new SpinnerDateModel();
-        spinnerNgayDat = new JSpinner(modelDat);
-        JSpinner.DateEditor editor = new JSpinner.DateEditor(spinnerNgayDat, "yyyy-MM-dd HH:mm:ss");
-        spinnerNgayDat.setEditor(editor);
-        panelForm.add(createInputField("Ngày đặt:", spinnerNgayDat, Color.WHITE));
 
         fieldGiaVe = new JTextField();
         panelForm.add(createInputField("Giá vé:", fieldGiaVe, Color.WHITE));
@@ -200,24 +190,6 @@ public class QLVeTauPanel extends BasePanel {
         fieldNhanVien.setText(String.valueOf(IDNhanVien));
     }
 
-    public LocalDateTime getNgayDat() {
-        Object value = spinnerNgayDat.getValue();
-        if (value instanceof Date) {
-            Date date = (Date) value;
-            return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-        }
-        return null;
-    }
-
-    public void setNgayDat(LocalDateTime localDateTime) {
-        if (localDateTime == null) {
-            spinnerNgayDat.setValue(new Date());
-        } else {
-            Date date = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
-            spinnerNgayDat.setValue(date);
-        }
-    }
-
     public double getGiaVe() {
         if (fieldGiaVe.getText().trim().isEmpty()) {
             return 0;
@@ -232,7 +204,6 @@ public class QLVeTauPanel extends BasePanel {
             fieldGiaVe.setText(null);
         }
     }
-
 
     public String getTrangThai() {
         return String.valueOf(comboTrangThai.getSelectedItem());
@@ -252,11 +223,10 @@ public class QLVeTauPanel extends BasePanel {
         int idLichTrinh = getSelectedLichTrinhId();
         int idGhe = getSelectedGheId();
         int idNhanVien = getIDNhanVien();
-        LocalDateTime ngayDat = getNgayDat();
         double giaVe = getGiaVe();
         String trangThai = getTrangThai();
 
-        return new VeTau(maVe, idKhachHang, idLichTrinh, idGhe, idNhanVien, ngayDat, giaVe, trangThai);
+        return new VeTau(maVe, idKhachHang, idLichTrinh, idGhe, idNhanVien, giaVe, trangThai);
     }
 
     public void startEditMode() {
@@ -283,8 +253,6 @@ public class QLVeTauPanel extends BasePanel {
         if (comboGhe.getItemCount() > 0) {
             comboGhe.setSelectedIndex(0);
         }
-
-        spinnerNgayDat.setValue(new Date());
 
         fieldGiaVe.setText("");
 
